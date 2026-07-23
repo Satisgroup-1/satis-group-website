@@ -1,0 +1,22 @@
+import type { Metadata } from "next";
+import { PageHero } from "@/components/PageHero";
+import { PortfolioGrid } from "@/components/PortfolioGrid";
+
+export const metadata: Metadata = {
+  title: "Portfolio | Satis Group",
+  description:
+    "A selection of residential and commercial redevelopments delivered by Satis Group across the UK.",
+};
+
+export default function PortfolioPage() {
+  return (
+    <>
+      <PageHero
+        eyebrow="Portfolio"
+        title="Projects, past and present."
+        description="A selection of the residential and commercial redevelopments we've delivered across the UK."
+      />
+      <PortfolioGrid />
+    </>
+  );
+}
