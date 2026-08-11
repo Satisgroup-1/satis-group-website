@@ -2,8 +2,9 @@
 //   - SATIS Group Terms & Conditions V1
 //   - SATIS Group Privacy Policy V1
 //   - Modern Slavery Statement
-// The wording is kept verbatim from those documents; update the source
-// document and this file together.
+// The wording is kept verbatim from those documents, except that plain
+// typos in the Modern Slavery Statement were corrected on request; update
+// the source document and this file together.
 
 export type LegalBlock =
   | { kind: "heading"; text: string }
@@ -500,7 +501,7 @@ export const LEGAL_PAGES: LegalPage[] = [
       { kind: "heading", text: "Organisational Structure" },
       {
         kind: "paragraph",
-        text: "SATIS Group and its group of companies operate a property development business. The business operates from one office from which all employees work. SATIS Group acts a parent company to many subsidiaries and is controlled by its two directors and co-founders, Shiro Rauniar and Thomas Morley. The directors welcome the Modern Slavery Act as an important piece of legislation that will not only help achieve greater transparency in supply chains, but which will also protect those who are vulnerable. SATIS Group operates from once office located in Hale, Cheshire, United Kingdom. The Company covers various areas of business including consulting, operations, project management, development, procurement, financing, marketing, sales and lettings. Business is conducted throughout the year and is not dependent on seasons.",
+        text: "SATIS Group and its group of companies operate a property development business. The business operates from one office from which all employees work. SATIS Group acts as a parent company to many subsidiaries and is controlled by its two directors and co-founders, Shiro Rauniar and Thomas Morley. The directors welcome the Modern Slavery Act as an important piece of legislation that will not only help achieve greater transparency in supply chains, but which will also protect those who are vulnerable. SATIS Group operates from one office located in Hale, Cheshire, United Kingdom. The Company covers various areas of business including consulting, operations, project management, development, procurement, financing, marketing, sales and lettings. Business is conducted throughout the year and is not dependent on seasons.",
       },
       {
         kind: "paragraph",
@@ -516,7 +517,7 @@ export const LEGAL_PAGES: LegalPage[] = [
         items: [
           "Human trafficking;",
           "Forced work, through mental or physical threat;",
-          "Being owned or controlled by an employer through mental or physical abuse of the threat of abuse;",
+          "Being owned or controlled by an employer through mental or physical abuse or the threat of abuse;",
           "Being dehumanised, treated as a commodity or being bought or sold as property;",
           "Being physically constrained or to have restriction placed on freedom of movement.",
         ],
@@ -537,7 +538,7 @@ export const LEGAL_PAGES: LegalPage[] = [
       { kind: "heading", text: "Supply Chains" },
       {
         kind: "paragraph",
-        text: "In order to fulfil its activities, SATIS Group main supply chains include those related to the engagement of subcontractors and subconsultants to undertake services and works on our construction sites including sourcing materials and manufactured products. We take an active role in development of our suppliers and use a variety of methods to clearly convey our requirements. We have strong relationships with our subcontractors, subconsultants and suppliers and outline our expectations of ethical business conduct. Anyone, including workers, subcontractor, subconsultants, and vendors, is encouraged to disclose any complaints or concerns regarding alleged or possible ethics, human rights, legal, or regulatory violations, including illegal or immoral business practises, in good faith. In accordance with the Modern Slavery Act 2015, we expect our supply chain to have appropriate anti-slavery and human trafficking policies and processes. Our expectation is that each organisation in the supply chain to conduct due diligence on the next link in the chain and assume responsibility for ensuring compliance. It is not viable for SATIS Group (or any other individual in the chain) to have direct contact with all supply chain connections.",
+        text: "In order to fulfil its activities, SATIS Group's main supply chains include those related to the engagement of subcontractors and subconsultants to undertake services and works on our construction sites including sourcing materials and manufactured products. We take an active role in development of our suppliers and use a variety of methods to clearly convey our requirements. We have strong relationships with our subcontractors, subconsultants and suppliers and outline our expectations of ethical business conduct. Anyone, including workers, subcontractors, subconsultants, and vendors, is encouraged to disclose any complaints or concerns regarding alleged or possible ethics, human rights, legal, or regulatory violations, including illegal or immoral business practices, in good faith. In accordance with the Modern Slavery Act 2015, we expect our supply chain to have appropriate anti-slavery and human trafficking policies and processes. Our expectation is that each organisation in the supply chain conducts due diligence on the next link in the chain and assumes responsibility for ensuring compliance. It is not viable for SATIS Group (or any other individual in the chain) to have direct contact with all supply chain connections.",
       },
       { kind: "heading", text: "Potential Exposure" },
       {
@@ -555,7 +556,7 @@ export const LEGAL_PAGES: LegalPage[] = [
       },
       {
         kind: "paragraph",
-        text: "The Company welcomes the UK Government’s decision, as confirmed in April 2020, to allow for a delay of up to 6 months in the publication of modern slavery statements without the risk of facing penalty. Despite the permitted, delay, The Company remains in a position to publish its statement in line with the original publishing requirements.",
+        text: "The Company welcomes the UK Government’s decision, as confirmed in April 2020, to allow for a delay of up to 6 months in the publication of modern slavery statements without the risk of facing penalty. Despite the permitted delay, The Company remains in a position to publish its statement in line with the original publishing requirements.",
       },
       {
         kind: "paragraph",

@@ -51,7 +51,7 @@ export function SplashScreen() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.6, ease: "easeInOut" }}
           onClick={dismiss}
-          className="fixed inset-0 z-[90] flex cursor-pointer flex-col items-center justify-center bg-ink text-ink-foreground"
+          className="fixed inset-0 z-[90] flex cursor-pointer flex-col items-center justify-center bg-black text-ink-foreground"
           aria-label="Satis Group intro animation. Click to skip."
           role="dialog"
         >

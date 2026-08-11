@@ -437,6 +437,16 @@ export default async function PropertyDetailPage({
             </div>
           </Reveal>
           <Reveal delay={0.15} className="flex flex-col gap-8">
+            {property.address && (
+              <div>
+                <span className="text-xs tracking-[0.2em] uppercase text-accent">
+                  Address
+                </span>
+                <p className="mt-2 text-sm leading-relaxed">
+                  {property.address}
+                </p>
+              </div>
+            )}
             {property.agent && (
               <div>
                 <span className="text-xs tracking-[0.2em] uppercase text-accent">
