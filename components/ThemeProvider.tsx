@@ -4,8 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
-  useState,
+  useSyncExternalStore,
 } from "react";
 
 type Theme = "light" | "dark";
@@ -19,21 +18,39 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 const STORAGE_KEY = "satis-theme";
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("light");
+// The <html> class set by THEME_INIT_SCRIPT (and toggled below) is the
+// source of truth; React mirrors it via useSyncExternalStore rather than
+// state + effect, so there is no post-hydration setState and no flash of a
+// wrong toggle state.
+const listeners = new Set<() => void>();
 
-  useEffect(() => {
-    const root = document.documentElement;
-    setTheme(root.classList.contains("dark") ? "dark" : "light");
-  }, []);
+function subscribe(listener: () => void): () => void {
+  listeners.add(listener);
+  return () => listeners.delete(listener);
+}
+
+function getSnapshot(): Theme {
+  return document.documentElement.classList.contains("dark")
+    ? "dark"
+    : "light";
+}
+
+function getServerSnapshot(): Theme {
+  return "light";
+}
+
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   const toggleTheme = useCallback(() => {
-    setTheme((prev) => {
-      const next = prev === "dark" ? "light" : "dark";
-      document.documentElement.classList.toggle("dark", next === "dark");
+    const next = getSnapshot() === "dark" ? "light" : "dark";
+    document.documentElement.classList.toggle("dark", next === "dark");
+    try {
       window.localStorage.setItem(STORAGE_KEY, next);
-      return next;
-    });
+    } catch {
+      /* ignore */
+    }
+    listeners.forEach((listener) => listener());
   }, []);
 
   return (

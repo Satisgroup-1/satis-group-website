@@ -5,7 +5,7 @@ import type { Property } from "@/lib/portfolio-data";
 export function PropertyCard({ property }: { property: Property }) {
   const typeChipClass =
     property.type === "Residential"
-      ? "bg-sage text-white"
+      ? "bg-sage text-white dark:text-ink"
       : "bg-ink text-ink-foreground";
 
   return (
@@ -14,7 +14,7 @@ export function PropertyCard({ property }: { property: Property }) {
         <div className="relative aspect-[4/3] overflow-hidden bg-surface">
           <Image
             src={property.image}
-            alt={property.name}
+            alt=""
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
             className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
@@ -36,7 +36,7 @@ export function PropertyCard({ property }: { property: Property }) {
             <h3 className="text-lg font-medium tracking-tight">
               {property.name}
             </h3>
-            <span className="shrink-0 text-xs tracking-[0.1em] uppercase text-accent">
+            <span className="shrink-0 text-xs tracking-[0.1em] uppercase text-accent-text">
               {property.status}
             </span>
           </div>

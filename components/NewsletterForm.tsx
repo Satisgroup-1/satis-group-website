@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -8,6 +8,11 @@ export function NewsletterForm() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const successRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (submitted) successRef.current?.focus();
+  }, [submitted]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -25,7 +30,12 @@ export function NewsletterForm() {
 
   if (submitted) {
     return (
-      <div className="border border-border px-6 py-8">
+      <div
+        ref={successRef}
+        role="status"
+        tabIndex={-1}
+        className="border border-border px-6 py-8"
+      >
         <p className="text-sm tracking-[0.05em]">
           Thanks, you&rsquo;re on the list. We&rsquo;ll be in touch when
           there&rsquo;s news to share.
@@ -43,9 +53,11 @@ export function NewsletterForm() {
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           placeholder="you@email.com"
+          autoComplete="email"
           aria-label="Email address"
           aria-invalid={Boolean(error)}
-          className="w-full border border-border bg-transparent px-4 py-3 text-sm outline-none transition-colors placeholder:text-muted focus:border-accent sm:max-w-sm"
+          aria-describedby={error ? "newsletter-email-error" : undefined}
+          className="w-full border border-border bg-transparent px-4 py-3 text-sm outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition-colors placeholder:text-muted focus:border-accent sm:max-w-sm"
         />
         <button
           type="submit"
@@ -54,7 +66,11 @@ export function NewsletterForm() {
           Subscribe
         </button>
       </div>
-      {error && <p className="text-sm text-muted">{error}</p>}
+      {error && (
+        <p id="newsletter-email-error" role="alert" className="text-sm text-clay">
+          {error}
+        </p>
+      )}
     </form>
   );
 }

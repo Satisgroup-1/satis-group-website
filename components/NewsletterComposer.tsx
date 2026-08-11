@@ -8,7 +8,7 @@ import {
 } from "@/app/admin/actions";
 
 const INPUT_CLASS =
-  "w-full border border-border bg-transparent px-4 py-3 text-sm outline-none transition-colors duration-300 focus:border-accent";
+  "w-full border border-border bg-transparent px-4 py-3 text-sm outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition-colors duration-300 focus:border-accent";
 
 export function NewsletterComposer({ today }: { today: string }) {
   const [state, action, pending] = useActionState<
@@ -76,7 +76,7 @@ export function NewsletterComposer({ today }: { today: string }) {
         </span>
       </label>
       {state.error && (
-        <p role="alert" className="text-sm text-accent">
+        <p role="alert" className="text-sm text-clay">
           {state.error}
         </p>
       )}

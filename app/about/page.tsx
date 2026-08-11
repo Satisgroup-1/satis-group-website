@@ -13,7 +13,8 @@ import { TeamGrid, type TeamMember } from "@/components/TeamGrid";
 import { ValuesGrid } from "@/components/ValuesGrid";
 
 export const metadata: Metadata = {
-  title: "About | Satis Group",
+  title: "About — property developers in Cheshire",
+  alternates: { canonical: "/about" },
   description:
     "Satis Group is a Cheshire-based property development company specialising in the meticulous renovation of neglected buildings across the North West.",
 };
@@ -276,7 +277,7 @@ export default function AboutPage() {
                       aria-hidden="true"
                       className="h-1.5 w-1.5 shrink-0 translate-y-[-1px] bg-accent transition-transform duration-300 group-hover:scale-150"
                     />
-                    <span className="text-[0.65rem] tracking-[0.25em] uppercase text-accent">
+                    <span className="text-[0.65rem] tracking-[0.25em] uppercase text-accent-text">
                       {founder.role}
                     </span>
                   </span>
@@ -379,7 +380,7 @@ export default function AboutPage() {
         </div>
         <div className="relative mx-auto flex max-w-7xl flex-col items-start justify-between gap-8 px-6 py-16 lg:flex-row lg:items-center lg:px-10">
           <Reveal>
-            <span className="text-xs tracking-[0.3em] uppercase text-accent">
+            <span className="text-xs tracking-[0.3em] uppercase text-accent-text">
               Get full access to our latest investment opportunities
             </span>
             <p className="mt-3 text-2xl font-medium tracking-tight sm:text-3xl">
@@ -389,7 +390,7 @@ export default function AboutPage() {
           <Reveal delay={0.1}>
             <Link
               href="/contact"
-              className="group inline-flex items-center gap-3 border border-accent bg-accent px-8 py-3 text-xs tracking-[0.2em] uppercase text-white transition-colors duration-300 hover:bg-transparent hover:text-accent"
+              className="group inline-flex items-center gap-3 border border-accent-strong bg-accent-strong px-8 py-3 text-xs tracking-[0.2em] uppercase text-white transition-colors duration-300 hover:bg-transparent hover:text-accent-text dark:border-accent dark:bg-accent dark:text-ink dark:hover:bg-transparent dark:hover:text-accent"
             >
               Investors
               <span
@@ -441,7 +442,7 @@ export default function AboutPage() {
                   <span className="text-lg font-medium tracking-[0.08em]">
                     {partner.name}
                   </span>
-                  <span className="mt-1 text-[0.65rem] tracking-[0.25em] uppercase text-accent">
+                  <span className="mt-1 text-[0.65rem] tracking-[0.25em] uppercase text-accent-text">
                     {partner.role}
                   </span>
                   <p className="mt-4 text-sm leading-relaxed text-muted">

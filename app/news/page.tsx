@@ -6,7 +6,8 @@ import { Reveal } from "@/components/Reveal";
 import { formatNewsletterDate, getNewsletters } from "@/lib/newsletters";
 
 export const metadata: Metadata = {
-  title: "News | Satis Group",
+  title: "News & development updates",
+  alternates: { canonical: "/news" },
   description:
     "News from Satis Group: new redevelopments, acquisitions and openings, with a newsletter to stay in the loop.",
 };
@@ -24,7 +25,7 @@ export default function NewsPage() {
       <section className="border-b border-border">
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
           <Reveal>
-            <span className="text-xs tracking-[0.35em] uppercase text-accent">
+            <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
               Sign up
             </span>
             <div className="mt-6 max-w-md">
@@ -37,7 +38,7 @@ export default function NewsPage() {
       <section>
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
           <Reveal>
-            <span className="text-xs tracking-[0.35em] uppercase text-accent">
+            <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
               Past updates
             </span>
             <h2 className="mt-4 max-w-lg text-3xl font-medium tracking-tight sm:text-4xl">

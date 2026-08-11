@@ -18,16 +18,16 @@ function TeamCard({ member }: { member: TeamMember }) {
       type="button"
       onClick={() => setIsOpen((open) => !open)}
       aria-expanded={isOpen}
-      aria-label={`${member.name}, ${member.role}. ${isOpen ? "Hide" : "Show"} bio`}
       className="group relative block w-full overflow-hidden bg-surface text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
     >
+      <span className="sr-only">Show bio for {member.name}</span>
       <div className="relative aspect-[5/6] w-full overflow-hidden">
         <Image
           src={member.image}
           alt={`Headshot of ${member.name}`}
           fill
           sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-          className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+          className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.04] group-focus-visible:scale-[1.04]"
         />
       </div>
 
@@ -47,7 +47,7 @@ function TeamCard({ member }: { member: TeamMember }) {
         </div>
         <span
           aria-hidden="true"
-          className="mb-1 text-white/80 transition-transform duration-300 group-hover:-translate-y-1"
+          className="mb-1 text-white/80 transition-transform duration-300 group-hover:-translate-y-1 group-focus-visible:-translate-y-1"
         >
           ↑
         </span>
@@ -56,7 +56,9 @@ function TeamCard({ member }: { member: TeamMember }) {
       {/* Slide-up description panel: hover on desktop, tap toggles everywhere */}
       <div
         className={`absolute inset-x-0 bottom-0 flex max-h-full flex-col gap-2 bg-ink/95 px-5 py-5 text-ink-foreground backdrop-blur-sm transition-transform duration-500 ease-[cubic-bezier(0.21,0.47,0.32,0.98)] ${
-          isOpen ? "translate-y-0" : "translate-y-full group-hover:translate-y-0"
+          isOpen
+            ? "translate-y-0"
+            : "translate-y-full group-hover:translate-y-0 group-focus-visible:translate-y-0"
         }`}
       >
         <span className="text-base font-medium tracking-tight">

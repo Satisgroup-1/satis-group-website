@@ -7,7 +7,7 @@ import { formatNewsletterDate, getNewsletters } from "@/lib/newsletters";
 import { logout } from "./actions";
 
 export const metadata: Metadata = {
-  title: "Admin | Satis Group",
+  title: "Admin",
   robots: { index: false, follow: false },
 };
 
@@ -22,7 +22,7 @@ export default async function AdminPage() {
   return (
     <section>
       <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-        <span className="text-xs tracking-[0.35em] uppercase text-accent">
+        <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
           Admin
         </span>
         <h1 className="mt-4 max-w-lg text-3xl font-medium tracking-tight sm:text-4xl">

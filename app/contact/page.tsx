@@ -3,7 +3,8 @@ import { PageHero } from "@/components/PageHero";
 import { ContactFormFromQuery } from "@/components/ContactFormFromQuery";
 
 export const metadata: Metadata = {
-  title: "Contact | Satis Group",
+  title: "Contact — sites, sales & lettings enquiries",
+  alternates: { canonical: "/contact" },
   description:
     "Get in touch with Satis Group about a property, a project, or a partnership.",
 };
@@ -23,7 +24,7 @@ export default function ContactPage() {
           </div>
           <div className="flex flex-col gap-8">
             <div>
-              <span className="text-xs tracking-[0.2em] uppercase text-accent">
+              <span className="text-xs tracking-[0.2em] uppercase text-accent-text">
                 Email
               </span>
               <a
@@ -34,7 +35,7 @@ export default function ContactPage() {
               </a>
             </div>
             <div>
-              <span className="text-xs tracking-[0.2em] uppercase text-accent">
+              <span className="text-xs tracking-[0.2em] uppercase text-accent-text">
                 Office
               </span>
               <p className="mt-2 text-sm leading-relaxed text-muted">

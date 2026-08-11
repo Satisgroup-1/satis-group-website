@@ -3,7 +3,8 @@ import { PageHero } from "@/components/PageHero";
 import { PortfolioGrid } from "@/components/PortfolioGrid";
 
 export const metadata: Metadata = {
-  title: "Portfolio | Satis Group",
+  title: "Property development portfolio, North West",
+  alternates: { canonical: "/portfolio" },
   description:
     "A selection of residential and commercial redevelopments delivered by Satis Group across the UK.",
 };

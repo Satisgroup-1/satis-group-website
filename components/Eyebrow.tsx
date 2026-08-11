@@ -21,7 +21,7 @@ export function Eyebrow({
   return (
     <div className={`flex items-center gap-4 ${className}`}>
       {index && (
-        <span className="font-mono text-[0.65rem] tracking-[0.2em] text-accent">
+        <span className="font-mono text-[0.65rem] tracking-[0.2em] text-accent-text">
           {index}
         </span>
       )}
@@ -33,7 +33,7 @@ export function Eyebrow({
         viewport={{ once: true, margin: "-40px" }}
         transition={{ duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] }}
       />
-      <span className="text-xs tracking-[0.35em] uppercase text-accent">
+      <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
         {label}
       </span>
     </div>

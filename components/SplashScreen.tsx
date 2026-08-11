@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 const STORAGE_KEY = "satis-splash-seen";
@@ -9,39 +9,54 @@ const LETTER_X = [180, 245, 310, 375, 440];
 const BASELINE = 128;
 const TOTAL_MS = 3400;
 
+// sessionStorage is external state; mirroring it via useSyncExternalStore
+// avoids a post-hydration setState and stays StrictMode-safe because the
+// snapshot only reads — dismiss() owns the write.
+const emptySubscribe = () => () => {};
+
+function getSeenSnapshot(): boolean {
+  try {
+    return window.sessionStorage.getItem(STORAGE_KEY) !== null;
+  } catch {
+    return true;
+  }
+}
+
+// Server render: the splash is never in the SSR HTML.
+const getSeenServerSnapshot = () => true;
+
 export function SplashScreen() {
-  const [show, setShow] = useState(false);
+  const seen = useSyncExternalStore(
+    emptySubscribe,
+    getSeenSnapshot,
+    getSeenServerSnapshot
+  );
+  const [dismissed, setDismissed] = useState(false);
   const reduceMotion = useReducedMotion();
 
-  // Decide whether to show. We only READ the "seen" flag here, never set it:
-  // React StrictMode double-invokes effects in dev, and setting the flag on
-  // mount let the throwaway first run mark it seen so the real run skipped it.
-  // The flag is written in dismiss() instead, once the splash has actually run.
-  useEffect(() => {
-    if (reduceMotion) return;
-    try {
-      if (window.sessionStorage.getItem(STORAGE_KEY)) return;
-    } catch {
-      return;
-    }
-    setShow(true);
-  }, [reduceMotion]);
+  const show = !seen && !dismissed && !reduceMotion;
 
-  useEffect(() => {
-    if (!show) return;
-    const timer = setTimeout(dismiss, TOTAL_MS);
-    return () => clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [show]);
-
-  const dismiss = () => {
+  const dismiss = useCallback(() => {
     try {
       window.sessionStorage.setItem(STORAGE_KEY, "1");
     } catch {
       /* ignore */
     }
-    setShow(false);
-  };
+    setDismissed(true);
+  }, []);
+
+  useEffect(() => {
+    if (!show) return;
+    const timer = setTimeout(dismiss, TOTAL_MS);
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" || event.key === "Enter") dismiss();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [show, dismiss]);
 
   return (
     <AnimatePresence>
@@ -52,8 +67,7 @@ export function SplashScreen() {
           transition={{ duration: 0.6, ease: "easeInOut" }}
           onClick={dismiss}
           className="fixed inset-0 z-[90] flex cursor-pointer flex-col items-center justify-center bg-black text-ink-foreground"
-          aria-label="Satis Group intro animation. Click to skip."
-          role="dialog"
+          aria-label="Satis Group intro animation"
         >
           <svg
             viewBox="0 0 620 240"
@@ -109,14 +123,17 @@ export function SplashScreen() {
             </motion.text>
           </svg>
 
-          <motion.span
+          <motion.button
+            type="button"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.2, duration: 0.5 }}
-            className="absolute bottom-8 text-[0.6rem] tracking-[0.3em] uppercase text-ink-foreground/50"
+            onClick={dismiss}
+            autoFocus
+            className="absolute bottom-8 px-4 py-2 text-[0.6rem] tracking-[0.3em] uppercase text-ink-foreground/50 transition-colors hover:text-ink-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
-            Click to skip
-          </motion.span>
+            Skip intro
+          </motion.button>
         </motion.div>
       )}
     </AnimatePresence>
