@@ -11,6 +11,7 @@ import {
   isAuthenticated,
   sessionToken,
 } from "@/lib/admin-auth";
+import { saveInvestorPlatformData } from "@/lib/investor-platform";
 
 export type LoginState = { error?: string };
 
@@ -36,6 +37,40 @@ export async function login(
 export async function logout(): Promise<void> {
   (await cookies()).delete(ADMIN_COOKIE);
   revalidatePath("/admin");
+}
+
+export type ImportInvestorDataState = {
+  error?: string;
+  success?: string;
+};
+
+export async function importInvestorData(
+  _prev: ImportInvestorDataState,
+  formData: FormData
+): Promise<ImportInvestorDataState> {
+  if (!(await isAuthenticated())) {
+    return { error: "Your session has expired. Please sign in again." };
+  }
+  const file = formData.get("dataset");
+  if (!(file instanceof File) || file.size === 0) {
+    return { error: "Choose an investor platform JSON file to import." };
+  }
+  if (file.size > 5_000_000) return { error: "The import must be smaller than 5 MB." };
+  try {
+    const data = saveInvestorPlatformData(JSON.parse(await file.text()));
+    revalidatePath("/investors");
+    revalidatePath("/admin");
+    return {
+      success: `Imported ${data.users.length} users, ${data.portfolios.length} portfolios, ${data.developments.length} developments and ${data.articles.length} insights.`,
+    };
+  } catch (error) {
+    return {
+      error:
+        error instanceof Error
+          ? error.message
+          : "The investor dataset could not be imported.",
+    };
+  }
 }
 
 export type CreateNewsletterState = {

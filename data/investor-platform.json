@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "updatedAt": "2026-08-11T08:30:00.000Z",
+  "users": [{ "id": "usr_test", "email": "test", "displayName": "James", "accountName": "The Hartwell Partnership", "portfolioId": "portfolio_hartwell" }],
+  "portfolios": [{
+    "id": "portfolio_hartwell", "value": "£4.82m", "capitalInvested": "£3.65m", "forecastIrr": "17.8%", "distributions": "£428k",
+    "holdings": [
+      { "developmentId": "st-john", "invested": "£1.20m", "currentValue": "£1.62m", "forecastIrr": "19.2%", "multiple": "1.35x" },
+      { "developmentId": "barnett", "invested": "£0.95m", "currentValue": "£1.20m", "forecastIrr": "16.4%", "multiple": "1.26x" },
+      { "developmentId": "chester", "invested": "£0.80m", "currentValue": "£1.13m", "forecastIrr": "18.8%", "multiple": "1.41x" },
+      { "developmentId": "barrington", "invested": "£0.70m", "currentValue": "£0.87m", "forecastIrr": "15.9%", "multiple": "1.24x" }
+    ]
+  }],
+  "developments": [
+    { "id": "st-john", "name": "22 St John Street", "place": "Manchester M3", "x": 48, "y": 41, "status": "On programme", "progress": 76, "value": "£18.4m", "phase": "Fit-out", "nextReport": "30 Sep 2026" },
+    { "id": "barnett", "name": "Barnett House", "place": "Manchester M1", "x": 59, "y": 51, "status": "On programme", "progress": 58, "value": "£14.8m", "phase": "Construction", "nextReport": "30 Sep 2026" },
+    { "id": "chester", "name": "Chester House", "place": "Altrincham", "x": 43, "y": 76, "status": "Ahead", "progress": 89, "value": "£11.2m", "phase": "Completion", "nextReport": "30 Sep 2026" },
+    { "id": "barrington", "name": "Barrington Road", "place": "Altrincham", "x": 38, "y": 82, "status": "On programme", "progress": 34, "value": "£9.6m", "phase": "Structure", "nextReport": "30 Sep 2026" },
+    { "id": "court-house", "name": "Court House", "place": "Stockport", "x": 69, "y": 74, "status": "Planning", "progress": 18, "value": "£22.1m", "phase": "Pre-construction", "nextReport": "15 Oct 2026" },
+    { "id": "davenport", "name": "Davenport", "place": "Stockport", "x": 73, "y": 81, "status": "On programme", "progress": 47, "value": "£13.5m", "phase": "Construction", "nextReport": "30 Sep 2026" }
+  ],
+  "updates": [
+    { "id": "upd-1", "date": "08 Aug 2026", "developmentId": "st-john", "title": "Show apartment released", "body": "Final joinery is complete and the first show apartment has been handed over to the sales team.", "tag": "Milestone" },
+    { "id": "upd-2", "date": "04 Aug 2026", "developmentId": "barnett", "title": "Envelope works complete", "body": "The building is now weather-tight. First-fix MEP is progressing across levels two to five.", "tag": "Construction" },
+    { "id": "upd-3", "date": "29 Jul 2026", "developmentId": "court-house", "title": "Planning submission validated", "body": "The full planning submission has been validated by Stockport Council and consultation is under way.", "tag": "Planning" },
+    { "id": "upd-4", "date": "22 Jul 2026", "developmentId": "chester", "title": "Practical completion forecast confirmed", "body": "The project team has reconfirmed practical completion for September following the latest programme review.", "tag": "Programme" }
+  ],
+  "articles": [
+    { "id": "character-led-offices", "category": "Market note", "date": "6 Aug 2026", "title": "The case for character-led offices", "summary": "Why constrained Grade A supply and flight-to-quality are creating an opening for thoughtfully repositioned heritage stock.", "readTime": "6 min", "body": ["Manchester occupiers are becoming more selective, not less ambitious. The strongest demand is concentrating in buildings that combine efficient, modern workspace with a distinctive sense of place.", "For investors, the opportunity lies in the gap between generic secondary space and newly built prime stock. Sensitive repositioning can preserve embodied carbon and architectural identity while delivering the amenity, connectivity and performance expected by today’s occupier.", "Our acquisition lens therefore prioritises adaptable floorplates, strong natural light, transport access and neighbourhood amenity. Those fundamentals give a character building the best chance of sustaining demand through the cycle."] },
+    { "id": "greater-manchester-living", "category": "Research", "date": "24 Jul 2026", "title": "Greater Manchester living", "summary": "Five demand signals shaping rental resilience across the city region—from graduate retention to transport-led regeneration.", "readTime": "9 min", "body": ["Greater Manchester’s residential story is increasingly polycentric. Manchester and Salford remain powerful anchors, while Stockport, Trafford and other connected towns are capturing households seeking value, amenity and space.", "Graduate retention, employment growth and constrained delivery all support long-term rental demand. The most resilient schemes will be those close to established transport and everyday amenities rather than those relying on a single regeneration promise.", "We combine city-region indicators with street-level evidence: achieved rents, leasing velocity, competing supply and the quality of local public realm."] },
+    { "id": "value-beyond-core", "category": "Investment view", "date": "11 Jul 2026", "title": "Finding value beyond the core", "summary": "A closer look at Altrincham and Stockport as connected, amenity-rich submarkets with long-term potential.", "readTime": "7 min", "body": ["Altrincham and Stockport demonstrate how transport, independent amenities and a strong existing community can support durable property demand beyond the city centre.", "These are not substitute markets for central Manchester. Each has its own occupier base, price dynamics and planning context. That distinction is precisely why asset selection and local execution matter.", "We favour buildings where existing character can be retained, layouts can respond to proven demand and the business plan does not depend on aggressive market growth."] }
+  ],
+  "documents": [
+    { "id": "doc-1", "portfolioId": "portfolio_hartwell", "title": "Q2 2026 Portfolio Report", "category": "Quarterly report", "published": "31 Jul 2026", "url": "#" },
+    { "id": "doc-2", "portfolioId": "portfolio_hartwell", "title": "22 St John Street Valuation", "category": "Valuation", "published": "18 Jul 2026", "url": "#" },
+    { "id": "doc-3", "portfolioId": "portfolio_hartwell", "title": "2025–26 Tax Statement", "category": "Tax document", "published": "30 Jun 2026", "url": "#" },
+    { "id": "doc-4", "portfolioId": "portfolio_hartwell", "title": "Barnett House Progress Report 07", "category": "Project report", "published": "24 Jun 2026", "url": "#" },
+    { "id": "doc-5", "portfolioId": "portfolio_hartwell", "title": "Investor Account Statement", "category": "Statement", "published": "31 Mar 2026", "url": "#" }
+  ]
+}
