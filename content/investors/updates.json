@@ -1,0 +1,44 @@
+[
+  {
+    "date": "2026-08-08",
+    "developmentId": "22-st-john-street",
+    "title": "Show apartment released",
+    "body": "Final joinery is complete and the first show apartment has been handed over to the sales team.",
+    "tag": "Milestone"
+  },
+  {
+    "date": "2026-08-04",
+    "developmentId": "barnett-house",
+    "title": "Envelope works complete",
+    "body": "The building is now weather-tight. First-fix MEP is progressing across levels two to five.",
+    "tag": "Construction"
+  },
+  {
+    "date": "2026-07-29",
+    "developmentId": "court-house",
+    "title": "Planning submission validated",
+    "body": "The full planning submission has been validated by Stockport Council and consultation is under way.",
+    "tag": "Planning"
+  },
+  {
+    "date": "2026-07-22",
+    "developmentId": "chester-house",
+    "title": "Practical completion forecast confirmed",
+    "body": "The project team has reconfirmed practical completion for September following the latest programme review.",
+    "tag": "Programme"
+  },
+  {
+    "date": "2026-07-15",
+    "developmentId": "davenport",
+    "title": "Superstructure reaches third floor",
+    "body": "The concrete frame has reached level three and blockwork is following two floors behind. The tower crane comes down in early October.",
+    "tag": "Construction"
+  },
+  {
+    "date": "2026-07-08",
+    "developmentId": "barrington-road",
+    "title": "Ground works complete",
+    "body": "Foundations and drainage are signed off across all plots. The timber-frame erection sequence begins with the garden-square townhouses.",
+    "tag": "Construction"
+  }
+]

@@ -1,0 +1,110 @@
+[
+  {
+    "id": "hartwell",
+    "name": "The Hartwell Partnership",
+    "contactName": "James",
+    "email": "test",
+    "passwordHash": "scrypt:c00015f7dba9ddbab99f45d767d3b404:39a44bd0712df1d714c3f9c36c454a2733775bb9b45154dafd2fed83b4ab997a192c7307502d69cc142a795a5d1c9a18b13b98291ef6bffeb0a1f721e861b8d8",
+    "joined": "2023-01-15",
+    "valueHistory": [
+      {
+        "label": "Q1 2023",
+        "value": 1200000
+      },
+      {
+        "label": "Q2 2023",
+        "value": 1240000
+      },
+      {
+        "label": "Q3 2023",
+        "value": 1310000
+      },
+      {
+        "label": "Q4 2023",
+        "value": 1380000
+      },
+      {
+        "label": "Q1 2024",
+        "value": 1900000
+      },
+      {
+        "label": "Q2 2024",
+        "value": 2050000
+      },
+      {
+        "label": "Q3 2024",
+        "value": 2480000
+      },
+      {
+        "label": "Q4 2024",
+        "value": 2610000
+      },
+      {
+        "label": "Q1 2025",
+        "value": 3150000
+      },
+      {
+        "label": "Q2 2025",
+        "value": 3420000
+      },
+      {
+        "label": "Q3 2025",
+        "value": 3900000
+      },
+      {
+        "label": "Q4 2025",
+        "value": 4050000
+      },
+      {
+        "label": "Q1 2026",
+        "value": 4320000
+      },
+      {
+        "label": "Q2 2026",
+        "value": 4610000
+      },
+      {
+        "label": "Q3 2026",
+        "value": 4820000
+      }
+    ]
+  },
+  {
+    "id": "elm-row",
+    "name": "Elm Row Capital",
+    "contactName": "Sarah",
+    "email": "sarah@elmrowcapital.co.uk",
+    "passwordHash": "scrypt:f4477f13bdd27c9988251683151ed073:d1e229409df198798be6d20b11be9943cd966188cc4e3147b3fcc7ef9e4c74eaf922fb2ec9e0a28d400caeb79d6cb30672e9ca8d3f867c5ccc07cf89364a55b6",
+    "joined": "2025-02-03",
+    "valueHistory": [
+      {
+        "label": "Q1 2025",
+        "value": 750000
+      },
+      {
+        "label": "Q2 2025",
+        "value": 790000
+      },
+      {
+        "label": "Q3 2025",
+        "value": 1420000
+      },
+      {
+        "label": "Q4 2025",
+        "value": 1470000
+      },
+      {
+        "label": "Q1 2026",
+        "value": 1520000
+      },
+      {
+        "label": "Q2 2026",
+        "value": 1560000
+      },
+      {
+        "label": "Q3 2026",
+        "value": 1600000
+      }
+    ]
+  }
+]

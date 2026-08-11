@@ -1,0 +1,50 @@
+[
+  {
+    "investorId": "hartwell",
+    "developmentId": "22-st-john-street",
+    "invested": 1200000,
+    "currentValue": 1620000,
+    "forecastIrr": 19.2,
+    "status": "Active"
+  },
+  {
+    "investorId": "hartwell",
+    "developmentId": "barnett-house",
+    "invested": 950000,
+    "currentValue": 1200000,
+    "forecastIrr": 16.4,
+    "status": "Active"
+  },
+  {
+    "investorId": "hartwell",
+    "developmentId": "chester-house",
+    "invested": 800000,
+    "currentValue": 1130000,
+    "forecastIrr": 18.8,
+    "status": "Active"
+  },
+  {
+    "investorId": "hartwell",
+    "developmentId": "barrington-road",
+    "invested": 700000,
+    "currentValue": 870000,
+    "forecastIrr": 15.9,
+    "status": "Active"
+  },
+  {
+    "investorId": "elm-row",
+    "developmentId": "court-house",
+    "invested": 950000,
+    "currentValue": 1010000,
+    "forecastIrr": 14.8,
+    "status": "Active"
+  },
+  {
+    "investorId": "elm-row",
+    "developmentId": "davenport",
+    "invested": 480000,
+    "currentValue": 590000,
+    "forecastIrr": 17.2,
+    "status": "Active"
+  }
+]

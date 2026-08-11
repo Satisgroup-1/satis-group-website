@@ -35,6 +35,17 @@ export default async function AdminPage() {
           </div>
         ) : (
           <>
+          <p className="mt-4 max-w-2xl text-sm leading-6 text-muted">
+            Compose newsletters below, or manage investor accounts, holdings,
+            returns and insight articles in the{" "}
+            <Link
+              href="/admin/platform"
+              className="underline decoration-border underline-offset-4 transition-colors hover:text-accent"
+            >
+              investor platform data studio
+            </Link>
+            .
+          </p>
           {isUsingFallbackSecret() && (
             <p className="mt-6 max-w-xl text-xs leading-relaxed text-muted">
               Running on the built-in demo signing secret. Before real
