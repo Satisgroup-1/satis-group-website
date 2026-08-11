@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { AdminLogin } from "@/components/AdminLogin";
 import { NewsletterComposer } from "@/components/NewsletterComposer";
-import { isAuthenticated } from "@/lib/admin-auth";
+import { isAuthenticated, isUsingFallbackSecret } from "@/lib/admin-auth";
 import { formatNewsletterDate, getNewsletters } from "@/lib/newsletters";
 import { logout } from "./actions";
 
@@ -31,20 +31,17 @@ export default async function AdminPage() {
 
         {!authed ? (
           <div className="mt-10">
-            {process.env.NODE_ENV === "production" &&
-              !process.env.SATIS_ADMIN_SECRET && (
-                <p
-                  role="alert"
-                  className="mb-6 max-w-md border border-clay p-4 text-sm leading-relaxed text-clay"
-                >
-                  This deployment has no SATIS_ADMIN_SECRET environment
-                  variable, so sign-in is disabled. Set it in the hosting
-                  environment and redeploy.
-                </p>
-              )}
             <AdminLogin />
           </div>
         ) : (
+          <>
+          {isUsingFallbackSecret() && (
+            <p className="mt-6 max-w-xl text-xs leading-relaxed text-muted">
+              Running on the built-in demo signing secret. Before real
+              credentials replace test/test, set SATIS_ADMIN_SECRET in the
+              hosting environment.
+            </p>
+          )}
           <div className="mt-12 grid grid-cols-1 gap-16 lg:grid-cols-[1fr_20rem]">
             <div>
               <h2 className="text-xs tracking-[0.2em] uppercase text-muted">
@@ -85,6 +82,7 @@ export default async function AdminPage() {
               </form>
             </aside>
           </div>
+          </>
         )}
       </div>
     </section>
