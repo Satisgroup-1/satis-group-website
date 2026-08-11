@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BlueprintGrid } from "@/components/BlueprintGrid";
 
 export const metadata: Metadata = {
   title: "Page not found",
@@ -9,12 +8,6 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <section className="relative overflow-hidden border-b border-border">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 text-muted/40"
-      >
-        <BlueprintGrid className="h-full w-full" />
-      </div>
       <div className="relative mx-auto flex min-h-[60vh] max-w-7xl flex-col items-start justify-center px-6 py-24 lg:px-10">
         <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
           404 · Page not found

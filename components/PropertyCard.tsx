@@ -17,12 +17,28 @@ export function PropertyCard({ property }: { property: Property }) {
             alt=""
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            className={`object-cover transition-all duration-700 ease-out group-hover:scale-105 ${
+              property.hoverImage ? "group-hover:opacity-0" : ""
+            }`}
             style={
               property.imagePosition
                 ? { objectPosition: property.imagePosition }
                 : undefined
             }
+          />
+          {property.hoverImage && (
+            <Image
+              src={property.hoverImage}
+              alt=""
+              fill
+              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+              className="scale-110 object-cover opacity-0 transition-all duration-700 ease-out group-hover:scale-100 group-hover:opacity-100"
+            />
+          )}
+          {/* accent wash sweeps across on hover */}
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-accent/25 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"
           />
           <span
             className={`absolute left-4 top-4 px-3 py-1 text-[0.65rem] tracking-[0.2em] uppercase ${typeChipClass}`}

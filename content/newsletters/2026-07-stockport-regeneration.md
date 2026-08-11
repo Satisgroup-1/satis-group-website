@@ -4,7 +4,7 @@ date: 2026-07-09
 summary: A £1bn regeneration, 410 acres of redevelopment and a Sunday Times endorsement — the case behind our third Stockport scheme.
 ---
 
-Petersgate House was our largest scheme to date. Hazelgate is selling fast in Hazel Grove. This month we want to explain why so much of our pipeline keeps pointing at one town.
+QUBE (formerly Petersgate House) was our largest scheme to date. Hazelgate is selling fast in Hazel Grove. This month we want to explain why so much of our pipeline keeps pointing at one town.
 
 Stockport is in the middle of a £1 billion town-centre regeneration programme — one of the largest in the UK — covering 410 acres, with 8,000 new homes planned over the next fifteen years alongside a school, health hub and riverside park. The Sunday Times named it the best place to live in the North West, and the "New Berlin" tag has stuck for a reason.
 

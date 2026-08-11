@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { BlueprintGrid } from "@/components/BlueprintGrid";
 import { Eyebrow } from "@/components/Eyebrow";
 import { FrameCorners } from "@/components/FrameCorners";
 import { InvestmentChart } from "@/components/InvestmentChart";
@@ -44,9 +43,9 @@ const STATS = [
 
 const PARTNERS = [
   {
-    name: "Fortuna Terra",
+    name: "Invest in Satis",
     role: "Investment",
-    body: "Our investment partner, giving investors access to the Satis development pipeline.",
+    body: "Our proprietary investor platform, giving partners access to the Satis development pipeline.",
   },
   {
     name: "Gascoigne Halman",
@@ -215,9 +214,6 @@ export default function AboutPage() {
 
       {/* Stats band */}
       <section className="relative overflow-hidden bg-ink text-ink-foreground">
-        <div className="pointer-events-none absolute inset-0 text-ink-foreground/40">
-          <BlueprintGrid className="h-full w-full" />
-        </div>
         <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-x-8 gap-y-12 px-6 py-20 sm:grid-cols-3 lg:px-10">
           {STATS.map((stat, index) => (
             <div
@@ -375,21 +371,18 @@ export default function AboutPage() {
 
       {/* Investor call-to-action banner, from the website sketch */}
       <section className="relative overflow-hidden bg-ink text-ink-foreground">
-        <div className="pointer-events-none absolute inset-0 text-ink-foreground/40">
-          <BlueprintGrid className="h-full w-full" />
-        </div>
         <div className="relative mx-auto flex max-w-7xl flex-col items-start justify-between gap-8 px-6 py-16 lg:flex-row lg:items-center lg:px-10">
           <Reveal>
             <span className="text-xs tracking-[0.3em] uppercase text-accent-text">
               Get full access to our latest investment opportunities
             </span>
             <p className="mt-3 text-2xl font-medium tracking-tight sm:text-3xl">
-              Invest with Fortuna Terra.
+              Invest in Satis.
             </p>
           </Reveal>
           <Reveal delay={0.1}>
             <Link
-              href="/contact"
+              href="/investors"
               className="group inline-flex items-center gap-3 border border-accent-strong bg-accent-strong px-8 py-3 text-xs tracking-[0.2em] uppercase text-white transition-colors duration-300 hover:bg-transparent hover:text-accent-text dark:border-accent dark:bg-accent dark:text-ink dark:hover:bg-transparent dark:hover:text-accent"
             >
               Investors

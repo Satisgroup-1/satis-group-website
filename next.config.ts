@@ -36,6 +36,12 @@ const nextConfig: NextConfig = {
         destination: "/news/:slug",
         permanent: true,
       },
+      // Petersgate House was renamed QUBE.
+      {
+        source: "/portfolio/petersgate-house",
+        destination: "/portfolio/qube",
+        permanent: true,
+      },
     ];
   },
 };
