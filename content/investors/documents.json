@@ -1,0 +1,50 @@
+[
+  {
+    "investorId": "hartwell",
+    "title": "Q2 2026 Portfolio Report",
+    "kind": "Quarterly report",
+    "published": "2026-07-31"
+  },
+  {
+    "investorId": "hartwell",
+    "title": "22 St John Street Valuation",
+    "kind": "Valuation",
+    "published": "2026-07-18"
+  },
+  {
+    "investorId": "hartwell",
+    "title": "2025–26 Tax Statement",
+    "kind": "Tax document",
+    "published": "2026-06-30"
+  },
+  {
+    "investorId": "hartwell",
+    "title": "Barnett House Progress Report 07",
+    "kind": "Project report",
+    "published": "2026-06-24"
+  },
+  {
+    "investorId": "hartwell",
+    "title": "Investor Account Statement",
+    "kind": "Statement",
+    "published": "2026-03-31"
+  },
+  {
+    "investorId": "elm-row",
+    "title": "Q2 2026 Portfolio Report",
+    "kind": "Quarterly report",
+    "published": "2026-07-31"
+  },
+  {
+    "investorId": "elm-row",
+    "title": "Court House Planning Summary",
+    "kind": "Project report",
+    "published": "2026-07-05"
+  },
+  {
+    "investorId": "elm-row",
+    "title": "2025–26 Tax Statement",
+    "kind": "Tax document",
+    "published": "2026-06-30"
+  }
+]

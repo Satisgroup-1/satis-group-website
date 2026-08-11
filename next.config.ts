@@ -20,6 +20,13 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  experimental: {
+    serverActions: {
+      // The admin investor-data importer accepts JSON uploads larger than
+      // the 1 MB server-action default.
+      bodySizeLimit: "5mb",
+    },
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
