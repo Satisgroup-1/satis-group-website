@@ -1,8 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { AnimatedStat } from "@/components/AnimatedStat";
 import { BuildingRedevelopmentGraphic } from "@/components/BuildingRedevelopmentGraphic";
 import { PortfolioPreview } from "@/components/PortfolioPreview";
 import { Reveal } from "@/components/Reveal";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 const PROCESS = [
   {
@@ -37,7 +42,7 @@ export default function Home() {
   return (
     <>
       <BuildingRedevelopmentGraphic>
-        <span className="text-xs tracking-[0.35em] uppercase text-accent">
+        <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
           Property Redevelopment
         </span>
         <h1 className="mt-4 max-w-2xl text-3xl font-medium leading-[1.1] tracking-tight sm:text-4xl lg:text-5xl">
@@ -69,7 +74,7 @@ export default function Home() {
       <section className="border-t border-border">
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
           <Reveal>
-            <span className="text-xs tracking-[0.35em] uppercase text-accent">
+            <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
               How we work
             </span>
             <h2 className="mt-4 max-w-lg text-3xl font-medium tracking-tight sm:text-4xl">

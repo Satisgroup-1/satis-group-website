@@ -7,6 +7,8 @@ import { FloorTabs } from "@/components/FloorTabs";
 import { GalleryLightbox } from "@/components/GalleryLightbox";
 import { Reveal } from "@/components/Reveal";
 import { PROPERTY_PAGES, getPropertyPage } from "@/lib/property-pages";
+import { PORTFOLIO } from "@/lib/portfolio-data";
+import { SITE_URL } from "@/lib/site";
 
 export function generateStaticParams() {
   return PROPERTY_PAGES.map((property) => ({ slug: property.slug }));
@@ -18,9 +20,24 @@ export async function generateMetadata({
   const { slug } = await params;
   const property = getPropertyPage(slug);
   if (!property) return {};
+  const card = PORTFOLIO.find((entry) => entry.slug === slug);
+  const description =
+    card?.blurb ??
+    `${property.tagline} — a Satis Group ${property.type.toLowerCase()} development.`;
+  const title = card
+    ? `${property.name} — ${property.type.toLowerCase()} development, ${card.location}`
+    : property.name;
   return {
-    title: `${property.name} | Satis Group`,
-    description: `${property.tagline}, a Satis Group development in ${property.eyebrow.replace(" · ", ", ")}.`,
+    title,
+    description,
+    alternates: { canonical: `/portfolio/${slug}` },
+    openGraph: {
+      title: `${property.name} — ${property.tagline}`,
+      description,
+      images: [
+        { url: property.heroImage, width: 1200, height: 630, alt: property.name },
+      ],
+    },
   };
 }
 
@@ -32,7 +49,7 @@ function SectionHeading({
   label: string;
 }) {
   return (
-    <span className="flex items-center gap-3 text-xs tracking-[0.35em] uppercase text-accent">
+    <span className="flex items-center gap-3 text-xs tracking-[0.35em] uppercase text-accent-text">
       <span>{index}</span>
       <span className="h-px w-8 bg-accent/60" aria-hidden="true" />
       <span>{label}</span>
@@ -46,6 +63,31 @@ export default async function PropertyDetailPage({
   const { slug } = await params;
   const property = getPropertyPage(slug);
   if (!property) notFound();
+
+  const card = PORTFOLIO.find((entry) => entry.slug === slug);
+  const propertyJsonLd = {
+    "@context": "https://schema.org",
+    "@type": property.type === "Residential" ? "ApartmentComplex" : "Place",
+    name: property.name,
+    url: `${SITE_URL}/portfolio/${property.slug}`,
+    image: `${SITE_URL}${property.heroImage}`,
+    ...(card?.blurb && { description: card.blurb }),
+    ...(property.address && { address: property.address }),
+  };
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Portfolio",
+        item: `${SITE_URL}/portfolio`,
+      },
+      { "@type": "ListItem", position: 2, name: property.name },
+    ],
+  };
+  const related = PORTFOLIO.filter((entry) => entry.slug !== slug).slice(0, 3);
 
   let sectionCount = 1;
   const nextIndex = () => String(sectionCount++).padStart(2, "0");
@@ -61,12 +103,24 @@ export default async function PropertyDetailPage({
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(propertyJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       {/* Hero */}
       <section className="relative border-b border-border">
         <div className="relative h-[64vh] min-h-[440px] w-full overflow-hidden bg-surface">
           <Image
             src={property.heroImage}
-            alt={property.name}
+            alt={card ? `Exterior of ${property.name}, ${card.location}` : `Exterior of ${property.name}`}
             fill
             preload
             sizes="100vw"
@@ -111,7 +165,7 @@ export default async function PropertyDetailPage({
             </span>
             All projects
           </Link>
-          <span className="border border-accent px-3 py-1 text-[0.65rem] tracking-[0.2em] uppercase text-accent">
+          <span className="border border-accent px-3 py-1 text-[0.65rem] tracking-[0.2em] uppercase text-accent-text">
             {property.status}
           </span>
         </div>
@@ -125,9 +179,9 @@ export default async function PropertyDetailPage({
             <h2 className="text-3xl font-medium tracking-tight sm:text-4xl">
               {property.intro.heading}
             </h2>
-            {property.intro.body.map((paragraph) => (
+            {property.intro.body.map((paragraph, index) => (
               <p
-                key={paragraph.slice(0, 32)}
+                key={index}
                 className="text-base leading-relaxed text-muted"
               >
                 {paragraph}
@@ -279,7 +333,7 @@ export default async function PropertyDetailPage({
                       </div>
                       <div className="flex justify-between gap-4 border-t border-border pt-2">
                         <dt className="text-muted">Status</dt>
-                        <dd className="text-right text-accent">
+                        <dd className="text-right text-accent-text">
                           {residence.status}
                         </dd>
                       </div>
@@ -349,8 +403,8 @@ export default async function PropertyDetailPage({
               </h2>
             </Reveal>
             <div className="mt-6 flex max-w-2xl flex-col gap-4">
-              {property.locationSection.body.map((paragraph) => (
-                <Reveal key={paragraph.slice(0, 32)}>
+              {property.locationSection.body.map((paragraph, index) => (
+                <Reveal key={index}>
                   <p className="text-base leading-relaxed text-muted">
                     {paragraph}
                   </p>
@@ -364,7 +418,9 @@ export default async function PropertyDetailPage({
                     rel="noopener noreferrer"
                     className="mt-2 inline-block border border-border px-6 py-3 text-xs tracking-[0.2em] uppercase transition-colors duration-300 hover:border-accent hover:text-accent"
                   >
-                    {property.locationSection.link.label} {"↗"}
+                    {property.locationSection.link.label}{" "}
+                    <span aria-hidden="true">{"↗"}</span>
+                    <span className="sr-only">(opens in new tab)</span>
                   </a>
                 </Reveal>
               )}
@@ -402,6 +458,36 @@ export default async function PropertyDetailPage({
         </section>
       )}
 
+      {/* More developments */}
+      {related.length > 0 && (
+        <section className="border-b border-border">
+          <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10">
+            <Reveal>
+              <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
+                More developments
+              </span>
+            </Reveal>
+            <ul className="mt-6 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-3">
+              {related.map((entry) => (
+                <li key={entry.slug}>
+                  <Link
+                    href={`/portfolio/${entry.slug}`}
+                    className="group flex items-baseline justify-between gap-4 border-t border-border py-3 transition-colors hover:border-accent"
+                  >
+                    <span className="text-sm font-medium tracking-tight">
+                      {entry.name}
+                    </span>
+                    <span className="text-xs tracking-[0.1em] uppercase text-muted">
+                      {entry.location}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
       {/* Enquire */}
       <section>
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 py-24 lg:grid-cols-2 lg:px-10">
@@ -432,14 +518,16 @@ export default async function PropertyDetailPage({
                 rel="noopener noreferrer"
                 className="border border-border px-6 py-3 text-xs tracking-[0.2em] uppercase transition-colors duration-300 hover:border-accent hover:text-accent"
               >
-                Visit {property.micrositeLabel} {"↗"}
+                Visit {property.micrositeLabel}{" "}
+                <span aria-hidden="true">{"↗"}</span>
+                <span className="sr-only">(opens in new tab)</span>
               </a>
             </div>
           </Reveal>
           <Reveal delay={0.15} className="flex flex-col gap-8">
             {property.address && (
               <div>
-                <span className="text-xs tracking-[0.2em] uppercase text-accent">
+                <span className="text-xs tracking-[0.2em] uppercase text-accent-text">
                   Address
                 </span>
                 <p className="mt-2 text-sm leading-relaxed">
@@ -449,7 +537,7 @@ export default async function PropertyDetailPage({
             )}
             {property.agent && (
               <div>
-                <span className="text-xs tracking-[0.2em] uppercase text-accent">
+                <span className="text-xs tracking-[0.2em] uppercase text-accent-text">
                   {property.type === "Commercial" ? "Lettings Agent" : "Sales Agent"}
                 </span>
                 <p className="mt-2 text-sm leading-relaxed">
@@ -472,7 +560,7 @@ export default async function PropertyDetailPage({
             )}
             {property.listings && (
               <div className="flex flex-col gap-4">
-                <span className="text-xs tracking-[0.2em] uppercase text-accent">
+                <span className="text-xs tracking-[0.2em] uppercase text-accent-text">
                   Live Listings
                 </span>
                 {property.listings.map((listing) => (
@@ -487,8 +575,9 @@ export default async function PropertyDetailPage({
                       {listing.label}
                     </span>
                     <p className="mt-1 text-sm text-muted">{listing.detail}</p>
-                    <span className="mt-3 block text-xs tracking-[0.2em] uppercase text-accent">
-                      View listing {"↗"}
+                    <span className="mt-3 block text-xs tracking-[0.2em] uppercase text-accent-text">
+                      View listing <span aria-hidden="true">{"↗"}</span>
+                      <span className="sr-only">(opens in new tab)</span>
                     </span>
                   </a>
                 ))}

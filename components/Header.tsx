@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 
 const NAV_LINKS = [
@@ -16,6 +16,15 @@ const NAV_LINKS = [
 export function Header() {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsMenuOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [isMenuOpen]);
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur">
@@ -33,13 +42,14 @@ export function Header() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-10 md:flex">
+        <nav aria-label="Primary" className="hidden items-center gap-10 md:flex">
           {NAV_LINKS.map((link) => {
             const isActive = pathname?.startsWith(link.href);
             return (
               <Link
                 key={link.href}
                 href={link.href}
+                aria-current={isActive ? "page" : undefined}
                 className={`group relative py-1 text-sm tracking-[0.15em] uppercase transition-colors hover:text-foreground ${
                   isActive ? "text-foreground" : "text-muted"
                 }`}
@@ -68,7 +78,8 @@ export function Header() {
             onClick={() => setIsMenuOpen((open) => !open)}
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={isMenuOpen}
-            className="flex h-9 w-9 items-center justify-center"
+            aria-controls="mobile-nav"
+            className="flex h-11 w-11 items-center justify-center"
           >
             <span className="relative block h-4 w-5">
               <span
@@ -92,7 +103,11 @@ export function Header() {
       </div>
 
       {isMenuOpen && (
-        <nav className="border-t border-border md:hidden">
+        <nav
+          id="mobile-nav"
+          aria-label="Primary (mobile)"
+          className="border-t border-border md:hidden"
+        >
           <div className="mx-auto flex max-w-7xl flex-col px-6 py-4">
             {NAV_LINKS.map((link) => {
               const isActive = pathname === link.href;
@@ -101,8 +116,11 @@ export function Header() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setIsMenuOpen(false)}
+                  aria-current={isActive ? "page" : undefined}
                   className={`border-b border-border py-4 text-sm tracking-[0.15em] uppercase last:border-none ${
-                    isActive ? "text-foreground" : "text-muted"
+                    isActive
+                      ? "border-l-2 border-l-accent pl-3 text-foreground"
+                      : "text-muted"
                   }`}
                 >
                   {link.label}

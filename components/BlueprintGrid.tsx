@@ -1,3 +1,5 @@
+import { useId } from "react";
+
 /**
  * A subtle technical-drawing grid: fine ruled lines with a coarser overlay
  * and small registration dots at each major intersection. Uses currentColor
@@ -5,6 +7,11 @@
  * content. Presentational only, no client runtime.
  */
 export function BlueprintGrid({ className = "" }: { className?: string }) {
+  // Unique per instance so multiple grids on a page don't collide on ids.
+  const id = useId();
+  const fineId = `${id}-bp-fine`;
+  const coarseId = `${id}-bp-coarse`;
+
   return (
     <svg
       aria-hidden="true"
@@ -15,7 +22,7 @@ export function BlueprintGrid({ className = "" }: { className?: string }) {
     >
       <defs>
         <pattern
-          id="bp-fine"
+          id={fineId}
           width="40"
           height="40"
           patternUnits="userSpaceOnUse"
@@ -29,12 +36,12 @@ export function BlueprintGrid({ className = "" }: { className?: string }) {
           />
         </pattern>
         <pattern
-          id="bp-coarse"
+          id={coarseId}
           width="160"
           height="160"
           patternUnits="userSpaceOnUse"
         >
-          <rect width="160" height="160" fill="url(#bp-fine)" />
+          <rect width="160" height="160" fill={`url('#${fineId}')`} />
           <path
             d="M160 0H0V160"
             fill="none"
@@ -45,7 +52,7 @@ export function BlueprintGrid({ className = "" }: { className?: string }) {
           <circle cx="0" cy="0" r="1.5" fill="currentColor" fillOpacity="0.7" />
         </pattern>
       </defs>
-      <rect width="100%" height="100%" fill="url(#bp-coarse)" />
+      <rect width="100%" height="100%" fill={`url('#${coarseId}')`} />
     </svg>
   );
 }

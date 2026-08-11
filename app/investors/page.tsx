@@ -4,7 +4,8 @@ import { InvestorGate } from "@/components/InvestorGate";
 import { Reveal } from "@/components/Reveal";
 
 export const metadata: Metadata = {
-  title: "Investors | Satis Group",
+  title: "Property investment platform",
+  alternates: { canonical: "/investors" },
   description:
     "The Satis Group investor centre: sign in to our proprietary investor platform, request access or reset your password.",
 };
@@ -44,7 +45,7 @@ export default function InvestorsPage() {
       <section className="flex min-h-[calc(100vh-5rem)] items-center border-b border-ink-foreground/15">
         <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-14 px-6 py-16 lg:grid-cols-[1fr_auto] lg:px-10">
           <Reveal>
-            <span className="text-xs tracking-[0.35em] uppercase text-accent">
+            <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
               Investors
             </span>
             <h1 className="mt-4 max-w-xl text-4xl font-medium tracking-tight sm:text-5xl">
@@ -80,7 +81,7 @@ export default function InvestorsPage() {
       <section>
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
           <Reveal>
-            <span className="flex items-center gap-3 text-xs tracking-[0.35em] uppercase text-accent">
+            <span className="flex items-center gap-3 text-xs tracking-[0.35em] uppercase text-accent-text">
               <span>01</span>
               <span className="h-px w-8 bg-accent/60" aria-hidden="true" />
               <span>The Platform</span>

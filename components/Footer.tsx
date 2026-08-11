@@ -35,15 +35,17 @@ export function Footer() {
           <span className="text-xs tracking-[0.25em] uppercase text-accent">
             Site
           </span>
-          {FOOTER_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm tracking-[0.1em] uppercase text-ink-foreground/80 transition-colors hover:text-accent"
-            >
-              {link.label}
-            </Link>
-          ))}
+          <nav aria-label="Footer" className="flex flex-col gap-3">
+            {FOOTER_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-sm tracking-[0.1em] uppercase text-ink-foreground/80 transition-colors hover:text-accent"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
         </div>
 
         <div className="flex flex-col gap-3">
@@ -63,9 +65,12 @@ export function Footer() {
       </div>
 
       <div className="border-t border-ink-foreground/15">
-        <div className="mx-auto flex max-w-7xl flex-col-reverse items-center justify-between gap-4 px-6 py-6 text-xs tracking-[0.1em] uppercase text-ink-foreground/50 lg:flex-row lg:px-10">
+        <div className="mx-auto flex max-w-7xl flex-col-reverse items-center justify-between gap-4 px-6 py-6 text-xs tracking-[0.1em] uppercase text-ink-foreground/60 lg:flex-row lg:px-10">
           <span>&copy; {new Date().getFullYear()} Satis Group. All rights reserved.</span>
-          <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+          <nav
+            aria-label="Legal"
+            className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2"
+          >
             {LEGAL_LINKS.map((link) => (
               <Link
                 key={link.href}

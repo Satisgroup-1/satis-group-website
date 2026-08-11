@@ -54,7 +54,12 @@ export function AnimatedStat({
 
   return (
     <span ref={ref} className={className}>
-      {display ?? (match && !reduceMotion ? `${match[1]}0${match[3]}` : value)}
+      {/* The counting display is decorative; screen readers get the real value. */}
+      <span aria-hidden="true">
+        {display ??
+          (match && !reduceMotion ? `${match[1]}0${match[3]}` : value)}
+      </span>
+      <span className="sr-only">{value}</span>
     </span>
   );
 }

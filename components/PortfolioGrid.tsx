@@ -28,7 +28,7 @@ export function PortfolioGrid() {
               onClick={() => setFilter(option)}
               className={`border px-4 py-2 text-xs tracking-[0.2em] uppercase transition-all duration-300 ${
                 isActive
-                  ? "border-accent bg-accent font-medium text-white shadow-sm"
+                  ? "border-accent bg-accent-strong font-medium text-white shadow-sm dark:bg-accent dark:text-ink"
                   : "border-border text-muted hover:border-foreground hover:text-foreground"
               }`}
             >
@@ -37,6 +37,10 @@ export function PortfolioGrid() {
           );
         })}
       </div>
+
+      <p role="status" className="sr-only">
+        {properties.length} projects shown
+      </p>
 
       <motion.div
         layout

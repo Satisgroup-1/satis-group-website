@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 type GalleryImage = {
@@ -26,8 +26,18 @@ export function GalleryLightbox({
   captions = false,
 }: GalleryLightboxProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const thumbRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const triggerIndexRef = useRef<number | null>(null);
 
-  const close = useCallback(() => setOpenIndex(null), []);
+  const close = useCallback(() => {
+    setOpenIndex(null);
+    // Restore focus to the thumbnail that opened the lightbox.
+    if (triggerIndexRef.current !== null) {
+      thumbRefs.current[triggerIndexRef.current]?.focus();
+    }
+  }, []);
   const step = useCallback(
     (direction: 1 | -1) => {
       setOpenIndex((current) => {
@@ -38,12 +48,37 @@ export function GalleryLightbox({
     [images.length]
   );
 
+  const isOpen = openIndex !== null;
+
   useEffect(() => {
-    if (openIndex === null) return;
+    if (!isOpen) return;
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") close();
       if (event.key === "ArrowRight") step(1);
       if (event.key === "ArrowLeft") step(-1);
+      if (event.key === "Tab") {
+        // Trap focus within the dialog while it is open.
+        const dialog = dialogRef.current;
+        if (!dialog) return;
+        const focusable = Array.from(
+          dialog.querySelectorAll<HTMLElement>(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+          )
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        const active = document.activeElement;
+        if (event.shiftKey) {
+          if (active === first || !dialog.contains(active)) {
+            event.preventDefault();
+            last.focus();
+          }
+        } else if (active === last || !dialog.contains(active)) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
     };
     document.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
@@ -51,7 +86,11 @@ export function GalleryLightbox({
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
     };
-  }, [openIndex, close, step]);
+  }, [isOpen, close, step]);
+
+  useEffect(() => {
+    if (isOpen) closeButtonRef.current?.focus();
+  }, [isOpen]);
 
   return (
     <>
@@ -60,7 +99,13 @@ export function GalleryLightbox({
           <figure key={image.src} className="flex flex-col gap-3">
             <button
               type="button"
-              onClick={() => setOpenIndex(index)}
+              ref={(node) => {
+                thumbRefs.current[index] = node;
+              }}
+              onClick={() => {
+                triggerIndexRef.current = index;
+                setOpenIndex(index);
+              }}
               aria-label={`Enlarge: ${image.alt}`}
               className={`group relative ${aspectClass} w-full cursor-zoom-in overflow-hidden bg-surface ${
                 fit === "contain" ? "border border-border bg-white" : ""
@@ -102,16 +147,21 @@ export function GalleryLightbox({
             role="dialog"
             aria-modal="true"
             aria-label={images[openIndex].alt}
+            ref={dialogRef}
           >
             <div className="flex items-center justify-between px-6 py-4 text-white">
-              <span className="text-xs tracking-[0.25em] uppercase text-white/70">
+              <span
+                role="status"
+                className="text-xs tracking-[0.25em] uppercase text-white/70"
+              >
                 {openIndex + 1} / {images.length}
               </span>
               <button
                 type="button"
+                ref={closeButtonRef}
                 onClick={close}
                 aria-label="Close"
-                className="text-xs tracking-[0.25em] uppercase transition-colors hover:text-accent"
+                className="-m-3 p-3 text-xs tracking-[0.25em] uppercase transition-colors hover:text-accent"
               >
                 Close ✕
               </button>

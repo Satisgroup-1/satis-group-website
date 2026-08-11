@@ -33,7 +33,7 @@ export function PageHero({
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col gap-6 px-6 py-24 lg:px-10 lg:py-32">
         <Reveal>
           {eyebrow && (
-            <span className="text-xs tracking-[0.35em] uppercase text-accent">
+            <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
               {eyebrow}
             </span>
           )}

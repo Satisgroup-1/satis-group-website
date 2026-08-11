@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -21,6 +21,9 @@ type FormState = {
 
 type FormErrors = Partial<Record<"name" | "email" | "message", string>>;
 
+const INPUT_CLASS =
+  "border border-border bg-transparent px-4 py-3 text-sm outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition-colors focus:border-accent";
+
 export function ContactForm({
   initialTopic = "General enquiry",
 }: {
@@ -34,6 +37,15 @@ export function ContactForm({
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitted, setSubmitted] = useState(false);
+
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const messageRef = useRef<HTMLTextAreaElement>(null);
+  const successRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (submitted) successRef.current?.focus();
+  }, [submitted]);
 
   const handleChange =
     (field: keyof FormState) =>
@@ -56,7 +68,13 @@ export function ContactForm({
     if (!values.message.trim()) nextErrors.message = "Enter a message.";
 
     setErrors(nextErrors);
-    if (Object.keys(nextErrors).length > 0) return;
+    if (Object.keys(nextErrors).length > 0) {
+      // Move focus to the first invalid field.
+      if (nextErrors.name) nameRef.current?.focus();
+      else if (nextErrors.email) emailRef.current?.focus();
+      else if (nextErrors.message) messageRef.current?.focus();
+      return;
+    }
 
     // Not wired to a backend yet; connect to an email provider (e.g. Resend)
     // once one is chosen, then replace this with a real submission.
@@ -65,7 +83,12 @@ export function ContactForm({
 
   if (submitted) {
     return (
-      <div className="border border-border px-6 py-8">
+      <div
+        ref={successRef}
+        role="status"
+        tabIndex={-1}
+        className="border border-border px-6 py-8"
+      >
         <p className="text-sm tracking-[0.05em]">
           Thanks, {values.name.split(" ")[0]}. We&rsquo;ve received your
           message and will get back to you shortly.
@@ -77,33 +100,51 @@ export function ContactForm({
   return (
     <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <label className="flex flex-col gap-2">
-          <span className="text-xs tracking-[0.2em] uppercase text-muted">
-            Name
-          </span>
-          <input
-            type="text"
-            value={values.name}
-            onChange={handleChange("name")}
-            aria-invalid={Boolean(errors.name)}
-            className="border border-border bg-transparent px-4 py-3 text-sm outline-none transition-colors focus:border-accent"
-          />
-          {errors.name && <span className="text-sm text-muted">{errors.name}</span>}
-        </label>
+        <div className="flex flex-col gap-2">
+          <label className="flex flex-col gap-2">
+            <span className="text-xs tracking-[0.2em] uppercase text-muted">
+              Name
+            </span>
+            <input
+              type="text"
+              ref={nameRef}
+              value={values.name}
+              onChange={handleChange("name")}
+              autoComplete="name"
+              aria-invalid={Boolean(errors.name)}
+              aria-describedby={errors.name ? "name-error" : undefined}
+              className={INPUT_CLASS}
+            />
+          </label>
+          {errors.name && (
+            <p id="name-error" role="alert" className="text-sm text-clay">
+              {errors.name}
+            </p>
+          )}
+        </div>
 
-        <label className="flex flex-col gap-2">
-          <span className="text-xs tracking-[0.2em] uppercase text-muted">
-            Email
-          </span>
-          <input
-            type="email"
-            value={values.email}
-            onChange={handleChange("email")}
-            aria-invalid={Boolean(errors.email)}
-            className="border border-border bg-transparent px-4 py-3 text-sm outline-none transition-colors focus:border-accent"
-          />
-          {errors.email && <span className="text-sm text-muted">{errors.email}</span>}
-        </label>
+        <div className="flex flex-col gap-2">
+          <label className="flex flex-col gap-2">
+            <span className="text-xs tracking-[0.2em] uppercase text-muted">
+              Email
+            </span>
+            <input
+              type="email"
+              ref={emailRef}
+              value={values.email}
+              onChange={handleChange("email")}
+              autoComplete="email"
+              aria-invalid={Boolean(errors.email)}
+              aria-describedby={errors.email ? "email-error" : undefined}
+              className={INPUT_CLASS}
+            />
+          </label>
+          {errors.email && (
+            <p id="email-error" role="alert" className="text-sm text-clay">
+              {errors.email}
+            </p>
+          )}
+        </div>
       </div>
 
       <label className="flex flex-col gap-2">
@@ -113,7 +154,7 @@ export function ContactForm({
         <select
           value={values.topic}
           onChange={handleChange("topic")}
-          className="border border-border bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-accent"
+          className="border border-border bg-background px-4 py-3 text-sm outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition-colors focus:border-accent"
         >
           {CONTACT_TOPICS.map((topic) => (
             <option key={topic} value={topic}>
@@ -123,19 +164,27 @@ export function ContactForm({
         </select>
       </label>
 
-      <label className="flex flex-col gap-2">
-        <span className="text-xs tracking-[0.2em] uppercase text-muted">
-          Message
-        </span>
-        <textarea
-          rows={6}
-          value={values.message}
-          onChange={handleChange("message")}
-          aria-invalid={Boolean(errors.message)}
-          className="border border-border bg-transparent px-4 py-3 text-sm outline-none transition-colors focus:border-accent"
-        />
-        {errors.message && <span className="text-sm text-muted">{errors.message}</span>}
-      </label>
+      <div className="flex flex-col gap-2">
+        <label className="flex flex-col gap-2">
+          <span className="text-xs tracking-[0.2em] uppercase text-muted">
+            Message
+          </span>
+          <textarea
+            rows={6}
+            ref={messageRef}
+            value={values.message}
+            onChange={handleChange("message")}
+            aria-invalid={Boolean(errors.message)}
+            aria-describedby={errors.message ? "message-error" : undefined}
+            className={INPUT_CLASS}
+          />
+        </label>
+        {errors.message && (
+          <p id="message-error" role="alert" className="text-sm text-clay">
+            {errors.message}
+          </p>
+        )}
+      </div>
 
       <button
         type="submit"

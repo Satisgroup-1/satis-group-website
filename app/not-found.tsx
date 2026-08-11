@@ -3,7 +3,7 @@ import Link from "next/link";
 import { BlueprintGrid } from "@/components/BlueprintGrid";
 
 export const metadata: Metadata = {
-  title: "Page not found | Satis Group",
+  title: "Page not found",
 };
 
 export default function NotFound() {
@@ -16,7 +16,7 @@ export default function NotFound() {
         <BlueprintGrid className="h-full w-full" />
       </div>
       <div className="relative mx-auto flex min-h-[60vh] max-w-7xl flex-col items-start justify-center px-6 py-24 lg:px-10">
-        <span className="text-xs tracking-[0.35em] uppercase text-accent">
+        <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
           404 · Page not found
         </span>
         <h1 className="mt-4 max-w-2xl text-4xl font-medium tracking-tight sm:text-5xl lg:text-6xl">

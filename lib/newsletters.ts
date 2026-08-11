@@ -91,7 +91,7 @@ export function getNewsletters(): Newsletter[] {
         blocks: parseBlocks(body),
       };
     })
-    .sort((a, b) => (a.date < b.date ? 1 : -1));
+    .sort((a, b) => b.date.localeCompare(a.date) || a.slug.localeCompare(b.slug));
 }
 
 export function getNewsletter(slug: string): Newsletter | undefined {
@@ -105,5 +105,8 @@ export function formatNewsletterDate(date: string): string {
     day: "numeric",
     month: "long",
     year: "numeric",
+    // Date-only strings parse as UTC midnight; format in UTC too so issues
+    // don't display a day early on servers west of UTC.
+    timeZone: "UTC",
   });
 }

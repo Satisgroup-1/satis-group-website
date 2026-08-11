@@ -1,15 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const INPUT_CLASS =
-  "w-full border border-ink-foreground/25 bg-transparent px-4 py-3 text-sm text-ink-foreground outline-none transition-colors duration-300 placeholder:text-ink-foreground/35 focus:border-accent";
+  "w-full border border-ink-foreground/25 bg-transparent px-4 py-3 text-sm text-ink-foreground outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition-colors duration-300 placeholder:text-ink-foreground/50 focus:border-accent";
 
 const PRIMARY_BUTTON =
-  "border border-accent bg-accent px-6 py-3 text-xs tracking-[0.2em] uppercase text-white transition-colors duration-300 hover:bg-transparent hover:text-accent";
+  "border border-accent bg-accent px-6 py-3 text-xs tracking-[0.2em] uppercase text-ink transition-colors duration-300 hover:bg-transparent hover:text-accent";
 
 const GHOST_LINK =
   "text-xs tracking-[0.15em] uppercase text-ink-foreground/60 transition-colors hover:text-accent";
@@ -20,6 +20,17 @@ export function InvestorGate() {
   const [view, setView] = useState<View>("login");
   const [error, setError] = useState<string | null>(null);
   const [forgotSent, setForgotSent] = useState(false);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const hasMountedRef = useRef(false);
+
+  useEffect(() => {
+    // Move focus to the new view's heading on view switches (not on mount).
+    if (!hasMountedRef.current) {
+      hasMountedRef.current = true;
+      return;
+    }
+    headingRef.current?.focus();
+  }, [view]);
 
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -62,7 +73,11 @@ export function InvestorGate() {
           <span className="text-xs tracking-[0.35em] uppercase text-accent">
             Investor Login
           </span>
-          <h2 className="mt-3 text-xl font-medium tracking-tight text-ink-foreground">
+          <h2
+            ref={headingRef}
+            tabIndex={-1}
+            className="mt-3 text-xl font-medium tracking-tight text-ink-foreground"
+          >
             Sign in to the platform.
           </h2>
           <form onSubmit={handleLogin} noValidate className="mt-8 flex flex-col gap-5">
@@ -90,7 +105,7 @@ export function InvestorGate() {
               />
             </label>
             {error && (
-              <p role="alert" className="text-sm leading-relaxed text-accent">
+              <p role="alert" className="text-sm leading-relaxed text-[#dcb878]">
                 {error}
               </p>
             )}
@@ -114,7 +129,7 @@ export function InvestorGate() {
               Forgot password
             </button>
           </div>
-          <p className="mt-8 border-t border-ink-foreground/15 pt-5 text-xs leading-relaxed text-ink-foreground/50">
+          <p className="mt-8 border-t border-ink-foreground/15 pt-5 text-xs leading-relaxed text-ink-foreground/60">
             By signing in you agree to our{" "}
             <Link
               href="/legal/terms"
@@ -132,7 +147,11 @@ export function InvestorGate() {
           <span className="text-xs tracking-[0.35em] uppercase text-accent">
             Request Access
           </span>
-          <h2 className="mt-3 text-xl font-medium tracking-tight text-ink-foreground">
+          <h2
+            ref={headingRef}
+            tabIndex={-1}
+            className="mt-3 text-xl font-medium tracking-tight text-ink-foreground"
+          >
             Access is by invitation.
           </h2>
           <p className="mt-5 text-sm leading-relaxed text-ink-foreground/70">
@@ -164,11 +183,18 @@ export function InvestorGate() {
           <span className="text-xs tracking-[0.35em] uppercase text-accent">
             Forgot Password
           </span>
-          <h2 className="mt-3 text-xl font-medium tracking-tight text-ink-foreground">
+          <h2
+            ref={headingRef}
+            tabIndex={-1}
+            className="mt-3 text-xl font-medium tracking-tight text-ink-foreground"
+          >
             Reset your password.
           </h2>
           {forgotSent ? (
-            <p className="mt-5 text-sm leading-relaxed text-ink-foreground/70">
+            <p
+              role="status"
+              className="mt-5 text-sm leading-relaxed text-ink-foreground/70"
+            >
               If that address is registered with us, password reset
               instructions are on their way. Check your inbox.
             </p>
@@ -191,7 +217,7 @@ export function InvestorGate() {
                 />
               </label>
               {error && (
-                <p role="alert" className="text-sm leading-relaxed text-accent">
+                <p role="alert" className="text-sm leading-relaxed text-[#dcb878]">
                   {error}
                 </p>
               )}

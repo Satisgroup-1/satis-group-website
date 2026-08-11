@@ -11,6 +11,10 @@
   --accent: #a5813f;
   --accent-strong: #8c6c32;
   --accent-soft: rgba(165, 129, 63, 0.12);
+  /* Accent for small informational text: the base accent is 3.61:1 on white,
+     under the 4.5:1 AA threshold; this darker cut passes on both white and
+     the surface tint. */
+  --accent-text: #836030;
   --ink: #1a2733;
   --ink-foreground: #f3efe7;
   --clay: #9d4b30;
@@ -26,6 +30,7 @@
   --accent: #c9a05c;
   --accent-strong: #dcb878;
   --accent-soft: rgba(201, 160, 92, 0.16);
+  --accent-text: #c9a05c;
   --ink: #121c26;
   --ink-foreground: #f3efe7;
   --clay: #c4694a;
@@ -41,6 +46,7 @@
   --color-accent: var(--accent);
   --color-accent-strong: var(--accent-strong);
   --color-accent-soft: var(--accent-soft);
+  --color-accent-text: var(--accent-text);
   --color-ink: var(--ink);
   --color-ink-foreground: var(--ink-foreground);
   --color-clay: var(--clay);
@@ -61,5 +67,5 @@ body {
 
 ::selection {
   background: var(--accent);
-  color: var(--background);
+  color: var(--ink);
 }

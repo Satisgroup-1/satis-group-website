@@ -5,6 +5,7 @@ import {
   motion,
   useMotionValue,
   useMotionValueEvent,
+  useReducedMotion,
   useScroll,
   useSpring,
   useTransform,
@@ -139,6 +140,7 @@ export function BuildingRedevelopmentGraphic({
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activePhase, setActivePhase] = useState(0);
+  const reduceMotion = useReducedMotion();
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -179,6 +181,7 @@ export function BuildingRedevelopmentGraphic({
   const buildingParallaxX = useTransform(smoothMouseX, [-1, 1], [-5, 5]);
 
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (reduceMotion) return;
     const bounds = event.currentTarget.getBoundingClientRect();
     mouseX.set(((event.clientX - bounds.left) / bounds.width) * 2 - 1);
     mouseY.set(((event.clientY - bounds.top) / bounds.height) * 2 - 1);
@@ -462,7 +465,7 @@ export function BuildingRedevelopmentGraphic({
                   />
                   {/* hook with gentle swing */}
                   <motion.g
-                    animate={{ rotate: [-2.5, 2.5, -2.5] }}
+                    animate={reduceMotion ? undefined : { rotate: [-2.5, 2.5, -2.5] }}
                     transition={{
                       duration: 4,
                       repeat: Infinity,
@@ -605,7 +608,7 @@ export function BuildingRedevelopmentGraphic({
                 Scroll
               </span>
               <motion.span
-                animate={{ y: [0, 5, 0] }}
+                animate={reduceMotion ? undefined : { y: [0, 5, 0] }}
                 transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
                 aria-hidden="true"
               >

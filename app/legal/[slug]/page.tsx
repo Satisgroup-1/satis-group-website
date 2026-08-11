@@ -14,8 +14,9 @@ export async function generateMetadata({
   const page = getLegalPage(slug);
   if (!page) return {};
   return {
-    title: `${page.title} | Satis Group`,
+    title: page.title,
     description: `${page.title} for RA Developments (NW) Limited, trading as SATIS Group.`,
+    alternates: { canonical: `/legal/${slug}` },
   };
 }
 
@@ -30,7 +31,7 @@ export default async function LegalPage({
     <section>
       <div className="mx-auto max-w-3xl px-6 py-20 lg:py-28">
         <Reveal>
-          <span className="text-xs tracking-[0.35em] uppercase text-accent">
+          <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
             Legal
           </span>
           <h1 className="mt-4 text-3xl font-medium tracking-tight sm:text-4xl">
@@ -55,9 +56,9 @@ export default async function LegalPage({
             if (block.kind === "list") {
               return (
                 <ul key={index} className="flex flex-col gap-2 pl-5">
-                  {block.items.map((item) => (
+                  {block.items.map((item, itemIndex) => (
                     <li
-                      key={item.slice(0, 40)}
+                      key={itemIndex}
                       className="list-disc text-sm leading-relaxed text-muted"
                     >
                       {item}

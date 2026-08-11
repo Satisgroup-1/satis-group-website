@@ -7,6 +7,7 @@ import {
   getNewsletter,
   getNewsletters,
 } from "@/lib/newsletters";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 export function generateStaticParams() {
   return getNewsletters().map((issue) => ({ slug: issue.slug }));
@@ -19,8 +20,15 @@ export async function generateMetadata({
   const issue = getNewsletter(slug);
   if (!issue) return {};
   return {
-    title: `${issue.title} | Satis Group`,
+    title: issue.title,
     description: issue.summary,
+    alternates: { canonical: `/news/${slug}` },
+    openGraph: {
+      type: "article",
+      title: issue.title,
+      description: issue.summary,
+      publishedTime: issue.date,
+    },
   };
 }
 
@@ -31,8 +39,32 @@ export default async function NewsletterIssuePage({
   const issue = getNewsletter(slug);
   if (!issue) notFound();
 
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: issue.title,
+    datePublished: issue.date,
+    description: issue.summary,
+    author: { "@type": "Organization", name: SITE_NAME },
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/images/satis-logo-white.png`,
+      },
+    },
+    mainEntityOfPage: `${SITE_URL}/news/${issue.slug}`,
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(articleJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <section className="border-b border-border">
         <div className="mx-auto max-w-3xl px-6 py-20 lg:py-28">
           <Reveal>
@@ -48,7 +80,7 @@ export default async function NewsletterIssuePage({
               </span>
               All updates
             </Link>
-            <p className="mt-8 text-xs tracking-[0.25em] uppercase text-accent">
+            <p className="mt-8 text-xs tracking-[0.25em] uppercase text-accent-text">
               {formatNewsletterDate(issue.date)}
             </p>
             <h1 className="mt-4 text-3xl font-medium tracking-tight sm:text-4xl lg:text-5xl">
