@@ -19,9 +19,24 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+## Share an online preview
+
+To give a client or teammate a temporary public link without deploying the
+site, run:
+
+```bash
+npm run preview:online
+```
+
+The command starts the Next.js development server, waits for it to be ready,
+and prints a `https://…loca.lt` URL. Keep the command running while the link is
+being reviewed, then press `Ctrl+C` to close both the tunnel and local server.
+The URL is temporary and should only be used for review—not production.
+
 ## Scripts
 
 - `npm run dev` — start the dev server
+- `npm run preview:online` — start the site with a temporary public review URL
 - `npm run build` — production build
 - `npm run start` — serve the production build
 - `npm run lint` — run ESLint
