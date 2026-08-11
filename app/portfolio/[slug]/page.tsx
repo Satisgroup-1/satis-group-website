@@ -68,9 +68,14 @@ export default async function PropertyDetailPage({
             src={property.heroImage}
             alt={property.name}
             fill
-            priority
+            preload
             sizes="100vw"
             className="object-cover"
+            style={
+              property.heroPosition
+                ? { objectPosition: property.heroPosition }
+                : undefined
+            }
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent" />
           <div className="absolute inset-x-0 bottom-0">
@@ -137,6 +142,11 @@ export default async function PropertyDetailPage({
                 fill
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 className="object-cover"
+                style={
+                  property.intro.imagePosition
+                    ? { objectPosition: property.intro.imagePosition }
+                    : undefined
+                }
               />
             </div>
           </Reveal>

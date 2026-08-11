@@ -31,11 +31,17 @@ export type PropertyPageData = {
   type: PropertyType;
   status: string;
   heroImage: string;
+  // CSS object-position for the hero crop. The hero is a wide band, so portrait
+  // photography needs steering towards the part of the building that reads:
+  // rooflines, entrances and signage rather than a mid-facade slice. Omit for
+  // landscape imagery, which centres fine.
+  heroPosition?: string;
   intro: {
     heading: string;
     body: string[];
     image: string;
     imageAlt: string;
+    imagePosition?: string;
   };
   stats: Array<{ value: string; label: string }>;
   features?: {
@@ -381,6 +387,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     type: "Residential",
     status: "To Let",
     heroImage: "/images/barrington/hero.jpg",
+    heroPosition: "center 32%",
     intro: {
       heading: "A new standard of living",
       body: [
@@ -454,6 +461,10 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       { src: "/images/barrington/gallery-3.jpg", alt: "Interior finish" },
       { src: "/images/barrington/gallery-4.jpg", alt: "Apartment interior" },
       { src: "/images/barrington/gallery-5.jpg", alt: "Bedroom interior" },
+      {
+        src: "/images/barrington/exterior-dusk.jpg",
+        alt: "Barrington House exterior at dusk",
+      },
       { src: "/images/barrington/altrincham.jpg", alt: "Altrincham town" },
     ],
     listings: [
@@ -479,6 +490,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     type: "Commercial",
     status: "Workspace",
     heroImage: "/images/22stjohn/building.jpg",
+    heroPosition: "center 75%",
     intro: {
       heading: "Welcome to St John Street",
       body: [
@@ -557,14 +569,16 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     type: "Commercial",
     status: "Completed",
     heroImage: "/images/legacy/tabula.jpg",
+    heroPosition: "center 92%",
     intro: {
       heading: "A workspace built around modern business",
       body: [
         "Tabula is a contemporary office development delivered by Satis Group, transforming an underused building into flexible, high-quality workspace.",
         "The scheme reflects our approach to commercial redevelopment: retain the character, upgrade the fabric, and deliver space that modern businesses actually want to occupy.",
       ],
-      image: "/images/legacy/tabula.jpg",
-      imageAlt: "Tabula office development",
+      image: "/images/legacy/tabula-frontage.jpg",
+      imageAlt: "Tabula office development frontage and main entrance",
+      imagePosition: "center 85%",
     },
     stats: [
       { value: "Office", label: "Use" },

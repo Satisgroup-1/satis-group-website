@@ -18,6 +18,11 @@ export function PropertyCard({ property }: { property: Property }) {
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
             className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            style={
+              property.imagePosition
+                ? { objectPosition: property.imagePosition }
+                : undefined
+            }
           />
           <span
             className={`absolute left-4 top-4 px-3 py-1 text-[0.65rem] tracking-[0.2em] uppercase ${typeChipClass}`}
