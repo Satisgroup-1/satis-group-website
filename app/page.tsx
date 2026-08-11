@@ -79,7 +79,13 @@ export default function Home() {
           <div className="mt-14 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
             {PROCESS.map((item, index) => (
               <Reveal key={item.step} delay={index * 0.1}>
-                <div className="group border-t border-border pt-6 transition-colors duration-300 hover:border-accent">
+                <div className="group relative overflow-hidden border-t border-border pt-6 transition-colors duration-300 hover:border-accent">
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -right-1 -top-5 text-7xl font-medium tracking-tighter text-accent opacity-[0.07] transition-all duration-500 group-hover:-translate-y-1 group-hover:opacity-[0.14]"
+                  >
+                    {item.step}
+                  </span>
                   <span className="text-xs tracking-[0.25em] text-accent">
                     {item.step}
                   </span>
