@@ -10,6 +10,8 @@ export type Property = {
   // CSS object-position for the 4:3 card crop, for portrait photography that
   // would otherwise centre on a blank stretch of facade. Omit to centre.
   imagePosition?: string;
+  // Secondary image revealed on hover (crossfade); omit for a plain zoom.
+  hoverImage?: string;
   blurb: string;
 };
 
@@ -23,6 +25,7 @@ export const PORTFOLIO: Property[] = [
     type: "Residential",
     status: "For Sale",
     image: "/images/courthouse/hero.jpg",
+    hoverImage: "/images/courthouse/kitchen.jpg",
     blurb:
       "An elegant conversion of the former Macclesfield courthouse: 13 one and two-bedroom apartments in the heart of the market town.",
   },
@@ -33,6 +36,7 @@ export const PORTFOLIO: Property[] = [
     type: "Residential",
     status: "Selling Fast",
     image: "/images/hazelgate/exterior.jpg",
+    hoverImage: "/images/hazelgate/living-kitchen.jpg",
     blurb:
       "A new collection of nineteen contemporary one and two-bedroom apartments in the vibrant centre of Hazel Grove.",
   },
@@ -43,6 +47,7 @@ export const PORTFOLIO: Property[] = [
     type: "Residential",
     status: "To Let",
     image: "/images/barrington/hero.jpg",
+    hoverImage: "/images/barrington/exterior-dusk.jpg",
     blurb:
       "Thoughtfully designed residences pairing architectural restraint with the warmth of an award-winning market town.",
   },
@@ -54,12 +59,13 @@ export const PORTFOLIO: Property[] = [
     status: "Workspace",
     image: "/images/22stjohn/building.jpg",
     imagePosition: "center 70%",
+    hoverImage: "/images/22stjohn/gallery-1.jpg",
     blurb:
       "A Grade II listed Georgian building between Deansgate and Spinningfields, remodelled into 13 private office suites.",
   },
   {
-    slug: "petersgate-house",
-    name: "Petersgate House",
+    slug: "qube",
+    name: "QUBE",
     location: "Stockport",
     type: "Residential",
     status: "Completed",

@@ -219,28 +219,12 @@ export function BuildingRedevelopmentGraphic({
               style={{ x: buildingParallaxX }}
             >
               <defs>
-                <pattern
-                  id="blueprint-grid"
-                  width="24"
-                  height="24"
-                  patternUnits="userSpaceOnUse"
-                >
-                  <path
-                    d="M24 0H0V24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeOpacity="0.055"
-                    strokeWidth="0.75"
-                  />
-                </pattern>
                 <linearGradient id="ground-wash" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0" stopColor="var(--accent)" stopOpacity="0" />
                   <stop offset="1" stopColor="var(--accent)" stopOpacity="0.12" />
                 </linearGradient>
               </defs>
 
-              {/* architectural drawing field */}
-              <rect x="0" y="0" width="520" height="520" fill="url(#blueprint-grid)" />
               <circle
                 cx="438"
                 cy="72"

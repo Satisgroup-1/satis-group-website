@@ -738,8 +738,8 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     micrositeLabel: "satisgroup.co.uk",
   },
   {
-    slug: "petersgate-house",
-    name: "Petersgate House",
+    slug: "qube",
+    name: "QUBE",
     eyebrow: "Stockport",
     tagline: "Fifty-eight apartments and two commercial units",
     type: "Residential",
@@ -748,11 +748,11 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     intro: {
       heading: "Our largest scheme to date",
       body: [
-        "Petersgate House is a mixed-use redevelopment of fifty-eight apartments and two commercial units in Stockport town centre.",
+        "QUBE (formerly Petersgate House) is a mixed-use redevelopment of fifty-eight apartments and two commercial units in Stockport town centre.",
         "Delivered as Stockport's regeneration gathered pace, it brought a significant number of new homes to a town The Sunday Times has since named the best place to live in the North West.",
       ],
       image: "/images/legacy/petersgate-house.jpg",
-      imageAlt: "Petersgate House, Stockport",
+      imageAlt: "QUBE, Stockport",
     },
     stats: [
       { value: "58", label: "Apartments" },

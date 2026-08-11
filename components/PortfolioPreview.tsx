@@ -8,7 +8,7 @@ export function PortfolioPreview() {
 
   return (
     <section className="border-t border-border">
-      <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
+      <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 lg:px-10 lg:pb-32 lg:pt-12">
         <Reveal>
           <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
             <div>
