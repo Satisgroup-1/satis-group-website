@@ -196,12 +196,56 @@ export function BuildingRedevelopmentGraphic({
           )}
 
           <div className="relative flex min-h-0 items-end justify-center">
+            <div
+              aria-hidden="true"
+              className="absolute inset-x-[8%] bottom-[12%] top-[8%] rounded-full bg-accent-soft blur-3xl"
+            />
             <motion.svg
               aria-hidden="true"
               viewBox="0 0 520 520"
               className="h-full max-h-[68vh] w-full text-foreground"
               style={{ x: buildingParallaxX }}
             >
+              <defs>
+                <pattern
+                  id="blueprint-grid"
+                  width="24"
+                  height="24"
+                  patternUnits="userSpaceOnUse"
+                >
+                  <path
+                    d="M24 0H0V24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeOpacity="0.055"
+                    strokeWidth="0.75"
+                  />
+                </pattern>
+                <linearGradient id="ground-wash" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stopColor="var(--accent)" stopOpacity="0" />
+                  <stop offset="1" stopColor="var(--accent)" stopOpacity="0.12" />
+                </linearGradient>
+              </defs>
+
+              {/* architectural drawing field */}
+              <rect x="0" y="0" width="520" height="520" fill="url(#blueprint-grid)" />
+              <circle
+                cx="438"
+                cy="72"
+                r="34"
+                fill="var(--accent)"
+                fillOpacity="0.1"
+                stroke="var(--accent)"
+                strokeOpacity="0.4"
+              />
+              <path
+                d="M20 486V410h48v76M426 486V390h34v96m0-54h38v54"
+                fill="none"
+                stroke="currentColor"
+                strokeOpacity="0.13"
+              />
+              <rect x="16" y="455" width="488" height="31" fill="url(#ground-wash)" />
+
               {/* ground */}
               <line
                 x1="16"
@@ -464,6 +508,13 @@ export function BuildingRedevelopmentGraphic({
                   stroke="currentColor"
                   strokeWidth="1.5"
                 />
+                {/* planters soften the finished frontage */}
+                <g stroke="var(--sage)" fill="none" strokeOpacity="0.85">
+                  <path d="M181 486v-25m0 8-10-14m10 8 12-17m-12 22-15-6m15-2 15-8" />
+                  <path d="M337 486v-22m0 7-9-12m9 7 11-15m-11 20 14-7" />
+                  <path d="M164 477h34l-4 9h-26Z" fill="var(--sage)" fillOpacity="0.14" />
+                  <path d="M322 477h31l-4 9h-23Z" fill="var(--sage)" fillOpacity="0.14" />
+                </g>
                 {[168, 216, 264, 312].map((x) => (
                   <rect
                     key={`ext-${x}`}
@@ -530,6 +581,11 @@ export function BuildingRedevelopmentGraphic({
                 />
               </motion.g>
             </motion.svg>
+
+            <div className="pointer-events-none absolute left-0 top-2 hidden items-center gap-3 text-[0.58rem] tracking-[0.25em] uppercase text-muted xl:flex">
+              <span className="h-px w-10 bg-accent" />
+              Elevation study · North West
+            </div>
 
             {/* scroll hint */}
             <motion.div
