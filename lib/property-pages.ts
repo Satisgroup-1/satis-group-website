@@ -461,6 +461,10 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       { src: "/images/barrington/gallery-3.jpg", alt: "Interior finish" },
       { src: "/images/barrington/gallery-4.jpg", alt: "Apartment interior" },
       { src: "/images/barrington/gallery-5.jpg", alt: "Bedroom interior" },
+      {
+        src: "/images/barrington/exterior-dusk.jpg",
+        alt: "Barrington House exterior at dusk",
+      },
       { src: "/images/barrington/altrincham.jpg", alt: "Altrincham town" },
     ],
     listings: [
