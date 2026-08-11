@@ -31,6 +31,17 @@ export default async function AdminPage() {
 
         {!authed ? (
           <div className="mt-10">
+            {process.env.NODE_ENV === "production" &&
+              !process.env.SATIS_ADMIN_SECRET && (
+                <p
+                  role="alert"
+                  className="mb-6 max-w-md border border-clay p-4 text-sm leading-relaxed text-clay"
+                >
+                  This deployment has no SATIS_ADMIN_SECRET environment
+                  variable, so sign-in is disabled. Set it in the hosting
+                  environment and redeploy.
+                </p>
+              )}
             <AdminLogin />
           </div>
         ) : (
