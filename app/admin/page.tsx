@@ -52,7 +52,7 @@ export default async function AdminPage() {
                   {issues.map((issue) => (
                     <li key={issue.slug} className="border-t border-border py-3">
                       <Link
-                        href={`/newsletter/${issue.slug}`}
+                        href={`/news/${issue.slug}`}
                         className="text-sm transition-colors hover:text-accent"
                       >
                         {issue.title}

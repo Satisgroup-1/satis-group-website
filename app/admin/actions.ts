@@ -97,8 +97,8 @@ export async function createNewsletter(
     };
   }
 
-  revalidatePath("/newsletter");
-  revalidatePath(`/newsletter/${slug}`);
+  revalidatePath("/news");
+  revalidatePath(`/news/${slug}`);
   revalidatePath("/admin");
   return { createdSlug: slug };
 }

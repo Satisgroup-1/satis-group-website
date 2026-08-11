@@ -6,18 +6,18 @@ import { Reveal } from "@/components/Reveal";
 import { formatNewsletterDate, getNewsletters } from "@/lib/newsletters";
 
 export const metadata: Metadata = {
-  title: "Newsletter | Satis Group",
+  title: "News | Satis Group",
   description:
-    "Sign up to hear about new Satis Group redevelopments, acquisitions and openings, and read past updates.",
+    "News from Satis Group: new redevelopments, acquisitions and openings, with a newsletter to stay in the loop.",
 };
 
-export default function NewsletterPage() {
+export default function NewsPage() {
   const issues = getNewsletters();
 
   return (
     <>
       <PageHero
-        eyebrow="Newsletter"
+        eyebrow="News"
         title="Stay ahead of what we build next."
         description="Occasional updates on new acquisitions, redevelopments underway, and finished projects. No spam, unsubscribe any time."
       />
@@ -53,7 +53,7 @@ export default function NewsletterPage() {
             {issues.map((issue, index) => (
               <Reveal key={issue.slug} delay={Math.min(index * 0.08, 0.3)}>
                 <Link
-                  href={`/newsletter/${issue.slug}`}
+                  href={`/news/${issue.slug}`}
                   className="group flex flex-col gap-2 border-t border-border py-8 transition-colors duration-300 hover:border-accent sm:flex-row sm:items-baseline sm:justify-between sm:gap-8"
                 >
                   <div className="max-w-2xl">

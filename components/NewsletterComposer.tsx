@@ -84,7 +84,7 @@ export function NewsletterComposer({ today }: { today: string }) {
         <p className="border border-border p-4 text-sm">
           Issue published.{" "}
           <Link
-            href={`/newsletter/${state.createdSlug}`}
+            href={`/news/${state.createdSlug}`}
             className="underline decoration-border underline-offset-4 transition-colors hover:text-accent hover:decoration-accent"
           >
             View {state.createdSlug} {"→"}

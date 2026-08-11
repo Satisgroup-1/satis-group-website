@@ -3,8 +3,8 @@ import Link from "next/link";
 const FOOTER_LINKS = [
   { href: "/about", label: "About" },
   { href: "/portfolio", label: "Portfolio" },
-  { href: "/newsletter", label: "Newsletter" },
-  { href: "/careers", label: "Careers" },
+  { href: "/news", label: "News" },
+  { href: "/investors", label: "Investors" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -20,7 +20,7 @@ export function Footer() {
             Group
           </span>
           <p className="mt-6 max-w-xs text-sm leading-relaxed text-ink-foreground/70">
-            Redeveloping properties into places people want to live and work.
+            Reviving the past, building the future.
           </p>
         </div>
 

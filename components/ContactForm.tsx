@@ -7,7 +7,6 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export const CONTACT_TOPICS = [
   "General enquiry",
   "Property enquiry",
-  "Careers",
   "Investment",
 ] as const;
 
@@ -69,8 +68,7 @@ export function ContactForm({
       <div className="border border-border px-6 py-8">
         <p className="text-sm tracking-[0.05em]">
           Thanks, {values.name.split(" ")[0]}. We&rsquo;ve received your
-          {values.topic === "Careers" ? " application enquiry" : " message"}{" "}
-          and will get back to you shortly.
+          message and will get back to you shortly.
         </p>
       </div>
     );
