@@ -8,6 +8,12 @@ const FOOTER_LINKS = [
   { href: "/contact", label: "Contact" },
 ];
 
+const LEGAL_LINKS = [
+  { href: "/legal/terms", label: "Terms & Conditions" },
+  { href: "/legal/privacy-policy", label: "Privacy Policy" },
+  { href: "/legal/modern-slavery", label: "Modern Slavery Statement" },
+];
+
 export function Footer() {
   return (
     <footer className="bg-ink text-ink-foreground">
@@ -58,6 +64,17 @@ export function Footer() {
       <div className="border-t border-ink-foreground/15">
         <div className="mx-auto flex max-w-7xl flex-col-reverse items-center justify-between gap-4 px-6 py-6 text-xs tracking-[0.1em] uppercase text-ink-foreground/50 lg:flex-row lg:px-10">
           <span>&copy; {new Date().getFullYear()} Satis Group. All rights reserved.</span>
+          <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+            {LEGAL_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="transition-colors hover:text-accent"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
           <span>Developing across the North West</span>
         </div>
       </div>
