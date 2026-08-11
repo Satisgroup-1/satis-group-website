@@ -297,13 +297,16 @@ export default async function PropertyDetailPage({
         <section className="border-b border-border">
           <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
             <Reveal>
-              <SectionHeading index={floorsIndex} label="The Apartments" />
+              <SectionHeading index={floorsIndex} label={property.floors.heading} />
               <h2 className="mt-4 max-w-lg text-3xl font-medium tracking-tight sm:text-4xl">
                 {property.floors.description}
               </h2>
             </Reveal>
             <div className="mt-12">
-              <FloorTabs schedule={property.floors.schedule} />
+              <FloorTabs
+                schedule={property.floors.schedule}
+                unitNoun={property.floors.unitNoun}
+              />
             </div>
           </div>
         </section>
@@ -397,7 +400,9 @@ export default async function PropertyDetailPage({
             </h2>
             <p className="mt-4 max-w-md text-base leading-relaxed text-muted">
               {property.agent
-                ? "For sales enquiries please contact our appointed agent, or get in touch with the Satis Group team."
+                ? property.type === "Commercial"
+                  ? "To arrange a viewing please contact our appointed agent, or get in touch with the Satis Group team."
+                  : "For sales enquiries please contact our appointed agent, or get in touch with the Satis Group team."
                 : property.listings
                   ? "Enquiries and viewings are handled directly by our appointed letting agents via the live listings."
                   : "Get in touch with the Satis Group team for more information or to arrange a viewing."}
@@ -423,7 +428,7 @@ export default async function PropertyDetailPage({
             {property.agent && (
               <div>
                 <span className="text-xs tracking-[0.2em] uppercase text-accent">
-                  Sales Agent
+                  {property.type === "Commercial" ? "Lettings Agent" : "Sales Agent"}
                 </span>
                 <p className="mt-2 text-sm leading-relaxed">
                   {property.agent.name}
