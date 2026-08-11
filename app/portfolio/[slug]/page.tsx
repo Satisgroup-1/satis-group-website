@@ -356,6 +356,18 @@ export default async function PropertyDetailPage({
                   </p>
                 </Reveal>
               ))}
+              {property.locationSection.link && (
+                <Reveal>
+                  <a
+                    href={property.locationSection.link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 inline-block border border-border px-6 py-3 text-xs tracking-[0.2em] uppercase transition-colors duration-300 hover:border-accent hover:text-accent"
+                  >
+                    {property.locationSection.link.label} {"↗"}
+                  </a>
+                </Reveal>
+              )}
             </div>
             <div className="mt-12 grid grid-cols-2 gap-x-8 gap-y-8 sm:grid-cols-3 lg:grid-cols-6">
               {property.locationSection.distances.map((distance, index) => (

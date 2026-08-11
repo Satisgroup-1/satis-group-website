@@ -190,7 +190,10 @@ export function BuildingRedevelopmentGraphic({
         onPointerLeave={handlePointerLeave}
         className="sticky top-20 flex h-[calc(100vh-5rem)] w-full flex-col overflow-hidden"
       >
-        <div className="mx-auto grid h-full w-full max-w-7xl flex-1 grid-rows-[auto_1fr] gap-4 px-6 pt-10 lg:grid-cols-[1fr_1fr] lg:grid-rows-none lg:items-center lg:gap-10 lg:px-10 lg:pt-0">
+        {/* minmax(0,1fr) + min-h-0 let the graphic row shrink on short
+            viewports, so the phase stepper below is never pushed out of the
+            fixed-height sticky frame and cropped */}
+        <div className="mx-auto grid h-full w-full min-h-0 max-w-7xl flex-1 grid-rows-[auto_minmax(0,1fr)] gap-4 px-6 pt-10 lg:grid-cols-[1fr_1fr] lg:grid-rows-none lg:items-center lg:gap-10 lg:px-10 lg:pt-0">
           {children && (
             <div className="relative z-10 max-w-xl">{children}</div>
           )}

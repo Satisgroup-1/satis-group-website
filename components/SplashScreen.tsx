@@ -65,7 +65,6 @@ export function SplashScreen() {
               const dropDelay = 0.2 + index * 0.22;
               return (
                 <g key={`${letter}-${index}`}>
-                  {/* letter + its crane cable descend together */}
                   <motion.g
                     initial={{ y: -170 }}
                     animate={{ y: 0 }}
@@ -75,31 +74,6 @@ export function SplashScreen() {
                       ease: [0.3, 0.7, 0.3, 1],
                     }}
                   >
-                    {/* cable from far above down to the letter's top; fades once landed */}
-                    <motion.line
-                      x1={x}
-                      x2={x}
-                      y1={-420}
-                      y2={BASELINE - 50}
-                      stroke="currentColor"
-                      strokeWidth="1"
-                      initial={{ opacity: 0.55 }}
-                      animate={{ opacity: 0 }}
-                      transition={{ delay: dropDelay + 1.35, duration: 0.45 }}
-                    />
-                    {/* hook */}
-                    <motion.rect
-                      x={x - 5}
-                      y={BASELINE - 58}
-                      width="10"
-                      height="8"
-                      fill="none"
-                      stroke="var(--accent)"
-                      strokeWidth="1"
-                      initial={{ opacity: 1 }}
-                      animate={{ opacity: 0 }}
-                      transition={{ delay: dropDelay + 1.35, duration: 0.45 }}
-                    />
                     <motion.text
                       x={x}
                       y={BASELINE}

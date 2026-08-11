@@ -72,6 +72,9 @@ export type PropertyPageData = {
     heading: string;
     body: string[];
     distances: Array<{ value: string; label: string }>;
+    // Optional companion site about the surrounding area, linked beneath the
+    // location copy.
+    link?: { label: string; href: string };
   };
   gallery?: Array<{ src: string; alt: string }>;
   agent?: {
@@ -457,6 +460,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       heading: "Connected. Vibrant. Refined.",
       body: [
         "An award-winning market town with excellent transport links into Manchester city centre, tree-lined streets, independent restaurants and considered boutiques. Barrington House sits in the quietest pocket of it.",
+        "We keep a companion site of Altrincham living stories: the places, people and everyday routines that make the town what it is.",
       ],
       distances: [
         { value: "30 min", label: "Manchester city centre (tram)" },
@@ -464,6 +468,10 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
         { value: "12 min", label: "Walk to Altrincham Market" },
         { value: "15 min", label: "Manchester Airport (car)" },
       ],
+      link: {
+        label: "Explore Altrincham living stories",
+        href: "https://altrincham-living-stories.lovable.app",
+      },
     },
     gallery: [
       { src: "/images/barrington/gallery-1.jpg", alt: "Inside Barrington House" },
