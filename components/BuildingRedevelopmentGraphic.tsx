@@ -120,6 +120,12 @@ function PhaseStepper({
               );
             })}
           </ol>
+          {/* Below sm the per-phase captions are hidden; show the active
+              phase's caption full-width so the panel reads complete on
+              mobile too. */}
+          <p className="mt-3 text-xs leading-relaxed text-foreground sm:hidden">
+            {PHASES[activePhase].caption}
+          </p>
         </div>
       </div>
     </div>

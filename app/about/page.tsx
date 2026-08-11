@@ -204,6 +204,10 @@ export default function AboutPage() {
               of the suburbs, designed to cater to different lifestyles and
               preferences.
             </p>
+            <p className="border-l-2 border-accent pl-4 text-base leading-relaxed">
+              Redeveloping properties into places people want to live and
+              work.
+            </p>
           </Reveal>
         </div>
       </section>

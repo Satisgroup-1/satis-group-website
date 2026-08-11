@@ -9,6 +9,21 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    // The newsletter section became /news; keep old links working.
+    return [
+      {
+        source: "/newsletter",
+        destination: "/news",
+        permanent: true,
+      },
+      {
+        source: "/newsletter/:slug",
+        destination: "/news/:slug",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

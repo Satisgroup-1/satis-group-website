@@ -14,7 +14,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({
   params,
-}: PageProps<"/newsletter/[slug]">): Promise<Metadata> {
+}: PageProps<"/news/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const issue = getNewsletter(slug);
   if (!issue) return {};
@@ -26,7 +26,7 @@ export async function generateMetadata({
 
 export default async function NewsletterIssuePage({
   params,
-}: PageProps<"/newsletter/[slug]">) {
+}: PageProps<"/news/[slug]">) {
   const { slug } = await params;
   const issue = getNewsletter(slug);
   if (!issue) notFound();
@@ -37,7 +37,7 @@ export default async function NewsletterIssuePage({
         <div className="mx-auto max-w-3xl px-6 py-20 lg:py-28">
           <Reveal>
             <Link
-              href="/newsletter"
+              href="/news"
               className="group inline-flex items-center gap-2 text-xs tracking-[0.2em] uppercase text-muted transition-colors hover:text-accent"
             >
               <span
@@ -102,7 +102,7 @@ export default async function NewsletterIssuePage({
             <p className="text-sm text-muted">
               Want updates like this by email?{" "}
               <Link
-                href="/newsletter"
+                href="/news"
                 className="text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent"
               >
                 Join the newsletter.

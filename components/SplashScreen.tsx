@@ -93,19 +93,6 @@ export function SplashScreen() {
               );
             })}
 
-            {/* ground line the letters settle onto */}
-            <motion.line
-              x1="140"
-              x2="490"
-              y1={BASELINE + 14}
-              y2={BASELINE + 14}
-              stroke="var(--accent)"
-              strokeWidth="1.5"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ delay: 0.1, duration: 1.4, ease: "easeInOut" }}
-            />
-
             {/* GROUP lockup */}
             <motion.text
               x="312"
