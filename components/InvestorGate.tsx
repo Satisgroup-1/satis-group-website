@@ -70,7 +70,7 @@ export function InvestorGate() {
     <div className="w-full max-w-sm border border-ink-foreground/20 bg-ink p-8 sm:p-10">
       {view === "login" && (
         <>
-          <span className="text-xs tracking-[0.35em] uppercase text-accent">
+          <span className="text-xs tracking-[0.35em] uppercase text-[#dcb878]">
             Investor Login
           </span>
           <h2
@@ -144,7 +144,7 @@ export function InvestorGate() {
 
       {view === "request" && (
         <>
-          <span className="text-xs tracking-[0.35em] uppercase text-accent">
+          <span className="text-xs tracking-[0.35em] uppercase text-[#dcb878]">
             Request Access
           </span>
           <h2
@@ -180,7 +180,7 @@ export function InvestorGate() {
 
       {view === "forgot" && (
         <>
-          <span className="text-xs tracking-[0.35em] uppercase text-accent">
+          <span className="text-xs tracking-[0.35em] uppercase text-[#dcb878]">
             Forgot Password
           </span>
           <h2
