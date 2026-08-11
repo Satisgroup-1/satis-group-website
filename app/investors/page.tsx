@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { AnimatedStat } from "@/components/AnimatedStat";
-import { Eyebrow } from "@/components/Eyebrow";
-import { PageHero } from "@/components/PageHero";
+import { InvestorGate } from "@/components/InvestorGate";
 import { Reveal } from "@/components/Reveal";
 
 export const metadata: Metadata = {
   title: "Investors | Satis Group",
   description:
-    "The Satis Group investor centre: our track record, how investment with us works, and access to our proprietary investor platform.",
+    "The Satis Group investor centre: sign in to our proprietary investor platform, request access or reset your password.",
 };
 
 const TRACK_RECORD = [
@@ -36,44 +34,61 @@ const PLATFORM_FEATURES = [
   },
 ];
 
+// The investor centre inverts the site's palette: everything on this page
+// sits on the ink background used elsewhere only for footers and stat bands.
 export default function InvestorsPage() {
   return (
-    <>
-      <PageHero
-        eyebrow="Investors"
-        title="Invest in buildings worth reviving."
-        description={[
-          "Satis Group partners with private and institutional investors on residential and commercial redevelopment across the North West. Reviving the past, building the future — with capital deployed into buildings that have already proved they belong.",
-          "Our proprietary investor platform gives partners a live view of every scheme: deal flow, appraisals, reporting and documents, all in one place.",
-        ]}
-      />
-
-      {/* Track record */}
-      <section className="bg-ink text-ink-foreground">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 py-20 sm:grid-cols-3 lg:px-10">
-          {TRACK_RECORD.map((stat, index) => (
-            <Reveal key={stat.label} delay={index * 0.1}>
-              <AnimatedStat
-                value={stat.value}
-                className="text-4xl font-medium tracking-tight text-accent"
-              />
-              <p className="mt-3 text-sm tracking-[0.05em] text-ink-foreground/70">
-                {stat.label}
-              </p>
-            </Reveal>
-          ))}
+    <div className="bg-ink text-ink-foreground">
+      {/* Login splash: fills the viewport below the header so the gate is
+          the first and only thing an arriving investor sees. */}
+      <section className="flex min-h-[calc(100vh-5rem)] items-center border-b border-ink-foreground/15">
+        <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-14 px-6 py-16 lg:grid-cols-[1fr_auto] lg:px-10">
+          <Reveal>
+            <span className="text-xs tracking-[0.35em] uppercase text-accent">
+              Investors
+            </span>
+            <h1 className="mt-4 max-w-xl text-4xl font-medium tracking-tight sm:text-5xl">
+              The Satis investor platform.
+            </h1>
+            <p className="mt-6 max-w-md text-base leading-relaxed text-ink-foreground/70">
+              Reviving the past, building the future — in partnership with
+              private and institutional investors. Our proprietary platform
+              gives partners a live view of every scheme: deal flow,
+              appraisals, reporting and documents, in one place.
+            </p>
+            <div className="mt-10 grid max-w-md grid-cols-3 gap-6">
+              {TRACK_RECORD.map((stat) => (
+                <div key={stat.label}>
+                  <AnimatedStat
+                    value={stat.value}
+                    className="text-2xl font-medium tracking-tight text-accent"
+                  />
+                  <p className="mt-2 text-xs leading-relaxed text-ink-foreground/60">
+                    {stat.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+          <Reveal delay={0.15} className="flex justify-center lg:justify-end">
+            <InvestorGate />
+          </Reveal>
         </div>
       </section>
 
-      {/* The platform */}
-      <section className="border-b border-border">
+      {/* What's behind the login */}
+      <section>
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
           <Reveal>
-            <Eyebrow index="01" label="The Platform" />
+            <span className="flex items-center gap-3 text-xs tracking-[0.35em] uppercase text-accent">
+              <span>01</span>
+              <span className="h-px w-8 bg-accent/60" aria-hidden="true" />
+              <span>The Platform</span>
+            </span>
             <h2 className="mt-4 max-w-lg text-3xl font-medium tracking-tight sm:text-4xl">
               One place to see everything we build.
             </h2>
-            <p className="mt-4 max-w-xl text-base leading-relaxed text-muted">
+            <p className="mt-4 max-w-xl text-base leading-relaxed text-ink-foreground/70">
               Access is by invitation, for investors we work with. Once
               you&rsquo;re in, every scheme we run is open to you in detail.
             </p>
@@ -81,11 +96,11 @@ export default function InvestorsPage() {
           <div className="mt-12 grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
             {PLATFORM_FEATURES.map((feature, index) => (
               <Reveal key={feature.title} delay={Math.min(index * 0.08, 0.4)}>
-                <div className="group border-t border-border pt-5 transition-colors duration-300 hover:border-accent">
+                <div className="group border-t border-ink-foreground/20 pt-5 transition-colors duration-300 hover:border-accent">
                   <h3 className="text-sm font-medium tracking-[0.2em] uppercase">
                     {feature.title}
                   </h3>
-                  <p className="mt-4 text-sm leading-relaxed text-muted">
+                  <p className="mt-4 text-sm leading-relaxed text-ink-foreground/60">
                     {feature.body}
                   </p>
                 </div>
@@ -94,37 +109,6 @@ export default function InvestorsPage() {
           </div>
         </div>
       </section>
-
-      {/* Request access */}
-      <section>
-        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
-          <Reveal>
-            <Eyebrow index="02" label="Request Access" />
-            <h2 className="mt-4 max-w-lg text-3xl font-medium tracking-tight sm:text-4xl">
-              Interested in investing with Satis?
-            </h2>
-            <p className="mt-4 max-w-xl text-base leading-relaxed text-muted">
-              Tell us a little about yourself and the kind of opportunities
-              you&rsquo;re looking for, and we&rsquo;ll be in touch about
-              platform access.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Link
-                href="/contact?topic=Investment"
-                className="border border-foreground bg-foreground px-6 py-3 text-xs tracking-[0.2em] uppercase text-background transition-colors duration-300 hover:border-accent hover:bg-accent"
-              >
-                Request platform access
-              </Link>
-              <Link
-                href="/portfolio"
-                className="border border-border px-6 py-3 text-xs tracking-[0.2em] uppercase transition-colors duration-300 hover:border-accent hover:text-accent"
-              >
-                See our track record
-              </Link>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-    </>
+    </div>
   );
 }
