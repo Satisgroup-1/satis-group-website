@@ -2,11 +2,12 @@ import fs from "node:fs";
 import path from "node:path";
 import bundledInvestors from "@/content/investors/investors.json";
 import bundledDevelopments from "@/content/investors/developments.json";
-import bundledHoldings from "@/content/investors/holdings.json";
+import bundledCapTables from "@/content/investors/cap-tables.json";
 import bundledCashEvents from "@/content/investors/cash-events.json";
 import bundledUpdates from "@/content/investors/updates.json";
 import bundledDocuments from "@/content/investors/documents.json";
 import bundledInsights from "@/content/investors/insights.json";
+import bundledOpportunities from "@/content/investors/opportunities.json";
 
 // Data layer for the investor platform. All records live as JSON files in
 // content/investors/ so the dataset is versioned with the repository and can
@@ -27,28 +28,46 @@ export type InvestorProfile = {
   valueHistory: { label: string; value: number }[];
 };
 
+export type DevelopmentSpv = {
+  /** Registered name of the single-asset vehicle, e.g. "Satis (QUBE) Ltd". */
+  name: string;
+  /** Current equity (net asset) value of the SPV. */
+  equityValue: number;
+  /** Total equity committed across all members. */
+  totalCommitted: number;
+  seniorDebt: number;
+  /** Site-level forecast IRR applied to every position in the vehicle. */
+  forecastIrr: number;
+};
+
 export type Development = {
   id: string;
   name: string;
   place: string;
-  /** Percentage coordinates on the stylised Greater Manchester map. */
-  x: number;
-  y: number;
+  address: string;
+  lat: number;
+  lng: number;
   status: string;
   progress: number;
   gdv: number;
   phase: string;
   nextReport: string;
   summary: string;
+  spv: DevelopmentSpv;
 };
 
-export type Holding = {
-  investorId: string;
+/**
+ * One line of an SPV's cap table. investorId links the position to a
+ * platform account; positions without one (the GP, aggregated third
+ * parties) still render in the site cap table for completeness.
+ */
+export type CapTablePosition = {
   developmentId: string;
-  invested: number;
-  currentValue: number;
-  forecastIrr: number;
-  status: string;
+  investorId?: string;
+  holder: string;
+  committed: number;
+  sharePercent: number;
+  status?: string;
 };
 
 export type CashEvent = {
@@ -75,10 +94,32 @@ export type InvestorDocument = {
   published: string;
 };
 
+export type Opportunity = {
+  id: string;
+  name: string;
+  place: string;
+  address: string;
+  status: "Open" | "Coming soon" | "Fully subscribed";
+  targetRaise: number;
+  raisedToDate: number;
+  minCommitment: number;
+  targetIrr: number;
+  targetMultiple: string;
+  horizon: string;
+  closesOn: string;
+  structure: string;
+  summary: string;
+  highlights: string[];
+};
+
 export type InsightBlock =
   | { type: "heading"; text: string }
   | { type: "paragraph"; text: string }
-  | { type: "list"; items: string[] };
+  | { type: "list"; items: string[] }
+  | { type: "quote"; text: string; attribution?: string }
+  | { type: "stats"; items: { value: string; label: string }[] }
+  | { type: "table"; headers: string[]; rows: string[][] }
+  | { type: "callout"; title?: string; text: string };
 
 export type Insight = {
   slug: string;
@@ -100,11 +141,12 @@ export const INVESTOR_DATA_DIR = path.join(
 export const INVESTOR_DATASETS = [
   "investors",
   "developments",
-  "holdings",
+  "cap-tables",
   "cash-events",
   "updates",
   "documents",
   "insights",
+  "opportunities",
 ] as const;
 
 export type InvestorDataset = (typeof INVESTOR_DATASETS)[number];
@@ -112,11 +154,12 @@ export type InvestorDataset = (typeof INVESTOR_DATASETS)[number];
 const BUNDLED_DATASETS: Record<InvestorDataset, unknown> = {
   investors: bundledInvestors,
   developments: bundledDevelopments,
-  holdings: bundledHoldings,
+  "cap-tables": bundledCapTables,
   "cash-events": bundledCashEvents,
   updates: bundledUpdates,
   documents: bundledDocuments,
   insights: bundledInsights,
+  opportunities: bundledOpportunities,
 };
 
 export function readDataset<T>(dataset: InvestorDataset): T[] {
@@ -187,9 +230,21 @@ export function getDevelopments(): Development[] {
   return readDataset<Development>("developments");
 }
 
-export function getHoldingsFor(investorId: string): Holding[] {
-  return readDataset<Holding>("holdings").filter(
-    (holding) => holding.investorId === investorId
+export function getCapTable(): CapTablePosition[] {
+  return readDataset<CapTablePosition>("cap-tables");
+}
+
+/** All cap-table lines for one SPV/site, largest position first. */
+export function getCapTableFor(developmentId: string): CapTablePosition[] {
+  return getCapTable()
+    .filter((position) => position.developmentId === developmentId)
+    .sort((a, b) => b.sharePercent - a.sharePercent);
+}
+
+/** An investor's positions across every SPV. */
+export function getPositionsFor(investorId: string): CapTablePosition[] {
+  return getCapTable().filter(
+    (position) => position.investorId === investorId
   );
 }
 
@@ -217,26 +272,73 @@ export function getInsights(): Insight[] {
   );
 }
 
+export function getOpportunities(): Opportunity[] {
+  const order = { Open: 0, "Coming soon": 1, "Fully subscribed": 2 };
+  return readDataset<Opportunity>("opportunities").sort(
+    (a, b) => (order[a.status] ?? 3) - (order[b.status] ?? 3)
+  );
+}
+
 // ---------------------------------------------------------------------------
 // Derived portfolio figures
+//
+// The portfolio is a pure product of SPV cap tables: an investor's value in
+// a site is their cap-table share of that SPV's current equity value, their
+// cost basis is the capital they committed to the vehicle, and the return
+// assumption is the site-level forecast IRR. Nothing is stored per investor.
+
+export type HoldingView = {
+  developmentId: string;
+  developmentName: string;
+  spvName: string;
+  sharePercent: number;
+  committed: number;
+  /** sharePercent × SPV equity value. */
+  currentValue: number;
+  siteIrr: number;
+  status: string;
+};
 
 export type PortfolioSummary = {
   value: number;
   invested: number;
-  /** Current-value-weighted forecast IRR across active holdings. */
+  /** Current-value-weighted site forecast IRR across active positions. */
   weightedIrr: number;
   distributionsToDate: number;
   holdingsCount: number;
   nextForecastEvent?: CashEvent;
+  holdings: HoldingView[];
 };
 
 export function computePortfolio(investorId: string): PortfolioSummary {
-  const holdings = getHoldingsFor(investorId);
+  const developments = getDevelopments();
+  const developmentById = new Map(developments.map((d) => [d.id, d]));
+  const holdings: HoldingView[] = getPositionsFor(investorId).flatMap(
+    (position) => {
+      const development = developmentById.get(position.developmentId);
+      if (!development) return [];
+      return [
+        {
+          developmentId: development.id,
+          developmentName: development.name,
+          spvName: development.spv.name,
+          sharePercent: position.sharePercent,
+          committed: position.committed,
+          currentValue: Math.round(
+            (position.sharePercent / 100) * development.spv.equityValue
+          ),
+          siteIrr: development.spv.forecastIrr,
+          status: position.status ?? "Active",
+        },
+      ];
+    }
+  );
+
   const value = holdings.reduce((sum, h) => sum + h.currentValue, 0);
-  const invested = holdings.reduce((sum, h) => sum + h.invested, 0);
+  const invested = holdings.reduce((sum, h) => sum + h.committed, 0);
   const weightedIrr =
     value > 0
-      ? holdings.reduce((sum, h) => sum + h.forecastIrr * h.currentValue, 0) /
+      ? holdings.reduce((sum, h) => sum + h.siteIrr * h.currentValue, 0) /
         value
       : 0;
   const events = getCashEventsFor(investorId);
@@ -251,6 +353,7 @@ export function computePortfolio(investorId: string): PortfolioSummary {
     distributionsToDate,
     holdingsCount: holdings.length,
     nextForecastEvent,
+    holdings,
   };
 }
 

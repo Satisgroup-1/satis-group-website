@@ -2,18 +2,20 @@ import type { Metadata } from "next";
 import { InvestorLogin } from "@/components/InvestorLogin";
 import { InvestorPortal, type PortalData } from "@/components/InvestorPortal";
 import { getSessionInvestorId } from "@/lib/investor-auth";
+import { getMarketData, type MarketData } from "@/lib/market-data";
 import {
   computePortfolio,
   formatInsightDate,
   formatMoneyCompact,
   formatMoneyFull,
   formatPortalDate,
+  getCapTableFor,
   getCashEventsFor,
   getDevelopments,
   getDocumentsFor,
-  getHoldingsFor,
   getInsights,
   getInvestorById,
+  getOpportunities,
   getUpdates,
   type Development,
   type InvestorProfile,
@@ -34,10 +36,10 @@ export const dynamic = "force-dynamic";
 
 function buildPortalData(
   investor: InvestorProfile,
-  developments: Development[]
+  developments: Development[],
+  market: MarketData
 ): PortalData {
   const summary = computePortfolio(investor.id);
-  const holdings = getHoldingsFor(investor.id);
   const developmentById = new Map(developments.map((d) => [d.id, d]));
   const developmentName = (id?: string) =>
     (id && developmentById.get(id)?.name) ?? "Portfolio";
@@ -69,7 +71,7 @@ function buildPortalData(
       ? `${summary.value >= summary.invested ? "+" : ""}${(
           (summary.value / summary.invested - 1) *
           100
-        ).toFixed(1)}% on invested capital`
+        ).toFixed(1)}% on committed capital`
       : "Awaiting first investment";
   const nextEvent = summary.nextForecastEvent;
 
@@ -99,16 +101,16 @@ function buildPortalData(
         note: growth,
       },
       {
-        label: "Capital invested",
+        label: "Capital committed",
         value: formatMoneyCompact(summary.invested),
-        note: `Across ${summary.holdingsCount} active holding${
+        note: `Across ${summary.holdingsCount} SPV position${
           summary.holdingsCount === 1 ? "" : "s"
         }`,
       },
       {
         label: "Forecast IRR",
         value: `${summary.weightedIrr.toFixed(1)}%`,
-        note: "Weighted by current value",
+        note: "Site IRRs, weighted by current value",
       },
       {
         label: "Distributions to date",
@@ -119,26 +121,53 @@ function buildPortalData(
       },
     ],
     valueHistory: investor.valueHistory ?? [],
-    developments: developments.map((d) => ({
-      id: d.id,
-      name: d.name,
-      place: d.place,
-      x: d.x,
-      y: d.y,
-      status: d.status,
-      progress: d.progress,
-      value: formatMoneyCompact(d.gdv),
-      phase: d.phase,
-      nextReport: formatPortalDate(d.nextReport),
-      summary: d.summary,
-    })),
-    holdings: holdings.map((h) => ({
-      name: developmentName(h.developmentId),
-      invested: formatMoneyCompact(h.invested),
+    developments: developments.map((d) => {
+      const capTable = getCapTableFor(d.id).map((position) => ({
+        holder: position.holder,
+        sharePercent: `${position.sharePercent}%`,
+        committed: formatMoneyCompact(position.committed),
+        isYou: position.investorId === investor.id,
+      }));
+      const mine = summary.holdings.find((h) => h.developmentId === d.id);
+      return {
+        id: d.id,
+        name: d.name,
+        place: d.place,
+        address: d.address,
+        lat: d.lat,
+        lng: d.lng,
+        status: d.status,
+        progress: d.progress,
+        value: formatMoneyCompact(d.gdv),
+        phase: d.phase,
+        nextReport: formatPortalDate(d.nextReport),
+        summary: d.summary,
+        spv: {
+          name: d.spv.name,
+          equityValue: formatMoneyCompact(d.spv.equityValue),
+          totalCommitted: formatMoneyCompact(d.spv.totalCommitted),
+          seniorDebt: formatMoneyCompact(d.spv.seniorDebt),
+          forecastIrr: `${d.spv.forecastIrr.toFixed(1)}%`,
+        },
+        capTable,
+        yourPosition: mine
+          ? {
+              sharePercent: `${mine.sharePercent}%`,
+              committed: formatMoneyCompact(mine.committed),
+              currentValue: formatMoneyCompact(mine.currentValue),
+            }
+          : undefined,
+      };
+    }),
+    holdings: summary.holdings.map((h) => ({
+      name: h.developmentName,
+      spvName: h.spvName,
+      share: `${h.sharePercent}%`,
+      invested: formatMoneyCompact(h.committed),
       currentValue: formatMoneyCompact(h.currentValue),
-      forecastIrr: `${h.forecastIrr.toFixed(1)}%`,
+      forecastIrr: `${h.siteIrr.toFixed(1)}%`,
       multiple:
-        h.invested > 0 ? `${(h.currentValue / h.invested).toFixed(2)}x` : "—",
+        h.committed > 0 ? `${(h.currentValue / h.committed).toFixed(2)}x` : "—",
       status: h.status,
     })),
     financialsHeadline: {
@@ -162,6 +191,42 @@ function buildPortalData(
       kind: doc.kind,
       published: formatPortalDate(doc.published),
     })),
+    opportunities: getOpportunities().map((o) => ({
+      id: o.id,
+      name: o.name,
+      place: o.place,
+      address: o.address,
+      status: o.status,
+      targetRaise: formatMoneyCompact(o.targetRaise),
+      raisedToDate: formatMoneyCompact(o.raisedToDate),
+      raisedPercent:
+        o.targetRaise > 0
+          ? Math.min(100, Math.round((o.raisedToDate / o.targetRaise) * 100))
+          : 0,
+      minCommitment: formatMoneyCompact(o.minCommitment),
+      targetIrr: `${o.targetIrr}%`,
+      targetMultiple: o.targetMultiple,
+      horizon: o.horizon,
+      closesOn: formatPortalDate(o.closesOn),
+      structure: o.structure,
+      summary: o.summary,
+      highlights: o.highlights,
+    })),
+    market: {
+      regions: market.regions.map((r) => ({
+        label: r.label,
+        averagePrice: formatMoneyFull(r.averagePrice),
+        annualChange: `${r.annualChange >= 0 ? "+" : ""}${r.annualChange}%`,
+        rentPcm: formatMoneyFull(r.rentPcm),
+        grossYield: `${r.grossYield}%`,
+      })),
+      badge:
+        market.source === "live"
+          ? `HM Land Registry UK House Price Index · ${market.asOf}`
+          : `Curated snapshot · ${market.asOf} — live feed unavailable`,
+      attribution: market.attribution,
+      live: market.source === "live",
+    },
   };
 }
 
@@ -190,9 +255,10 @@ export default async function InvestorsPage() {
     );
   }
 
+  const market = await getMarketData();
   return (
     <InvestorPortal
-      data={buildPortalData(investor, developments)}
+      data={buildPortalData(investor, developments, market)}
       logout={investorLogout}
     />
   );

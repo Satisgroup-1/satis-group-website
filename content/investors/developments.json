@@ -3,78 +3,126 @@
     "id": "22-st-john-street",
     "name": "22 St John Street",
     "place": "Manchester M3",
-    "x": 48,
-    "y": 41,
+    "address": "22 St John Street, Manchester M3 4EB",
+    "lat": 53.4796,
+    "lng": -2.2516,
     "status": "On programme",
     "progress": 76,
     "gdv": 18400000,
     "phase": "Fit-out",
     "nextReport": "2026-09-30",
-    "summary": "A Grade II listed Georgian terrace in Manchester's legal quarter, being restored as characterful workspace with original fireplaces, sash windows and a landscaped rear courtyard."
+    "summary": "A Grade II listed Georgian terrace in Manchester's legal quarter, being restored as characterful workspace with original fireplaces, sash windows and a landscaped rear courtyard.",
+    "spv": {
+      "name": "Satis (22 St John) Ltd",
+      "equityValue": 5400000,
+      "totalCommitted": 4000000,
+      "seniorDebt": 9500000,
+      "forecastIrr": 19.2
+    }
   },
   {
     "id": "barnett-house",
     "name": "Barnett House",
     "place": "Manchester M1",
-    "x": 59,
-    "y": 51,
+    "address": "Portland Street, Manchester M1 (exact address TBC)",
+    "lat": 53.4776,
+    "lng": -2.2352,
     "status": "On programme",
     "progress": 58,
     "gdv": 14800000,
     "phase": "Construction",
     "nextReport": "2026-09-30",
-    "summary": "A 1930s former office building close to Piccadilly, being converted to forty-two design-led apartments with a residents' lounge and roof terrace."
+    "summary": "A 1930s former office building close to Piccadilly, being converted to forty-two design-led apartments with a residents' lounge and roof terrace.",
+    "spv": {
+      "name": "Satis (Barnett House) Ltd",
+      "equityValue": 4800000,
+      "totalCommitted": 3800000,
+      "seniorDebt": 7400000,
+      "forecastIrr": 16.4
+    }
   },
   {
     "id": "chester-house",
     "name": "Chester House",
     "place": "Altrincham",
-    "x": 43,
-    "y": 76,
+    "address": "Chester Road, Altrincham WA14 (exact address TBC)",
+    "lat": 53.3855,
+    "lng": -2.3476,
     "status": "Ahead",
     "progress": 89,
     "gdv": 11200000,
     "phase": "Completion",
     "nextReport": "2026-09-15",
-    "summary": "A red-brick landmark on the edge of Altrincham town centre, approaching practical completion as twenty-eight apartments a short walk from the Metrolink and the market quarter."
+    "summary": "A red-brick landmark on the edge of Altrincham town centre, approaching practical completion as twenty-eight apartments a short walk from the Metrolink and the market quarter.",
+    "spv": {
+      "name": "Satis (Chester House) Ltd",
+      "equityValue": 2825000,
+      "totalCommitted": 2000000,
+      "seniorDebt": 5200000,
+      "forecastIrr": 18.8
+    }
   },
   {
     "id": "barrington-road",
     "name": "Barrington Road",
     "place": "Altrincham",
-    "x": 38,
-    "y": 82,
+    "address": "Barrington Road, Altrincham WA14 (exact address TBC)",
+    "lat": 53.3922,
+    "lng": -2.3563,
     "status": "On programme",
     "progress": 34,
     "gdv": 9600000,
     "phase": "Structure",
     "nextReport": "2026-10-15",
-    "summary": "A brownfield infill site delivering townhouses and duplexes around a shared garden square, designed to knit into Altrincham's Victorian street grain."
+    "summary": "A brownfield infill site delivering townhouses and duplexes around a shared garden square, designed to knit into Altrincham's Victorian street grain.",
+    "spv": {
+      "name": "Satis (Barrington) Ltd",
+      "equityValue": 2900000,
+      "totalCommitted": 2333000,
+      "seniorDebt": 4600000,
+      "forecastIrr": 15.9
+    }
   },
   {
     "id": "court-house",
     "name": "Court House",
     "place": "Stockport",
-    "x": 69,
-    "y": 74,
+    "address": "Vernon Street, Stockport SK1 (exact address TBC)",
+    "lat": 53.4116,
+    "lng": -2.1553,
     "status": "Planning",
     "progress": 18,
     "gdv": 22100000,
     "phase": "Pre-construction",
     "nextReport": "2026-10-31",
-    "summary": "The former county court in central Stockport, in pre-construction for a mixed-use restoration combining workspace, hospitality and civic space within the retained courtroom interiors."
+    "summary": "The former county court in central Stockport, in pre-construction for a mixed-use restoration combining workspace, hospitality and civic space within the retained courtroom interiors.",
+    "spv": {
+      "name": "Satis (Court House) Ltd",
+      "equityValue": 5050000,
+      "totalCommitted": 4750000,
+      "seniorDebt": 11800000,
+      "forecastIrr": 14.8
+    }
   },
   {
     "id": "davenport",
     "name": "Davenport",
     "place": "Stockport",
-    "x": 73,
-    "y": 81,
+    "address": "Bramhall Lane, Davenport, Stockport SK3 (exact address TBC)",
+    "lat": 53.3936,
+    "lng": -2.1522,
     "status": "On programme",
     "progress": 47,
     "gdv": 13500000,
     "phase": "Construction",
     "nextReport": "2026-10-15",
-    "summary": "A suburban consolidation scheme beside Davenport station, delivering family homes and apartments with direct rail links into Manchester Piccadilly."
+    "summary": "A suburban consolidation scheme beside Davenport station, delivering family homes and apartments with direct rail links into Manchester Piccadilly.",
+    "spv": {
+      "name": "Satis (Davenport) Ltd",
+      "equityValue": 2360000,
+      "totalCommitted": 1920000,
+      "seniorDebt": 6900000,
+      "forecastIrr": 17.2
+    }
   }
 ]

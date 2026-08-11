@@ -104,7 +104,7 @@ export function InvestorLogin({ stats }: { stats: HeroStats }) {
               <button
                 type="submit"
                 disabled={pending}
-                className="flex w-full items-center justify-between bg-[#b18c4d] px-5 py-4 text-xs font-medium tracking-[.18em] uppercase transition hover:bg-[#c3a164] disabled:opacity-60"
+                className="shimmer-btn flex w-full items-center justify-between bg-[#b18c4d] px-5 py-4 text-xs font-medium tracking-[.18em] uppercase transition hover:bg-[#c3a164] disabled:opacity-60"
               >
                 {pending ? "Signing in…" : "Enter platform"} <span>→</span>
               </button>

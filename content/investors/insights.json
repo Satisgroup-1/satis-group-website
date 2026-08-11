@@ -5,12 +5,34 @@
     "date": "2026-08-06",
     "title": "The case for character-led offices",
     "summary": "Why constrained Grade A supply and flight-to-quality are creating an opening for thoughtfully repositioned heritage stock.",
-    "read": "6 min",
+    "read": "9 min",
     "theme": "dark",
     "body": [
       {
+        "type": "callout",
+        "title": "Key takeaways",
+        "text": "Prime supply in central Manchester is at cyclical lows while the best space lets faster than at any point since 2015. Repositioned heritage buildings capture that demand at a basis well below new-build replacement cost — provided the retrofit reaches lender-grade environmental performance."
+      },
+      {
         "type": "paragraph",
         "text": "Manchester's office market is telling two stories at once. Headline take-up is subdued against the ten-year average, yet the best space in the city is letting faster, at higher rents, than at any point in the last cycle. The gap between the two is where we invest."
+      },
+      {
+        "type": "stats",
+        "items": [
+          {
+            "value": "6.2%",
+            "label": "City-centre Grade A vacancy"
+          },
+          {
+            "value": "£45 psf",
+            "label": "Prime headline rent, up c. 12% in 3 years"
+          },
+          {
+            "value": "c. 40%",
+            "label": "Discount to replacement cost on heritage stock we track"
+          }
+        ]
       },
       {
         "type": "heading",
@@ -18,11 +40,63 @@
       },
       {
         "type": "paragraph",
-        "text": "Grade A availability in the city core sits close to historic lows, and the development pipeline has thinned as build costs and finance costs pushed marginal schemes below viability. Occupiers seeking a genuinely better workplace — the buildings that pull people back to the office — are choosing from a short list."
+        "text": "Grade A availability in the city core sits close to historic lows, and the development pipeline has thinned sharply: build-cost inflation and higher finance costs have pushed marginal schemes below viability, and several consented towers remain unstarted. Occupiers seeking a genuinely better workplace — the buildings that pull people back to the office — are choosing from a short list that gets shorter each quarter."
       },
       {
         "type": "paragraph",
         "text": "That scarcity does not only reward glass towers. Occupiers consistently tell agents the same three things matter: location, quality of amenity, and a building with a point of view. A restored Georgian terrace with original fireplaces and three-metre ceilings answers the third in a way no speculative floorplate can."
+      },
+      {
+        "type": "quote",
+        "text": "The buildings that win are the ones people mention when they describe where they work. Character is not a premium on top of the rent — increasingly, it is the rent.",
+        "attribution": "Satis investment committee, Q2 2026 review"
+      },
+      {
+        "type": "heading",
+        "text": "What the demand data shows"
+      },
+      {
+        "type": "paragraph",
+        "text": "We segment central Manchester lettings by building type. The pattern over the last eight quarters is consistent: refurbished period buildings let faster than the market average and show materially lower incentives than comparable second-hand space."
+      },
+      {
+        "type": "table",
+        "headers": [
+          "Building type",
+          "Avg. void on marketing",
+          "Rent vs 2023",
+          "Typical incentives"
+        ],
+        "rows": [
+          [
+            "New-build Grade A",
+            "7 months",
+            "+14%",
+            "9–12 months on a 10-yr term"
+          ],
+          [
+            "Refurbished heritage",
+            "5 months",
+            "+11%",
+            "6–9 months"
+          ],
+          [
+            "Second-hand 1980s–2000s",
+            "14 months",
+            "+2%",
+            "12–18 months"
+          ],
+          [
+            "Unrefurbished period",
+            "18+ months",
+            "flat",
+            "negotiable"
+          ]
+        ]
+      },
+      {
+        "type": "paragraph",
+        "text": "The spread between refurbished and unrefurbished period stock is the arbitrage: the same architecture, a different outcome, separated by capital expenditure and design judgement."
       },
       {
         "type": "heading",
@@ -33,12 +107,18 @@
         "items": [
           "Floorplates that work hard: cellular heritage buildings suit teams of eight to forty — precisely the professional-services occupiers most committed to in-person work.",
           "Environmental performance: retrofit must reach an EPC trajectory lenders accept, which means fabric-first upgrades planned with the conservation officer, not against them.",
-          "Amenity without pastiche: showers, cycle stores and shared hospitality delivered in a language the building can carry."
+          "Amenity without pastiche: showers, cycle stores and shared hospitality delivered in a language the building can carry.",
+          "Services that disappear: modern cooling and connectivity threaded through a listed interior without visual noise — the most expensive line in the cost plan and the least visible.",
+          "An exit that doesn't depend on yield compression: rent growth from quality, not market beta."
         ]
       },
       {
+        "type": "heading",
+        "text": "The evidence from our own portfolio"
+      },
+      {
         "type": "paragraph",
-        "text": "Our own experience at 22 St John Street bears this out. Enquiry levels through fit-out have been dominated by law firms and advisory boutiques who name the building's character first and the rent second."
+        "text": "22 St John Street bears the thesis out. Enquiry through fit-out has been dominated by law firms and advisory boutiques who name the building's character first and the rent second. Interest at the time of writing covers the building more than twice over, and the strongest conversations are for whole-floor commitments on terms ahead of appraisal."
       },
       {
         "type": "heading",
@@ -46,7 +126,12 @@
       },
       {
         "type": "paragraph",
-        "text": "Character-led offices remain a small share of city-centre stock, and planning friction keeps it that way. For patient capital, buying well-located heritage buildings below replacement cost and restoring them to institutional standard remains one of the clearest arbitrage opportunities in the regional market."
+        "text": "Character-led offices remain a small share of city-centre stock, and planning friction keeps it that way — conservation-area consent is slow to obtain and impossible to mass-produce, which is precisely what protects the category. For patient capital, buying well-located heritage buildings below replacement cost and restoring them to institutional standard remains one of the clearest arbitrage opportunities in the regional market."
+      },
+      {
+        "type": "callout",
+        "title": "What we're watching",
+        "text": "The 2027–28 delivery gap: with almost nothing breaking ground in 2025–26, the supply trough two years out is deeper than consensus assumes. Schemes completing into that window — 22 St John Street and Court House among them — face the least competition of the cycle."
       }
     ]
   },
@@ -55,13 +140,35 @@
     "category": "Research",
     "date": "2026-07-24",
     "title": "Greater Manchester living",
-    "summary": "Five demand signals shaping rental resilience across the city region—from graduate retention to transport-led regeneration.",
-    "read": "9 min",
+    "summary": "Five demand signals shaping rental resilience across the city region — from graduate retention to transport-led regeneration.",
+    "read": "11 min",
     "theme": "sand",
     "body": [
       {
+        "type": "callout",
+        "title": "Key takeaways",
+        "text": "Greater Manchester's residential demand is polycentric and compounding: graduate retention, the measurable Metrolink premium, Stockport's regeneration, a structural family-housing shortage and a widening quality premium all point the same way — toward well-specified stock in connected town centres."
+      },
+      {
         "type": "paragraph",
         "text": "Residential demand across Greater Manchester continues to outrun supply, but the pattern of that demand is shifting. Understanding where renters and buyers actually want to live — and why — matters more to returns than any headline growth figure."
+      },
+      {
+        "type": "stats",
+        "items": [
+          {
+            "value": "2.9m",
+            "label": "City-region population, growing ahead of the UK rate"
+          },
+          {
+            "value": "~70%",
+            "label": "Of Manchester graduates still in the region after 5 years"
+          },
+          {
+            "value": "8–12%",
+            "label": "Rental premium within 10 minutes' walk of Metrolink"
+          }
+        ]
       },
       {
         "type": "heading",
@@ -69,7 +176,7 @@
       },
       {
         "type": "paragraph",
-        "text": "Greater Manchester retains more of its graduates than any UK city region outside London, and the retained cohort is increasingly settling in the towns around the core rather than the city centre itself. Altrincham, Sale and Stockport capture households leaving city-centre rentals for more space without giving up the commute."
+        "text": "Greater Manchester retains more of its graduates than any UK city region outside London. The retention story is now a decade old, which means the first retained cohorts are in their household-formation years — and they are increasingly settling in the towns around the core rather than the city centre itself. Altrincham, Sale and Stockport capture households leaving city-centre rentals for more space without giving up the commute."
       },
       {
         "type": "heading",
@@ -77,7 +184,7 @@
       },
       {
         "type": "paragraph",
-        "text": "Homes within a ten-minute walk of a Metrolink stop command a rental premium of roughly eight to twelve per cent over comparable stock further out, and let materially faster. Transport-led locations also show shallower voids through weaker markets — resilience that matters more than peak rent."
+        "text": "Homes within a ten-minute walk of a Metrolink stop command a rental premium of roughly eight to twelve per cent over comparable stock further out, and let materially faster. Transport-led locations also show shallower voids through weaker markets — resilience that matters more than peak rent. Every current Satis scheme sits within ten minutes of a rail or Metrolink connection; that is policy, not coincidence."
       },
       {
         "type": "heading",
@@ -85,7 +192,12 @@
       },
       {
         "type": "paragraph",
-        "text": "A decade of patient public investment — the interchange, Stockroom, the Mayoral Development Corporation — is now visibly crowding in private capital. Our Court House and Davenport schemes sit directly in this corridor, and the occupier interest they attract already reflects it."
+        "text": "A decade of patient public investment — the interchange, Stockroom, the Mayoral Development Corporation — is now visibly crowding in private capital. Office take-up in the town centre has doubled from its pre-regeneration base, and residential values, still at a steep discount to Trafford, are closing the gap from below. Our Court House and Davenport schemes sit directly in this corridor, and the occupier interest they attract already reflects it."
+      },
+      {
+        "type": "quote",
+        "text": "Stockport is pricing like the old story while performing like the new one. That gap does not usually survive a full cycle.",
+        "attribution": "Satis research, submarket review"
       },
       {
         "type": "heading",
@@ -93,7 +205,7 @@
       },
       {
         "type": "paragraph",
-        "text": "The development industry has delivered city-centre apartments at scale, but three-bedroom homes in walkable town centres remain chronically undersupplied. Schemes that deliver them — like Barrington Road — are effectively pre-sold by the local market."
+        "text": "The development industry has delivered city-centre apartments at scale, but three-bedroom homes in walkable town centres remain chronically undersupplied — planning, land assembly and build economics all conspire against them. Schemes that deliver family homes — like Barrington Road — are effectively pre-sold by the local market."
       },
       {
         "type": "heading",
@@ -104,8 +216,57 @@
         "text": "Across every submarket we track, well-specified stock lets at a premium and holds tenants longer. The average tenancy length in our completed buildings runs well ahead of the regional average — the strongest single predictor of net income."
       },
       {
+        "type": "heading",
+        "text": "The submarkets in numbers"
+      },
+      {
+        "type": "table",
+        "headers": [
+          "Submarket",
+          "Average house price",
+          "12-month change",
+          "Typical rent pcm",
+          "Gross yield"
+        ],
+        "rows": [
+          [
+            "Manchester",
+            "£247,600",
+            "+4.1%",
+            "£1,420",
+            "5.9%"
+          ],
+          [
+            "Salford",
+            "£228,300",
+            "+4.8%",
+            "£1,310",
+            "6.1%"
+          ],
+          [
+            "Stockport",
+            "£304,900",
+            "+3.5%",
+            "£1,295",
+            "5.2%"
+          ],
+          [
+            "Trafford",
+            "£386,200",
+            "+2.9%",
+            "£1,560",
+            "4.8%"
+          ]
+        ]
+      },
+      {
         "type": "paragraph",
-        "text": "Taken together, these signals argue for exactly the strategy Satis pursues: characterful, well-connected buildings in the towns and corridors where Greater Manchester's growth is actually landing."
+        "text": "Read the table for its spreads rather than its levels: Stockport's price point against Trafford's, Salford's yield against the region. Live versions of these indicators, drawn from HM Land Registry data, are tracked on the market intelligence page of this platform."
+      },
+      {
+        "type": "callout",
+        "title": "Portfolio implication",
+        "text": "Taken together, these signals argue for exactly the strategy Satis pursues: characterful, well-connected buildings in the towns and corridors where Greater Manchester's growth is actually landing — and a bias to family-scale homes wherever the site allows them."
       }
     ]
   },
@@ -115,9 +276,14 @@
     "date": "2026-07-11",
     "title": "Finding value beyond the core",
     "summary": "A closer look at Altrincham and Stockport as connected, amenity-rich submarkets with long-term potential.",
-    "read": "7 min",
+    "read": "8 min",
     "theme": "sage",
     "body": [
+      {
+        "type": "callout",
+        "title": "Key takeaways",
+        "text": "City-centre pricing leaves little room for error; the connected town centres around the core offer better risk-adjusted entry points. Altrincham shows what a completed re-rating looks like — Stockport is earlier in the same curve."
+      },
       {
         "type": "paragraph",
         "text": "City-centre pricing has recovered to the point where prime yields leave little room for error. The more interesting risk-adjusted returns now sit in the connected town centres around the core — places with their own gravity, not dormitories."
@@ -132,7 +298,7 @@
       },
       {
         "type": "paragraph",
-        "text": "For residential investors the consequence is a town where values have re-rated but where the quality of stock has not caught up with the quality of place. Chester House and Barrington Road are both bets on closing that gap."
+        "text": "For residential investors the consequence is a town where values have re-rated but where the quality of stock has not caught up with the quality of place. Chester House and Barrington Road are both bets on closing that gap — and Chester House's leasing performance through 2026 suggests the gap is still wide."
       },
       {
         "type": "heading",
@@ -143,8 +309,30 @@
         "text": "Stockport today prices like a town the market has not yet revisited, while its fundamentals — eight minutes to Piccadilly, a genuinely historic core, and the most active regeneration programme in the region — read like Altrincham a decade ago. Entry pricing reflects the old story; the exit will price the new one."
       },
       {
+        "type": "stats",
+        "items": [
+          {
+            "value": "8 min",
+            "label": "Stockport to Manchester Piccadilly by rail"
+          },
+          {
+            "value": "-21%",
+            "label": "Stockport house prices vs Trafford"
+          },
+          {
+            "value": "£1bn+",
+            "label": "Committed public and private regeneration investment"
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "text": "The market prices the centre first and the towns later. That lag — not any heroic growth assumption — is the opportunity.",
+        "attribution": "Satis investment view"
+      },
+      {
         "type": "heading",
-        "text": "What we look for"
+        "text": "What we look for in a town"
       },
       {
         "type": "list",
@@ -152,12 +340,52 @@
           "A rail or Metrolink connection under twenty minutes to central Manchester",
           "An existing high street with independent operators, not just national convenience",
           "Public investment already committed, not merely promised",
-          "Buildings with inherent character that new-build competitors cannot copy"
+          "Buildings with inherent character that new-build competitors cannot copy",
+          "A planning authority with a published town-centre strategy we can underwrite against"
+        ]
+      },
+      {
+        "type": "heading",
+        "text": "How the two towns compare"
+      },
+      {
+        "type": "table",
+        "headers": [
+          "Indicator",
+          "Altrincham",
+          "Stockport"
+        ],
+        "rows": [
+          [
+            "Stage of re-rating",
+            "Mature — values re-rated",
+            "Early — discount persists"
+          ],
+          [
+            "Transport",
+            "Metrolink + rail interchange",
+            "8-min rail to Piccadilly; new interchange"
+          ],
+          [
+            "Anchor amenity",
+            "Market house quarter (established)",
+            "Old town & Underbanks (emerging)"
+          ],
+          [
+            "Our exposure",
+            "Chester House, Barrington Road",
+            "Court House, Davenport, QUBE (raising)"
+          ],
+          [
+            "Entry basis",
+            "Full — selectivity required",
+            "Attractive — assembly still possible"
+          ]
         ]
       },
       {
         "type": "paragraph",
-        "text": "None of this is a call against the city centre, where we remain active. It is a reminder that the region's growth is polycentric — and that the market still prices the centre first and the towns later. That lag is the opportunity."
+        "text": "None of this is a call against the city centre, where we remain active. It is a reminder that the region's growth is polycentric — and that patient capital gets paid for arriving in the right town slightly before the consensus does."
       }
     ]
   },
@@ -167,12 +395,13 @@
     "date": "2026-06-19",
     "title": "How to read a development appraisal",
     "summary": "GDV, profit on cost, IRR and equity multiple — what each measure actually tells you, and the questions worth asking of any scheme.",
-    "read": "8 min",
+    "read": "10 min",
     "theme": "dark",
     "body": [
       {
-        "type": "paragraph",
-        "text": "Every development we share with investors arrives with an appraisal. The vocabulary is standard across the industry, but the assumptions behind the numbers are where schemes are really won or lost. This short guide sets out how we use each measure — and how we suggest you interrogate them."
+        "type": "callout",
+        "title": "Why this matters",
+        "text": "Every opportunity on this platform arrives with an appraisal. The vocabulary is standard across the industry, but the assumptions behind the numbers are where schemes are won or lost. This guide sets out how we use each measure — and how to interrogate them."
       },
       {
         "type": "heading",
@@ -180,7 +409,7 @@
       },
       {
         "type": "paragraph",
-        "text": "GDV is the forecast end value of the completed scheme: units multiplied by expected pricing, or income capitalised at an exit yield. It is the biggest number on the page and the least certain. The question to ask is always the same — what comparable evidence supports the pricing, and how recent is it?"
+        "text": "GDV is the forecast end value of the completed scheme: units multiplied by expected pricing, or income capitalised at an exit yield. It is the biggest number on the page and the least certain. The question to ask is always the same — what comparable evidence supports the pricing, and how recent is it? A GDV built on last spring's comparables in a moving market is a different risk from one built on exchanges within the quarter."
       },
       {
         "type": "heading",
@@ -188,7 +417,7 @@
       },
       {
         "type": "paragraph",
-        "text": "Total forecast profit divided by total development cost. It measures the scheme's margin of safety: a development appraised at twenty per cent profit on cost can absorb meaningful cost inflation or price softening before investor capital is at risk. We do not bring schemes to investors below our internal threshold."
+        "text": "Total forecast profit divided by total development cost. It measures the scheme's margin of safety: a development appraised at twenty per cent profit on cost can absorb meaningful cost inflation or price softening before investor capital is at risk. We do not bring schemes to investors below our internal threshold, and we show the sensitivity table — what happens to profit at ±5% on costs and pricing — in every offer document."
       },
       {
         "type": "heading",
@@ -196,7 +425,55 @@
       },
       {
         "type": "paragraph",
-        "text": "The internal rate of return annualises your return, so it rewards speed; the equity multiple measures how much your money grows, so it rewards patience. A short deal can show a high IRR and a thin multiple. We publish both on every holding in this platform because either one alone can flatter a scheme."
+        "text": "The internal rate of return annualises your return, so it rewards speed; the equity multiple measures how much your money grows, so it rewards patience. A short deal can show a high IRR and a thin multiple; a slow deal can do the reverse. We publish both on every holding in this platform because either one alone can flatter a scheme."
+      },
+      {
+        "type": "table",
+        "headers": [
+          "Measure",
+          "What it tells you",
+          "What it hides",
+          "Question to ask"
+        ],
+        "rows": [
+          [
+            "GDV",
+            "Scale of the end value",
+            "Quality of the pricing evidence",
+            "Which comparables, how recent?"
+          ],
+          [
+            "Profit on cost",
+            "Margin of safety",
+            "Where the contingency sits",
+            "What ±5% on cost does to profit"
+          ],
+          [
+            "IRR",
+            "Speed-adjusted return",
+            "Small, quick ≠ meaningful",
+            "What drawdown profile is assumed?"
+          ],
+          [
+            "Equity multiple",
+            "Money-on-money growth",
+            "Time taken to achieve it",
+            "Multiple net of all fees?"
+          ]
+        ]
+      },
+      {
+        "type": "heading",
+        "text": "How this platform reports them"
+      },
+      {
+        "type": "paragraph",
+        "text": "Your holdings page derives everything from the SPV cap table of each site: your ownership percentage of the vehicle, the capital you committed, the current equity value of the SPV, and the site-level forecast IRR. Portfolio value is simply your share of each SPV's equity, summed — there is no separate marketing number."
+      },
+      {
+        "type": "quote",
+        "text": "If a figure in your reporting cannot be traced to a cap table and a valuation, we should not be publishing it.",
+        "attribution": "Satis reporting principles"
       },
       {
         "type": "heading",
@@ -213,8 +490,9 @@
         ]
       },
       {
-        "type": "paragraph",
-        "text": "If any figure in your holdings reporting is unclear, the investor relations team will happily walk through the underlying appraisal with you."
+        "type": "callout",
+        "title": "Talk it through",
+        "text": "If any figure in your holdings reporting is unclear, the investor relations team will happily walk through the underlying appraisal and cap table with you — the documents section holds the current valuation for every site."
       }
     ]
   },
@@ -224,9 +502,14 @@
     "date": "2026-05-28",
     "title": "From consent to completion: managing programme risk",
     "summary": "How we structure procurement, contingency and reporting so that construction risk is carried by the people best placed to manage it.",
-    "read": "7 min",
+    "read": "9 min",
     "theme": "sand",
     "body": [
+      {
+        "type": "callout",
+        "title": "Key takeaways",
+        "text": "Planning permission creates a scheme's value on paper; the two years that follow protect or erode it. Procurement before pricing, contingency with rules, and reporting drawn from the same documents the board reads — that is the whole system."
+      },
       {
         "type": "paragraph",
         "text": "Planning permission is the moment a scheme's value is created on paper; the two years that follow are where it is protected or eroded. Programme discipline — more than any market call — is what separates developments that deliver their appraisal from those that explain why they didn't."
@@ -240,12 +523,68 @@
         "text": "We tender the trades that carry the most cost risk — frame, envelope, MEP — before finalising the funding appraisal, so the numbers investors see reflect real market pricing rather than a quantity surveyor's hope. On heritage buildings we open up and survey before we commit: the most expensive surprises live behind plaster."
       },
       {
+        "type": "stats",
+        "items": [
+          {
+            "value": "~70%",
+            "label": "Of build cost market-tested before an appraisal is issued"
+          },
+          {
+            "value": "2-stage",
+            "label": "Contractor engagement on every major package"
+          },
+          {
+            "value": "Monthly",
+            "label": "Cost reconciliation against the funding appraisal"
+          }
+        ]
+      },
+      {
         "type": "heading",
         "text": "Contingency with rules"
       },
       {
         "type": "paragraph",
         "text": "Every scheme carries a build contingency plus a separate programme reserve, and drawing either requires a documented cause, not a rounding exercise. Contingency that survives to completion returns to scheme profit — which is why our teams treat it as theirs to protect."
+      },
+      {
+        "type": "heading",
+        "text": "Where the risk actually sits"
+      },
+      {
+        "type": "table",
+        "headers": [
+          "Risk",
+          "Who carries it",
+          "How it's controlled"
+        ],
+        "rows": [
+          [
+            "Ground conditions",
+            "SPV, priced pre-appraisal",
+            "Intrusive surveys before commitment"
+          ],
+          [
+            "Package cost inflation",
+            "Contractor after fixing",
+            "Two-stage tender, early ordering"
+          ],
+          [
+            "Programme slippage",
+            "Contractor (LADs) / reserve",
+            "Baseline programme, honest float"
+          ],
+          [
+            "Heritage surprises",
+            "SPV contingency",
+            "Opening-up works before start on site"
+          ],
+          [
+            "Leasing / sales pace",
+            "SPV business plan",
+            "Let-and-refinance fallback tested at appraisal"
+          ]
+        ]
       },
       {
         "type": "heading",
@@ -256,12 +595,14 @@
         "items": [
           "Monthly cost reports reconcile committed, spent and forecast cost against the funding appraisal.",
           "Programme is tracked against the contract baseline, with float shown honestly rather than absorbed silently.",
-          "Investor updates in this platform are drawn from the same reports the board sees — not a separate marketing narrative."
+          "Site updates in this platform are drawn from the same reports the board sees — not a separate marketing narrative.",
+          "Every variance above threshold carries a named owner and a recovery plan, and stays on the report until closed."
         ]
       },
       {
-        "type": "paragraph",
-        "text": "None of this removes construction risk; nothing does. The aim is narrower and more useful — that every risk is priced, owned by someone equipped to manage it, and visible to you before it becomes a variance."
+        "type": "quote",
+        "text": "None of this removes construction risk; nothing does. The aim is narrower and more useful — that every risk is priced, owned by someone equipped to manage it, and visible to you before it becomes a variance.",
+        "attribution": "Satis development team"
       }
     ]
   },
@@ -271,9 +612,14 @@
     "date": "2026-04-30",
     "title": "Why we stay in Greater Manchester",
     "summary": "Depth of demand, a decade of transport investment and a planning environment we know street by street — the case for concentration.",
-    "read": "5 min",
+    "read": "7 min",
     "theme": "sage",
     "body": [
+      {
+        "type": "callout",
+        "title": "Key takeaways",
+        "text": "Concentration, done properly, is a risk-management strategy. Depth of demand forgives timing errors; local knowledge compounds into cheaper underwriting; and a portfolio you can walk to gets problems solved in days, not reporting cycles."
+      },
       {
         "type": "paragraph",
         "text": "Investors sometimes ask why Satis does not diversify into other regions. The honest answer is that concentration, done properly, is a risk-management strategy — not the absence of one."
@@ -287,12 +633,34 @@
         "text": "Greater Manchester is the UK's largest economy outside London, with a population still growing ahead of the national rate. Demand this deep forgives timing errors that thinner markets punish: a scheme completing into a soft quarter here still lets; the same scheme in a shallow market sits empty."
       },
       {
+        "type": "stats",
+        "items": [
+          {
+            "value": "£90bn+",
+            "label": "City-region economy — the UK's largest outside London"
+          },
+          {
+            "value": "40 min",
+            "label": "Maximum drive time to any Satis site"
+          },
+          {
+            "value": "6",
+            "label": "Live developments across three towns and the city core"
+          }
+        ]
+      },
+      {
         "type": "heading",
         "text": "Knowledge that compounds"
       },
       {
         "type": "paragraph",
         "text": "Every planning committee, every conservation officer, every ground condition we have dealt with makes the next scheme cheaper to underwrite. We know which streets flood, which councils determine on time and what a facade retention really costs — knowledge that does not travel, and that a newcomer pays tuition to acquire."
+      },
+      {
+        "type": "quote",
+        "text": "Our information advantage is largest within forty minutes of the office. Compounded across a portfolio, that advantage is the return.",
+        "attribution": "Satis investment committee"
       },
       {
         "type": "heading",
@@ -304,7 +672,7 @@
       },
       {
         "type": "paragraph",
-        "text": "We will follow the region's growth where it leads — as our work in Stockport shows. But the discipline holds: we invest where our information advantage is largest, because that advantage, compounded across a portfolio, is the return."
+        "text": "We will follow the region's growth where it leads — as our work in Stockport and the QUBE raise show. But the discipline holds: we invest where our information advantage is largest, because that advantage, compounded across a portfolio, is the return."
       }
     ]
   }

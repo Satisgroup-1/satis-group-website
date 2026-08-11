@@ -12,13 +12,14 @@ import {
   formatMoneyCompact,
   formatMoneyFull,
   formatPortalDate,
+  getCapTable,
   getDevelopments,
   getInsights,
   getInvestors,
+  getOpportunities,
   getUpdates,
   readDataset,
   type CashEvent,
-  type Holding,
 } from "@/lib/investor-platform";
 
 export const metadata: Metadata = {
@@ -47,27 +48,29 @@ function buildAdminData(): AdminPlatformData {
         email: inv.email,
         joined: formatPortalDate(inv.joined),
         value: formatMoneyCompact(summary.value),
-        holdings: summary.holdingsCount,
+        positions: summary.holdingsCount,
       };
     }),
     developments: developments.map((d) => ({
       id: d.id,
       name: d.name,
       place: d.place,
+      address: d.address,
       phase: d.phase,
       status: d.status,
       progress: d.progress,
       value: formatMoneyCompact(d.gdv),
+      spvName: d.spv.name,
+      equityValue: formatMoneyCompact(d.spv.equityValue),
     })),
-    holdings: readDataset<Holding>("holdings").map((h) => ({
-      investorId: h.investorId,
-      investorName: investorName(h.investorId),
-      developmentId: h.developmentId,
-      developmentName: developmentName(h.developmentId),
-      invested: formatMoneyCompact(h.invested),
-      currentValue: formatMoneyCompact(h.currentValue),
-      forecastIrr: `${h.forecastIrr.toFixed(1)}%`,
-      status: h.status,
+    capPositions: getCapTable().map((p) => ({
+      developmentId: p.developmentId,
+      developmentName: developmentName(p.developmentId),
+      holder: p.holder,
+      linked: Boolean(p.investorId),
+      committed: formatMoneyCompact(p.committed),
+      sharePercent: `${p.sharePercent}%`,
+      status: p.status ?? "Active",
     })),
     cashEvents: readDataset<CashEvent>("cash-events")
       .slice()
@@ -94,6 +97,18 @@ function buildAdminData(): AdminPlatformData {
       title: i.title,
       read: i.read,
     })),
+    opportunities: getOpportunities().map((o) => ({
+      id: o.id,
+      name: o.name,
+      place: o.place,
+      status: o.status,
+      targetRaise: formatMoneyCompact(o.targetRaise),
+      raisedPercent:
+        o.targetRaise > 0
+          ? Math.min(100, Math.round((o.raisedToDate / o.targetRaise) * 100))
+          : 0,
+      closesOn: formatPortalDate(o.closesOn),
+    })),
   };
 }
 
@@ -117,10 +132,11 @@ export default async function AdminPlatformPage() {
         ) : (
           <>
             <p className="mt-4 max-w-2xl text-sm leading-6 text-muted">
-              Manage investor accounts, developments, holdings, project
-              returns, site updates and insight articles — or import a full
-              JSON dataset. Changes appear immediately in the investor
-              platform.{" "}
+              Manage investor accounts, developments and their SPV cap tables,
+              project returns, site updates, insight articles and upcoming
+              investments — or import a full JSON dataset. Portfolio figures
+              are derived from the cap tables, so changes appear immediately
+              in the investor platform.{" "}
               <Link
                 href="/admin"
                 className="underline decoration-border underline-offset-4 transition-colors hover:text-accent"

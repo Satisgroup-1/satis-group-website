@@ -69,3 +69,44 @@ body {
   background: var(--accent);
   color: var(--ink);
 }
+
+/* Shimmer sweep for primary investor-platform CTAs. A soft highlight passes
+   across the button every few seconds; disabled for reduced-motion users. */
+.shimmer-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.shimmer-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  transform: translateX(-150%) skewX(-18deg);
+  background: linear-gradient(
+    105deg,
+    transparent 42%,
+    rgba(255, 255, 255, 0.38) 50%,
+    transparent 58%
+  );
+  animation: shimmer-sweep 3.4s ease-in-out infinite;
+}
+
+@keyframes shimmer-sweep {
+  0% {
+    transform: translateX(-150%) skewX(-18deg);
+  }
+  55%,
+  100% {
+    transform: translateX(150%) skewX(-18deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shimmer-btn::after {
+    animation: none;
+    transform: translateX(-150%) skewX(-18deg);
+  }
+}

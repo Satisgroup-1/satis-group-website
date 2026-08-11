@@ -1,0 +1,66 @@
+[
+  {
+    "id": "qube-stockport",
+    "name": "QUBE",
+    "place": "Stockport",
+    "address": "St Petersgate, Stockport SK1 (exact address TBC)",
+    "status": "Open",
+    "targetRaise": 3200000,
+    "raisedToDate": 2100000,
+    "minCommitment": 50000,
+    "targetIrr": 18.5,
+    "targetMultiple": "1.6x",
+    "horizon": "30 months",
+    "closesOn": "2026-10-31",
+    "structure": "Ordinary shares in Satis (QUBE) Ltd, a single-asset SPV",
+    "summary": "The comprehensive repositioning of a landmark former office building in Stockport's old town as QUBE — design-led workspace over an activated ground floor, at the centre of the town's regeneration corridor.",
+    "highlights": [
+      "Planning consent secured; enabling works priced with two-stage contractor engagement",
+      "Stockport's office supply is the tightest in the city region, with no competing Grade A refurbishment on site",
+      "Eight minutes to Manchester Piccadilly by rail from the adjacent interchange",
+      "Senior debt terms agreed in principle at 55% loan-to-cost"
+    ]
+  },
+  {
+    "id": "st-johns-corner-ii",
+    "name": "St John's Corner, Phase II",
+    "place": "Manchester M3",
+    "address": "St John Street conservation area, Manchester M3 (exact address TBC)",
+    "status": "Coming soon",
+    "targetRaise": 2400000,
+    "raisedToDate": 0,
+    "minCommitment": 50000,
+    "targetIrr": 17,
+    "targetMultiple": "1.5x",
+    "horizon": "36 months",
+    "closesOn": "2027-01-31",
+    "structure": "Ordinary shares in a new single-asset SPV (to be incorporated)",
+    "summary": "The second phase of our St John's Corner assembly: extending the restored-workspace cluster in Manchester's conservation-area legal quarter, adjacent to the fully-let Phase I.",
+    "highlights": [
+      "Off-market acquisition agreed, exchanging Q4 2026",
+      "Phase I let ahead of appraisal rents, de-risking the leasing assumptions",
+      "Registration of interest opens ahead of formal launch — allocations prioritised by registration date"
+    ]
+  },
+  {
+    "id": "woodfield-road",
+    "name": "Woodfield Road",
+    "place": "Altrincham",
+    "address": "Woodfield Road, Altrincham WA14 (exact address TBC)",
+    "status": "Fully subscribed",
+    "targetRaise": 1800000,
+    "raisedToDate": 1800000,
+    "minCommitment": 25000,
+    "targetIrr": 16,
+    "targetMultiple": "1.45x",
+    "horizon": "24 months",
+    "closesOn": "2026-05-15",
+    "structure": "Ordinary shares in Satis (Woodfield) Ltd",
+    "summary": "A mews infill of eight family houses behind Altrincham's Woodfield Road, fully subscribed in twenty-one days. Included here for reference — quarterly reporting begins Q4 2026.",
+    "highlights": [
+      "Fully subscribed within three weeks of launch",
+      "Detailed planning consent in place at acquisition",
+      "First investor report scheduled alongside groundworks completion"
+    ]
+  }
+]

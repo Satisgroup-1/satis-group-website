@@ -1,0 +1,134 @@
+[
+  {
+    "developmentId": "22-st-john-street",
+    "investorId": "hartwell",
+    "holder": "The Hartwell Partnership",
+    "committed": 1200000,
+    "sharePercent": 30,
+    "status": "Active"
+  },
+  {
+    "developmentId": "22-st-john-street",
+    "holder": "Satis Group (GP)",
+    "committed": 1000000,
+    "sharePercent": 25,
+    "status": "Active"
+  },
+  {
+    "developmentId": "22-st-john-street",
+    "holder": "Other private investors",
+    "committed": 1800000,
+    "sharePercent": 45,
+    "status": "Active"
+  },
+  {
+    "developmentId": "barnett-house",
+    "investorId": "hartwell",
+    "holder": "The Hartwell Partnership",
+    "committed": 950000,
+    "sharePercent": 25,
+    "status": "Active"
+  },
+  {
+    "developmentId": "barnett-house",
+    "holder": "Satis Group (GP)",
+    "committed": 1140000,
+    "sharePercent": 30,
+    "status": "Active"
+  },
+  {
+    "developmentId": "barnett-house",
+    "holder": "Other private investors",
+    "committed": 1710000,
+    "sharePercent": 45,
+    "status": "Active"
+  },
+  {
+    "developmentId": "chester-house",
+    "investorId": "hartwell",
+    "holder": "The Hartwell Partnership",
+    "committed": 800000,
+    "sharePercent": 40,
+    "status": "Active"
+  },
+  {
+    "developmentId": "chester-house",
+    "holder": "Satis Group (GP)",
+    "committed": 700000,
+    "sharePercent": 35,
+    "status": "Active"
+  },
+  {
+    "developmentId": "chester-house",
+    "holder": "Other private investors",
+    "committed": 500000,
+    "sharePercent": 25,
+    "status": "Active"
+  },
+  {
+    "developmentId": "barrington-road",
+    "investorId": "hartwell",
+    "holder": "The Hartwell Partnership",
+    "committed": 700000,
+    "sharePercent": 30,
+    "status": "Active"
+  },
+  {
+    "developmentId": "barrington-road",
+    "holder": "Satis Group (GP)",
+    "committed": 933000,
+    "sharePercent": 40,
+    "status": "Active"
+  },
+  {
+    "developmentId": "barrington-road",
+    "holder": "Other private investors",
+    "committed": 700000,
+    "sharePercent": 30,
+    "status": "Active"
+  },
+  {
+    "developmentId": "court-house",
+    "investorId": "elm-row",
+    "holder": "Elm Row Capital",
+    "committed": 950000,
+    "sharePercent": 20,
+    "status": "Active"
+  },
+  {
+    "developmentId": "court-house",
+    "holder": "Satis Group (GP)",
+    "committed": 1425000,
+    "sharePercent": 30,
+    "status": "Active"
+  },
+  {
+    "developmentId": "court-house",
+    "holder": "Other private investors",
+    "committed": 2375000,
+    "sharePercent": 50,
+    "status": "Active"
+  },
+  {
+    "developmentId": "davenport",
+    "investorId": "elm-row",
+    "holder": "Elm Row Capital",
+    "committed": 480000,
+    "sharePercent": 25,
+    "status": "Active"
+  },
+  {
+    "developmentId": "davenport",
+    "holder": "Satis Group (GP)",
+    "committed": 672000,
+    "sharePercent": 35,
+    "status": "Active"
+  },
+  {
+    "developmentId": "davenport",
+    "holder": "Other private investors",
+    "committed": 768000,
+    "sharePercent": 40,
+    "status": "Active"
+  }
+]
