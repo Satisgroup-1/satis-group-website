@@ -46,7 +46,7 @@
   --color-clay: var(--clay);
   --color-sage: var(--sage);
 
-  --font-sans: var(--font-work-sans);
+  --font-sans: "Work Sans", "Helvetica Neue", Arial, sans-serif;
 }
 
 body {
