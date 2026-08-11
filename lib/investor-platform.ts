@@ -117,3 +117,11 @@ export function saveInvestorPlatformData(value: unknown): InvestorPlatformData {
   fs.writeFileSync(DATA_FILE, `${JSON.stringify(normalized, null, 2)}\n`, "utf8");
   return normalized;
 }
+
+export function mutateInvestorPlatformData(
+  mutate: (data: InvestorPlatformData) => void
+): InvestorPlatformData {
+  const data = getInvestorPlatformData();
+  mutate(data);
+  return saveInvestorPlatformData(data);
+}

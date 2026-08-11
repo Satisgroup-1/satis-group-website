@@ -11,7 +11,10 @@ import {
   isAuthenticated,
   sessionToken,
 } from "@/lib/admin-auth";
-import { saveInvestorPlatformData } from "@/lib/investor-platform";
+import {
+  mutateInvestorPlatformData,
+  saveInvestorPlatformData,
+} from "@/lib/investor-platform";
 
 export type LoginState = { error?: string };
 
@@ -43,6 +46,119 @@ export type ImportInvestorDataState = {
   error?: string;
   success?: string;
 };
+
+export type InvestorAdminState = { error?: string; success?: string };
+
+const text = (data: FormData, name: string) => String(data.get(name) ?? "").trim();
+
+async function mutateInvestorData(
+  operation: Parameters<typeof mutateInvestorPlatformData>[0],
+  success: string
+): Promise<InvestorAdminState> {
+  if (!(await isAuthenticated())) return { error: "Your session has expired." };
+  try {
+    mutateInvestorPlatformData(operation);
+    revalidatePath("/admin");
+    revalidatePath("/investors");
+    return { success };
+  } catch (error) {
+    return { error: error instanceof Error ? error.message : "The change could not be saved." };
+  }
+}
+
+export async function saveInvestorProfile(_prev: InvestorAdminState, formData: FormData) {
+  const id = text(formData, "id") || `usr_${Date.now()}`;
+  const email = text(formData, "email").toLowerCase();
+  const displayName = text(formData, "displayName");
+  const accountName = text(formData, "accountName");
+  const portfolioId = text(formData, "portfolioId") || `portfolio_${id}`;
+  if (!email || !displayName || !accountName) return { error: "Email, name and account name are required." };
+  return mutateInvestorData((data) => {
+    if (data.users.some((user) => user.email === email && user.id !== id)) throw new Error("That investor email already exists.");
+    const user = { id, email, displayName, accountName, portfolioId };
+    const index = data.users.findIndex((item) => item.id === id);
+    if (index >= 0) data.users[index] = user; else data.users.push(user);
+    if (!data.portfolios.some((portfolio) => portfolio.id === portfolioId)) {
+      data.portfolios.push({ id: portfolioId, value: "£0", capitalInvested: "£0", forecastIrr: "0%", distributions: "£0", holdings: [] });
+    }
+  }, `Saved investor ${displayName}.`);
+}
+
+export async function deleteInvestorProfile(formData: FormData) {
+  const id = text(formData, "id");
+  await mutateInvestorData((data) => {
+    const user = data.users.find((item) => item.id === id);
+    if (!user) throw new Error("Investor not found.");
+    data.users = data.users.filter((item) => item.id !== id);
+    data.portfolios = data.portfolios.filter((item) => item.id !== user.portfolioId);
+    data.documents = data.documents.filter((item) => item.portfolioId !== user.portfolioId);
+  }, "Investor and associated portfolio removed.");
+}
+
+export async function saveHolding(_prev: InvestorAdminState, formData: FormData) {
+  const portfolioId = text(formData, "portfolioId");
+  const developmentId = text(formData, "developmentId");
+  const holding = { developmentId, invested: text(formData, "invested"), currentValue: text(formData, "currentValue"), forecastIrr: text(formData, "forecastIrr"), multiple: text(formData, "multiple") };
+  if (!portfolioId || !developmentId || !holding.invested) return { error: "Portfolio, property and invested amount are required." };
+  return mutateInvestorData((data) => {
+    const portfolio = data.portfolios.find((item) => item.id === portfolioId);
+    if (!portfolio) throw new Error("Portfolio not found.");
+    const index = portfolio.holdings.findIndex((item) => item.developmentId === developmentId);
+    if (index >= 0) portfolio.holdings[index] = holding; else portfolio.holdings.push(holding);
+  }, "Holding saved.");
+}
+
+export async function deleteHolding(formData: FormData) {
+  const portfolioId = text(formData, "portfolioId");
+  const developmentId = text(formData, "developmentId");
+  await mutateInvestorData((data) => {
+    const portfolio = data.portfolios.find((item) => item.id === portfolioId);
+    if (!portfolio) throw new Error("Portfolio not found.");
+    portfolio.holdings = portfolio.holdings.filter((item) => item.developmentId !== developmentId);
+  }, "Holding removed.");
+}
+
+export async function saveDevelopment(_prev: InvestorAdminState, formData: FormData) {
+  const id = text(formData, "id") || `development_${Date.now()}`;
+  const development = { id, name: text(formData, "name"), place: text(formData, "place"), x: Number(text(formData, "x") || 50), y: Number(text(formData, "y") || 50), status: text(formData, "status"), progress: Number(text(formData, "progress") || 0), value: text(formData, "value"), phase: text(formData, "phase"), nextReport: text(formData, "nextReport") };
+  if (!development.name || !development.place) return { error: "Property name and location are required." };
+  return mutateInvestorData((data) => {
+    const index = data.developments.findIndex((item) => item.id === id);
+    if (index >= 0) data.developments[index] = development; else data.developments.push(development);
+  }, `Saved ${development.name}.`);
+}
+
+export async function deleteDevelopment(formData: FormData) {
+  const id = text(formData, "id");
+  await mutateInvestorData((data) => {
+    if (data.portfolios.some((portfolio) => portfolio.holdings.some((holding) => holding.developmentId === id))) throw new Error("Remove this property from investor holdings first.");
+    data.developments = data.developments.filter((item) => item.id !== id);
+    data.updates = data.updates.filter((item) => item.developmentId !== id);
+  }, "Development removed.");
+}
+
+export async function saveSiteUpdate(_prev: InvestorAdminState, formData: FormData) {
+  const update = { id: text(formData, "id") || `update_${Date.now()}`, date: text(formData, "date"), developmentId: text(formData, "developmentId"), title: text(formData, "title"), body: text(formData, "body"), tag: text(formData, "tag") };
+  if (!update.date || !update.developmentId || !update.title || !update.body) return { error: "Date, property, title and update are required." };
+  return mutateInvestorData((data) => { data.updates.unshift(update); }, "Site update published.");
+}
+
+export async function deleteSiteUpdate(formData: FormData) {
+  const id = text(formData, "id");
+  await mutateInvestorData((data) => { data.updates = data.updates.filter((item) => item.id !== id); }, "Site update removed.");
+}
+
+export async function saveInsightArticle(_prev: InvestorAdminState, formData: FormData) {
+  const title = text(formData, "title");
+  const article = { id: text(formData, "id") || `article_${Date.now()}`, category: text(formData, "category"), date: text(formData, "date"), title, summary: text(formData, "summary"), readTime: text(formData, "readTime"), body: text(formData, "body").split(/\n\s*\n/).map((item) => item.trim()).filter(Boolean) };
+  if (!article.title || !article.summary || !article.body.length) return { error: "Title, summary and article body are required." };
+  return mutateInvestorData((data) => { data.articles.unshift(article); }, `Published ${title}.`);
+}
+
+export async function deleteInsightArticle(formData: FormData) {
+  const id = text(formData, "id");
+  await mutateInvestorData((data) => { data.articles = data.articles.filter((item) => item.id !== id); }, "Insight removed.");
+}
 
 export async function importInvestorData(
   _prev: ImportInvestorDataState,

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { AdminLogin } from "@/components/AdminLogin";
 import { NewsletterComposer } from "@/components/NewsletterComposer";
 import { InvestorDataManager } from "@/components/InvestorDataManager";
+import { InvestorAdminPlatform } from "@/components/InvestorAdminPlatform";
 import { isAuthenticated } from "@/lib/admin-auth";
 import { getInvestorPlatformData } from "@/lib/investor-platform";
 import { formatNewsletterDate, getNewsletters } from "@/lib/newsletters";
@@ -39,6 +40,8 @@ export default async function AdminPage() {
         ) : (
           <div className="mt-12 space-y-16">
             {investorData && (
+              <>
+              <InvestorAdminPlatform data={investorData} />
               <InvestorDataManager summary={{
                 users: investorData.users.length,
                 portfolios: investorData.portfolios.length,
@@ -46,6 +49,7 @@ export default async function AdminPage() {
                 articles: investorData.articles.length,
                 updatedAt: investorData.updatedAt,
               }} />
+              </>
             )}
             <div className="grid grid-cols-1 gap-16 lg:grid-cols-[1fr_20rem]">
             <div>
