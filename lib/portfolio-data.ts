@@ -7,6 +7,9 @@ export type Property = {
   type: PropertyType;
   status: string;
   image: string;
+  // CSS object-position for the 4:3 card crop, for portrait photography that
+  // would otherwise centre on a blank stretch of facade. Omit to centre.
+  imagePosition?: string;
   blurb: string;
 };
 
@@ -50,6 +53,7 @@ export const PORTFOLIO: Property[] = [
     type: "Commercial",
     status: "Workspace",
     image: "/images/22stjohn/building.jpg",
+    imagePosition: "center 70%",
     blurb:
       "A Grade II listed Georgian building between Deansgate and Spinningfields, remodelled into 13 private office suites.",
   },
@@ -90,6 +94,7 @@ export const PORTFOLIO: Property[] = [
     type: "Commercial",
     status: "Completed",
     image: "/images/legacy/tabula.jpg",
+    imagePosition: "center 88%",
     blurb:
       "A contemporary office development: character retained, fabric upgraded, workspace businesses want.",
   },
