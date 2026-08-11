@@ -4,8 +4,8 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #131a20;
-  --muted: #5f6a72;
+  --foreground: #161616;
+  --muted: #616568;
   --border: #d9d5cd;
   --surface: #f5f1e9;
   --accent: #a5813f;
@@ -15,24 +15,24 @@
      under the 4.5:1 AA threshold; this darker cut passes on both white and
      the surface tint. */
   --accent-text: #836030;
-  --ink: #1a2733;
-  --ink-foreground: #f3efe7;
+  --ink: #000000;
+  --ink-foreground: #ffffff;
   --clay: #9d4b30;
   --sage: #5d7157;
 }
 
 .dark {
-  --background: #0c1117;
+  --background: #0d0d0d;
   --foreground: #f2efe9;
-  --muted: #98a1a8;
-  --border: #313b45;
-  --surface: #151c24;
+  --muted: #ced1d2;
+  --border: #3b3b3b;
+  --surface: #161616;
   --accent: #c9a05c;
   --accent-strong: #dcb878;
   --accent-soft: rgba(201, 160, 92, 0.16);
   --accent-text: #c9a05c;
-  --ink: #121c26;
-  --ink-foreground: #f3efe7;
+  --ink: #000000;
+  --ink-foreground: #ffffff;
   --clay: #c4694a;
   --sage: #7f947a;
 }
