@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import bundledInvestorData from "@/data/investor-platform.json";
 
 export type InvestorDevelopment = {
   id: string;
@@ -95,7 +96,17 @@ export function validateInvestorPlatformData(value: unknown): InvestorPlatformDa
 }
 
 export function getInvestorPlatformData(): InvestorPlatformData {
-  return validateInvestorPlatformData(JSON.parse(fs.readFileSync(DATA_FILE, "utf8")));
+  // Vercel only traces files referenced through the module graph. Keep the
+  // committed dataset as a static import so dynamic admin requests never fail
+  // with ENOENT when the serverless function is deployed.
+  if (!fs.existsSync(DATA_FILE)) {
+    return validateInvestorPlatformData(structuredClone(bundledInvestorData));
+  }
+  try {
+    return validateInvestorPlatformData(JSON.parse(fs.readFileSync(DATA_FILE, "utf8")));
+  } catch {
+    return validateInvestorPlatformData(structuredClone(bundledInvestorData));
+  }
 }
 
 export function getInvestorDashboard(email: string): InvestorDashboardData {
@@ -113,8 +124,14 @@ export function getInvestorDashboard(email: string): InvestorDashboardData {
 export function saveInvestorPlatformData(value: unknown): InvestorPlatformData {
   const data = validateInvestorPlatformData(value);
   const normalized = { ...data, version: data.version || 1, updatedAt: new Date().toISOString() };
-  fs.mkdirSync(path.dirname(DATA_FILE), { recursive: true });
-  fs.writeFileSync(DATA_FILE, `${JSON.stringify(normalized, null, 2)}\n`, "utf8");
+  try {
+    fs.mkdirSync(path.dirname(DATA_FILE), { recursive: true });
+    fs.writeFileSync(DATA_FILE, `${JSON.stringify(normalized, null, 2)}\n`, "utf8");
+  } catch {
+    throw new Error(
+      "This deployment has read-only storage. Connect a persistent database before editing investor data on Vercel."
+    );
+  }
   return normalized;
 }
 

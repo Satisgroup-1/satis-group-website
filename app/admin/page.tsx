@@ -20,6 +20,8 @@ export const dynamic = "force-dynamic";
 export default async function AdminPage() {
   const authed = await isAuthenticated();
   const issues = authed ? getNewsletters() : [];
+  // The bundled dataset fallback keeps the admin route available even when a
+  // serverless deployment does not include or permit writes to the data file.
   const investorData = authed ? getInvestorPlatformData() : null;
   const today = new Date().toISOString().slice(0, 10);
 
