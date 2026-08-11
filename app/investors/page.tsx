@@ -51,8 +51,8 @@ export default function InvestorsPage() {
               The Satis investor platform.
             </h1>
             <p className="mt-6 max-w-md text-base leading-relaxed text-ink-foreground/70">
-              Reviving the past, building the future — in partnership with
-              private and institutional investors. Our proprietary platform
+              Reviving the past. Building the future. In partnership with
+              private and institutional investors, our proprietary platform
               gives partners a live view of every scheme: deal flow,
               appraisals, reporting and documents, in one place.
             </p>

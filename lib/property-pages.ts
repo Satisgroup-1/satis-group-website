@@ -77,6 +77,8 @@ export type PropertyPageData = {
     link?: { label: string; href: string };
   };
   gallery?: Array<{ src: string; alt: string }>;
+  /** Full postal address of the site, shown in the enquire section. */
+  address?: string;
   agent?: {
     name: string;
     detail: string;
@@ -219,6 +221,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
         { value: "20.3 mi", label: "Manchester" },
       ],
     },
+    address: "The Courthouse, Macclesfield, Cheshire",
     gallery: [
       { src: "/images/courthouse/bedroom.jpg", alt: "Bedroom with serene styling" },
       { src: "/images/courthouse/bathroom.jpg", alt: "Marble-tiled bathroom" },
@@ -381,6 +384,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
         { value: "110 min", label: "Stockport to London by rail" },
       ],
     },
+    address: "Hazelgate, London Road, Hazel Grove, Stockport",
     gallery: [
       { src: "/images/hazelgate/bedroom.jpg", alt: "Modern bedroom" },
       { src: "/images/hazelgate/bathroom.jpg", alt: "Contemporary bathroom" },
@@ -473,6 +477,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
         href: "https://altrincham-living-stories.lovable.app",
       },
     },
+    address: "Barrington House, Barrington Road, Altrincham",
     gallery: [
       { src: "/images/barrington/gallery-1.jpg", alt: "Inside Barrington House" },
       { src: "/images/barrington/gallery-2.jpg", alt: "Living space detail" },
@@ -642,6 +647,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       { src: "/images/22stjohn/gallery-5.jpg", alt: "Meeting room" },
       { src: "/images/22stjohn/gallery-6.jpg", alt: "Building detail" },
     ],
+    address: "22 St John Street, Manchester, M3 4EB",
     agent: {
       name: "Scott Shufflebottom",
       detail: "Sixteen Real Estate · scott@sixteenrealestate.com",

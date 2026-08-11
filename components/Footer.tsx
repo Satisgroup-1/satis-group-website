@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const FOOTER_LINKS = [
@@ -19,14 +20,14 @@ export function Footer() {
     <footer className="bg-ink text-ink-foreground">
       <div className="mx-auto flex max-w-7xl flex-col gap-10 px-6 py-16 lg:flex-row lg:items-start lg:justify-between lg:px-10">
         <div className="flex flex-col">
-          <span className="text-2xl font-medium tracking-[0.35em] uppercase">
-            Satis
-          </span>
-          <span className="mt-1 text-[0.65rem] tracking-[0.45em] uppercase text-ink-foreground/60">
-            Group
-          </span>
+          <Image
+            src="/images/satis-logo-white.png"
+            alt="Satis Group"
+            width={141}
+            height={51}
+          />
           <p className="mt-6 max-w-xs text-sm leading-relaxed text-ink-foreground/70">
-            Reviving the past, building the future.
+            Reviving the past. Building the future.
           </p>
         </div>
 
