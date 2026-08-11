@@ -59,21 +59,10 @@ export async function login(
     return { error: "Incorrect username or password." };
   }
   loginAttempts.delete(ip);
-  let token: string;
-  try {
-    token = sessionToken();
-  } catch {
-    // Missing SATIS_ADMIN_SECRET in production: fail closed with a clear
-    // message instead of crashing the page with a 500.
-    return {
-      error:
-        "Admin sign-in isn't configured on this deployment: set the SATIS_ADMIN_SECRET environment variable and redeploy.",
-    };
-  }
   // Secure when actually served over https (hosting platforms set
   // x-forwarded-proto); a plain-http localhost `next start` still works.
   const proto = (await headers()).get("x-forwarded-proto");
-  (await cookies()).set(ADMIN_COOKIE, token, {
+  (await cookies()).set(ADMIN_COOKIE, sessionToken(), {
     httpOnly: true,
     secure: proto === "https",
     sameSite: "lax",

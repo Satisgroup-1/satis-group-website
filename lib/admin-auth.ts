@@ -1,10 +1,10 @@
-import { createHmac, randomBytes, timingSafeEqual } from "node:crypto";
+import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
 
 // Demo-grade credential gate for the newsletter admin. The username and
 // password are deliberately hardcoded to test/test per the brief — do NOT
 // treat this as production security. The session cookie carries an
-// expiring HMAC-signed token so it can't be forged or replayed forever.
+// expiring HMAC-signed token so it can't be replayed forever.
 
 export const ADMIN_COOKIE = "satis-admin";
 export const ADMIN_USERNAME = "test";
@@ -12,22 +12,21 @@ export const ADMIN_PASSWORD = "test";
 
 export const SESSION_TTL_MS = 24 * 60 * 60 * 1000;
 
-// Dev fallback: random per boot, so cookies are still unforgeable and
-// simply expire when the server restarts. In production the secret must be
-// provided; the check is lazy (at first use, not import) so `next build`
-// doesn't require the env var.
-let cachedSecret: string | undefined;
+// While the credentials are the public test/test pair, a baked-in fallback
+// signing secret exposes nothing the login form doesn't already, so sign-in
+// works on any deployment with zero configuration. Set SATIS_ADMIN_SECRET
+// in the hosting environment the day real credentials replace test/test —
+// the env value always wins, and it (not this constant) is what makes
+// cookies unforgeable.
+const FALLBACK_SECRET = "satis-demo-6b2c1e0f4a9d4e37b1c5f8a2d7e30964";
 
 function getSecret(): string {
-  if (cachedSecret) return cachedSecret;
-  const envSecret = process.env.SATIS_ADMIN_SECRET;
-  if (!envSecret && process.env.NODE_ENV === "production") {
-    // Refuse to fall back to a guessable value in production: with a known
-    // secret anyone can mint the session cookie without logging in.
-    throw new Error("SATIS_ADMIN_SECRET must be set in production");
-  }
-  cachedSecret = envSecret ?? randomBytes(32).toString("hex");
-  return cachedSecret;
+  return process.env.SATIS_ADMIN_SECRET ?? FALLBACK_SECRET;
+}
+
+/** True when running on the built-in demo secret rather than an env value. */
+export function isUsingFallbackSecret(): boolean {
+  return !process.env.SATIS_ADMIN_SECRET;
 }
 
 function sign(payload: string): string {
@@ -47,15 +46,7 @@ export async function isAuthenticated(): Promise<boolean> {
   const parts = cookie.value.split(".");
   if (parts.length !== 3) return false;
   const [username, expiresAt, mac] = parts;
-  let expected: Buffer;
-  try {
-    // If the secret is unavailable no cookie can be valid; treat as signed
-    // out rather than erroring the whole page. login() still throws, so the
-    // misconfiguration is surfaced where a session would be minted.
-    expected = Buffer.from(sign(`${username}.${expiresAt}`));
-  } catch {
-    return false;
-  }
+  const expected = Buffer.from(sign(`${username}.${expiresAt}`));
   const received = Buffer.from(mac);
   if (
     expected.length !== received.length ||
