@@ -61,8 +61,14 @@ function Login({ onLogin }: { onLogin: () => void }) {
   function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    if (data.get("username") === "test" && data.get("password") === "test") onLogin();
-    else setError("The username or password you entered is incorrect.");
+    const email = String(data.get("email") ?? "").trim();
+    const password = String(data.get("password") ?? "");
+    if (email === "test" && password === "test") {
+      setError("");
+      onLogin();
+    } else {
+      setError("The email or password you entered is incorrect.");
+    }
   }
   return (
     <div className="min-h-[calc(100vh-5rem)] bg-[#14212b] text-white">
@@ -87,12 +93,12 @@ function Login({ onLogin }: { onLogin: () => void }) {
             <h2 className="mt-4 text-4xl font-medium tracking-tight">Welcome back.</h2>
             <p className="mt-3 text-sm leading-6 text-white/55">Sign in to access your investor dashboard and reporting.</p>
             <form onSubmit={submit} className="mt-10 space-y-6">
-              <label className="block"><span className="mb-2 block text-xs tracking-[.16em] uppercase text-white/55">Username</span><input name="username" autoComplete="username" className="w-full border border-white/20 bg-white/[.04] px-4 py-4 outline-none transition focus:border-[#c3a164]" /></label>
+              <label className="block"><span className="mb-2 block text-xs tracking-[.16em] uppercase text-white/55">Email</span><input name="email" autoComplete="email" inputMode="email" className="w-full border border-white/20 bg-white/[.04] px-4 py-4 outline-none transition focus:border-[#c3a164]" /></label>
               <label className="block"><span className="mb-2 block text-xs tracking-[.16em] uppercase text-white/55">Password</span><input name="password" type="password" autoComplete="current-password" className="w-full border border-white/20 bg-white/[.04] px-4 py-4 outline-none transition focus:border-[#c3a164]" /></label>
               {error && <p role="alert" className="text-sm text-[#e1a68e]">{error}</p>}
               <button className="flex w-full items-center justify-between bg-[#b18c4d] px-5 py-4 text-xs font-medium tracking-[.18em] uppercase transition hover:bg-[#c3a164]">Enter platform <span>→</span></button>
             </form>
-            <div className="mt-7 flex justify-between text-xs text-white/45"><span>Demo access: test / test</span><button className="hover:text-white">Need help?</button></div>
+            <div className="mt-7 flex justify-between text-xs text-white/45"><span>Demo email: test · Password: test</span><button className="hover:text-white">Need help?</button></div>
           </div>
         </section>
       </div>
