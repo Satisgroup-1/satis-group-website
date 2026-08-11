@@ -57,6 +57,9 @@ export type PropertyPageData = {
   floors?: {
     heading: string;
     description: string;
+    // What a unit is called in this schedule ("Suite" for workspace);
+    // defaults to "Apartment" when omitted.
+    unitNoun?: string;
     schedule: FloorSchedule[];
   };
   residences?: {
@@ -240,7 +243,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     intro: {
       heading: "A new way of living in Hazel Grove",
       body: [
-        "Hazelgate is an exclusive collection of beautifully designed apartments in the vibrant centre of Hazel Grove, blending contemporary architecture with elegant modern interiors in a refined balance of style, comfort and convenience.",
+        "Hazelgate is an exclusive collection of beautifully designed apartments in the vibrant centre of Hazel Grove, blending contemporary architecture with elegant modern interiors in a refined balance of style, comfort and convenience — with sweeping views towards the Peak District from the upper floors.",
         "Open-plan living areas feel bright and effortlessly stylish, paired with modern kitchens of handleless cabinetry and integrated appliances. Bedrooms are softly carpeted; bathrooms wrap in large-format tiling with wall-hung fittings. Seven of the nineteen apartments are already sold.",
       ],
       image: "/images/hazelgate/living-kitchen.jpg",
@@ -281,7 +284,9 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
             "Fully tiled bathrooms and shower areas",
             "Branded sanitary ware",
             "Contemporary WC and basin",
+            "Mixer taps and fittings",
             "Thermostatic shower system",
+            "Mirror",
           ],
         },
         {
@@ -303,8 +308,11 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
           items: [
             "Secure intercom entry system",
             "High-speed broadband ready",
+            "Smoke detectors",
             "Double-glazed windows",
             "Energy-efficient heating system",
+            "Modern internal doors with brushed chrome ironmongery",
+            "Neutral contemporary décor throughout",
           ],
         },
       ],
@@ -366,6 +374,8 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
         { value: "£1bn", label: "Town centre regeneration programme" },
         { value: "410 acres", label: "Of town centre redevelopment" },
         { value: "8,000", label: "New homes planned over 15 years" },
+        { value: "£56.3m", label: "Good Growth Fund allocation" },
+        { value: "110 min", label: "Stockport to London by rail" },
       ],
     },
     gallery: [
@@ -518,13 +528,82 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
         "Lift access",
         "Fully fitted-out offices",
         "Ultra-fast Wi-Fi",
-        "Temperature control",
+        "Individual temperature control",
         "Excellent natural daylight",
         "Superior acoustic performance",
         "Biophilic design",
+        "Indoor air quality",
         "Cycle storage",
         "Car parking",
-        "Showers",
+        "Shower & changing room",
+      ],
+    },
+    floors: {
+      heading: "The Suites",
+      unitNoun: "Suite",
+      description:
+        "Thirteen fully fitted suites over three floors, from three desks upwards, with flexible terms available.",
+      schedule: [
+        {
+          name: "Ground Floor",
+          units: [
+            {
+              apt: "GA",
+              beds: "18 desks",
+              size: "Design your own space · furniture packages available",
+            },
+          ],
+        },
+        {
+          name: "First Floor",
+          units: [
+            { apt: "1A", beds: "6 desks" },
+            { apt: "1B", beds: "4 desks" },
+            { apt: "1C", beds: "8 desks" },
+            { apt: "1D", beds: "11 desks" },
+            { apt: "1E", beds: "9 desks" },
+            { apt: "1F", beds: "7 desks" },
+          ],
+        },
+        {
+          name: "Second Floor",
+          units: [
+            { apt: "2A", beds: "4 desks" },
+            { apt: "2B", beds: "3 desks" },
+            { apt: "2C", beds: "17 desks" },
+            { apt: "2D", beds: "6 desks" },
+            { apt: "2E", beds: "8 desks" },
+            { apt: "2F", beds: "12 desks" },
+          ],
+        },
+      ],
+    },
+    spec: {
+      heading: "On every floor",
+      description:
+        "Each floor of workspace is self-sufficient, pairing fully fitted offices with the meeting, calling and breakout space a team needs through the day.",
+      groups: [
+        {
+          title: "Work",
+          items: [
+            "Fully fitted offices",
+            "1-2-1 room",
+            "6-person conference room",
+            "2x Zoom rooms",
+          ],
+        },
+        {
+          title: "Between Meetings",
+          items: [
+            "Modern kitchen and dining area",
+            "Business lounge",
+            "Ground-floor reception",
+          ],
+        },
+        {
+          title: "Practical",
+          items: ["WC and shower", "Lift access", "Car park"],
+        },
       ],
     },
     floorPlans: [
@@ -536,6 +615,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       heading: "Your neighbourhood",
       body: [
         "Perfectly placed between Deansgate and Spinningfields, with St John's, the Great Northern and the city's best restaurants, gyms and cultural venues on the doorstep, and every station within easy reach.",
+        "Soho House, The Ivy, 20 Stories, Hawksmoor and Albert's Schloss are all within a few minutes' walk, with Rudy's, Maray and Federal for more casual days, and Barry's, PureGym and the Everyman close at hand. 22 St John Street, Manchester, M3 4EB.",
       ],
       distances: [
         { value: "3 min", label: "Walk to Spinningfields" },
@@ -554,6 +634,11 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       { src: "/images/22stjohn/gallery-5.jpg", alt: "Meeting room" },
       { src: "/images/22stjohn/gallery-6.jpg", alt: "Building detail" },
     ],
+    agent: {
+      name: "Scott Shufflebottom",
+      detail: "Sixteen Real Estate · scott@sixteenrealestate.com",
+      phone: "07715 683 369",
+    },
     micrositeUrl: "https://www.22stjohn.co.uk",
     micrositeLabel: "22stjohn.co.uk",
   },

@@ -4,7 +4,13 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { FloorSchedule } from "@/lib/property-pages";
 
-export function FloorTabs({ schedule }: { schedule: FloorSchedule[] }) {
+export function FloorTabs({
+  schedule,
+  unitNoun = "Apartment",
+}: {
+  schedule: FloorSchedule[];
+  unitNoun?: string;
+}) {
   const [activeIndex, setActiveIndex] = useState(0);
   const activeFloor = schedule[activeIndex];
 
@@ -52,7 +58,9 @@ export function FloorTabs({ schedule }: { schedule: FloorSchedule[] }) {
                 <span className="text-xs tracking-[0.2em] text-accent">
                   {unit.apt}
                 </span>
-                <span className="text-sm font-medium">Apartment {unit.apt}</span>
+                <span className="text-sm font-medium">
+                  {unitNoun} {unit.apt}
+                </span>
               </span>
               <span className="text-right text-xs leading-relaxed text-muted">
                 {unit.beds}
