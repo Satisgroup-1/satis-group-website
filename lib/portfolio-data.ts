@@ -149,20 +149,20 @@ export const PORTFOLIO: Property[] = [
     name: "Davenport Park",
     location: "Davenport, Stockport",
     type: "Residential",
-    status: "Coming Soon",
+    status: "Completed",
     image: "/images/pipeline/davenport-park.jpg",
     blurb:
-      "A forthcoming residential scheme beside Davenport station. Imagery and details to follow.",
+      "A completed residential development beside Davenport station, with direct rail links into Manchester Piccadilly.",
   },
   {
     slug: "southbank",
     name: "Southbank",
     location: "North West",
     type: "Residential",
-    status: "Coming Soon",
+    status: "Completed",
     image: "/images/pipeline/southbank.jpg",
     blurb:
-      "A new Satis development currently in preparation. Imagery and details to follow.",
+      "A completed Satis residential development. Photography and scheme detail to follow.",
   },
   {
     slug: "mayor-street",

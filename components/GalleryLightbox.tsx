@@ -16,6 +16,12 @@ type GalleryLightboxProps = {
   columnsClass?: string;
   aspectClass?: string;
   captions?: boolean;
+  /**
+   * Show only this many thumbnails until "show all" is pressed. Keeps large
+   * photo sets from dominating the page; the lightbox always steps through
+   * the full set.
+   */
+  initialVisible?: number;
 };
 
 export function GalleryLightbox({
@@ -24,8 +30,13 @@ export function GalleryLightbox({
   columnsClass = "grid-cols-2 lg:grid-cols-3",
   aspectClass = "aspect-[4/3]",
   captions = false,
+  initialVisible,
 }: GalleryLightboxProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [showAll, setShowAll] = useState(
+    initialVisible === undefined || images.length <= initialVisible
+  );
+  const visibleImages = showAll ? images : images.slice(0, initialVisible);
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const thumbRefs = useRef<Array<HTMLButtonElement | null>>([]);
@@ -95,7 +106,7 @@ export function GalleryLightbox({
   return (
     <>
       <div className={`grid gap-4 ${columnsClass}`}>
-        {images.map((image, index) => (
+        {visibleImages.map((image, index) => (
           <figure key={image.src} className="flex flex-col gap-3">
             <button
               type="button"
@@ -134,6 +145,18 @@ export function GalleryLightbox({
           </figure>
         ))}
       </div>
+
+      {!showAll && (
+        <div className="mt-8 flex justify-center">
+          <button
+            type="button"
+            onClick={() => setShowAll(true)}
+            className="border border-border px-8 py-4 text-xs tracking-[0.2em] uppercase transition-colors duration-300 hover:border-accent hover:text-accent"
+          >
+            Show all {images.length} photographs
+          </button>
+        </div>
+      )}
 
       <AnimatePresence>
         {openIndex !== null && (

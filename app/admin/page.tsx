@@ -44,6 +44,13 @@ export default async function AdminPage() {
             >
               investor platform data studio
             </Link>
+            . New to the admin area? Start with the{" "}
+            <Link
+              href="/admin/guide"
+              className="underline decoration-border underline-offset-4 transition-colors hover:text-accent"
+            >
+              operations guide
+            </Link>
             .
           </p>
           {isUsingFallbackSecret() && (
