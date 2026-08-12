@@ -93,7 +93,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
   {
     slug: "the-courthouse",
     name: "The Courthouse",
-    eyebrow: "Macclesfield · Cheshire",
+    eyebrow: "Hibel Road · Macclesfield",
     tagline: "A collection of 13 one & two bedroom apartments",
     type: "Residential",
     status: "For Sale",
@@ -249,7 +249,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     intro: {
       heading: "A new way of living in Hazel Grove",
       body: [
-        "Hazelgate is an exclusive collection of beautifully designed apartments in the vibrant centre of Hazel Grove, blending contemporary architecture with elegant modern interiors in a refined balance of style, comfort and convenience — with sweeping views towards the Peak District from the upper floors.",
+        "Hazelgate — the transformation of the former Chester House on Chester Road — is an exclusive collection of beautifully designed apartments in the vibrant centre of Hazel Grove, blending contemporary architecture with elegant modern interiors in a refined balance of style, comfort and convenience — with sweeping views towards the Peak District from the upper floors.",
         "Open-plan living areas feel bright and effortlessly stylish, paired with modern kitchens of handleless cabinetry and integrated appliances. Bedrooms are softly carpeted; bathrooms wrap in large-format tiling with wall-hung fittings. Seven of the nineteen apartments are already sold.",
       ],
       image: "/images/hazelgate/living-kitchen.jpg",
@@ -663,16 +663,16 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
   {
     slug: "tabula",
     name: "Tabula",
-    eyebrow: "North West",
-    tagline: "A contemporary office development",
+    eyebrow: "Barnett House · 53 Fountain Street · Manchester",
+    tagline: "A contemporary office development at Barnett House",
     type: "Commercial",
     status: "Completed",
-    heroImage: "/images/legacy/tabula.jpg",
-    heroPosition: "center 92%",
+    heroImage: "/images/tabula/hero.jpg",
+    heroPosition: "center 30%",
     intro: {
       heading: "A workspace built around modern business",
       body: [
-        "Tabula is a contemporary office development delivered by Satis Group, transforming an underused building into flexible, high-quality workspace.",
+        "Tabula is the repositioning of Barnett House at 53 Fountain Street in central Manchester, transforming an underused building into flexible, high-quality workspace.",
         "The scheme reflects our approach to commercial redevelopment: retain the character, upgrade the fabric, and deliver space that modern businesses actually want to occupy.",
       ],
       image: "/images/legacy/tabula-frontage.jpg",
@@ -681,8 +681,8 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     },
     stats: [
       { value: "Office", label: "Use" },
-      { value: "Completed", label: "Status" },
-      { value: "North West", label: "Region" },
+      { value: "53", label: "Fountain Street" },
+      { value: "Manchester", label: "City" },
     ],
     micrositeUrl: "https://www.satisgroup.co.uk/#portfolio",
     micrositeLabel: "satisgroup.co.uk",
@@ -690,7 +690,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
   {
     slug: "st-johns-corner",
     name: "St John's Corner",
-    eyebrow: "North West",
+    eyebrow: "3-5 St John Street · Manchester",
     tagline: "Eleven apartments",
     type: "Residential",
     status: "Completed",
@@ -698,7 +698,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     intro: {
       heading: "Eleven homes on a well-connected corner",
       body: [
-        "St John's Corner is a residential development of eleven apartments delivered by Satis Group.",
+        "St John's Corner is a residential development of eleven apartments at 3-5 St John Street, in Manchester's St John's conservation area — a few doors from our workspace scheme at number 22.",
         "Each home was finished to the standard our buyers and tenants expect: light-filled layouts, quality kitchens and bathrooms, and a specification designed to last.",
       ],
       image: "/images/legacy/st-johns-corner.jpg",
@@ -706,8 +706,8 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     },
     stats: [
       { value: "11", label: "Apartments" },
-      { value: "Completed", label: "Status" },
-      { value: "North West", label: "Region" },
+      { value: "3-5", label: "St John Street" },
+      { value: "Manchester", label: "City" },
     ],
     micrositeUrl: "https://www.satisgroup.co.uk/#portfolio",
     micrositeLabel: "satisgroup.co.uk",
@@ -715,7 +715,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
   {
     slug: "lancaster-house",
     name: "Lancaster House",
-    eyebrow: "North West",
+    eyebrow: "London Road · Manchester",
     tagline: "Twenty-six apartments",
     type: "Residential",
     status: "Completed",
@@ -723,7 +723,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     intro: {
       heading: "Twenty-six homes from one tired building",
       body: [
-        "Lancaster House is a residential conversion of twenty-six apartments delivered by Satis Group.",
+        "Lancaster House on London Road is a residential conversion of twenty-six apartments delivered by Satis Group.",
         "The project is a good example of the scale we work at: large enough to matter, small enough that every apartment still gets individual attention.",
       ],
       image: "/images/legacy/lancaster-house.jpg",
@@ -732,7 +732,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     stats: [
       { value: "26", label: "Apartments" },
       { value: "Completed", label: "Status" },
-      { value: "North West", label: "Region" },
+      { value: "Manchester", label: "City" },
     ],
     micrositeUrl: "https://www.satisgroup.co.uk/#portfolio",
     micrositeLabel: "satisgroup.co.uk",
@@ -740,7 +740,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
   {
     slug: "qube",
     name: "QUBE",
-    eyebrow: "Stockport",
+    eyebrow: "St Petersgate · Stockport",
     tagline: "Fifty-eight apartments and two commercial units",
     type: "Residential",
     status: "Completed",
@@ -812,7 +812,108 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     micrositeUrl: "https://www.satisgroup.co.uk/#portfolio",
     micrositeLabel: "satisgroup.co.uk",
   },
+  {
+    slug: "15-alldis-street",
+    name: "15 Alldis Street",
+    eyebrow: "Great Moor · Stockport",
+    tagline: "A forthcoming residential development",
+    type: "Residential",
+    status: "Coming Soon",
+    heroImage: "/images/alldis/hero.jpg",
+    intro: {
+      heading: "Coming soon to Great Moor",
+      body: [
+        "15 Alldis Street is a forthcoming Satis residential development in Great Moor, Stockport.",
+        "Plans, specification and availability will be published here as the scheme progresses. Register your interest with the team to be kept informed.",
+      ],
+      image: "/images/alldis/hero.jpg",
+      imageAlt: "15 Alldis Street, Great Moor",
+    },
+    stats: [
+      { value: "Residential", label: "Use" },
+      { value: "Coming soon", label: "Status" },
+      { value: "Stockport", label: "Location" },
+    ],
+    micrositeUrl: "https://www.satisgroup.co.uk/contact",
+    micrositeLabel: "Register interest",
+  },
+  {
+    slug: "davenport-park",
+    name: "Davenport Park",
+    eyebrow: "Davenport · Stockport",
+    tagline: "A forthcoming residential development",
+    type: "Residential",
+    status: "Coming Soon",
+    heroImage: "/images/pipeline/davenport-park.jpg",
+    intro: {
+      heading: "Coming soon to Davenport",
+      body: [
+        "Davenport Park is a forthcoming Satis residential scheme beside Davenport station, with direct rail links into Manchester Piccadilly.",
+        "Imagery, plans and availability will be published here as the scheme progresses. Register your interest with the team to be kept informed.",
+      ],
+      image: "/images/pipeline/davenport-park.jpg",
+      imageAlt: "Davenport Park, Stockport — details coming soon",
+    },
+    stats: [
+      { value: "Residential", label: "Use" },
+      { value: "Coming soon", label: "Status" },
+      { value: "Stockport", label: "Location" },
+    ],
+    micrositeUrl: "https://www.satisgroup.co.uk/contact",
+    micrositeLabel: "Register interest",
+  },
+  {
+    slug: "southbank",
+    name: "Southbank",
+    eyebrow: "North West",
+    tagline: "A new Satis development in preparation",
+    type: "Residential",
+    status: "Coming Soon",
+    heroImage: "/images/pipeline/southbank.jpg",
+    intro: {
+      heading: "Southbank — details to follow",
+      body: [
+        "Southbank is a new Satis development currently in preparation.",
+        "Location detail, imagery and plans will be published here once the scheme is announced. Register your interest with the team to be kept informed.",
+      ],
+      image: "/images/pipeline/southbank.jpg",
+      imageAlt: "Southbank — details coming soon",
+    },
+    stats: [
+      { value: "Residential", label: "Use" },
+      { value: "Coming soon", label: "Status" },
+      { value: "North West", label: "Region" },
+    ],
+    micrositeUrl: "https://www.satisgroup.co.uk/contact",
+    micrositeLabel: "Register interest",
+  },
+  {
+    slug: "mayor-street",
+    name: "Mayor Street",
+    eyebrow: "North West",
+    tagline: "A new Satis development in preparation",
+    type: "Residential",
+    status: "Coming Soon",
+    heroImage: "/images/pipeline/mayor-street.jpg",
+    intro: {
+      heading: "Mayor Street — details to follow",
+      body: [
+        "Mayor Street is a new Satis development currently in preparation.",
+        "Location detail, imagery and plans will be published here once the scheme is announced. Register your interest with the team to be kept informed.",
+      ],
+      image: "/images/pipeline/mayor-street.jpg",
+      imageAlt: "Mayor Street — details coming soon",
+    },
+    stats: [
+      { value: "Residential", label: "Use" },
+      { value: "Coming soon", label: "Status" },
+      { value: "North West", label: "Region" },
+    ],
+    micrositeUrl: "https://www.satisgroup.co.uk/contact",
+    micrositeLabel: "Register interest",
+  },
 ];
+
 
 export function getPropertyPage(slug: string): PropertyPageData | undefined {
   return PROPERTY_PAGES.find((property) => property.slug === slug);

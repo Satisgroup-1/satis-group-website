@@ -12,6 +12,9 @@ export type Property = {
   imagePosition?: string;
   // Secondary image revealed on hover (crossfade); omit for a plain zoom.
   hoverImage?: string;
+  // Project logo presented over the hero on hover, on its brand background.
+  // Takes precedence over hoverImage.
+  logo?: { src: string; bg: string };
   blurb: string;
 };
 
@@ -26,6 +29,7 @@ export const PORTFOLIO: Property[] = [
     status: "For Sale",
     image: "/images/courthouse/hero.jpg",
     hoverImage: "/images/courthouse/kitchen.jpg",
+    logo: { src: "/images/logos/the-courthouse.png", bg: "#eae5da" },
     blurb:
       "An elegant conversion of the former Macclesfield courthouse: 13 one and two-bedroom apartments in the heart of the market town.",
   },
@@ -37,6 +41,7 @@ export const PORTFOLIO: Property[] = [
     status: "Selling Fast",
     image: "/images/hazelgate/exterior.jpg",
     hoverImage: "/images/hazelgate/living-kitchen.jpg",
+    logo: { src: "/images/logos/hazelgate.jpg", bg: "#2f3237" },
     blurb:
       "A new collection of nineteen contemporary one and two-bedroom apartments in the vibrant centre of Hazel Grove.",
   },
@@ -60,6 +65,7 @@ export const PORTFOLIO: Property[] = [
     image: "/images/22stjohn/building.jpg",
     imagePosition: "center 70%",
     hoverImage: "/images/22stjohn/gallery-1.jpg",
+    logo: { src: "/images/logos/22-st-john.png", bg: "#000000" },
     blurb:
       "A Grade II listed Georgian building between Deansgate and Spinningfields, remodelled into 13 private office suites.",
   },
@@ -70,13 +76,14 @@ export const PORTFOLIO: Property[] = [
     type: "Residential",
     status: "Completed",
     image: "/images/legacy/petersgate-house.jpg",
+    logo: { src: "/images/logos/qube.jpg", bg: "#f4efe7" },
     blurb:
       "Our largest scheme to date: fifty-eight apartments and two commercial units in Stockport town centre.",
   },
   {
     slug: "lancaster-house",
     name: "Lancaster House",
-    location: "North West",
+    location: "London Road, Manchester",
     type: "Residential",
     status: "Completed",
     image: "/images/legacy/lancaster-house.jpg",
@@ -86,23 +93,25 @@ export const PORTFOLIO: Property[] = [
   {
     slug: "st-johns-corner",
     name: "St John's Corner",
-    location: "North West",
+    location: "3-5 St John Street, Manchester",
     type: "Residential",
     status: "Completed",
     image: "/images/legacy/st-johns-corner.jpg",
+    logo: { src: "/images/logos/st-johns-corner.jpg", bg: "#414747" },
     blurb:
       "Eleven apartments on a well-connected corner, finished to the standard our buyers expect.",
   },
   {
     slug: "tabula",
     name: "Tabula",
-    location: "North West",
+    location: "Barnett House, 53 Fountain Street, Manchester",
     type: "Commercial",
     status: "Completed",
-    image: "/images/legacy/tabula.jpg",
-    imagePosition: "center 88%",
+    image: "/images/tabula/hero.jpg",
+    imagePosition: "center 30%",
+    logo: { src: "/images/logos/tabula.jpg", bg: "#0a0a0a" },
     blurb:
-      "A contemporary office development: character retained, fabric upgraded, workspace businesses want.",
+      "The repositioning of Barnett House on Fountain Street: character retained, fabric upgraded, workspace businesses want.",
   },
   {
     slug: "springfield-house",
@@ -123,5 +132,45 @@ export const PORTFOLIO: Property[] = [
     image: "/images/legacy/woodfield-road.jpg",
     blurb:
       "A mixed-use development combining residential and commercial space in a single scheme.",
+  },
+  {
+    slug: "15-alldis-street",
+    name: "15 Alldis Street",
+    location: "Great Moor, Stockport",
+    type: "Residential",
+    status: "Coming Soon",
+    image: "/images/alldis/hero.jpg",
+    blurb:
+      "A forthcoming residential development in Great Moor. Full details will be published as the scheme progresses.",
+  },
+  {
+    slug: "davenport-park",
+    name: "Davenport Park",
+    location: "Davenport, Stockport",
+    type: "Residential",
+    status: "Coming Soon",
+    image: "/images/pipeline/davenport-park.jpg",
+    blurb:
+      "A forthcoming residential scheme beside Davenport station. Imagery and details to follow.",
+  },
+  {
+    slug: "southbank",
+    name: "Southbank",
+    location: "North West",
+    type: "Residential",
+    status: "Coming Soon",
+    image: "/images/pipeline/southbank.jpg",
+    blurb:
+      "A new Satis development currently in preparation. Imagery and details to follow.",
+  },
+  {
+    slug: "mayor-street",
+    name: "Mayor Street",
+    location: "North West",
+    type: "Residential",
+    status: "Coming Soon",
+    image: "/images/pipeline/mayor-street.jpg",
+    blurb:
+      "A new Satis development currently in preparation. Imagery and details to follow.",
   },
 ];
