@@ -18,7 +18,7 @@ export function PropertyCard({ property }: { property: Property }) {
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
             className={`object-cover transition-all duration-700 ease-out group-hover:scale-105 ${
-              property.hoverImage ? "group-hover:opacity-0" : ""
+              property.logo || property.hoverImage ? "group-hover:opacity-0" : ""
             }`}
             style={
               property.imagePosition
@@ -26,14 +26,32 @@ export function PropertyCard({ property }: { property: Property }) {
                 : undefined
             }
           />
-          {property.hoverImage && (
-            <Image
-              src={property.hoverImage}
-              alt=""
-              fill
-              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-              className="scale-110 object-cover opacity-0 transition-all duration-700 ease-out group-hover:scale-100 group-hover:opacity-100"
-            />
+          {/* Project logo presents over the hero on hover; falls back to the
+              secondary-photo crossfade for sites without a logo yet. */}
+          {property.logo ? (
+            <span
+              aria-hidden="true"
+              className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-700 ease-out group-hover:opacity-100"
+              style={{ backgroundColor: property.logo.bg }}
+            >
+              <Image
+                src={property.logo.src}
+                alt=""
+                fill
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                className="scale-95 object-contain p-10 transition-transform duration-700 ease-out group-hover:scale-100"
+              />
+            </span>
+          ) : (
+            property.hoverImage && (
+              <Image
+                src={property.hoverImage}
+                alt=""
+                fill
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                className="scale-110 object-cover opacity-0 transition-all duration-700 ease-out group-hover:scale-100 group-hover:opacity-100"
+              />
+            )
           )}
           {/* accent wash sweeps across on hover */}
           <span

@@ -2,18 +2,20 @@
 
 import { useActionState, useState } from "react";
 import {
+  deleteCapPosition,
   deleteCashEvent,
   deleteDevelopment,
-  deleteHolding,
   deleteInsight,
   deleteInvestor,
+  deleteOpportunity,
   deleteUpdate,
   importSnapshot,
+  saveCapPosition,
   saveCashEvent,
   saveDevelopment,
-  saveHolding,
   saveInsight,
   saveInvestor,
+  saveOpportunity,
   saveUpdate,
   saveValueHistoryPoint,
   type PlatformActionState,
@@ -28,25 +30,27 @@ export type AdminPlatformData = {
     email: string;
     joined: string;
     value: string;
-    holdings: number;
+    positions: number;
   }[];
   developments: {
     id: string;
     name: string;
     place: string;
+    address: string;
     phase: string;
     status: string;
     progress: number;
     value: string;
+    spvName: string;
+    equityValue: string;
   }[];
-  holdings: {
-    investorId: string;
-    investorName: string;
+  capPositions: {
     developmentId: string;
     developmentName: string;
-    invested: string;
-    currentValue: string;
-    forecastIrr: string;
+    holder: string;
+    linked: boolean;
+    committed: string;
+    sharePercent: string;
     status: string;
   }[];
   cashEvents: {
@@ -59,9 +63,25 @@ export type AdminPlatformData = {
   }[];
   updates: { key: string; date: string; site: string; title: string; tag: string }[];
   insights: { slug: string; category: string; date: string; title: string; read: string }[];
+  opportunities: {
+    id: string;
+    name: string;
+    place: string;
+    status: string;
+    targetRaise: string;
+    raisedPercent: number;
+    closesOn: string;
+  }[];
 };
 
-type Tab = "investors" | "developments" | "holdings" | "updates" | "insights" | "data";
+type Tab =
+  | "investors"
+  | "developments"
+  | "captables"
+  | "updates"
+  | "insights"
+  | "opportunities"
+  | "data";
 
 type StateAction = (
   prev: PlatformActionState,
@@ -168,13 +188,13 @@ function InvestorsTab({ data }: { data: AdminPlatformData }) {
                   <b className="block text-lg font-medium text-foreground">
                     {inv.value}
                   </b>
-                  Portfolio value
+                  Portfolio value (from cap tables)
                 </span>
                 <span>
                   <b className="block text-lg font-medium text-foreground">
-                    {inv.holdings}
+                    {inv.positions}
                   </b>
-                  Holdings
+                  SPV positions
                 </span>
               </div>
             </li>
@@ -223,8 +243,8 @@ function InvestorsTab({ data }: { data: AdminPlatformData }) {
         >
           <h3 className="text-sm font-medium">Record quarterly valuation</h3>
           <p className="text-xs leading-5 text-muted">
-            Drives the value-progression chart and financial bars in the
-            investor&rsquo;s portal.
+            Drives the value-progression chart and its 1Y/3Y/5Y/Max horizons
+            in the investor&rsquo;s portal.
           </p>
           <label className={LABEL}>
             Investor
@@ -257,10 +277,10 @@ function InvestorsTab({ data }: { data: AdminPlatformData }) {
 function DevelopmentsTab({ data }: { data: AdminPlatformData }) {
   const [state, action, pending] = useActionState(saveDevelopment, {});
   return (
-    <div className="grid gap-10 xl:grid-cols-[1.15fr_.85fr]">
+    <div className="grid gap-10 xl:grid-cols-[1.05fr_.95fr]">
       <div>
         <h3 className="text-xs tracking-[.16em] uppercase text-muted">
-          Developments
+          Developments &amp; SPVs
         </h3>
         <ul className="mt-4 space-y-3">
           {data.developments.map((d) => (
@@ -270,10 +290,13 @@ function DevelopmentsTab({ data }: { data: AdminPlatformData }) {
             >
               <div>
                 <h4 className="font-medium">{d.name}</h4>
+                <p className="mt-1 text-xs text-muted">{d.address}</p>
                 <p className="mt-1 text-xs text-muted">
-                  {d.place} · {d.phase} · {d.progress}% · {d.value} · {d.status}
+                  {d.phase} · {d.progress}% · GDV {d.value} · {d.status}
                 </p>
-                <p className="mt-1 text-xs text-muted">ID {d.id}</p>
+                <p className="mt-1 text-xs text-muted">
+                  {d.spvName} · equity {d.equityValue} · ID {d.id}
+                </p>
               </div>
               <DeleteButton action={deleteDevelopment} fields={{ id: d.id }} />
             </li>
@@ -283,20 +306,33 @@ function DevelopmentsTab({ data }: { data: AdminPlatformData }) {
       <form action={action} className="h-fit space-y-4 border border-border bg-surface p-5">
         <h3 className="text-sm font-medium">Add or update development</h3>
         <p className="text-xs leading-5 text-muted">
-          Re-using an existing ID updates that development in place.
+          Re-using an existing ID updates that development in place. The SPV
+          figures drive every linked investor&rsquo;s portfolio value.
         </p>
         <label className={LABEL}>
           Name
           <input className={INPUT} name="name" required />
         </label>
+        <label className={LABEL}>
+          Full address (shown on the map)
+          <input className={INPUT} name="address" placeholder="22 St John Street, Manchester M3 4EB" required />
+        </label>
         <div className="grid grid-cols-2 gap-3">
           <label className={LABEL}>
-            Location
+            Area label
             <input className={INPUT} name="place" placeholder="Manchester M3" required />
           </label>
           <label className={LABEL}>
             ID (optional)
             <input className={INPUT} name="id" placeholder="court-house" />
+          </label>
+          <label className={LABEL}>
+            Latitude
+            <input className={INPUT} name="lat" placeholder="53.4796" required />
+          </label>
+          <label className={LABEL}>
+            Longitude
+            <input className={INPUT} name="lng" placeholder="-2.2516" required />
           </label>
           <label className={LABEL}>
             Status
@@ -314,14 +350,6 @@ function DevelopmentsTab({ data }: { data: AdminPlatformData }) {
             Gross value (GDV)
             <input className={INPUT} name="gdv" placeholder="£12.5m" required />
           </label>
-          <label className={LABEL}>
-            Map X %
-            <input className={INPUT} name="x" type="number" min="0" max="100" />
-          </label>
-          <label className={LABEL}>
-            Map Y %
-            <input className={INPUT} name="y" type="number" min="0" max="100" />
-          </label>
         </div>
         <label className={LABEL}>
           Next report date
@@ -329,8 +357,33 @@ function DevelopmentsTab({ data }: { data: AdminPlatformData }) {
         </label>
         <label className={LABEL}>
           Summary
-          <textarea className={`${INPUT} min-h-24`} name="summary" />
+          <textarea className={`${INPUT} min-h-20`} name="summary" />
         </label>
+        <p className="pt-1 text-[10px] tracking-[.14em] uppercase text-accent-text">
+          SPV / cap-table basis
+        </p>
+        <label className={LABEL}>
+          SPV name
+          <input className={INPUT} name="spvName" placeholder="Satis (Court House) Ltd" />
+        </label>
+        <div className="grid grid-cols-2 gap-3">
+          <label className={LABEL}>
+            Current equity value
+            <input className={INPUT} name="equityValue" placeholder="£5.05m" required />
+          </label>
+          <label className={LABEL}>
+            Total committed
+            <input className={INPUT} name="totalCommitted" placeholder="£4.75m" required />
+          </label>
+          <label className={LABEL}>
+            Senior debt
+            <input className={INPUT} name="seniorDebt" placeholder="£11.8m" required />
+          </label>
+          <label className={LABEL}>
+            Site forecast IRR %
+            <input className={INPUT} name="siteIrr" placeholder="14.8" required />
+          </label>
+        </div>
         <Result state={state} />
         <Submit pending={pending}>Save development</Submit>
       </form>
@@ -338,9 +391,9 @@ function DevelopmentsTab({ data }: { data: AdminPlatformData }) {
   );
 }
 
-function HoldingsTab({ data }: { data: AdminPlatformData }) {
-  const [holdingState, holdingAction, holdingPending] = useActionState(
-    saveHolding,
+function CapTablesTab({ data }: { data: AdminPlatformData }) {
+  const [positionState, positionAction, positionPending] = useActionState(
+    saveCapPosition,
     {}
   );
   const [eventState, eventAction, eventPending] = useActionState(
@@ -352,28 +405,33 @@ function HoldingsTab({ data }: { data: AdminPlatformData }) {
       <div className="grid gap-10 xl:grid-cols-[1.15fr_.85fr]">
         <div>
           <h3 className="text-xs tracking-[.16em] uppercase text-muted">
-            Holdings
+            SPV cap tables
           </h3>
           <ul className="mt-4 space-y-3">
-            {data.holdings.map((h) => (
+            {data.capPositions.map((p) => (
               <li
-                key={`${h.investorId}-${h.developmentId}`}
+                key={`${p.developmentId}-${p.holder}`}
                 className="flex items-start justify-between gap-4 border border-border p-5"
               >
                 <div>
                   <h4 className="font-medium">
-                    {h.investorName} · {h.developmentName}
+                    {p.developmentName} · {p.holder}
+                    {p.linked && (
+                      <span className="ml-2 bg-accent px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-ink">
+                        Platform account
+                      </span>
+                    )}
                   </h4>
                   <p className="mt-1 text-xs text-muted">
-                    {h.invested} invested · {h.currentValue} current ·{" "}
-                    {h.forecastIrr} IRR · {h.status}
+                    {p.sharePercent} of the vehicle · {p.committed} committed ·{" "}
+                    {p.status}
                   </p>
                 </div>
                 <DeleteButton
-                  action={deleteHolding}
+                  action={deleteCapPosition}
                   fields={{
-                    investorId: h.investorId,
-                    developmentId: h.developmentId,
+                    developmentId: p.developmentId,
+                    holder: p.holder,
                   }}
                 />
               </li>
@@ -381,58 +439,60 @@ function HoldingsTab({ data }: { data: AdminPlatformData }) {
           </ul>
         </div>
         <form
-          action={holdingAction}
+          action={positionAction}
           className="h-fit space-y-4 border border-border bg-surface p-5"
         >
-          <h3 className="text-sm font-medium">Assign or update holding</h3>
+          <h3 className="text-sm font-medium">Add or update cap-table position</h3>
           <p className="text-xs leading-5 text-muted">
-            Portfolio value, invested capital, weighted IRR and the equity
-            multiple are computed from these figures.
+            Portfolio value = share % × SPV equity value; committed capital is
+            the cost basis. Positions per SPV cannot exceed 100%. Pick a
+            platform investor or name an external holder.
           </p>
           <label className={LABEL}>
-            Investor
-            <select className={INPUT} name="investorId" required>
-              {data.investors.map((inv) => (
-                <option key={inv.id} value={inv.id}>
-                  {inv.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className={LABEL}>
-            Development
+            Development / SPV
             <select className={INPUT} name="developmentId" required>
               {data.developments.map((d) => (
                 <option key={d.id} value={d.id}>
-                  {d.name}
+                  {d.name} — {d.spvName}
                 </option>
               ))}
             </select>
           </label>
           <div className="grid grid-cols-2 gap-3">
             <label className={LABEL}>
-              Invested
-              <input className={INPUT} name="invested" placeholder="£1.2m" required />
-            </label>
-            <label className={LABEL}>
-              Current value
-              <input className={INPUT} name="currentValue" placeholder="£1.62m" required />
-            </label>
-            <label className={LABEL}>
-              Forecast IRR %
-              <input className={INPUT} name="forecastIrr" placeholder="19.2" required />
-            </label>
-            <label className={LABEL}>
-              Status
-              <select className={INPUT} name="status">
-                {["Active", "Realised", "Exited"].map((s) => (
-                  <option key={s}>{s}</option>
+              Platform investor
+              <select className={INPUT} name="investorId" defaultValue="">
+                <option value="">— external holder —</option>
+                {data.investors.map((inv) => (
+                  <option key={inv.id} value={inv.id}>
+                    {inv.name}
+                  </option>
                 ))}
               </select>
             </label>
+            <label className={LABEL}>
+              External holder name
+              <input className={INPUT} name="holder" placeholder="Satis Group (GP)" />
+            </label>
+            <label className={LABEL}>
+              Committed
+              <input className={INPUT} name="committed" placeholder="£1.2m" required />
+            </label>
+            <label className={LABEL}>
+              Share %
+              <input className={INPUT} name="sharePercent" placeholder="30" required />
+            </label>
           </div>
-          <Result state={holdingState} />
-          <Submit pending={holdingPending}>Save holding</Submit>
+          <label className={LABEL}>
+            Status
+            <select className={INPUT} name="status">
+              {["Active", "Realised", "Exited"].map((s) => (
+                <option key={s}>{s}</option>
+              ))}
+            </select>
+          </label>
+          <Result state={positionState} />
+          <Submit pending={positionPending}>Save position</Submit>
         </form>
       </div>
       <div className="grid gap-10 xl:grid-cols-[1.15fr_.85fr]">
@@ -618,10 +678,12 @@ function InsightsTab({ data }: { data: AdminPlatformData }) {
       <form action={action} className="h-fit space-y-4 border border-border bg-surface p-5">
         <h3 className="text-sm font-medium">Compose insight article</h3>
         <p className="text-xs leading-5 text-muted">
-          Separate blocks with a blank line. Start a line with
-          &ldquo;##&nbsp;&rdquo; for a section heading and use
-          &ldquo;-&nbsp;&rdquo; lines for bullet lists. Re-using a slug
-          updates the existing article.
+          Separate blocks with a blank line. &ldquo;##&nbsp;&rdquo; starts a
+          section heading, &ldquo;-&nbsp;&rdquo; lines become a bullet list,
+          and &ldquo;&gt;&nbsp;&rdquo; starts a pull quote (finish it with a
+          &ldquo;—&nbsp;Name&rdquo; line for the attribution). Stat rows,
+          tables and callouts can be added via the JSON importer. Re-using a
+          slug updates the existing article.
         </p>
         <label className={LABEL}>
           Title
@@ -668,19 +730,129 @@ function InsightsTab({ data }: { data: AdminPlatformData }) {
   );
 }
 
+function OpportunitiesTab({ data }: { data: AdminPlatformData }) {
+  const [state, action, pending] = useActionState(saveOpportunity, {});
+  return (
+    <div className="grid gap-10 xl:grid-cols-[1fr_1fr]">
+      <div>
+        <h3 className="text-xs tracking-[.16em] uppercase text-muted">
+          Upcoming investments
+        </h3>
+        <ul className="mt-4 space-y-3">
+          {data.opportunities.map((o) => (
+            <li
+              key={o.id}
+              className="flex items-start justify-between gap-4 border border-border p-5"
+            >
+              <div>
+                <p className="text-[10px] tracking-[.12em] uppercase text-accent-text">
+                  {o.status} · {o.place} · closes {o.closesOn}
+                </p>
+                <h4 className="mt-2 font-medium">{o.name}</h4>
+                <p className="mt-1 text-xs text-muted">
+                  Target {o.targetRaise} · {o.raisedPercent}% committed · ID {o.id}
+                </p>
+              </div>
+              <DeleteButton action={deleteOpportunity} fields={{ id: o.id }} />
+            </li>
+          ))}
+        </ul>
+      </div>
+      <form action={action} className="h-fit space-y-4 border border-border bg-surface p-5">
+        <h3 className="text-sm font-medium">Add or update opportunity</h3>
+        <p className="text-xs leading-5 text-muted">
+          Re-using an existing ID updates that opportunity. Highlights: one
+          per line.
+        </p>
+        <label className={LABEL}>
+          Name
+          <input className={INPUT} name="name" required />
+        </label>
+        <div className="grid grid-cols-2 gap-3">
+          <label className={LABEL}>
+            Location
+            <input className={INPUT} name="place" placeholder="Stockport" required />
+          </label>
+          <label className={LABEL}>
+            ID (optional)
+            <input className={INPUT} name="id" placeholder="qube-stockport" />
+          </label>
+        </div>
+        <label className={LABEL}>
+          Address
+          <input className={INPUT} name="address" placeholder="St Petersgate, Stockport SK1" />
+        </label>
+        <div className="grid grid-cols-2 gap-3">
+          <label className={LABEL}>
+            Status
+            <select className={INPUT} name="status">
+              <option>Open</option>
+              <option>Coming soon</option>
+              <option>Fully subscribed</option>
+            </select>
+          </label>
+          <label className={LABEL}>
+            Closes on
+            <input className={INPUT} name="closesOn" placeholder="2026-10-31" required />
+          </label>
+          <label className={LABEL}>
+            Target raise
+            <input className={INPUT} name="targetRaise" placeholder="£3.2m" required />
+          </label>
+          <label className={LABEL}>
+            Raised to date
+            <input className={INPUT} name="raisedToDate" placeholder="£2.1m" />
+          </label>
+          <label className={LABEL}>
+            Min commitment
+            <input className={INPUT} name="minCommitment" placeholder="£50k" required />
+          </label>
+          <label className={LABEL}>
+            Target IRR %
+            <input className={INPUT} name="targetIrr" placeholder="18.5" required />
+          </label>
+          <label className={LABEL}>
+            Target multiple
+            <input className={INPUT} name="targetMultiple" placeholder="1.6x" />
+          </label>
+          <label className={LABEL}>
+            Horizon
+            <input className={INPUT} name="horizon" placeholder="30 months" />
+          </label>
+        </div>
+        <label className={LABEL}>
+          Structure
+          <input className={INPUT} name="structure" placeholder="Ordinary shares in Satis (QUBE) Ltd" />
+        </label>
+        <label className={LABEL}>
+          Summary
+          <textarea className={`${INPUT} min-h-20`} name="summary" required />
+        </label>
+        <label className={LABEL}>
+          Highlights (one per line)
+          <textarea className={`${INPUT} min-h-28`} name="highlights" />
+        </label>
+        <Result state={state} />
+        <Submit pending={pending}>Save opportunity</Submit>
+      </form>
+    </div>
+  );
+}
+
 function DataTab({ data }: { data: AdminPlatformData }) {
   const [state, action, pending] = useActionState(importSnapshot, {});
   const counts: [string, number][] = [
     ["Investors", data.investors.length],
     ["Developments", data.developments.length],
-    ["Holdings", data.holdings.length],
+    ["Cap-table lines", data.capPositions.length],
     ["Cash events", data.cashEvents.length],
     ["Updates", data.updates.length],
     ["Insights", data.insights.length],
+    ["Opportunities", data.opportunities.length],
   ];
   return (
     <div className="max-w-3xl space-y-8">
-      <div className="grid grid-cols-2 gap-px bg-border sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-px bg-border sm:grid-cols-4">
         {counts.map(([label, value]) => (
           <div key={label} className="bg-background p-4">
             <b className="text-2xl font-medium">{value}</b>
@@ -706,10 +878,11 @@ function DataTab({ data }: { data: AdminPlatformData }) {
         <h3 className="text-sm font-medium">Bulk import</h3>
         <p className="text-xs leading-5 text-muted">
           Upload or paste a JSON object keyed by dataset (investors,
-          developments, holdings, cash-events, updates, documents, insights).
-          Only the datasets present are replaced. Investor records may include
-          a plaintext <code>password</code> field — it is scrypt-hashed on
-          import and never stored.
+          developments, cap-tables, cash-events, updates, documents,
+          insights, opportunities). Only the datasets present are replaced.
+          Cap tables are validated so no SPV exceeds 100%. Investor records
+          may include a plaintext <code>password</code> field — it is
+          scrypt-hashed on import and never stored.
         </p>
         <label className={LABEL}>
           JSON file
@@ -725,7 +898,7 @@ function DataTab({ data }: { data: AdminPlatformData }) {
           <textarea
             className={`${INPUT} min-h-40 font-mono text-xs normal-case tracking-normal`}
             name="json"
-            placeholder='{"investors": [...], "holdings": [...]}'
+            placeholder='{"investors": [...], "cap-tables": [...]}'
           />
         </label>
         <Result state={state} />
@@ -745,10 +918,11 @@ export function AdminPlatform({ data }: { data: AdminPlatformData }) {
   const [tab, setTab] = useState<Tab>("investors");
   const tabs: [Tab, string, number][] = [
     ["investors", "Investors", data.investors.length],
-    ["developments", "Developments", data.developments.length],
-    ["holdings", "Holdings & returns", data.holdings.length + data.cashEvents.length],
+    ["developments", "Developments & SPVs", data.developments.length],
+    ["captables", "Cap tables & returns", data.capPositions.length + data.cashEvents.length],
     ["updates", "Site updates", data.updates.length],
     ["insights", "Insights", data.insights.length],
+    ["opportunities", "Opportunities", data.opportunities.length],
     ["data", "Import / export", 0],
   ];
   return (
@@ -775,9 +949,10 @@ export function AdminPlatform({ data }: { data: AdminPlatformData }) {
       <div className="p-5 sm:p-8">
         {tab === "investors" && <InvestorsTab data={data} />}
         {tab === "developments" && <DevelopmentsTab data={data} />}
-        {tab === "holdings" && <HoldingsTab data={data} />}
+        {tab === "captables" && <CapTablesTab data={data} />}
         {tab === "updates" && <UpdatesTab data={data} />}
         {tab === "insights" && <InsightsTab data={data} />}
+        {tab === "opportunities" && <OpportunitiesTab data={data} />}
         {tab === "data" && <DataTab data={data} />}
       </div>
     </section>

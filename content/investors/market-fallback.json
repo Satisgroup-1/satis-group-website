@@ -1,0 +1,37 @@
+{
+  "asOf": "2026-06",
+  "regions": [
+    {
+      "id": "manchester",
+      "label": "Manchester",
+      "averagePrice": 247600,
+      "annualChange": 4.1,
+      "rentPcm": 1420,
+      "grossYield": 5.9
+    },
+    {
+      "id": "salford",
+      "label": "Salford",
+      "averagePrice": 228300,
+      "annualChange": 4.8,
+      "rentPcm": 1310,
+      "grossYield": 6.1
+    },
+    {
+      "id": "stockport",
+      "label": "Stockport",
+      "averagePrice": 304900,
+      "annualChange": 3.5,
+      "rentPcm": 1295,
+      "grossYield": 5.2
+    },
+    {
+      "id": "trafford",
+      "label": "Trafford",
+      "averagePrice": 386200,
+      "annualChange": 2.9,
+      "rentPcm": 1560,
+      "grossYield": 4.8
+    }
+  ]
+}

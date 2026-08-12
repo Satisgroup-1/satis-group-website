@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import type { InsightBlock } from "@/lib/investor-platform";
+import { InvestorMap } from "@/components/InvestorMap";
 
 type Section =
   | "overview"
   | "developments"
+  | "opportunities"
   | "market"
   | "insights"
   | "updates"
@@ -15,6 +17,7 @@ type Section =
 const navItems: { id: Section; label: string; icon: string }[] = [
   { id: "overview", label: "Overview", icon: "⌂" },
   { id: "developments", label: "Developments", icon: "◇" },
+  { id: "opportunities", label: "Upcoming investments", icon: "◈" },
   { id: "market", label: "Market intelligence", icon: "↗" },
   { id: "insights", label: "Insights", icon: "≡" },
   { id: "updates", label: "Site updates", icon: "○" },
@@ -34,17 +37,29 @@ export type PortalData = {
     id: string;
     name: string;
     place: string;
-    x: number;
-    y: number;
+    address: string;
+    lat: number;
+    lng: number;
     status: string;
     progress: number;
     value: string;
     phase: string;
     nextReport: string;
     summary: string;
+    spv: {
+      name: string;
+      equityValue: string;
+      totalCommitted: string;
+      seniorDebt: string;
+      forecastIrr: string;
+    };
+    capTable: { holder: string; sharePercent: string; committed: string; isYou: boolean }[];
+    yourPosition?: { sharePercent: string; committed: string; currentValue: string };
   }[];
   holdings: {
     name: string;
+    spvName: string;
+    share: string;
     invested: string;
     currentValue: string;
     forecastIrr: string;
@@ -65,6 +80,36 @@ export type PortalData = {
     body: InsightBlock[];
   }[];
   documents: { title: string; kind: string; published: string }[];
+  opportunities: {
+    id: string;
+    name: string;
+    place: string;
+    address: string;
+    status: "Open" | "Coming soon" | "Fully subscribed";
+    targetRaise: string;
+    raisedToDate: string;
+    raisedPercent: number;
+    minCommitment: string;
+    targetIrr: string;
+    targetMultiple: string;
+    horizon: string;
+    closesOn: string;
+    structure: string;
+    summary: string;
+    highlights: string[];
+  }[];
+  market: {
+    regions: {
+      label: string;
+      averagePrice: string;
+      annualChange: string;
+      rentPcm: string;
+      grossYield: string;
+    }[];
+    badge: string;
+    attribution: string;
+    live: boolean;
+  };
 };
 
 const INSIGHT_THEME: Record<PortalData["insights"][number]["theme"], string> = {
@@ -95,15 +140,6 @@ function DemoAction({ label, className }: { label: string; className: string }) 
   );
 }
 
-function Sparkline({ points, color = "#b6904f" }: { points: string; color?: string }) {
-  return (
-    <svg viewBox="0 0 180 52" className="h-12 w-full" aria-hidden="true">
-      <path d={`${points} L180 52 L0 52 Z`} fill={color} opacity=".08" />
-      <polyline points={points.replace(/[ML]/g, "")} fill="none" stroke={color} strokeWidth="2" vectorEffect="non-scaling-stroke" />
-    </svg>
-  );
-}
-
 /** SVG path for a value series inside a w×h viewBox, padded top and bottom. */
 function linePath(values: number[], w: number, h: number, pad = 16): string {
   if (values.length < 2) return "";
@@ -119,15 +155,113 @@ function linePath(values: number[], w: number, h: number, pad = 16): string {
     .join(" ");
 }
 
-function chartLabels(history: PortalData["valueHistory"]): string[] {
-  if (history.length < 2) return history.map((p) => p.label);
-  const picks = [
-    0,
-    Math.floor(history.length / 3),
-    Math.floor((history.length * 2) / 3),
-    history.length - 1,
-  ];
-  return [...new Set(picks)].map((i) => history[i].label);
+// ---------------------------------------------------------------------------
+// Time horizons (D): both charts share the same range selector.
+
+const HORIZONS: { id: string; label: string; quarters: number }[] = [
+  { id: "1y", label: "1Y", quarters: 4 },
+  { id: "3y", label: "3Y", quarters: 12 },
+  { id: "5y", label: "5Y", quarters: 20 },
+  { id: "max", label: "Max", quarters: Infinity },
+];
+
+function useHorizon(history: PortalData["valueHistory"]) {
+  const available = HORIZONS.filter(
+    (h, i) => i === 0 || history.length > (HORIZONS[i - 1]?.quarters ?? 0)
+  );
+  const [horizonId, setHorizonId] = useState("max");
+  const active =
+    available.find((h) => h.id === horizonId) ?? available[available.length - 1];
+  const sliced =
+    active.quarters === Infinity ? history : history.slice(-active.quarters);
+  return { available, active, sliced, setHorizonId };
+}
+
+function HorizonPicker({
+  options,
+  activeId,
+  onPick,
+}: {
+  options: { id: string; label: string }[];
+  activeId: string;
+  onPick: (id: string) => void;
+}) {
+  return (
+    <div className="flex border border-[#d8d7d0]" role="group" aria-label="Chart time horizon">
+      {options.map((o) => (
+        <button
+          key={o.id}
+          onClick={() => onPick(o.id)}
+          aria-pressed={activeId === o.id}
+          className={`px-3 py-2 text-[10px] uppercase tracking-wider transition ${
+            activeId === o.id
+              ? "bg-[#121212] text-white"
+              : "text-[#777e82] hover:bg-[#eee9df]"
+          }`}
+        >
+          {o.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function ValueChart({ history }: { history: PortalData["valueHistory"] }) {
+  const { available, active, sliced, setHorizonId } = useHorizon(history);
+  const path = linePath(sliced.map((p) => p.value), 700, 220);
+  const labels =
+    sliced.length < 2
+      ? sliced.map((p) => p.label)
+      : [...new Set([0, Math.floor(sliced.length / 3), Math.floor((sliced.length * 2) / 3), sliced.length - 1])].map(
+          (i) => sliced[i].label
+        );
+  return (
+    <section className="border border-[#d8d7d0] bg-white p-6 sm:p-8">
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <p className="text-xs tracking-[.15em] uppercase text-[#747b7f]">Portfolio performance</p>
+          <h2 className="mt-2 text-xl font-medium text-[#121212]">Value progression</h2>
+        </div>
+        <HorizonPicker options={available} activeId={active.id} onPick={setHorizonId} />
+      </div>
+      <div className="mt-10 h-56">
+        {path ? (
+          <svg viewBox="0 0 700 220" className="h-full w-full" aria-label={`Portfolio value chart, ${active.label} horizon`}>
+            <g stroke="#e5e3dc" strokeWidth="1">{[20, 70, 120, 170, 220].map((y) => <line key={y} x1="0" x2="700" y1={y} y2={y} />)}</g>
+            <path d={path} fill="none" stroke="#b18c4d" strokeWidth="3" />
+            <path d={`${path} L700 220 L0 220Z`} fill="#b18c4d" opacity=".08" />
+          </svg>
+        ) : (
+          <p className="text-sm text-[#858b8e]">Performance history will appear once your first valuation is recorded.</p>
+        )}
+      </div>
+      <div className="flex justify-between text-[10px] text-[#858b8e]">{labels.map((l) => <span key={l}>{l}</span>)}</div>
+    </section>
+  );
+}
+
+function PerformanceBars({ history, headline }: { history: PortalData["valueHistory"]; headline: PortalData["financialsHeadline"] }) {
+  const { available, active, sliced, setHorizonId } = useHorizon(history);
+  const max = Math.max(...sliced.map((b) => b.value), 1);
+  return (
+    <section className="border border-[#d8d7d0] bg-white p-7 lg:col-span-2">
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <p className="text-xs uppercase tracking-wider text-[#777e82]">Investment performance</p>
+          <h2 className="mt-3 text-2xl text-[#121212]">{headline.value} <span className="text-sm text-[#687a64]">{headline.delta}</span></h2>
+        </div>
+        <HorizonPicker options={available} activeId={active.id} onPick={setHorizonId} />
+      </div>
+      <div className="mt-8 grid h-64 items-end gap-2 border-b border-[#d8d7d0]" style={{ gridTemplateColumns: `repeat(${Math.max(sliced.length, 1)}, minmax(0, 1fr))` }}>
+        {sliced.map((b) => (
+          <div key={b.label} className="group relative flex h-full items-end">
+            <div className="w-full bg-[#b18c4d] opacity-80 transition group-hover:opacity-100" style={{ height: `${Math.round((b.value / max) * 100)}%` }} title={b.label} />
+          </div>
+        ))}
+      </div>
+      <div className="mt-3 flex justify-between text-[10px] text-[#858b8e]"><span>{sliced[0]?.label}</span><span>{sliced[sliced.length - 1]?.label}</span></div>
+    </section>
+  );
 }
 
 function Sidebar({ accountName, active, setActive, logout }: { accountName: string; active: Section; setActive: (s: Section) => void; logout: () => Promise<void> }) {
@@ -147,15 +281,20 @@ function PageTitle({ eyebrow, title, copy }: { eyebrow: string; title: string; c
 }
 
 function Overview({ data, go }: { data: PortalData; go: (s: Section) => void }) {
-  const values = data.valueHistory.map((p) => p.value);
-  const path = linePath(values, 700, 220);
+  const openOpportunity = data.opportunities.find((o) => o.status === "Open");
   return <>
     <div className="mb-8 flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><PageTitle eyebrow="Portfolio overview" title={data.greeting} copy="Here’s what’s happening across your Satis portfolio." /><div className="mb-9 text-right text-xs text-[#7c8285]"><span className="mb-1 block uppercase tracking-[.16em]">Last updated</span>{data.lastUpdated}</div></div>
     <div className="grid gap-px overflow-hidden border border-[#d8d7d0] bg-[#d8d7d0] sm:grid-cols-2 xl:grid-cols-4">
       {data.stats.map((x,i)=><div key={x.label} className="bg-white p-6"><div className="flex justify-between text-[10px] tracking-[.16em] uppercase text-[#777e82]"><span>{x.label}</span><span>0{i+1}</span></div><p className="mt-6 text-3xl font-medium tracking-tight text-[#121212]">{x.value}</p><p className="mt-2 text-xs text-[#617260]">{x.note}</p></div>)}
     </div>
+    {openOpportunity && (
+      <button onClick={() => go("opportunities")} className="mt-6 flex w-full flex-wrap items-center justify-between gap-3 border border-[#c9b98f] bg-[#f3ecdc] px-6 py-4 text-left transition hover:border-[#b18c4d]">
+        <span className="text-sm text-[#4f4633]"><b className="mr-2 bg-[#b18c4d] px-2 py-1 text-[10px] uppercase tracking-wider text-white">Now raising</b>{openOpportunity.name}, {openOpportunity.place} — target {openOpportunity.targetIrr} IRR · closes {openOpportunity.closesOn}</span>
+        <span className="text-[10px] uppercase tracking-[.16em] text-[#8a6c3f]">View opportunity →</span>
+      </button>
+    )}
     <div className="mt-6 grid gap-6 xl:grid-cols-[1.45fr_.85fr]">
-      <section className="border border-[#d8d7d0] bg-white p-6 sm:p-8"><div className="flex items-center justify-between"><div><p className="text-xs tracking-[.15em] uppercase text-[#747b7f]">Portfolio performance</p><h2 className="mt-2 text-xl font-medium text-[#121212]">Value progression</h2></div><span className="border border-[#d8d7d0] px-3 py-2 text-[10px] uppercase tracking-wider">All time</span></div><div className="mt-10 h-56">{path ? <svg viewBox="0 0 700 220" className="h-full w-full" aria-label="Portfolio value chart"><g stroke="#e5e3dc" strokeWidth="1">{[20,70,120,170,220].map(y=><line key={y} x1="0" x2="700" y1={y} y2={y}/>)}</g><path d={path} fill="none" stroke="#b18c4d" strokeWidth="3"/><path d={`${path} L700 220 L0 220Z`} fill="#b18c4d" opacity=".08"/></svg> : <p className="text-sm text-[#858b8e]">Performance history will appear once your first valuation is recorded.</p>}</div><div className="flex justify-between text-[10px] text-[#858b8e]">{chartLabels(data.valueHistory).map(l=><span key={l}>{l}</span>)}</div></section>
+      <ValueChart history={data.valueHistory} />
       <section className="bg-[#121212] p-7 text-white"><p className="text-[10px] tracking-[.18em] uppercase text-[#c4a262]">Latest activity</p><div className="mt-6 space-y-6">{data.updates.slice(0,3).map((u,i)=><div key={u.title} className={i<2?"border-b border-white/10 pb-6":""}><p className="text-[10px] uppercase tracking-wider text-white/40">{u.date} · {u.site}</p><p className="mt-2 text-sm">{u.title}</p></div>)}</div><button onClick={()=>go("updates")} className="mt-8 text-[10px] tracking-[.16em] uppercase text-[#c4a262]">View all updates →</button></section>
     </div>
     <div className="mt-6 grid gap-6 lg:grid-cols-3">{data.developments.slice(0,3).map(d=><article key={d.name} className="border border-[#d8d7d0] bg-white p-6"><div className="flex justify-between"><span className="text-[10px] uppercase tracking-[.14em] text-[#6b7969]">{d.status}</span><span className="text-xs text-[#8a8e90]">{d.progress}%</span></div><h3 className="mt-5 text-lg font-medium text-[#121212]">{d.name}</h3><p className="mt-1 text-xs text-[#83888b]">{d.place} · {d.phase}</p><div className="mt-6 h-1 bg-[#e6e3dc]"><div className="h-full bg-[#b18c4d]" style={{width:`${d.progress}%`}} /></div></article>)}</div>
@@ -163,54 +302,161 @@ function Overview({ data, go }: { data: PortalData; go: (s: Section) => void }) 
 }
 
 function Developments({ developments }: { developments: PortalData["developments"] }) {
-  const [selected, setSelected] = useState(0);
-  const d = developments[Math.min(selected, developments.length - 1)];
+  const [selectedId, setSelectedId] = useState(developments[0]?.id ?? "");
+  const d = developments.find((x) => x.id === selectedId) ?? developments[0];
   if (!d) return <PageTitle eyebrow="Live portfolio" title="No developments yet." copy="Developments will appear here as they are added to the platform." />;
-  return <><PageTitle eyebrow="Live portfolio" title="Developments across Greater Manchester." copy="Track project phase, programme and headline value across every active Satis development." />
-    <div className="grid overflow-hidden border border-[#d8d7d0] bg-white xl:grid-cols-[1.4fr_.8fr]">
-      <div className="relative min-h-[520px] overflow-hidden bg-[#e8e5dd]">
-        <svg viewBox="0 0 800 560" className="absolute inset-0 h-full w-full" aria-label="Stylised map of Greater Manchester"><rect width="800" height="560" fill="#e9e7e0"/><g fill="none" stroke="#c7c5be" strokeWidth="2"><path d="M-30 390 C130 330 205 385 340 310 S580 250 840 310"/><path d="M80 0 C180 140 260 200 245 570"/><path d="M620 -20 C560 110 470 200 490 580"/><path d="M0 160 C170 180 260 115 405 170 S650 190 820 90"/></g><g fill="#dad8d1" stroke="#c7c5be"><path d="M310 170 L500 150 610 245 570 380 390 420 250 330Z"/></g><g fontSize="13" fill="#8a8b87" letterSpacing="2"><text x="370" y="260">MANCHESTER</text><text x="250" y="470">ALTRINCHAM</text><text x="560" y="450">STOCKPORT</text><text x="85" y="130">BOLTON</text></g></svg>
-        {developments.map((item,i)=><button key={item.name} onClick={()=>setSelected(i)} aria-label={`View ${item.name}`} className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-white shadow-md transition ${selected===i?"h-6 w-6 bg-[#121212]":"h-4 w-4 bg-[#b18c4d] hover:scale-125"}`} style={{left:`${item.x}%`,top:`${item.y}%`}} />)}
-        <div className="absolute bottom-5 left-5 bg-white/95 px-4 py-3 text-[10px] tracking-[.12em] uppercase text-[#777d80]">● Active &nbsp;&nbsp; ◉ Selected</div>
+  return <><PageTitle eyebrow="Live portfolio" title="Developments across Greater Manchester." copy="Every Satis site on the map — select a pin or a row for programme, SPV and cap-table detail." />
+    <div className="grid overflow-hidden border border-[#d8d7d0] bg-white xl:grid-cols-[1.35fr_.85fr]">
+      <InvestorMap sites={developments} selectedId={d.id} onSelect={setSelectedId} />
+      <div className="p-7 sm:p-9">
+        <p className="text-[10px] tracking-[.18em] uppercase text-[#8a6c3f]">Selected development</p>
+        <h2 className="mt-4 text-2xl font-medium text-[#121212]">{d.name}</h2>
+        <p className="mt-1 text-sm text-[#737a7e]">{d.address}</p>
+        <p className="mt-5 text-sm leading-6 text-[#687077]">{d.summary}</p>
+        <div className="my-7 border-y border-[#deddd7] py-6"><div className="flex justify-between text-xs"><span>Overall progress</span><b>{d.progress}%</b></div><div className="mt-3 h-1 bg-[#e2e0d9]"><div className="h-full bg-[#b18c4d]" style={{width:`${d.progress}%`}} /></div></div>
+        <dl className="grid grid-cols-2 gap-6 text-sm">
+          <div><dt className="text-[10px] uppercase tracking-wider text-[#858b8e]">Current phase</dt><dd className="mt-2">{d.phase}</dd></div>
+          <div><dt className="text-[10px] uppercase tracking-wider text-[#858b8e]">Gross value</dt><dd className="mt-2">{d.value}</dd></div>
+          <div><dt className="text-[10px] uppercase tracking-wider text-[#858b8e]">Programme</dt><dd className="mt-2 text-[#667b62]">{d.status}</dd></div>
+          <div><dt className="text-[10px] uppercase tracking-wider text-[#858b8e]">Next report</dt><dd className="mt-2">{d.nextReport}</dd></div>
+        </dl>
+        <div className="mt-7 border border-[#deddd7] bg-[#faf8f3] p-5">
+          <p className="text-[10px] uppercase tracking-[.16em] text-[#8a6c3f]">Investment vehicle</p>
+          <p className="mt-2 text-sm font-medium text-[#121212]">{d.spv.name}</p>
+          <dl className="mt-4 grid grid-cols-3 gap-4 text-xs text-[#737a7e]">
+            <div><dt className="text-[10px] uppercase tracking-wider text-[#a0a5a8]">SPV equity</dt><dd className="mt-1 text-sm text-[#121212]">{d.spv.equityValue}</dd></div>
+            <div><dt className="text-[10px] uppercase tracking-wider text-[#a0a5a8]">Senior debt</dt><dd className="mt-1 text-sm text-[#121212]">{d.spv.seniorDebt}</dd></div>
+            <div><dt className="text-[10px] uppercase tracking-wider text-[#a0a5a8]">Site IRR</dt><dd className="mt-1 text-sm text-[#121212]">{d.spv.forecastIrr}</dd></div>
+          </dl>
+          {d.yourPosition && <p className="mt-4 border-t border-[#e5e0d3] pt-3 text-xs text-[#617260]">Your position: <b>{d.yourPosition.sharePercent}</b> of the vehicle · {d.yourPosition.committed} committed · currently {d.yourPosition.currentValue}</p>}
+          <table className="mt-4 w-full text-left text-xs">
+            <thead className="text-[10px] uppercase tracking-wider text-[#a0a5a8]"><tr><th className="pb-2 font-normal">Cap table</th><th className="pb-2 font-normal">Committed</th><th className="pb-2 text-right font-normal">Holding</th></tr></thead>
+            <tbody>{d.capTable.map((row)=><tr key={row.holder} className={`border-t border-[#ece8dd] ${row.isYou ? "font-medium text-[#121212]" : "text-[#737a7e]"}`}><td className="py-2">{row.holder}{row.isYou && <span className="ml-2 bg-[#b18c4d] px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-white">You</span>}</td><td className="py-2">{row.committed}</td><td className="py-2 text-right">{row.sharePercent}</td></tr>)}</tbody>
+          </table>
+        </div>
+        <DemoAction label="View project report →" className="shimmer-btn mt-7 w-full bg-[#121212] px-5 py-4 text-xs tracking-[.15em] uppercase text-white" />
       </div>
-      <div className="p-7 sm:p-9"><p className="text-[10px] tracking-[.18em] uppercase text-[#8a6c3f]">Selected development</p><h2 className="mt-4 text-2xl font-medium text-[#121212]">{d.name}</h2><p className="mt-1 text-sm text-[#737a7e]">{d.place}</p><p className="mt-5 text-sm leading-6 text-[#687077]">{d.summary}</p><div className="my-8 border-y border-[#deddd7] py-6"><div className="flex justify-between text-xs"><span>Overall progress</span><b>{d.progress}%</b></div><div className="mt-3 h-1 bg-[#e2e0d9]"><div className="h-full bg-[#b18c4d]" style={{width:`${d.progress}%`}} /></div></div><dl className="grid grid-cols-2 gap-7 text-sm"><div><dt className="text-[10px] uppercase tracking-wider text-[#858b8e]">Current phase</dt><dd className="mt-2">{d.phase}</dd></div><div><dt className="text-[10px] uppercase tracking-wider text-[#858b8e]">Gross value</dt><dd className="mt-2">{d.value}</dd></div><div><dt className="text-[10px] uppercase tracking-wider text-[#858b8e]">Programme</dt><dd className="mt-2 text-[#667b62]">{d.status}</dd></div><div><dt className="text-[10px] uppercase tracking-wider text-[#858b8e]">Next report</dt><dd className="mt-2">{d.nextReport}</dd></div></dl><DemoAction label="View project report →" className="mt-9 w-full bg-[#121212] px-5 py-4 text-xs tracking-[.15em] uppercase text-white" /></div>
-    </div></>;
-}
-
-function Market() {
-  return <><PageTitle eyebrow="Greater Manchester" title="Market intelligence." copy="Our view of the indicators shaping residential and commercial real estate decisions across the city region." />
-    <div className="mb-6 border-l-2 border-[#b18c4d] bg-[#eee9df] px-5 py-4 text-xs leading-5 text-[#62696d]">Internal research snapshot · Q2 2026. Figures are indicative for platform demonstration and should not be relied upon as investment advice.</div>
-    <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">{[
-      {l:"Average house price",v:"£254,800",c:"+3.7%",p:"M0 40 L30 38 L55 30 L82 34 L110 20 L140 24 L180 8"},{l:"Prime office rent",v:"£45.00",c:"psf headline",p:"M0 42 L30 40 L60 39 L90 30 L120 28 L150 17 L180 12"},{l:"City centre vacancy",v:"6.2%",c:"Grade A supply",p:"M0 15 L35 18 L65 17 L100 25 L130 28 L155 39 L180 42"},{l:"Residential yield",v:"5.8%",c:"GM average",p:"M0 40 L30 35 L60 38 L90 25 L120 30 L150 20 L180 14"}
-    ].map(x=><div key={x.l} className="border border-[#d8d7d0] bg-white p-6"><p className="text-[10px] tracking-[.14em] uppercase text-[#7c8386]">{x.l}</p><p className="mt-5 text-3xl font-medium text-[#121212]">{x.v}</p><p className="mt-1 text-xs text-[#6b7969]">{x.c}</p><div className="mt-5"><Sparkline points={x.p}/></div></div>)}</div>
-    <div className="mt-6 grid gap-6 xl:grid-cols-[1.25fr_.75fr]"><section className="border border-[#d8d7d0] bg-white p-7"><p className="text-xs tracking-[.15em] uppercase text-[#737a7e]">Submarket comparison</p><div className="mt-6 overflow-x-auto"><table className="w-full min-w-[560px] text-left text-sm"><thead className="border-b border-[#d8d7d0] text-[10px] uppercase tracking-wider text-[#858b8e]"><tr>{["Location","House price","12m change","Rent pcm","Gross yield"].map(x=><th key={x} className="pb-3 font-normal">{x}</th>)}</tr></thead><tbody>{[["Manchester","£247,600","+4.1%","£1,420","5.9%"],["Salford","£228,300","+4.8%","£1,310","6.1%"],["Stockport","£304,900","+3.5%","£1,295","5.2%"],["Trafford","£386,200","+2.9%","£1,560","4.8%"]].map(r=><tr key={r[0]} className="border-b border-[#ebe9e3] last:border-0">{r.map((c,i)=><td key={c} className={`py-4 ${i===2?"text-[#63775e]":""}`}>{c}</td>)}</tr>)}</tbody></table></div></section><section className="bg-[#121212] p-7 text-white"><p className="text-[10px] tracking-[.18em] uppercase text-[#c4a262]">Satis view</p><h2 className="mt-5 text-2xl leading-8">Selective optimism in a supply-constrained market.</h2><p className="mt-5 text-sm leading-6 text-white/60">We remain focused on connected neighbourhoods where high-quality converted stock can meet resilient occupier demand.</p><div className="mt-8 space-y-4 border-t border-white/10 pt-6 text-xs text-white/70"><p>01 &nbsp; Flight to quality continues</p><p>02 &nbsp; Rental demand remains resilient</p><p>03 &nbsp; Build-cost inflation is moderating</p></div></section></div>
-    <div className="mt-6 text-[10px] leading-5 text-[#858b8e]">Suggested source set: HM Land Registry UK House Price Index, ONS Private Rent and House Prices, GMCA monitoring data, and quarterly agent research. Verify current figures before external use.</div>
+    </div>
+    <div className="mt-6 overflow-x-auto border border-[#d8d7d0] bg-white">
+      <table className="w-full min-w-[760px] text-left text-sm">
+        <thead className="border-b border-[#d8d7d0] text-[10px] uppercase tracking-wider text-[#858b8e]"><tr>{["Development","Address","Phase","Programme","Progress"].map(h=><th key={h} className="px-6 py-4 font-normal">{h}</th>)}</tr></thead>
+        <tbody>{developments.map((row)=><tr key={row.id} onClick={()=>setSelectedId(row.id)} className={`cursor-pointer border-b border-[#ebe9e3] transition last:border-0 hover:bg-[#faf8f3] ${row.id===d.id?"bg-[#f3ecdc]":""}`}><td className="px-6 py-4 font-medium text-[#121212]">{row.name}</td><td className="px-6 py-4 text-xs text-[#737a7e]">{row.address}</td><td className="px-6 py-4">{row.phase}</td><td className="px-6 py-4 text-[#667b62]">{row.status}</td><td className="px-6 py-4">{row.progress}%</td></tr>)}</tbody>
+      </table>
+    </div>
   </>;
 }
 
-function InsightBody({ blocks }: { blocks: InsightBlock[] }) {
-  return <div className="mt-10 border-t border-[#d8d7d0] pt-9">{blocks.map((block, i) => {
-    if (block.type === "heading") return <h2 key={i} className="mt-10 text-xl font-medium tracking-tight text-[#121212] first:mt-0">{block.text}</h2>;
-    if (block.type === "list") return <ul key={i} className="mt-5 space-y-3">{block.items.map((item) => <li key={item} className="flex gap-3 text-base leading-7 text-[#4f585d]"><span aria-hidden="true" className="mt-[.65em] h-px w-5 shrink-0 bg-[#b18c4d]" />{item}</li>)}</ul>;
-    return <p key={i} className="mt-5 text-base leading-8 text-[#4f585d] first:mt-0">{block.text}</p>;
-  })}</div>;
+function Opportunities({ opportunities }: { opportunities: PortalData["opportunities"] }) {
+  const chip: Record<string, string> = {
+    Open: "bg-[#5d7157] text-white",
+    "Coming soon": "bg-[#b18c4d] text-white",
+    "Fully subscribed": "bg-[#d8d7d0] text-[#62696d]",
+  };
+  return <><PageTitle eyebrow="Deal flow" title="Upcoming investments." copy="Current and forthcoming Satis single-asset raises. Allocations are confirmed in order of registration, subject to suitability." />
+    <div className="space-y-6">{opportunities.map((o)=>(
+      <article key={o.id} className="grid border border-[#d8d7d0] bg-white lg:grid-cols-[1.15fr_.85fr]">
+        <div className="p-7 sm:p-9">
+          <div className="flex flex-wrap items-center gap-3"><span className={`px-2.5 py-1 text-[10px] uppercase tracking-wider ${chip[o.status]}`}>{o.status}</span><span className="text-[10px] uppercase tracking-[.16em] text-[#96723d]">{o.place}</span></div>
+          <h2 className="mt-4 text-2xl font-medium text-[#121212]">{o.name}</h2>
+          <p className="mt-1 text-xs text-[#8a8e90]">{o.address}</p>
+          <p className="mt-4 max-w-xl text-sm leading-6 text-[#687077]">{o.summary}</p>
+          <ul className="mt-5 space-y-2">{o.highlights.map((h)=><li key={h} className="flex gap-3 text-sm leading-6 text-[#4f585d]"><span aria-hidden="true" className="mt-[.65em] h-px w-5 shrink-0 bg-[#b18c4d]" />{h}</li>)}</ul>
+          <p className="mt-5 text-xs text-[#858b8e]">{o.structure}</p>
+        </div>
+        <div className="border-t border-[#e5e3dc] bg-[#faf8f3] p-7 sm:p-9 lg:border-l lg:border-t-0">
+          <div className="grid grid-cols-2 gap-6">
+            {[["Target raise",o.targetRaise],["Min commitment",o.minCommitment],["Target IRR",o.targetIrr],["Target multiple",o.targetMultiple],["Horizon",o.horizon],[o.status==="Coming soon"?"Expected launch":"Closes",o.closesOn]].map(([l,v])=><div key={l as string}><p className="text-[10px] uppercase tracking-wider text-[#a0a5a8]">{l}</p><p className="mt-1 text-lg font-medium text-[#121212]">{v}</p></div>)}
+          </div>
+          {o.status !== "Coming soon" && (
+            <div className="mt-7">
+              <div className="flex justify-between text-xs text-[#737a7e]"><span>{o.raisedToDate} committed</span><b>{o.raisedPercent}%</b></div>
+              <div className="mt-2 h-1.5 bg-[#e6e3dc]"><div className="h-full bg-[#5d7157]" style={{width:`${o.raisedPercent}%`}} /></div>
+            </div>
+          )}
+          {o.status === "Fully subscribed" ? (
+            <p className="mt-7 text-xs leading-5 text-[#858b8e]">This raise is closed. Quarterly reporting will appear in the developments and documents sections.</p>
+          ) : (
+            <a href={`mailto:info@satisgroup.co.uk?subject=${encodeURIComponent(`Investor interest: ${o.name}, ${o.place}`)}`} className="shimmer-btn mt-7 block w-full bg-[#121212] px-5 py-4 text-center text-xs tracking-[.15em] uppercase text-white transition hover:bg-[#b18c4d]">
+              {o.status === "Open" ? "Register interest →" : "Join the launch list →"}
+            </a>
+          )}
+        </div>
+      </article>
+    ))}</div>
+    <p className="mt-6 text-[10px] leading-5 text-[#858b8e]">Capital at risk. Target returns are not guaranteed and past performance is not a reliable indicator of future results. Investments are unlisted, illiquid and available to eligible investors only; nothing on this page is financial advice.</p>
+  </>;
+}
+
+function Market({ market }: { market: PortalData["market"] }) {
+  return <><PageTitle eyebrow="Greater Manchester" title="Market intelligence." copy="The indicators shaping residential and commercial real estate decisions across the city region." />
+    <div className={`mb-6 flex flex-wrap items-center gap-3 border-l-2 px-5 py-4 text-xs leading-5 ${market.live ? "border-[#5d7157] bg-[#eef0e9] text-[#4a5546]" : "border-[#b18c4d] bg-[#eee9df] text-[#62696d]"}`}>
+      <span className={`px-2 py-0.5 text-[10px] uppercase tracking-wider text-white ${market.live ? "bg-[#5d7157]" : "bg-[#b18c4d]"}`}>{market.live ? "Live data" : "Snapshot"}</span>
+      {market.badge}
+    </div>
+    <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">{market.regions.map((r)=><div key={r.label} className="border border-[#d8d7d0] bg-white p-6"><p className="text-[10px] tracking-[.14em] uppercase text-[#7c8386]">{r.label}</p><p className="mt-5 text-3xl font-medium text-[#121212]">{r.averagePrice}</p><p className="mt-1 text-xs text-[#6b7969]">{r.annualChange} · 12 months</p><dl className="mt-5 grid grid-cols-2 gap-3 border-t border-[#ebe9e3] pt-4 text-xs text-[#737a7e]"><div><dt className="text-[10px] uppercase tracking-wider text-[#a0a5a8]">Rent pcm</dt><dd className="mt-1 text-sm text-[#121212]">{r.rentPcm}</dd></div><div><dt className="text-[10px] uppercase tracking-wider text-[#a0a5a8]">Gross yield</dt><dd className="mt-1 text-sm text-[#121212]">{r.grossYield}</dd></div></dl></div>)}</div>
+    <div className="mt-6 grid gap-6 xl:grid-cols-[1.25fr_.75fr]">
+      <section className="border border-[#d8d7d0] bg-white p-7"><p className="text-xs tracking-[.15em] uppercase text-[#737a7e]">Submarket comparison</p><div className="mt-6 overflow-x-auto"><table className="w-full min-w-[560px] text-left text-sm"><thead className="border-b border-[#d8d7d0] text-[10px] uppercase tracking-wider text-[#858b8e]"><tr>{["Location","House price","12m change","Rent pcm","Gross yield"].map(x=><th key={x} className="pb-3 font-normal">{x}</th>)}</tr></thead><tbody>{market.regions.map(r=><tr key={r.label} className="border-b border-[#ebe9e3] last:border-0"><td className="py-4">{r.label}</td><td>{r.averagePrice}</td><td className="text-[#63775e]">{r.annualChange}</td><td>{r.rentPcm}</td><td>{r.grossYield}</td></tr>)}</tbody></table></div></section>
+      <section className="bg-[#121212] p-7 text-white"><p className="text-[10px] tracking-[.18em] uppercase text-[#c4a262]">Satis view</p><h2 className="mt-5 text-2xl leading-8">Selective optimism in a supply-constrained market.</h2><p className="mt-5 text-sm leading-6 text-white/60">We remain focused on connected neighbourhoods where high-quality converted stock can meet resilient occupier demand.</p><div className="mt-8 space-y-4 border-t border-white/10 pt-6 text-xs text-white/70"><p>01 &nbsp; Flight to quality continues</p><p>02 &nbsp; Rental demand remains resilient</p><p>03 &nbsp; Build-cost inflation is moderating</p></div></section>
+    </div>
+    <div className="mt-6 text-[10px] leading-5 text-[#858b8e]">{market.attribution}</div>
+  </>;
+}
+
+// ---------------------------------------------------------------------------
+// Insights (A): featured index + rich article reader.
+
+function InsightBlockView({ block }: { block: InsightBlock }) {
+  switch (block.type) {
+    case "heading":
+      return <h2 className="mt-12 text-2xl font-medium tracking-tight text-[#121212] first:mt-0">{block.text}</h2>;
+    case "list":
+      return <ul className="mt-6 space-y-3">{block.items.map((item) => <li key={item} className="flex gap-3 text-base leading-7 text-[#4f585d]"><span aria-hidden="true" className="mt-[.7em] h-px w-6 shrink-0 bg-[#b18c4d]" />{item}</li>)}</ul>;
+    case "quote":
+      return <figure className="mt-10 border-l-2 border-[#b18c4d] bg-[#faf8f3] px-7 py-6"><blockquote className="text-xl leading-9 text-[#3c444a]">“{block.text}”</blockquote>{block.attribution && <figcaption className="mt-3 text-[10px] uppercase tracking-[.16em] text-[#8a6c3f]">— {block.attribution}</figcaption>}</figure>;
+    case "stats":
+      return <div className="mt-10 grid gap-px overflow-hidden border border-[#e2ddd0] bg-[#e2ddd0] sm:grid-cols-3">{block.items.map((s) => <div key={s.label} className="bg-[#faf8f3] p-6"><p className="text-3xl font-medium tracking-tight text-[#8a6c3f]">{s.value}</p><p className="mt-2 text-xs leading-5 text-[#687077]">{s.label}</p></div>)}</div>;
+    case "table":
+      return <div className="mt-10 overflow-x-auto border border-[#e2ddd0]"><table className="w-full min-w-[560px] text-left text-sm"><thead className="bg-[#f3efe6] text-[10px] uppercase tracking-wider text-[#79613b]"><tr>{block.headers.map((h) => <th key={h} className="px-5 py-3 font-normal">{h}</th>)}</tr></thead><tbody>{block.rows.map((row, i) => <tr key={i} className="border-t border-[#ece8dd] text-[#4f585d]">{row.map((cell, j) => <td key={j} className={`px-5 py-3.5 ${j === 0 ? "font-medium text-[#121212]" : ""}`}>{cell}</td>)}</tr>)}</tbody></table></div>;
+    case "callout":
+      return <aside className="mt-10 border border-[#c9b98f] bg-[#f3ecdc] p-6">{block.title && <p className="text-[10px] uppercase tracking-[.18em] text-[#8a6c3f]">{block.title}</p>}<p className="mt-2 text-sm leading-7 text-[#4f4633]">{block.text}</p></aside>;
+    default:
+      return <p className="mt-6 text-base leading-8 text-[#4f585d] first:mt-0">{block.text}</p>;
+  }
 }
 
 function Insights({ insights }: { insights: PortalData["insights"] }) {
   const [openSlug, setOpenSlug] = useState<string | null>(null);
-  const open = insights.find((x) => x.slug === openSlug);
+  const openIndex = insights.findIndex((x) => x.slug === openSlug);
+  const open = openIndex >= 0 ? insights[openIndex] : undefined;
   if (open) {
+    const next = insights[(openIndex + 1) % insights.length];
     return <article className="mx-auto max-w-3xl">
       <button onClick={() => setOpenSlug(null)} className="mb-8 text-[10px] tracking-[.16em] uppercase text-[#8a6c3f] hover:text-[#121212]">← All insights</button>
-      <div className="h-2 w-24" style={{ backgroundColor: INSIGHT_THEME[open.theme] }} aria-hidden="true" />
-      <p className="mt-6 text-[10px] tracking-[.16em] uppercase text-[#96723d]">{open.category} · {open.date} · {open.read} read</p>
-      <h1 className="mt-5 text-4xl font-medium leading-tight tracking-tight text-[#121212] sm:text-5xl">{open.title}</h1>
-      <p className="mt-6 border-l-2 border-[#b18c4d] pl-5 text-lg leading-8 text-[#626a6e]">{open.summary}</p>
-      <InsightBody blocks={open.body} />
-      <button onClick={() => setOpenSlug(null)} className="mt-12 border border-[#d8d7d0] px-6 py-3 text-[10px] tracking-[.16em] uppercase text-[#8a6c3f] transition hover:border-[#b18c4d]">← Back to all insights</button>
+      <div className="flex h-24 items-end p-5" style={{ backgroundColor: INSIGHT_THEME[open.theme] }}><span className="bg-white/90 px-2.5 py-1 text-[10px] uppercase tracking-[.16em] text-[#121212]">{open.category}</span></div>
+      <p className="mt-6 text-[10px] tracking-[.16em] uppercase text-[#96723d]">{open.date} · {open.read} read · Satis research team</p>
+      <h1 className="mt-4 text-4xl font-medium leading-tight tracking-tight text-[#121212] sm:text-5xl">{open.title}</h1>
+      <p className="mt-6 text-xl leading-9 text-[#626a6e]">{open.summary}</p>
+      <div className="mt-8 border-t border-[#d8d7d0] pt-2">{open.body.map((block, i) => <InsightBlockView key={i} block={block} />)}</div>
+      <div className="mt-14 flex flex-wrap items-center justify-between gap-4 border-t border-[#d8d7d0] pt-8">
+        <a href={`mailto:info@satisgroup.co.uk?subject=${encodeURIComponent(`Insight discussion: ${open.title}`)}`} className="shimmer-btn bg-[#121212] px-6 py-3.5 text-xs tracking-[.15em] uppercase text-white transition hover:bg-[#b18c4d]">Discuss with the team →</a>
+        {next && next.slug !== open.slug && <button onClick={() => setOpenSlug(next.slug)} className="text-left text-xs text-[#737a7e] transition hover:text-[#121212]"><span className="block text-[10px] uppercase tracking-[.16em] text-[#8a6c3f]">Read next</span><span className="mt-1 block max-w-60 font-medium">{next.title}</span></button>}
+      </div>
     </article>;
   }
-  return <><PageTitle eyebrow="Research & perspective" title="Insights for considered investment." copy="Research notes and perspectives from the Satis development and investment teams." /><div className="grid gap-6 lg:grid-cols-3">{insights.map((x)=><button type="button" onClick={() => setOpenSlug(x.slug)} key={x.slug} className="group flex min-h-[360px] flex-col border border-[#d8d7d0] bg-white p-7 text-left transition hover:-translate-y-1 hover:shadow-xl hover:shadow-[#121212]/5"><span className="mb-8 block h-28 w-full" style={{ backgroundColor: INSIGHT_THEME[x.theme] }} aria-hidden="true" /><span className="text-[10px] tracking-[.16em] uppercase text-[#96723d]">{x.category} · {x.date}</span><span className="mt-4 block text-xl font-medium leading-7 text-[#121212]">{x.title}</span><span className="mt-4 block text-sm leading-6 text-[#747b7f]">{x.summary}</span><span className="mt-auto flex w-full justify-between pt-6 text-[10px] uppercase tracking-wider"><span>{x.read} read</span><ArrowIcon/></span></button>)}</div></>;
+  const [featured, ...rest] = insights;
+  return <><PageTitle eyebrow="Research & perspective" title="Insights for considered investment." copy="Research notes, guides and perspectives from the Satis development and investment teams." />
+    {featured && (
+      <button type="button" onClick={() => setOpenSlug(featured.slug)} className="group grid w-full border border-[#d8d7d0] bg-white text-left transition hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#121212]/5 lg:grid-cols-[.9fr_1.1fr]">
+        <span className="block min-h-40" style={{ backgroundColor: INSIGHT_THEME[featured.theme] }} aria-hidden="true" />
+        <span className="block p-8 sm:p-10">
+          <span className="text-[10px] tracking-[.16em] uppercase text-[#96723d]">Latest · {featured.category} · {featured.date}</span>
+          <span className="mt-4 block text-2xl font-medium leading-8 tracking-tight text-[#121212] sm:text-3xl">{featured.title}</span>
+          <span className="mt-4 block max-w-xl text-sm leading-6 text-[#747b7f]">{featured.summary}</span>
+          <span className="mt-6 flex justify-between text-[10px] uppercase tracking-wider text-[#8a6c3f]"><span>{featured.read} read</span><ArrowIcon /></span>
+        </span>
+      </button>
+    )}
+    <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">{rest.map((x)=><button type="button" onClick={() => setOpenSlug(x.slug)} key={x.slug} className="group flex min-h-[340px] flex-col border border-[#d8d7d0] bg-white p-7 text-left transition hover:-translate-y-1 hover:shadow-xl hover:shadow-[#121212]/5"><span className="mb-7 block h-24 w-full" style={{ backgroundColor: INSIGHT_THEME[x.theme] }} aria-hidden="true" /><span className="text-[10px] tracking-[.16em] uppercase text-[#96723d]">{x.category} · {x.date}</span><span className="mt-4 block text-xl font-medium leading-7 text-[#121212]">{x.title}</span><span className="mt-4 block text-sm leading-6 text-[#747b7f]">{x.summary}</span><span className="mt-auto flex w-full justify-between pt-6 text-[10px] uppercase tracking-wider"><span>{x.read} read</span><ArrowIcon/></span></button>)}</div></>;
 }
 
 function Updates({ updates }: { updates: PortalData["updates"] }) {
@@ -218,9 +464,7 @@ function Updates({ updates }: { updates: PortalData["updates"] }) {
 }
 
 function Financials({ data }: { data: PortalData }) {
-  const bars = data.valueHistory.slice(-8);
-  const max = Math.max(...bars.map((b) => b.value), 1);
-  return <><PageTitle eyebrow="Portfolio reporting" title="Financials." copy="Consolidated performance and upcoming cash events for your Satis holdings." /><div className="grid gap-6 lg:grid-cols-3"><section className="border border-[#d8d7d0] bg-white p-7 lg:col-span-2"><div className="flex justify-between"><div><p className="text-xs uppercase tracking-wider text-[#777e82]">Investment performance</p><h2 className="mt-3 text-2xl text-[#121212]">{data.financialsHeadline.value} <span className="text-sm text-[#687a64]">{data.financialsHeadline.delta}</span></h2></div><span className="text-[10px] uppercase tracking-wider text-[#777e82]">GBP</span></div><div className="mt-8 grid h-64 grid-cols-8 items-end gap-3 border-b border-[#d8d7d0]">{bars.map((b)=><div key={b.label} className="group relative flex h-full items-end"><div className="w-full bg-[#b18c4d] opacity-80 transition group-hover:opacity-100" style={{height:`${Math.round((b.value/max)*100)}%`}} title={b.label}/></div>)}</div><div className="mt-3 flex justify-between text-[10px] text-[#858b8e]"><span>{bars[0]?.label}</span><span>{bars[bars.length-1]?.label}</span></div></section><section className="bg-[#121212] p-7 text-white"><p className="text-[10px] uppercase tracking-[.18em] text-[#c4a262]">Next cash events</p><div className="mt-6 space-y-6">{data.upcomingEvents.length === 0 && <p className="text-sm text-white/55">No forecast cash events.</p>}{data.upcomingEvents.map(x=><div key={`${x.date}-${x.type}`} className="border-b border-white/10 pb-5 last:border-0"><p className="text-[10px] text-white/40">{x.date}</p><div className="mt-2 flex justify-between text-sm"><span>{x.type}</span><span>{x.amount}</span></div></div>)}</div></section></div><section className="mt-6 border border-[#d8d7d0] bg-white p-7"><div className="flex justify-between"><h2 className="text-lg font-medium text-[#121212]">Holdings summary</h2><DemoAction label="Export CSV ↓" className="text-[10px] uppercase tracking-wider text-[#8a6c3f]" /></div><div className="mt-6 overflow-x-auto"><table className="w-full min-w-[720px] text-left text-sm"><thead className="border-b border-[#d8d7d0] text-[10px] uppercase tracking-wider text-[#858b8e]"><tr>{["Investment","Invested","Current value","Forecast IRR","Multiple","Status"].map(x=><th key={x} className="pb-3 font-normal">{x}</th>)}</tr></thead><tbody>{data.holdings.map((h)=><tr key={h.name} className="border-b border-[#ebe9e3]"><td className="py-4 font-medium">{h.name}</td><td>{h.invested}</td><td>{h.currentValue}</td><td className="text-[#63775e]">{h.forecastIrr}</td><td>{h.multiple}</td><td><span className="bg-[#edf0e9] px-2 py-1 text-[10px] uppercase text-[#63775e]">{h.status}</span></td></tr>)}</tbody></table></div></section><p className="mt-5 text-[10px] leading-5 text-[#858b8e]">Forecasts are based on current business plans and are not guaranteed. Values shown are illustrative demo data and do not constitute financial advice.</p></>;
+  return <><PageTitle eyebrow="Portfolio reporting" title="Financials." copy="Your positions across each single-asset SPV, derived from the vehicle cap tables and current equity valuations." /><div className="grid gap-6 lg:grid-cols-3"><PerformanceBars history={data.valueHistory} headline={data.financialsHeadline} /><section className="bg-[#121212] p-7 text-white"><p className="text-[10px] uppercase tracking-[.18em] text-[#c4a262]">Next cash events</p><div className="mt-6 space-y-6">{data.upcomingEvents.length === 0 && <p className="text-sm text-white/55">No forecast cash events.</p>}{data.upcomingEvents.map(x=><div key={`${x.date}-${x.type}`} className="border-b border-white/10 pb-5 last:border-0"><p className="text-[10px] text-white/40">{x.date}</p><div className="mt-2 flex justify-between text-sm"><span>{x.type}</span><span>{x.amount}</span></div></div>)}</div></section></div><section className="mt-6 border border-[#d8d7d0] bg-white p-7"><div className="flex justify-between"><h2 className="text-lg font-medium text-[#121212]">SPV holdings</h2><DemoAction label="Export CSV ↓" className="text-[10px] uppercase tracking-wider text-[#8a6c3f]" /></div><div className="mt-6 overflow-x-auto"><table className="w-full min-w-[860px] text-left text-sm"><thead className="border-b border-[#d8d7d0] text-[10px] uppercase tracking-wider text-[#858b8e]"><tr>{["Site","Vehicle","Ownership","Committed","Current value","Site IRR","Multiple","Status"].map(x=><th key={x} className="pb-3 font-normal">{x}</th>)}</tr></thead><tbody>{data.holdings.map((h)=><tr key={h.name} className="border-b border-[#ebe9e3]"><td className="py-4 font-medium">{h.name}</td><td className="text-xs text-[#737a7e]">{h.spvName}</td><td>{h.share}</td><td>{h.invested}</td><td>{h.currentValue}</td><td className="text-[#63775e]">{h.forecastIrr}</td><td>{h.multiple}</td><td><span className="bg-[#edf0e9] px-2 py-1 text-[10px] uppercase text-[#63775e]">{h.status}</span></td></tr>)}</tbody></table></div></section><p className="mt-5 text-[10px] leading-5 text-[#858b8e]">Current values are your cap-table share of each SPV&rsquo;s equity at the latest valuation. Forecasts are based on current business plans and are not guaranteed; figures shown are illustrative demo data and do not constitute financial advice.</p></>;
 }
 
 function Documents({ documents }: { documents: PortalData["documents"] }) {
@@ -229,5 +473,5 @@ function Documents({ documents }: { documents: PortalData["documents"] }) {
 
 export function InvestorPortal({ data, logout }: { data: PortalData; logout: () => Promise<void> }) {
   const [active, setActive] = useState<Section>("overview");
-  return <div className="min-h-[calc(100vh-5rem)] bg-[#f4f2ed] text-[#2a2a2a]"><div className="grid lg:grid-cols-[240px_1fr]"><Sidebar accountName={data.accountName} active={active} setActive={setActive} logout={logout} /><main className="min-w-0 px-5 py-9 sm:px-8 lg:px-10 lg:py-12 xl:px-14">{active==="overview"&&<Overview data={data} go={setActive}/>} {active==="developments"&&<Developments developments={data.developments}/>} {active==="market"&&<Market/>} {active==="insights"&&<Insights insights={data.insights}/>} {active==="updates"&&<Updates updates={data.updates}/>} {active==="financials"&&<Financials data={data}/>} {active==="documents"&&<Documents documents={data.documents}/>}</main></div></div>;
+  return <div className="min-h-[calc(100vh-5rem)] bg-[#f4f2ed] text-[#2a2a2a]"><div className="grid lg:grid-cols-[240px_1fr]"><Sidebar accountName={data.accountName} active={active} setActive={setActive} logout={logout} /><main className="min-w-0 px-5 py-9 sm:px-8 lg:px-10 lg:py-12 xl:px-14">{active==="overview"&&<Overview data={data} go={setActive}/>} {active==="developments"&&<Developments developments={data.developments}/>} {active==="opportunities"&&<Opportunities opportunities={data.opportunities}/>} {active==="market"&&<Market market={data.market}/>} {active==="insights"&&<Insights insights={data.insights}/>} {active==="updates"&&<Updates updates={data.updates}/>} {active==="financials"&&<Financials data={data}/>} {active==="documents"&&<Documents documents={data.documents}/>}</main></div></div>;
 }

@@ -8,14 +8,15 @@ import {
   mutateDataset,
   readDataset,
   writeDataset,
+  type CapTablePosition,
   type CashEvent,
   type Development,
-  type Holding,
   type InsightBlock,
   type Insight,
   type InvestorDataset,
   type InvestorDocument,
   type InvestorProfile,
+  type Opportunity,
   type SiteUpdate,
 } from "@/lib/investor-platform";
 
@@ -142,8 +143,8 @@ export async function deleteInvestor(
       }
       return investors.filter((inv) => inv.id !== id);
     });
-    mutateDataset<Holding>("holdings", (holdings) =>
-      holdings.filter((h) => h.investorId !== id)
+    mutateDataset<CapTablePosition>("cap-tables", (positions) =>
+      positions.filter((p) => p.investorId !== id)
     );
     mutateDataset<CashEvent>("cash-events", (events) =>
       events.filter((e) => e.investorId !== id)
@@ -151,7 +152,7 @@ export async function deleteInvestor(
     mutateDataset<InvestorDocument>("documents", (docs) =>
       docs.filter((d) => d.investorId !== id)
     );
-  }, "Investor removed.");
+  }, "Investor removed, along with their cap-table positions.");
 }
 
 export async function saveValueHistoryPoint(
@@ -178,7 +179,7 @@ export async function saveValueHistoryPoint(
 }
 
 // ---------------------------------------------------------------------------
-// Developments
+// Developments (site + SPV)
 
 export async function saveDevelopment(
   _prev: PlatformActionState,
@@ -186,30 +187,55 @@ export async function saveDevelopment(
 ): Promise<PlatformActionState> {
   const name = text(formData, "name");
   const place = text(formData, "place");
-  if (!name || !place) return { error: "Name and location are required." };
+  const address = text(formData, "address");
+  if (!name || !place || !address) {
+    return { error: "Name, location and address are required." };
+  }
   const id = text(formData, "id") || slugify(name);
   const gdv = parseMoney(text(formData, "gdv"));
   if (gdv === null) return { error: "Enter a gross value like £12.5m." };
+  const lat = Number(text(formData, "lat"));
+  const lng = Number(text(formData, "lng"));
+  if (!Number.isFinite(lat) || lat < -90 || lat > 90 || !Number.isFinite(lng) || lng < -180 || lng > 180) {
+    return { error: "Latitude and longitude must be valid coordinates." };
+  }
   const nextReport = text(formData, "nextReport");
   if (!isValidDate(nextReport)) {
     return { error: "Next report date must be YYYY-MM-DD." };
   }
-  const clamp = (raw: string, fallback: number) => {
-    const value = Number(raw);
-    return Number.isFinite(value) ? Math.min(100, Math.max(0, value)) : fallback;
-  };
+  const equityValue = parseMoney(text(formData, "equityValue"));
+  const totalCommitted = parseMoney(text(formData, "totalCommitted"));
+  const seniorDebt = parseMoney(text(formData, "seniorDebt"));
+  const siteIrr = parsePercent(text(formData, "siteIrr"));
+  if (equityValue === null || totalCommitted === null || seniorDebt === null || siteIrr === null) {
+    return {
+      error:
+        "SPV equity value, total committed, senior debt and site IRR are required — they drive every investor's portfolio figures.",
+    };
+  }
+  const progressRaw = Number(text(formData, "progress"));
   const development: Development = {
     id,
     name,
     place,
-    x: clamp(text(formData, "x"), 50),
-    y: clamp(text(formData, "y"), 50),
+    address,
+    lat,
+    lng,
     status: text(formData, "status") || "On programme",
-    progress: clamp(text(formData, "progress"), 0),
+    progress: Number.isFinite(progressRaw)
+      ? Math.min(100, Math.max(0, progressRaw))
+      : 0,
     gdv,
     phase: text(formData, "phase") || "Pre-construction",
     nextReport,
     summary: text(formData, "summary"),
+    spv: {
+      name: text(formData, "spvName") || `Satis (${name}) Ltd`,
+      equityValue,
+      totalCommitted,
+      seniorDebt,
+      forecastIrr: siteIrr,
+    },
   };
   return runMutation(() => {
     mutateDataset<Development>("developments", (developments) => {
@@ -228,8 +254,12 @@ export async function deleteDevelopment(
 ): Promise<PlatformActionState> {
   const id = text(formData, "id");
   return runMutation(() => {
-    if (readDataset<Holding>("holdings").some((h) => h.developmentId === id)) {
-      throw new Error("Remove this development from investor holdings first.");
+    if (
+      readDataset<CapTablePosition>("cap-tables").some(
+        (p) => p.developmentId === id
+      )
+    ) {
+      throw new Error("Remove this development's cap-table positions first.");
     }
     mutateDataset<Development>("developments", (developments) =>
       developments.filter((d) => d.id !== id)
@@ -241,41 +271,30 @@ export async function deleteDevelopment(
 }
 
 // ---------------------------------------------------------------------------
-// Holdings
+// Cap tables: the source of every portfolio figure
 
-export async function saveHolding(
+export async function saveCapPosition(
   _prev: PlatformActionState,
   formData: FormData
 ): Promise<PlatformActionState> {
-  const investorId = text(formData, "investorId");
   const developmentId = text(formData, "developmentId");
-  const invested = parseMoney(text(formData, "invested"));
-  const currentValue = parseMoney(text(formData, "currentValue"));
-  const forecastIrr = parsePercent(text(formData, "forecastIrr"));
-  if (!investorId || !developmentId) {
-    return { error: "Choose an investor and a development." };
-  }
-  if (invested === null || currentValue === null || forecastIrr === null) {
+  const investorId = text(formData, "investorId");
+  const holderInput = text(formData, "holder");
+  const committed = parseMoney(text(formData, "committed"));
+  const sharePercent = parsePercent(text(formData, "sharePercent"));
+  if (!developmentId) return { error: "Choose a development." };
+  if (!investorId && !holderInput) {
     return {
-      error: "Invested, current value and forecast IRR must be numbers.",
+      error: "Choose a platform investor or name an external holder.",
     };
   }
-  const holding: Holding = {
-    investorId,
-    developmentId,
-    invested,
-    currentValue,
-    forecastIrr,
-    status: text(formData, "status") || "Active",
-  };
+  if (committed === null || sharePercent === null) {
+    return { error: "Committed capital and share % must be numbers." };
+  }
+  if (sharePercent <= 0 || sharePercent > 100) {
+    return { error: "Share % must be between 0 and 100." };
+  }
   return runMutation(() => {
-    if (
-      !readDataset<InvestorProfile>("investors").some(
-        (inv) => inv.id === investorId
-      )
-    ) {
-      throw new Error("Investor not found.");
-    }
     if (
       !readDataset<Development>("developments").some(
         (d) => d.id === developmentId
@@ -283,32 +302,52 @@ export async function saveHolding(
     ) {
       throw new Error("Development not found.");
     }
-    mutateDataset<Holding>("holdings", (holdings) => {
-      const index = holdings.findIndex(
-        (h) => h.investorId === investorId && h.developmentId === developmentId
-      );
-      if (index >= 0) {
-        return holdings.map((h, i) => (i === index ? holding : h));
+    const investor = investorId
+      ? readDataset<InvestorProfile>("investors").find(
+          (inv) => inv.id === investorId
+        )
+      : undefined;
+    if (investorId && !investor) throw new Error("Investor not found.");
+    const holder = investor ? investor.name : holderInput;
+    const position: CapTablePosition = {
+      developmentId,
+      ...(investorId ? { investorId } : {}),
+      holder,
+      committed,
+      sharePercent,
+      status: text(formData, "status") || "Active",
+    };
+    mutateDataset<CapTablePosition>("cap-tables", (positions) => {
+      const matches = (p: CapTablePosition) =>
+        p.developmentId === developmentId &&
+        (investorId ? p.investorId === investorId : p.holder === holder && !p.investorId);
+      const others = positions.filter((p) => !matches(p));
+      const total = others
+        .filter((p) => p.developmentId === developmentId)
+        .reduce((sum, p) => sum + p.sharePercent, 0);
+      if (total + sharePercent > 100.001) {
+        throw new Error(
+          `That would take the SPV to ${(total + sharePercent).toFixed(1)}% — the cap table cannot exceed 100%.`
+        );
       }
-      return [...holdings, holding];
+      return [...others, position];
     });
-  }, "Holding saved. Portfolio stats update automatically.");
+  }, "Cap-table position saved. Portfolio figures update automatically.");
 }
 
-export async function deleteHolding(
+export async function deleteCapPosition(
   _prev: PlatformActionState,
   formData: FormData
 ): Promise<PlatformActionState> {
-  const investorId = text(formData, "investorId");
   const developmentId = text(formData, "developmentId");
+  const holder = text(formData, "holder");
   return runMutation(() => {
-    mutateDataset<Holding>("holdings", (holdings) =>
-      holdings.filter(
-        (h) =>
-          !(h.investorId === investorId && h.developmentId === developmentId)
+    mutateDataset<CapTablePosition>("cap-tables", (positions) =>
+      positions.filter(
+        (p) => !(p.developmentId === developmentId && p.holder === holder)
       )
     );
-  }, "Holding removed.");
+  }, "Cap-table position removed.");
 }
 
 // ---------------------------------------------------------------------------
@@ -407,12 +446,94 @@ export async function deleteUpdate(
 }
 
 // ---------------------------------------------------------------------------
+// Opportunities (upcoming investments)
+
+const OPPORTUNITY_STATUSES = ["Open", "Coming soon", "Fully subscribed"] as const;
+
+export async function saveOpportunity(
+  _prev: PlatformActionState,
+  formData: FormData
+): Promise<PlatformActionState> {
+  const name = text(formData, "name");
+  const place = text(formData, "place");
+  const summary = text(formData, "summary");
+  if (!name || !place || !summary) {
+    return { error: "Name, location and summary are required." };
+  }
+  const id = text(formData, "id") || slugify(`${name}-${place}`);
+  const statusRaw = text(formData, "status");
+  const status = OPPORTUNITY_STATUSES.includes(
+    statusRaw as (typeof OPPORTUNITY_STATUSES)[number]
+  )
+    ? (statusRaw as Opportunity["status"])
+    : "Coming soon";
+  const targetRaise = parseMoney(text(formData, "targetRaise"));
+  const raisedToDate = parseMoney(text(formData, "raisedToDate") || "0");
+  const minCommitment = parseMoney(text(formData, "minCommitment"));
+  const targetIrr = parsePercent(text(formData, "targetIrr"));
+  if (targetRaise === null || raisedToDate === null || minCommitment === null || targetIrr === null) {
+    return {
+      error: "Target raise, raised to date, min commitment and target IRR must be numbers.",
+    };
+  }
+  const closesOn = text(formData, "closesOn");
+  if (!isValidDate(closesOn)) {
+    return { error: "Closes-on date must be YYYY-MM-DD." };
+  }
+  const opportunity: Opportunity = {
+    id,
+    name,
+    place,
+    address: text(formData, "address") || place,
+    status,
+    targetRaise,
+    raisedToDate,
+    minCommitment,
+    targetIrr,
+    targetMultiple: text(formData, "targetMultiple") || "—",
+    horizon: text(formData, "horizon") || "—",
+    closesOn,
+    structure:
+      text(formData, "structure") ||
+      "Ordinary shares in a Satis single-asset SPV",
+    summary,
+    highlights: text(formData, "highlights")
+      .split(/\r?\n/)
+      .map((line) => line.replace(/^-\s*/, "").trim())
+      .filter(Boolean),
+  };
+  return runMutation(() => {
+    mutateDataset<Opportunity>("opportunities", (opportunities) => {
+      const index = opportunities.findIndex((o) => o.id === id);
+      if (index >= 0) {
+        return opportunities.map((o) => (o.id === id ? opportunity : o));
+      }
+      return [...opportunities, opportunity];
+    });
+  }, `Saved opportunity ${name}.`);
+}
+
+export async function deleteOpportunity(
+  _prev: PlatformActionState,
+  formData: FormData
+): Promise<PlatformActionState> {
+  const id = text(formData, "id");
+  return runMutation(() => {
+    mutateDataset<Opportunity>("opportunities", (opportunities) =>
+      opportunities.filter((o) => o.id !== id)
+    );
+  }, "Opportunity removed.");
+}
+
+// ---------------------------------------------------------------------------
 // Insights
 
 /**
  * Markdown-ish composer format: blocks separated by blank lines; "## " starts
- * a heading; consecutive "- " lines become a list; everything else is a
- * paragraph.
+ * a heading; consecutive "- " lines become a list; "> " starts a pull quote
+ * (a trailing line beginning "— " becomes the attribution); everything else
+ * is a paragraph. Stats rows, tables and callouts are available through the
+ * JSON importer.
  */
 function parseInsightBody(raw: string): InsightBlock[] {
   const blocks: InsightBlock[] = [];
@@ -424,6 +545,25 @@ function parseInsightBody(raw: string): InsightBlock[] {
       blocks.push({ type: "heading", text: headingLine.slice(3).trim() });
       const remainder = rest.join("\n").trim();
       if (remainder) blocks.push(...parseInsightBody(remainder));
+      continue;
+    }
+    if (trimmed.startsWith("> ")) {
+      const lines = trimmed
+        .split("\n")
+        .map((line) => line.replace(/^>\s?/, "").trim());
+      const attributionIndex = lines.findIndex((line) => line.startsWith("— "));
+      const attribution =
+        attributionIndex >= 0
+          ? lines[attributionIndex].replace(/^—\s*/, "")
+          : undefined;
+      const quoteText = (
+        attributionIndex >= 0 ? lines.slice(0, attributionIndex) : lines
+      )
+        .join(" ")
+        .trim();
+      if (quoteText) {
+        blocks.push({ type: "quote", text: quoteText, attribution });
+      }
       continue;
     }
     const lines = trimmed.split("\n").map((line) => line.trim());
@@ -506,6 +646,55 @@ function assertNumber(value: unknown, message: string): asserts value is number 
   }
 }
 
+function validateInsightBlocks(blocks: unknown, where: string): InsightBlock[] {
+  if (!Array.isArray(blocks) || blocks.length === 0) {
+    throw new Error(`${where} needs a non-empty body array.`);
+  }
+  for (const block of blocks) {
+    const b = block as InsightBlock;
+    switch (b.type) {
+      case "list":
+        if (!Array.isArray(b.items)) {
+          throw new Error(`${where} list blocks need an items array.`);
+        }
+        break;
+      case "heading":
+      case "paragraph":
+        assertString(b.text, `${where} ${b.type} blocks need text.`);
+        break;
+      case "quote":
+        assertString(b.text, `${where} quote blocks need text.`);
+        break;
+      case "callout":
+        assertString(b.text, `${where} callout blocks need text.`);
+        break;
+      case "stats":
+        if (
+          !Array.isArray(b.items) ||
+          b.items.some(
+            (item) =>
+              typeof item?.value !== "string" || typeof item?.label !== "string"
+          )
+        ) {
+          throw new Error(
+            `${where} stats blocks need items with value and label strings.`
+          );
+        }
+        break;
+      case "table":
+        if (!Array.isArray(b.headers) || !Array.isArray(b.rows)) {
+          throw new Error(`${where} table blocks need headers and rows arrays.`);
+        }
+        break;
+      default:
+        throw new Error(
+          `${where} blocks must be heading, paragraph, list, quote, stats, table or callout.`
+        );
+    }
+  }
+  return blocks as InsightBlock[];
+}
+
 /**
  * Validate an uploaded snapshot. Only the datasets present in the upload are
  * replaced; investor records may carry a plaintext "password" field which is
@@ -570,27 +759,73 @@ function validateSnapshot(value: unknown): Snapshot {
     assertString(d.id, `developments[${i}] needs an id.`);
     assertString(d.name, `developments[${i}] needs a name.`);
     assertString(d.place, `developments[${i}] needs a place.`);
+    assertString(d.address, `developments[${i}] needs an address.`);
     assertNumber(d.gdv, `developments[${i}] needs a numeric gdv.`);
+    assertNumber(d.lat, `developments[${i}] needs a numeric lat.`);
+    assertNumber(d.lng, `developments[${i}] needs a numeric lng.`);
+    if (!d.spv || typeof d.spv !== "object") {
+      throw new Error(`developments[${i}] needs an spv object.`);
+    }
+    assertString(d.spv.name, `developments[${i}].spv needs a name.`);
+    assertNumber(
+      d.spv.equityValue,
+      `developments[${i}].spv needs a numeric equityValue.`
+    );
+    assertNumber(
+      d.spv.totalCommitted,
+      `developments[${i}].spv needs a numeric totalCommitted.`
+    );
+    assertNumber(
+      d.spv.seniorDebt,
+      `developments[${i}].spv needs a numeric seniorDebt.`
+    );
+    assertNumber(
+      d.spv.forecastIrr,
+      `developments[${i}].spv needs a numeric forecastIrr.`
+    );
     return d;
   });
 
-  snapshot.holdings = snapshot.holdings?.map((record, i) => {
-    const h = record as Holding;
-    assertString(h.investorId, `holdings[${i}] needs an investorId.`);
-    assertString(h.developmentId, `holdings[${i}] needs a developmentId.`);
-    assertNumber(h.invested, `holdings[${i}] needs numeric invested.`);
-    assertNumber(h.currentValue, `holdings[${i}] needs numeric currentValue.`);
-    assertNumber(h.forecastIrr, `holdings[${i}] needs numeric forecastIrr.`);
-    if (!investorIds.has(h.investorId)) {
-      throw new Error(`holdings[${i}] references unknown investor “${h.investorId}”.`);
-    }
-    if (!developmentIds.has(h.developmentId)) {
-      throw new Error(
-        `holdings[${i}] references unknown development “${h.developmentId}”.`
+  snapshot["cap-tables"] = (() => {
+    const records = snapshot["cap-tables"]?.map((record, i) => {
+      const p = record as CapTablePosition;
+      assertString(p.developmentId, `cap-tables[${i}] needs a developmentId.`);
+      assertString(p.holder, `cap-tables[${i}] needs a holder name.`);
+      assertNumber(p.committed, `cap-tables[${i}] needs numeric committed.`);
+      assertNumber(
+        p.sharePercent,
+        `cap-tables[${i}] needs numeric sharePercent.`
       );
+      if (!developmentIds.has(p.developmentId)) {
+        throw new Error(
+          `cap-tables[${i}] references unknown development “${p.developmentId}”.`
+        );
+      }
+      if (p.investorId && !investorIds.has(p.investorId)) {
+        throw new Error(
+          `cap-tables[${i}] references unknown investor “${p.investorId}”.`
+        );
+      }
+      return { status: p.status ?? "Active", ...p };
+    });
+    if (records) {
+      const totals = new Map<string, number>();
+      for (const p of records as CapTablePosition[]) {
+        totals.set(
+          p.developmentId,
+          (totals.get(p.developmentId) ?? 0) + p.sharePercent
+        );
+      }
+      for (const [developmentId, total] of totals) {
+        if (total > 100.001) {
+          throw new Error(
+            `cap-tables: “${developmentId}” sums to ${total.toFixed(1)}% — a cap table cannot exceed 100%.`
+          );
+        }
+      }
     }
-    return { ...h, status: h.status ?? "Active" };
-  });
+    return records;
+  })();
 
   snapshot["cash-events"] = snapshot["cash-events"]?.map((record, i) => {
     const e = record as CashEvent;
@@ -639,28 +874,46 @@ function validateSnapshot(value: unknown): Snapshot {
     if (!isValidDate(insight.date)) {
       throw new Error(`insights[${i}] needs a YYYY-MM-DD date.`);
     }
-    if (!Array.isArray(insight.body) || insight.body.length === 0) {
-      throw new Error(`insights[${i}] needs a non-empty body array.`);
-    }
-    for (const block of insight.body) {
-      const b = block as InsightBlock;
-      if (b.type === "list") {
-        if (!Array.isArray(b.items)) {
-          throw new Error(`insights[${i}] list blocks need an items array.`);
-        }
-      } else if (b.type === "heading" || b.type === "paragraph") {
-        assertString(b.text, `insights[${i}] ${b.type} blocks need text.`);
-      } else {
-        throw new Error(
-          `insights[${i}] blocks must be heading, paragraph or list.`
-        );
-      }
-    }
+    validateInsightBlocks(insight.body, `insights[${i}]`);
     return {
       ...insight,
       read: insight.read ?? "5 min",
       category: insight.category ?? "Market note",
       theme: insight.theme ?? "dark",
+    };
+  });
+
+  snapshot.opportunities = snapshot.opportunities?.map((record, i) => {
+    const o = record as Opportunity;
+    assertString(o.id, `opportunities[${i}] needs an id.`);
+    assertString(o.name, `opportunities[${i}] needs a name.`);
+    assertString(o.place, `opportunities[${i}] needs a place.`);
+    assertString(o.summary, `opportunities[${i}] needs a summary.`);
+    assertNumber(o.targetRaise, `opportunities[${i}] needs a numeric targetRaise.`);
+    assertNumber(
+      o.raisedToDate,
+      `opportunities[${i}] needs a numeric raisedToDate.`
+    );
+    assertNumber(
+      o.minCommitment,
+      `opportunities[${i}] needs a numeric minCommitment.`
+    );
+    assertNumber(o.targetIrr, `opportunities[${i}] needs a numeric targetIrr.`);
+    if (!OPPORTUNITY_STATUSES.includes(o.status)) {
+      throw new Error(
+        `opportunities[${i}] status must be one of: ${OPPORTUNITY_STATUSES.join(", ")}.`
+      );
+    }
+    if (!isValidDate(o.closesOn)) {
+      throw new Error(`opportunities[${i}] needs a YYYY-MM-DD closesOn date.`);
+    }
+    return {
+      ...o,
+      address: o.address ?? o.place,
+      targetMultiple: o.targetMultiple ?? "—",
+      horizon: o.horizon ?? "—",
+      structure: o.structure ?? "Ordinary shares in a Satis single-asset SPV",
+      highlights: Array.isArray(o.highlights) ? o.highlights : [],
     };
   });
 
