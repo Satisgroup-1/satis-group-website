@@ -222,18 +222,6 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       ],
     },
     address: "The Courthouse, Hibel Road, Macclesfield, Cheshire",
-    listings: [
-      {
-        label: "For Sale — Rightmove",
-        detail: "Search Macclesfield sales listings on Rightmove",
-        href: "https://www.rightmove.co.uk/property-for-sale/Macclesfield.html",
-      },
-      {
-        label: "For Sale — Zoopla",
-        detail: "Search Macclesfield sales listings on Zoopla",
-        href: "https://www.zoopla.co.uk/for-sale/property/macclesfield/",
-      },
-    ],
     gallery: [
       { src: "/images/courthouse/bedroom.jpg", alt: "Bedroom with serene styling" },
       { src: "/images/courthouse/bathroom.jpg", alt: "Marble-tiled bathroom" },
@@ -404,18 +392,6 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       { src: "/images/hazelgate/stockport-weir-mill.jpg", alt: "Weir Mill, Stockport" },
       { src: "/images/hazelgate/stockport-exchange.jpg", alt: "Stockport Exchange" },
       { src: "/images/hazelgate/stockport-foodie-friday.jpg", alt: "Foodie Friday, Stockport" },
-    ],
-    listings: [
-      {
-        label: "For Sale — Rightmove",
-        detail: "Search Hazel Grove sales listings on Rightmove",
-        href: "https://www.rightmove.co.uk/property-for-sale/Hazel-Grove.html",
-      },
-      {
-        label: "For Sale — Zoopla",
-        detail: "Search Hazel Grove sales listings on Zoopla",
-        href: "https://www.zoopla.co.uk/for-sale/property/hazel-grove/",
-      },
     ],
     micrositeUrl: "https://hazelgate.lovable.app",
     micrositeLabel: "hazelgate.lovable.app",
