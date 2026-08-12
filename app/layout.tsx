@@ -4,6 +4,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { SplashScreen } from "@/components/SplashScreen";
+import { TermsGate } from "@/components/TermsGate";
 import { ThemeProvider, THEME_INIT_SCRIPT } from "@/components/ThemeProvider";
 import { MotionProvider } from "@/components/MotionProvider";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
@@ -70,6 +71,7 @@ export default function RootLayout({
         <ThemeProvider>
           <MotionProvider>
             <SplashScreen />
+            <TermsGate />
             <ScrollProgress />
             <Header />
             <main id="main" className="flex flex-1 flex-col">

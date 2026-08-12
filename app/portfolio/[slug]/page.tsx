@@ -209,14 +209,14 @@ export default async function PropertyDetailPage({
 
       {/* Stats */}
       <section className="bg-ink text-ink-foreground">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 py-16 sm:grid-cols-3 lg:px-10">
+        <div className="mx-auto grid max-w-7xl grid-cols-3 gap-6 px-6 py-12 sm:gap-12 sm:py-16 lg:px-10">
           {property.stats.map((stat, index) => (
             <Reveal key={stat.label} delay={index * 0.1}>
               <AnimatedStat
                 value={stat.value}
-                className="text-4xl font-medium tracking-tight text-accent"
+                className="text-2xl font-medium tracking-tight text-accent sm:text-4xl"
               />
-              <p className="mt-3 text-sm tracking-[0.05em] text-ink-foreground/70">
+              <p className="mt-3 text-xs tracking-[0.05em] text-ink-foreground/70 sm:text-sm">
                 {stat.label}
               </p>
             </Reveal>
@@ -452,7 +452,7 @@ export default async function PropertyDetailPage({
               <SectionHeading index={galleryIndex} label="Gallery" />
             </Reveal>
             <div className="mt-10">
-              <GalleryLightbox images={property.gallery} />
+              <GalleryLightbox images={property.gallery} initialVisible={9} />
             </div>
           </div>
         </section>
@@ -489,8 +489,8 @@ export default async function PropertyDetailPage({
       )}
 
       {/* Enquire */}
-      <section>
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 py-24 lg:grid-cols-2 lg:px-10">
+      <section id="enquire" className="scroll-mt-24">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 py-24 pb-40 lg:grid-cols-2 lg:px-10 lg:pb-24">
           <Reveal>
             <SectionHeading index={enquireIndex} label="Enquire" />
             <h2 className="mt-4 text-3xl font-medium tracking-tight sm:text-4xl">
@@ -586,6 +586,19 @@ export default async function PropertyDetailPage({
           </Reveal>
         </div>
       </section>
+
+      {/* Mobile sticky enquiry bar: keeps the primary action one thumb-tap
+          away on small screens; the enquire section carries extra bottom
+          padding so the bar never covers content. */}
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
+        <a
+          href="#enquire"
+          className="flex min-h-12 w-full items-center justify-center gap-2 bg-foreground px-6 text-xs tracking-[0.2em] uppercase text-background transition-colors duration-300 active:bg-accent"
+        >
+          Enquire about {property.name}
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
     </>
   );
 }
