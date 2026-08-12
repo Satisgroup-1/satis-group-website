@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -28,20 +29,10 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur">
+      {/* The real Satis mark sits on the right of the bar; navigation reads
+          from the left. The white artwork swaps for a dark variant in light
+          mode. */}
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-10">
-        <Link
-          href="/"
-          onClick={() => setIsMenuOpen(false)}
-          className="flex flex-col leading-none"
-        >
-          <span className="text-xl font-medium tracking-[0.35em] uppercase">
-            Satis
-          </span>
-          <span className="mt-1 text-[0.6rem] tracking-[0.45em] uppercase text-muted">
-            Group
-          </span>
-        </Link>
-
         <nav aria-label="Primary" className="hidden items-center gap-10 md:flex">
           {NAV_LINKS.map((link) => {
             const isActive = pathname?.startsWith(link.href);
@@ -67,11 +58,34 @@ export function Header() {
           })}
         </nav>
 
-        <div className="hidden items-center gap-4 md:flex">
+        <div className="hidden items-center gap-6 md:flex">
           <ThemeToggle />
+          <Link
+            href="/"
+            onClick={() => setIsMenuOpen(false)}
+            aria-label="Satis Group home"
+            className="relative block h-9 w-[100px]"
+          >
+            <Image
+              src="/images/satis-logo-dark.png"
+              alt="Satis Group"
+              fill
+              sizes="100px"
+              className="object-contain object-right dark:hidden"
+            />
+            <Image
+              src="/images/satis-logo-white.png"
+              alt=""
+              aria-hidden="true"
+              fill
+              sizes="100px"
+              className="hidden object-contain object-right dark:block"
+            />
+          </Link>
         </div>
 
-        <div className="flex items-center gap-3 md:hidden">
+        <div className="flex flex-1 items-center justify-between md:hidden">
+          <div className="flex items-center gap-3">
           <ThemeToggle />
           <button
             type="button"
@@ -99,6 +113,29 @@ export function Header() {
               />
             </span>
           </button>
+          </div>
+          <Link
+            href="/"
+            onClick={() => setIsMenuOpen(false)}
+            aria-label="Satis Group home"
+            className="relative block h-8 w-[88px]"
+          >
+            <Image
+              src="/images/satis-logo-dark.png"
+              alt="Satis Group"
+              fill
+              sizes="88px"
+              className="object-contain object-right dark:hidden"
+            />
+            <Image
+              src="/images/satis-logo-white.png"
+              alt=""
+              aria-hidden="true"
+              fill
+              sizes="88px"
+              className="hidden object-contain object-right dark:block"
+            />
+          </Link>
         </div>
       </div>
 
