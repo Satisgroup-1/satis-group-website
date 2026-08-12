@@ -134,14 +134,15 @@ export const PORTFOLIO: Property[] = [
       "A mixed-use development combining residential and commercial space in a single scheme.",
   },
   {
-    slug: "15-alldis-street",
-    name: "15 Alldis Street",
-    location: "Great Moor, Stockport",
+    slug: "the-press",
+    name: "The Press",
+    location: "15 Alldis Street, Great Moor, Stockport",
     type: "Residential",
     status: "Coming Soon",
     image: "/images/alldis/hero.jpg",
+    logo: { src: "/images/logos/the-press.jpg", bg: "#f2ebe1" },
     blurb:
-      "A forthcoming residential development in Great Moor. Full details will be published as the scheme progresses.",
+      "Creative heritage, contemporary living: a forthcoming residential development at 15 Alldis Street, Great Moor.",
   },
   {
     slug: "davenport-park",

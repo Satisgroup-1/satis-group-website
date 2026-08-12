@@ -221,7 +221,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
         { value: "20.3 mi", label: "Manchester" },
       ],
     },
-    address: "The Courthouse, Macclesfield, Cheshire",
+    address: "The Courthouse, Hibel Road, Macclesfield, Cheshire",
     gallery: [
       { src: "/images/courthouse/bedroom.jpg", alt: "Bedroom with serene styling" },
       { src: "/images/courthouse/bathroom.jpg", alt: "Marble-tiled bathroom" },
@@ -813,21 +813,21 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     micrositeLabel: "satisgroup.co.uk",
   },
   {
-    slug: "15-alldis-street",
-    name: "15 Alldis Street",
-    eyebrow: "Great Moor · Stockport",
-    tagline: "A forthcoming residential development",
+    slug: "the-press",
+    name: "The Press",
+    eyebrow: "15 Alldis Street · Great Moor · Stockport",
+    tagline: "Creative heritage · Contemporary living",
     type: "Residential",
     status: "Coming Soon",
     heroImage: "/images/alldis/hero.jpg",
     intro: {
-      heading: "Coming soon to Great Moor",
+      heading: "The Press — coming soon to Great Moor",
       body: [
-        "15 Alldis Street is a forthcoming Satis residential development in Great Moor, Stockport.",
+        "The Press is a forthcoming Satis residential development at 15 Alldis Street in Great Moor, Stockport — creative heritage, contemporary living.",
         "Plans, specification and availability will be published here as the scheme progresses. Register your interest with the team to be kept informed.",
       ],
       image: "/images/alldis/hero.jpg",
-      imageAlt: "15 Alldis Street, Great Moor",
+      imageAlt: "The Press, 15 Alldis Street, Great Moor",
     },
     stats: [
       { value: "Residential", label: "Use" },
