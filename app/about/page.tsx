@@ -120,16 +120,15 @@ export default function AboutPage() {
       <PageHero
         eyebrow="About Satis Group"
         title="A trusted partner."
-        description={[
-          "SATIS Group is a property development company based in Cheshire, specialising in the meticulous renovation of neglected buildings. Our core expertise lies in the seamless transformation of these projects into stylish and contemporary homes, as well as adaptable commercial spaces.",
-          "We carefully select projects in strategic locations across Manchester and Cheshire that offer a diverse range of options. Whether you prefer the buzz of the city centre or the tranquillity of the suburbs, our developments are designed to cater to different lifestyles and preferences.",
-        ]}
+        description="Satis Group is a property development company based in Cheshire, specialising in the meticulous renovation of neglected buildings — transforming them into stylish contemporary homes and adaptable commercial spaces."
         backdrop={<ParallaxSkyline />}
+        compact
       />
 
-      {/* Our story */}
+      {/* Our story — deliberately compact: the founders and team follow
+          straight after, and should surface early on the page. */}
       <section className="border-b border-border">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 py-24 lg:grid-cols-2 lg:gap-20 lg:px-10 lg:py-32">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 py-16 lg:grid-cols-2 lg:gap-16 lg:px-10 lg:py-20">
           <Reveal className="group relative">
             <div className="relative aspect-[4/3] overflow-hidden bg-surface lg:h-full lg:aspect-auto">
               <Image
@@ -147,23 +146,17 @@ export default function AboutPage() {
           </Reveal>
           <Reveal delay={0.15} className="flex flex-col justify-center gap-6">
             <Eyebrow index="01" label="Our story" />
-            <p className="text-2xl font-medium leading-snug tracking-tight">
+            <p className="text-xl font-medium leading-snug tracking-tight sm:text-2xl">
               Satis Group was founded to prove that redevelopment doesn&rsquo;t
               have to mean starting from scratch.
             </p>
             <p className="text-base leading-relaxed text-muted">
               We look for buildings with good bones in the wrong condition:
-              tired offices, disused yards, terraces that have been neglected
-              for years. We give them a use that fits how people actually want
-              to live and work today, with every project managed in-house from
-              acquisition and planning through to construction and long-term
-              management.
-            </p>
-            <p className="text-base leading-relaxed text-muted">
-              We carefully select projects in strategic locations across the
-              North West, from the buzz of the city centre to the tranquility
-              of the suburbs, designed to cater to different lifestyles and
-              preferences.
+              tired offices, disused yards, terraces neglected for years. We
+              give them a use that fits how people want to live and work today
+              — every project managed in-house from acquisition and planning
+              through to construction and long-term management, in strategic
+              locations across the North West.
             </p>
             <p className="border-l-2 border-accent pl-4 text-base leading-relaxed">
               Redeveloping properties into places people want to live and
@@ -175,7 +168,7 @@ export default function AboutPage() {
 
       {/* Stats band */}
       <section className="relative overflow-hidden bg-ink text-ink-foreground">
-        <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-x-8 gap-y-12 px-6 py-20 sm:grid-cols-3 lg:px-10">
+        <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-6 py-12 sm:grid-cols-3 lg:px-10">
           {STATS.map((stat, index) => (
             <div
               key={stat.label}
@@ -194,8 +187,8 @@ export default function AboutPage() {
 
       {/* Our Founders: content and photo taken from the SATIS Company &
           Projects PDF, page 4. */}
-      <section className="border-b border-border">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 py-24 lg:grid-cols-2 lg:gap-16 lg:px-10 lg:py-32">
+      <section id="people" className="scroll-mt-24 border-b border-border">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 py-24 lg:grid-cols-2 lg:gap-16 lg:px-10 lg:py-28">
           <Reveal className="group relative">
             <div className="relative aspect-[4/3] overflow-hidden bg-surface lg:h-full lg:aspect-auto">
               <Image
