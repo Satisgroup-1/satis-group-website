@@ -76,7 +76,7 @@ export const PORTFOLIO: Property[] = [
     location: "Stockport",
     type: "Residential",
     status: "Completed",
-    image: "/images/legacy/petersgate-house.jpg",
+    image: "/images/qube/hero.jpg",
     logo: { src: "/images/logos/qube.jpg", bg: "#f4efe7" },
     blurb:
       "Our largest scheme to date: fifty-eight apartments and two commercial units in Stockport town centre.",
@@ -163,9 +163,9 @@ export const PORTFOLIO: Property[] = [
     location: "North West",
     type: "Residential",
     status: "Completed",
-    image: "/images/pipeline/southbank.jpg",
+    image: "/images/southbank/hero.jpg",
     blurb:
-      "A completed Satis residential development. Photography and scheme detail to follow.",
+      "A completed terrace of contemporary townhouses, each with its own entrance and private frontage.",
   },
   {
     slug: "mayor-street",
