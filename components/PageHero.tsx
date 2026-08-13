@@ -7,6 +7,8 @@ type PageHeroProps = {
   description?: string | string[];
   /** Optional background element (e.g. skyline SVG) rendered behind text. */
   backdrop?: React.ReactNode;
+  /** Tighter vertical rhythm, for pages whose content should surface sooner. */
+  compact?: boolean;
 };
 
 export function PageHero({
@@ -14,6 +16,7 @@ export function PageHero({
   title,
   description,
   backdrop,
+  compact = false,
 }: PageHeroProps) {
   const paragraphs =
     typeof description === "string"
@@ -30,7 +33,11 @@ export function PageHero({
           {backdrop}
         </div>
       )}
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col gap-6 px-6 py-24 lg:px-10 lg:py-32">
+      <div
+        className={`relative z-10 mx-auto flex max-w-7xl flex-col gap-6 px-6 lg:px-10 ${
+          compact ? "py-16 lg:py-20" : "py-24 lg:py-32"
+        }`}
+      >
         <Reveal>
           {eyebrow && (
             <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
