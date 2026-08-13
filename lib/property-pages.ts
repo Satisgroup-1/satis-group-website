@@ -867,15 +867,16 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     tagline: "A completed residential development",
     type: "Residential",
     status: "Completed",
-    heroImage: "/images/pipeline/davenport-park.jpg",
+    heroImage: "/images/davenport/hero.jpg",
+    heroPosition: "center 55%",
     intro: {
       heading: "Homes beside Davenport station",
       body: [
         "Davenport Park is a completed Satis residential development beside Davenport station, with direct rail links into Manchester Piccadilly.",
-        "The scheme reflects our approach across Stockport: well-connected locations, quality specification and homes designed for how people actually live. Photography will be added to this page shortly.",
+        "The scheme reflects our approach across Stockport: well-connected locations, quality specification and homes designed for how people actually live.",
       ],
-      image: "/images/pipeline/davenport-park.jpg",
-      imageAlt: "Davenport Park, Stockport",
+      image: "/images/davenport/hero.jpg",
+      imageAlt: "Davenport Park at dusk",
     },
     stats: [
       { value: "Residential", label: "Use" },
