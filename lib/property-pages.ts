@@ -716,15 +716,16 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     tagline: "Eleven apartments",
     type: "Residential",
     status: "Completed",
-    heroImage: "/images/legacy/st-johns-corner.jpg",
+    heroImage: "/images/stjohnscorner/hero.jpg",
+    heroPosition: "center 42%",
     intro: {
       heading: "Eleven homes on a well-connected corner",
       body: [
         "St John's Corner is a residential development of eleven apartments at 3-5 St John Street, in Manchester's St John's conservation area — a few doors from our workspace scheme at number 22.",
         "Each home was finished to the standard our buyers and tenants expect: light-filled layouts, quality kitchens and bathrooms, and a specification designed to last.",
       ],
-      image: "/images/legacy/st-johns-corner.jpg",
-      imageAlt: "St John's Corner apartments",
+      image: "/images/stjohnscorner/hero.jpg",
+      imageAlt: "St John's Corner: the restored corner building with its rooftop storey",
     },
     stats: [
       { value: "11", label: "Apartments" },
@@ -741,15 +742,16 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     tagline: "Twenty-six apartments",
     type: "Residential",
     status: "Completed",
-    heroImage: "/images/legacy/lancaster-house.jpg",
+    heroImage: "/images/lancaster/hero.jpg",
+    heroPosition: "center 55%",
     intro: {
       heading: "Twenty-six homes from one tired building",
       body: [
-        "Lancaster House on London Road is a residential conversion of twenty-six apartments delivered by Satis Group.",
+        "Lancaster House — also known simply as London Road — is a residential conversion of twenty-six apartments delivered by Satis Group above an active retail frontage.",
         "The project is a good example of the scale we work at: large enough to matter, small enough that every apartment still gets individual attention.",
       ],
-      image: "/images/legacy/lancaster-house.jpg",
-      imageAlt: "Lancaster House apartments",
+      image: "/images/lancaster/hero.jpg",
+      imageAlt: "Lancaster House on London Road at dusk",
     },
     stats: [
       { value: "26", label: "Apartments" },

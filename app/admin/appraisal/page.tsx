@@ -64,7 +64,10 @@ const getLatestVersion = unstable_cache(
     }
   },
   ["appraisal-latest-release"],
-  { revalidate: 3600 }
+  // Five minutes, not an hour: a freshly published release should be named
+  // correctly almost immediately, and this is a HEAD request to github.com,
+  // which is not rate limited the way api.github.com is.
+  { revalidate: 300 }
 );
 
 export default async function AdminAppraisalPage() {
