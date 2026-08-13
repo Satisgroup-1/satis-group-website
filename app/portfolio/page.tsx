@@ -14,7 +14,7 @@ export default function PortfolioPage() {
     <>
       <PageHero
         eyebrow="Portfolio"
-        title="Projects, past and present."
+        title="Projects: past, present &amp; future."
         description="A selection of the residential and commercial redevelopments we've delivered across the North West."
       />
       <PortfolioGrid />

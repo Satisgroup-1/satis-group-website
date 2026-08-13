@@ -45,15 +45,15 @@ export default function Home() {
         <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
           Property Redevelopment
         </span>
-        <h1 className="mt-4 max-w-2xl text-3xl font-medium leading-[1.1] tracking-tight sm:text-4xl lg:text-5xl">
+        <h1 className="mt-4 max-w-2xl text-3xl font-medium leading-[1.1] tracking-tight [@media(max-height:800px)]:text-2xl sm:text-4xl lg:text-5xl lg:[@media(max-height:800px)]:text-4xl">
           We turn overlooked buildings into places people want to be.
         </h1>
-        <p className="mt-5 max-w-md text-sm leading-relaxed text-muted lg:text-base">
+        <p className="mt-5 max-w-md text-sm leading-relaxed text-muted [@media(max-height:800px)]:mt-3 lg:text-base">
           Satis Group acquires, redevelops and manages residential and
           commercial property across the North West. Keep scrolling to watch one come
           to life.
         </p>
-        <div className="mt-6 flex flex-wrap items-center gap-4">
+        <div className="mt-6 flex flex-wrap items-center gap-4 [@media(max-height:800px)]:mt-4">
           <Link
             href="/portfolio"
             className="border border-foreground bg-foreground px-6 py-3 text-xs tracking-[0.2em] uppercase text-background transition-colors duration-300 hover:border-accent hover:bg-accent"
