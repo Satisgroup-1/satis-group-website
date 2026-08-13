@@ -195,8 +195,11 @@ export default async function AdminAppraisalPage() {
                 </li>
                 <li>
                   To use the AI floorplan reader (PDF and photo import), open
-                  Settings inside the app and add an Anthropic API key; DXF
-                  files and manual entry work without one.
+                  Settings inside the app and connect a Claude account: either
+                  sign in through your browser, or paste an Anthropic API key if
+                  you have one. Settings shows which is in use and can test the
+                  connection. DXF files and manual floor entry work without
+                  either.
                 </li>
                 <li>
                   Earlier versions remain available on the{" "}
