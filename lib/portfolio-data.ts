@@ -128,12 +128,12 @@ export const PORTFOLIO: Property[] = [
   {
     slug: "woodfield-road",
     name: "Woodfield Road",
-    location: "North West",
+    location: "Altrincham",
     type: "Commercial",
     status: "Completed",
-    image: "/images/legacy/woodfield-road.jpg",
+    image: "/images/woodfield/hero.jpg",
     blurb:
-      "A mixed-use development combining residential and commercial space in a single scheme.",
+      "A corner mixed-use scheme in Altrincham: a commercial unit at street level with homes on the floors above.",
   },
   {
     slug: "the-press",
