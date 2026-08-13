@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { unstable_cache } from "next/cache";
 import { AdminLogin } from "@/components/AdminLogin";
 import { isAuthenticated } from "@/lib/admin-auth";
 
@@ -33,8 +34,42 @@ const MAC_STEPS = [
   "After that first launch it opens normally from Launchpad or the Applications folder.",
 ];
 
+// Which version "latest" currently resolves to, so the page states the
+// version without needing an edit every time one ships.
+//
+// Read from the redirect rather than the JSON API: /releases/latest issues a
+// 302 to /releases/tag/<tag>, and github.com is not rate limited the way
+// api.github.com is (60 requests/hour per IP unauthenticated, which a shared
+// hosting egress IP can exhaust — the version would then vanish for an hour).
+//
+// Cached with unstable_cache rather than fetch's own `next.revalidate`
+// because this page is force-dynamic, which pins every fetch in the segment
+// to no-store. Replace with the `use cache` directive if the site adopts
+// Cache Components.
+const getLatestVersion = unstable_cache(
+  async (): Promise<string | null> => {
+    try {
+      // HEAD, so the tag is resolved without downloading the release page.
+      const response = await fetch(`${RELEASES}/latest`, { method: "HEAD" });
+      // response.url is the redirect target when the runtime follows it (Next
+      // patches fetch and does); the Location header covers the case where it
+      // does not.
+      const target = response.headers.get("location") ?? response.url;
+      const tag = target?.match(/\/releases\/tag\/([^/?#]+)$/)?.[1];
+      return tag ? decodeURIComponent(tag) : null;
+    } catch {
+      // The download buttons work regardless, so a failed lookup just
+      // hides the version line rather than breaking the page.
+      return null;
+    }
+  },
+  ["appraisal-latest-release"],
+  { revalidate: 3600 }
+);
+
 export default async function AdminAppraisalPage() {
   const authed = await isAuthenticated();
+  const version = authed ? await getLatestVersion() : null;
 
   return (
     <section>
@@ -66,6 +101,15 @@ export default async function AdminAppraisalPage() {
               </Link>
               .
             </p>
+
+            {version && (
+              <p className="mt-6 text-xs tracking-[0.25em] uppercase text-accent-text">
+                Latest version{" "}
+                {/* Not uppercased: the tag is a literal, and "v0.2.0" reads
+                    wrong as "V0.2.0". */}
+                <span className="normal-case">{version}</span>
+              </p>
+            )}
 
             <div className="mt-12 grid max-w-3xl grid-cols-1 gap-6 sm:grid-cols-2">
               <a
