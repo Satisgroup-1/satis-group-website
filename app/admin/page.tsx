@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AdminLogin } from "@/components/AdminLogin";
-import { NewsletterComposer } from "@/components/NewsletterComposer";
 import { isAuthenticated, isUsingFallbackSecret } from "@/lib/admin-auth";
-import { formatNewsletterDate, getNewsletters } from "@/lib/newsletters";
 import { logout } from "./actions";
 
 export const metadata: Metadata = {
@@ -14,10 +12,31 @@ export const metadata: Metadata = {
 // Auth state lives in a cookie, so this page must render per-request.
 export const dynamic = "force-dynamic";
 
+const SEGMENTS = [
+  {
+    href: "/admin/newsletter",
+    title: "Newsletter",
+    body: "Compose and publish news issues, and review everything already live on the site.",
+  },
+  {
+    href: "/admin/platform",
+    title: "Investors",
+    body: "Manage investor accounts, developments and SPV cap tables, project returns, insights and upcoming raises — with bulk import and export.",
+  },
+  {
+    href: "/admin/guide",
+    title: "Instructions",
+    body: "The operations guide: day-to-day publishing, investor login support, content updates, Claude agents & skills, and the SEO checklist.",
+  },
+  {
+    href: "/admin/appraisal",
+    title: "Appraisal agent download",
+    body: "Download the Satis Appraisal desktop application for Windows or Mac, with step-by-step install instructions.",
+  },
+];
+
 export default async function AdminPage() {
   const authed = await isAuthenticated();
-  const issues = authed ? getNewsletters() : [];
-  const today = new Date().toISOString().slice(0, 10);
 
   return (
     <section>
@@ -26,7 +45,7 @@ export default async function AdminPage() {
           Admin
         </span>
         <h1 className="mt-4 max-w-lg text-3xl font-medium tracking-tight sm:text-4xl">
-          {authed ? "Newsletter studio." : "Sign in to continue."}
+          {authed ? "Satis control room." : "Sign in to continue."}
         </h1>
 
         {!authed ? (
@@ -35,71 +54,54 @@ export default async function AdminPage() {
           </div>
         ) : (
           <>
-          <p className="mt-4 max-w-2xl text-sm leading-6 text-muted">
-            Compose newsletters below, or manage investor accounts, holdings,
-            returns and insight articles in the{" "}
-            <Link
-              href="/admin/platform"
-              className="underline decoration-border underline-offset-4 transition-colors hover:text-accent"
-            >
-              investor platform data studio
-            </Link>
-            . New to the admin area? Start with the{" "}
-            <Link
-              href="/admin/guide"
-              className="underline decoration-border underline-offset-4 transition-colors hover:text-accent"
-            >
-              operations guide
-            </Link>
-            .
-          </p>
-          {isUsingFallbackSecret() && (
-            <p className="mt-6 max-w-xl text-xs leading-relaxed text-muted">
-              Running on the built-in demo signing secret. Before real
-              credentials replace test/test, set SATIS_ADMIN_SECRET in the
-              hosting environment.
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-muted">
+              Everything for running the website and investor platform, in one
+              place.
             </p>
-          )}
-          <div className="mt-12 grid grid-cols-1 gap-16 lg:grid-cols-[1fr_20rem]">
-            <div>
-              <h2 className="text-xs tracking-[0.2em] uppercase text-muted">
-                New issue
-              </h2>
-              <div className="mt-6 max-w-2xl">
-                <NewsletterComposer today={today} />
-              </div>
-            </div>
-            <aside className="flex flex-col gap-8">
-              <div>
-                <h2 className="text-xs tracking-[0.2em] uppercase text-muted">
-                  Published issues
-                </h2>
-                <ul className="mt-4 flex flex-col">
-                  {issues.map((issue) => (
-                    <li key={issue.slug} className="border-t border-border py-3">
-                      <Link
-                        href={`/news/${issue.slug}`}
-                        className="text-sm transition-colors hover:text-accent"
-                      >
-                        {issue.title}
-                      </Link>
-                      <p className="mt-1 text-xs text-muted">
-                        {formatNewsletterDate(issue.date)}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <form action={logout}>
-                <button
-                  type="submit"
-                  className="border border-border px-6 py-3 text-xs tracking-[0.2em] uppercase transition-colors duration-300 hover:border-accent hover:text-accent"
+            {isUsingFallbackSecret() && (
+              <p className="mt-4 max-w-xl text-xs leading-relaxed text-muted">
+                Running on the built-in demo signing secret. Before real
+                credentials replace test/test, set SATIS_ADMIN_SECRET in the
+                hosting environment.
+              </p>
+            )}
+            <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2">
+              {SEGMENTS.map((segment, index) => (
+                <Link
+                  key={segment.href}
+                  href={segment.href}
+                  className="group flex flex-col border border-border p-8 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent"
                 >
-                  Sign out
-                </button>
-              </form>
-            </aside>
-          </div>
+                  <span className="flex items-center gap-3 text-xs tracking-[0.35em] uppercase text-accent-text">
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                    <span className="h-px w-8 bg-accent/60" aria-hidden="true" />
+                  </span>
+                  <h2 className="mt-4 text-xl font-medium tracking-tight">
+                    {segment.title}
+                  </h2>
+                  <p className="mt-3 text-sm leading-relaxed text-muted">
+                    {segment.body}
+                  </p>
+                  <span className="mt-6 inline-flex items-center gap-2 text-xs tracking-[0.2em] uppercase">
+                    Open
+                    <span
+                      aria-hidden="true"
+                      className="text-accent transition-transform duration-300 group-hover:translate-x-1.5"
+                    >
+                      →
+                    </span>
+                  </span>
+                </Link>
+              ))}
+            </div>
+            <form action={logout} className="mt-12">
+              <button
+                type="submit"
+                className="border border-border px-6 py-3 text-xs tracking-[0.2em] uppercase transition-colors duration-300 hover:border-accent hover:text-accent"
+              >
+                Sign out
+              </button>
+            </form>
           </>
         )}
       </div>
