@@ -53,7 +53,7 @@ export const PORTFOLIO: Property[] = [
     status: "To Let",
     image: "/images/barrington/hero.jpg",
     hoverImage: "/images/barrington/exterior-dusk.jpg",
-    logo: { src: "/images/logos/barrington-house.jpg", bg: "#0c0b09" },
+    logo: { src: "/images/logos/barrington-house.jpg", bg: "#000000" },
     blurb:
       "Thoughtfully designed residences pairing architectural restraint with the warmth of an award-winning market town.",
   },
@@ -120,7 +120,8 @@ export const PORTFOLIO: Property[] = [
     location: "North West",
     type: "Residential",
     status: "Completed",
-    image: "/images/legacy/springfield-house.jpg",
+    image: "/images/springfield/hero.jpg",
+    imagePosition: "center 62%",
     blurb:
       "A boutique conversion of five apartments, each with its own character within a single building.",
   },
