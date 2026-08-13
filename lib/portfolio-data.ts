@@ -109,7 +109,7 @@ export const PORTFOLIO: Property[] = [
     type: "Commercial",
     status: "Completed",
     image: "/images/tabula/hero.jpg",
-    imagePosition: "center 30%",
+    imagePosition: "center 55%",
     logo: { src: "/images/logos/tabula.jpg", bg: "#0a0a0a" },
     blurb:
       "The repositioning of Barnett House on Fountain Street: character retained, fabric upgraded, workspace businesses want.",
