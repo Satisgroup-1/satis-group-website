@@ -152,7 +152,8 @@ export const PORTFOLIO: Property[] = [
     location: "Davenport, Stockport",
     type: "Residential",
     status: "Completed",
-    image: "/images/pipeline/davenport-park.jpg",
+    image: "/images/davenport/hero.jpg",
+    imagePosition: "center 55%",
     blurb:
       "A completed residential development beside Davenport station, with direct rail links into Manchester Piccadilly.",
   },
