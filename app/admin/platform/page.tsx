@@ -141,7 +141,7 @@ export default async function AdminPlatformPage() {
                 href="/admin"
                 className="underline decoration-border underline-offset-4 transition-colors hover:text-accent"
               >
-                Back to the newsletter studio
+                Back to the admin home
               </Link>
               .
             </p>

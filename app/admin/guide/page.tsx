@@ -26,7 +26,7 @@ const SECTIONS: GuideSection[] = [
       {
         heading: "Where everything lives",
         body: [
-          "/admin — newsletter studio (this area). /admin/platform — investor platform data studio: accounts, developments & SPVs, cap tables, returns, updates, insights, opportunities, import/export. /admin/guide — this operations guide.",
+          "/admin — the admin home, linking every area. /admin/newsletter — newsletter studio. /admin/platform — investor platform data studio: accounts, developments & SPVs, cap tables, returns, updates, insights, opportunities, import/export. /admin/appraisal — download the Satis Appraisal desktop application. /admin/guide — this operations guide.",
           "Public site: /portfolio (with per-site pages), /about, /news, /contact, /investors (the investor platform), /legal/* (terms, privacy, modern slavery).",
         ],
       },
@@ -45,7 +45,7 @@ const SECTIONS: GuideSection[] = [
       {
         heading: "Composing an issue",
         body: [
-          "Use the newsletter studio on /admin. Title, date (YYYY-MM-DD), a one-line summary and the body are required. Paragraphs are separated by blank lines; a line starting with \"## \" becomes a section heading; lines starting with \"- \" become a bullet list.",
+          "Use the newsletter studio on /admin/newsletter. Title, date (YYYY-MM-DD), a one-line summary and the body are required. Paragraphs are separated by blank lines; a line starting with \"## \" becomes a section heading; lines starting with \"- \" become a bullet list.",
           "Published issues appear immediately at /news and in the sitemap. To correct one, publish again with the same title and date after removing the original.",
         ],
       },
@@ -197,7 +197,7 @@ export default async function AdminGuidePage() {
               </Link>{" "}
               and news in the{" "}
               <Link
-                href="/admin"
+                href="/admin/newsletter"
                 className="underline decoration-border underline-offset-4 transition-colors hover:text-accent"
               >
                 newsletter studio
