@@ -53,7 +53,7 @@ export const PORTFOLIO: Property[] = [
     status: "To Let",
     image: "/images/barrington/hero.jpg",
     hoverImage: "/images/barrington/exterior-dusk.jpg",
-    logo: { src: "/images/logos/barrington-house.jpg", bg: "#0c0b09" },
+    logo: { src: "/images/logos/barrington-house.jpg", bg: "#000000" },
     blurb:
       "Thoughtfully designed residences pairing architectural restraint with the warmth of an award-winning market town.",
   },
