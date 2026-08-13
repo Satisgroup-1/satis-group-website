@@ -791,15 +791,16 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     tagline: "Five apartments",
     type: "Residential",
     status: "Completed",
-    heroImage: "/images/legacy/springfield-house.jpg",
+    heroImage: "/images/springfield/hero.jpg",
+    heroPosition: "center 58%",
     intro: {
       heading: "A boutique conversion of five homes",
       body: [
         "Springfield House is a boutique residential conversion of five apartments delivered by Satis Group.",
         "Smaller schemes like this one let us take particular care over detail, giving each home its own character within a single building.",
       ],
-      image: "/images/legacy/springfield-house.jpg",
-      imageAlt: "Springfield House apartments",
+      image: "/images/springfield/hero.jpg",
+      imageAlt: "Springfield House at dusk",
     },
     stats: [
       { value: "5", label: "Apartments" },

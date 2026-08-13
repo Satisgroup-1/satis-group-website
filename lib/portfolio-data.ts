@@ -120,7 +120,8 @@ export const PORTFOLIO: Property[] = [
     location: "North West",
     type: "Residential",
     status: "Completed",
-    image: "/images/legacy/springfield-house.jpg",
+    image: "/images/springfield/hero.jpg",
+    imagePosition: "center 62%",
     blurb:
       "A boutique conversion of five apartments, each with its own character within a single building.",
   },
