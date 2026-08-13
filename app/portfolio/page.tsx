@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Property development portfolio, North West",
   alternates: { canonical: "/portfolio" },
   description:
-    "A selection of residential and commercial redevelopments delivered by Satis Group across the UK.",
+    "A selection of residential and commercial redevelopments delivered by Satis Group across the North West.",
 };
 
 export default function PortfolioPage() {
@@ -15,7 +15,7 @@ export default function PortfolioPage() {
       <PageHero
         eyebrow="Portfolio"
         title="Projects, past and present."
-        description="A selection of the residential and commercial redevelopments we've delivered across the UK."
+        description="A selection of the residential and commercial redevelopments we've delivered across the North West."
       />
       <PortfolioGrid />
     </>

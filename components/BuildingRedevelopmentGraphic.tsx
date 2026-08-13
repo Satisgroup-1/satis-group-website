@@ -72,7 +72,7 @@ function PhaseStepper({
     <div className="border-t border-border bg-surface/80 backdrop-blur">
       <div className="mx-auto w-full max-w-7xl px-6 py-5 lg:px-10">
         <p className="text-[0.6rem] tracking-[0.3em] uppercase text-muted">
-          The story of every Satis building, told as you scroll
+          The story of every Satis Group building, told as you scroll
         </p>
         <div className="relative mt-4">
           {/* connecting track */}

@@ -7,6 +7,7 @@ import { InvestmentChart } from "@/components/InvestmentChart";
 import { PageHero } from "@/components/PageHero";
 import { ParallaxSkyline } from "@/components/ParallaxSkyline";
 import { Reveal } from "@/components/Reveal";
+import { ACCOLADES, AWARD_COUNT } from "@/lib/accolades";
 import { StatMeter } from "@/components/StatMeter";
 import { TeamGrid, type TeamMember } from "@/components/TeamGrid";
 import { ValuesGrid } from "@/components/ValuesGrid";
@@ -43,9 +44,9 @@ const STATS = [
 
 const PARTNERS = [
   {
-    name: "Invest in Satis",
+    name: "Invest in Satis Group",
     role: "Investment",
-    body: "Our proprietary investor platform, giving partners access to the Satis development pipeline.",
+    body: "Our proprietary investor platform, giving partners access to the Satis Group development pipeline.",
   },
   {
     name: "Gascoigne Halman",
@@ -61,46 +62,6 @@ const PARTNERS = [
     name: "SpareRoom",
     role: "Room Lettings",
     body: "En-suite rooms at developments like Barrington House are let through SpareRoom.",
-  },
-];
-
-// Awards and recognitions from the Satis marketing folder. "kind" separates
-// competition wins from press features and appointments.
-const ACCOLADES: Array<{
-  kind: "Award" | "Recognition";
-  title: string;
-  detail: string;
-  subject: string;
-}> = [
-  {
-    kind: "Award",
-    title: "UK Property Awards",
-    detail: "Best Commercial Renovation & Redevelopment, five star",
-    subject: "22 St John — Greater Manchester & United Kingdom",
-  },
-  {
-    kind: "Award",
-    title: "North West Homebuilder Awards",
-    detail: "Rising Star of the Year",
-    subject: "Shiro Rauniar",
-  },
-  {
-    kind: "Recognition",
-    title: "Your Property Network",
-    detail: "Cover feature, Issue 196",
-    subject: "22 St John — award-winning refurbishment",
-  },
-  {
-    kind: "Recognition",
-    title: "Insider Property Disruptors",
-    detail: "Featured — Building the Future",
-    subject: "Satis Group",
-  },
-  {
-    kind: "Recognition",
-    title: "Property Investors Awards",
-    detail: "Official Judge",
-    subject: "Shaunak Rauniar",
   },
 ];
 
@@ -341,7 +302,7 @@ export default function AboutPage() {
               </p>
             </Reveal>
             <Reveal delay={0.15}>
-              <Eyebrow label="The Satis future" />
+              <Eyebrow label="The Satis Group future" />
               <h2 className="mt-4 text-3xl font-medium tracking-tight sm:text-4xl">
                 A £38m pipeline and growing.
               </h2>
@@ -373,11 +334,11 @@ export default function AboutPage() {
       <section className="relative overflow-hidden bg-ink text-ink-foreground">
         <div className="relative mx-auto flex max-w-7xl flex-col items-start justify-between gap-8 px-6 py-16 lg:flex-row lg:items-center lg:px-10">
           <Reveal>
-            <span className="text-xs tracking-[0.3em] uppercase text-accent-text">
+            <span className="inline-block bg-accent px-4 py-2 text-xs tracking-[0.3em] uppercase text-black">
               Get full access to our latest investment opportunities
             </span>
             <p className="mt-3 text-2xl font-medium tracking-tight sm:text-3xl">
-              Invest in Satis.
+              Invest in Satis Group.
             </p>
           </Reveal>
           <Reveal delay={0.1}>
@@ -419,7 +380,7 @@ export default function AboutPage() {
               Who we work with.
             </h2>
             <p className="mt-4 max-w-xl text-base leading-relaxed text-muted">
-              Every Satis development is delivered alongside trusted partners,
+              Every Satis Group development is delivered alongside trusted partners,
               from investment through to sales and lettings.
             </p>
           </Reveal>
@@ -448,53 +409,55 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Awards & Recognition */}
+      {/* Awards & recognition — summary; the full list lives on News */}
       <section className="border-t border-border">
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
-          <Reveal>
-            <Eyebrow index="07" label="Awards & recognition" />
-            <div className="mt-4 flex flex-wrap items-end justify-between gap-4">
-              <h2 className="max-w-xl text-3xl font-medium tracking-tight sm:text-4xl">
-                Recognised across the industry.
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_auto] lg:items-end lg:gap-20">
+            <Reveal>
+              <Eyebrow index="07" label="Awards & recognition" />
+              <h2 className="mt-4 max-w-xl text-3xl font-medium tracking-tight sm:text-4xl">
+                Award winners, and judges of the awards.
               </h2>
-              <span className="text-sm tracking-[0.05em] text-muted">
-                <span className="text-2xl font-medium text-accent">
-                  {ACCOLADES.length}
-                </span>{" "}
-                accolades &amp; counting
-              </span>
-            </div>
-            <p className="mt-4 max-w-xl text-base leading-relaxed text-muted">
-              Our work and our people have been recognised by national award
-              bodies and the property press.
-            </p>
-          </Reveal>
-
-          <div className="mt-14 flex flex-col">
-            {ACCOLADES.map((item, index) => (
-              <Reveal key={item.title} delay={Math.min(index * 0.07, 0.3)}>
-                <div className="group grid grid-cols-1 gap-2 border-t border-border py-8 transition-colors duration-300 hover:border-accent sm:grid-cols-[1fr_auto] sm:items-baseline sm:gap-8 lg:grid-cols-[minmax(0,16rem)_1fr_auto]">
-                  <div className="flex items-baseline gap-4">
-                    <span
-                      aria-hidden="true"
-                      className="text-accent transition-transform duration-500 ease-out group-hover:rotate-[72deg] group-hover:scale-125"
-                    >
-                      ✦
-                    </span>
-                    <h3 className="text-lg font-medium tracking-tight">
-                      {item.title}
-                    </h3>
-                  </div>
-                  <div className="pl-8 lg:pl-0">
-                    <p className="text-sm tracking-[0.02em]">{item.detail}</p>
-                    <p className="mt-1 text-sm text-muted">{item.subject}</p>
-                  </div>
-                  <span className="pl-8 text-[0.6rem] tracking-[0.25em] uppercase text-accent lg:pl-0 lg:text-right">
-                    {item.kind}
+              <p className="mt-6 max-w-xl text-base leading-relaxed text-muted">
+                Our buildings and our people have been recognised nationally:
+                {" "}{AWARD_COUNT} competition wins to date, among them a five-star
+                UK Property Award for 22 St John and Rising Star of the Year at
+                the North West Homebuilder Awards. Our work has been the cover
+                feature of Your Property Network, and Satis Group directors sit
+                on the judging panel of the Property Investors Awards —
+                assessing the field as well as competing in it.
+              </p>
+              <Link
+                href="/news#awards"
+                className="group mt-8 inline-flex items-center gap-2 text-xs tracking-[0.2em] uppercase transition-colors hover:text-accent"
+              >
+                See every award &amp; feature
+                <span
+                  aria-hidden="true"
+                  className="text-accent transition-transform duration-300 group-hover:translate-x-1.5"
+                >
+                  →
+                </span>
+              </Link>
+            </Reveal>
+            <Reveal delay={0.15}>
+              <div className="flex gap-12 border-t border-border pt-8 lg:border-none lg:pt-0">
+                <div>
+                  <span className="text-4xl font-medium tracking-tight text-accent">
+                    {AWARD_COUNT}
                   </span>
+                  <p className="mt-2 text-sm text-muted">Awards won</p>
                 </div>
-              </Reveal>
-            ))}
+                <div>
+                  <span className="text-4xl font-medium tracking-tight text-accent">
+                    {ACCOLADES.length}
+                  </span>
+                  <p className="mt-2 text-sm text-muted">
+                    Accolades &amp; counting
+                  </p>
+                </div>
+              </div>
+            </Reveal>
           </div>
         </div>
       </section>

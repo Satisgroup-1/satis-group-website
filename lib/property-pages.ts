@@ -846,7 +846,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     intro: {
       heading: "The Press — coming soon to Great Moor",
       body: [
-        "The Press is a forthcoming Satis residential development at 15 Alldis Street in Great Moor, Stockport — creative heritage, contemporary living.",
+        "The Press is a forthcoming Satis Group residential development at 15 Alldis Street in Great Moor, Stockport — creative heritage, contemporary living.",
         "Plans, specification and availability will be published here as the scheme progresses. Register your interest with the team to be kept informed.",
       ],
       image: "/images/alldis/hero.jpg",
@@ -872,7 +872,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     intro: {
       heading: "Homes beside Davenport station",
       body: [
-        "Davenport Park is a completed Satis residential development beside Davenport station, with direct rail links into Manchester Piccadilly.",
+        "Davenport Park is a completed Satis Group residential development beside Davenport station, with direct rail links into Manchester Piccadilly.",
         "The scheme reflects our approach across Stockport: well-connected locations, quality specification and homes designed for how people actually live.",
       ],
       image: "/images/davenport/hero.jpg",
@@ -915,14 +915,14 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     slug: "mayor-street",
     name: "Mayor Street",
     eyebrow: "North West",
-    tagline: "A new Satis development in preparation",
+    tagline: "A new Satis Group development in preparation",
     type: "Residential",
     status: "Coming Soon",
     heroImage: "/images/pipeline/mayor-street.jpg",
     intro: {
       heading: "Mayor Street — details to follow",
       body: [
-        "Mayor Street is a new Satis development currently in preparation.",
+        "Mayor Street is a new Satis Group development currently in preparation.",
         "Location detail, imagery and plans will be published here once the scheme is announced. Register your interest with the team to be kept informed.",
       ],
       image: "/images/pipeline/mayor-street.jpg",

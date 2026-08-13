@@ -33,7 +33,7 @@ const PROCESS = [
 ];
 
 const STATS = [
-  { value: "60+", label: "Properties redeveloped across the UK" },
+  { value: "60+", label: "Properties redeveloped across the North West" },
   { value: "£120m", label: "In gross development value delivered" },
   { value: "40", label: "Years of combined industry experience" },
 ];
@@ -50,7 +50,7 @@ export default function Home() {
         </h1>
         <p className="mt-5 max-w-md text-sm leading-relaxed text-muted lg:text-base">
           Satis Group acquires, redevelops and manages residential and
-          commercial property across the UK. Keep scrolling to watch one come
+          commercial property across the North West. Keep scrolling to watch one come
           to life.
         </p>
         <div className="mt-6 flex flex-wrap items-center gap-4">

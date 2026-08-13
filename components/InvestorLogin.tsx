@@ -19,11 +19,11 @@ export function InvestorLogin({ stats }: { stats: HeroStats }) {
   );
 
   return (
-    <div className="min-h-[calc(100vh-5rem)] bg-[#000000] text-white">
+    <div className="bg-[#000000] text-white">
       <div className="mx-auto grid min-h-[calc(100vh-5rem)] max-w-[1500px] lg:grid-cols-[1.08fr_.92fr]">
         <section className="relative hidden overflow-hidden border-r border-white/10 p-14 lg:flex lg:flex-col lg:justify-between">
           <div className="relative text-xs tracking-[.32em] uppercase text-[#c3a164]">
-            Satis investor platform
+            Satis Group investor platform
           </div>
           <div className="relative max-w-2xl pb-12">
             <p className="mb-6 text-sm tracking-[.22em] uppercase text-[#c3a164]">
@@ -35,7 +35,7 @@ export function InvestorLogin({ stats }: { stats: HeroStats }) {
               built around you.
             </h1>
             <p className="mt-8 max-w-lg text-lg leading-8 text-white/60">
-              A single view of your Satis investments, live developments and
+              A single view of your Satis Group investments, live developments and
               the Greater Manchester market.
             </p>
           </div>
@@ -121,6 +121,73 @@ export function InvestorLogin({ stats }: { stats: HeroStats }) {
           </div>
         </section>
       </div>
+
+      {/* The investment case, mirroring the About page's "Invest in Satis
+          Group" section so prospective investors see it before signing in. */}
+      <section className="border-t border-white/10">
+        <div className="mx-auto max-w-[1500px] px-6 py-20 lg:px-14 lg:py-28">
+          <span className="text-xs tracking-[.3em] uppercase text-[#c3a164]">
+            Invest in Satis Group
+          </span>
+          <div className="mt-10 grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20">
+            <div>
+              <h2 className="text-3xl font-medium tracking-tight sm:text-4xl">
+                A market with momentum.
+              </h2>
+              <p className="mt-6 text-base leading-relaxed text-white/60">
+                Manchester is a thriving city with a strong economy and a
+                growing population. This has created a high demand for housing,
+                resulting in a competitive rental market and the potential for
+                attractive rental yields. The city has seen significant
+                regeneration and development in recent years, with new
+                infrastructure projects and cultural attractions attracting
+                both residents and investors.
+              </p>
+            </div>
+            <div>
+              <h2 className="text-3xl font-medium tracking-tight sm:text-4xl">
+                A £38m pipeline and growing.
+              </h2>
+              <p className="mt-6 text-base leading-relaxed text-white/60">
+                We currently have a pipeline of £38m with 109,000 sq ft of both
+                residential and commercial developments. Looking ahead, our
+                growth plan is to scale significantly in the next 12 months by
+                delivering our existing projects, adding new opportunities to
+                the pipeline, and positioning Satis Group for sustainable
+                long-term expansion.
+              </p>
+            </div>
+          </div>
+
+          <dl className="mt-16 grid grid-cols-1 gap-px overflow-hidden border border-white/15 bg-white/15 sm:grid-cols-3">
+            {[
+              { value: "40+", label: "Years of combined experience" },
+              { value: "£38m", label: "Development pipeline" },
+              { value: "109,000", label: "Sq ft residential & commercial" },
+            ].map((stat) => (
+              <div key={stat.label} className="bg-[#000000] p-8">
+                <dt className="text-3xl font-medium tracking-tight text-[#c3a164]">
+                  {stat.value}
+                </dt>
+                <dd className="mt-3 text-sm text-white/55">{stat.label}</dd>
+              </div>
+            ))}
+          </dl>
+
+          <div className="mt-14 flex flex-wrap items-center gap-6 border-t border-white/10 pt-10">
+            <p className="max-w-md text-sm leading-relaxed text-white/55">
+              Access to the platform is by invitation, for investors we work
+              with. To discuss joining, get in touch with the Satis Group team.
+            </p>
+            <a
+              href="mailto:info@satisgroup.co.uk?subject=Investor%20enquiry"
+              className="shimmer-btn bg-[#b18c4d] px-8 py-4 text-xs tracking-[.18em] uppercase transition hover:bg-[#c3a164]"
+            >
+              Request access →
+            </a>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
