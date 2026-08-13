@@ -283,7 +283,7 @@ function PageTitle({ eyebrow, title, copy }: { eyebrow: string; title: string; c
 function Overview({ data, go }: { data: PortalData; go: (s: Section) => void }) {
   const openOpportunity = data.opportunities.find((o) => o.status === "Open");
   return <>
-    <div className="mb-8 flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><PageTitle eyebrow="Portfolio overview" title={data.greeting} copy="Here’s what’s happening across your Satis portfolio." /><div className="mb-9 text-right text-xs text-[#7c8285]"><span className="mb-1 block uppercase tracking-[.16em]">Last updated</span>{data.lastUpdated}</div></div>
+    <div className="mb-8 flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><PageTitle eyebrow="Portfolio overview" title={data.greeting} copy="Here’s what’s happening across your Satis Group portfolio." /><div className="mb-9 text-right text-xs text-[#7c8285]"><span className="mb-1 block uppercase tracking-[.16em]">Last updated</span>{data.lastUpdated}</div></div>
     <div className="grid gap-px overflow-hidden border border-[#d8d7d0] bg-[#d8d7d0] sm:grid-cols-2 xl:grid-cols-4">
       {data.stats.map((x,i)=><div key={x.label} className="bg-white p-6"><div className="flex justify-between text-[10px] tracking-[.16em] uppercase text-[#777e82]"><span>{x.label}</span><span>0{i+1}</span></div><p className="mt-6 text-3xl font-medium tracking-tight text-[#121212]">{x.value}</p><p className="mt-2 text-xs text-[#617260]">{x.note}</p></div>)}
     </div>
@@ -305,7 +305,7 @@ function Developments({ developments }: { developments: PortalData["developments
   const [selectedId, setSelectedId] = useState(developments[0]?.id ?? "");
   const d = developments.find((x) => x.id === selectedId) ?? developments[0];
   if (!d) return <PageTitle eyebrow="Live portfolio" title="No developments yet." copy="Developments will appear here as they are added to the platform." />;
-  return <><PageTitle eyebrow="Live portfolio" title="Developments across Greater Manchester." copy="Every Satis site on the map — select a pin or a row for programme, SPV and cap-table detail." />
+  return <><PageTitle eyebrow="Live portfolio" title="Developments across Greater Manchester." copy="Every Satis Group site on the map — select a pin or a row for programme, SPV and cap-table detail." />
     <div className="grid overflow-hidden border border-[#d8d7d0] bg-white xl:grid-cols-[1.35fr_.85fr]">
       <InvestorMap sites={developments} selectedId={d.id} onSelect={setSelectedId} />
       <div className="p-7 sm:p-9">
@@ -352,7 +352,7 @@ function Opportunities({ opportunities }: { opportunities: PortalData["opportuni
     "Coming soon": "bg-[#b18c4d] text-white",
     "Fully subscribed": "bg-[#d8d7d0] text-[#62696d]",
   };
-  return <><PageTitle eyebrow="Deal flow" title="Upcoming investments." copy="Current and forthcoming Satis single-asset raises. Allocations are confirmed in order of registration, subject to suitability." />
+  return <><PageTitle eyebrow="Deal flow" title="Upcoming investments." copy="Current and forthcoming Satis Group single-asset raises. Allocations are confirmed in order of registration, subject to suitability." />
     <div className="space-y-6">{opportunities.map((o)=>(
       <article key={o.id} className="grid border border-[#d8d7d0] bg-white lg:grid-cols-[1.15fr_.85fr]">
         <div className="p-7 sm:p-9">
@@ -396,7 +396,7 @@ function Market({ market }: { market: PortalData["market"] }) {
     <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">{market.regions.map((r)=><div key={r.label} className="border border-[#d8d7d0] bg-white p-6"><p className="text-[10px] tracking-[.14em] uppercase text-[#7c8386]">{r.label}</p><p className="mt-5 text-3xl font-medium text-[#121212]">{r.averagePrice}</p><p className="mt-1 text-xs text-[#6b7969]">{r.annualChange} · 12 months</p><dl className="mt-5 grid grid-cols-2 gap-3 border-t border-[#ebe9e3] pt-4 text-xs text-[#737a7e]"><div><dt className="text-[10px] uppercase tracking-wider text-[#a0a5a8]">Rent pcm</dt><dd className="mt-1 text-sm text-[#121212]">{r.rentPcm}</dd></div><div><dt className="text-[10px] uppercase tracking-wider text-[#a0a5a8]">Gross yield</dt><dd className="mt-1 text-sm text-[#121212]">{r.grossYield}</dd></div></dl></div>)}</div>
     <div className="mt-6 grid gap-6 xl:grid-cols-[1.25fr_.75fr]">
       <section className="border border-[#d8d7d0] bg-white p-7"><p className="text-xs tracking-[.15em] uppercase text-[#737a7e]">Submarket comparison</p><div className="mt-6 overflow-x-auto"><table className="w-full min-w-[560px] text-left text-sm"><thead className="border-b border-[#d8d7d0] text-[10px] uppercase tracking-wider text-[#858b8e]"><tr>{["Location","House price","12m change","Rent pcm","Gross yield"].map(x=><th key={x} className="pb-3 font-normal">{x}</th>)}</tr></thead><tbody>{market.regions.map(r=><tr key={r.label} className="border-b border-[#ebe9e3] last:border-0"><td className="py-4">{r.label}</td><td>{r.averagePrice}</td><td className="text-[#63775e]">{r.annualChange}</td><td>{r.rentPcm}</td><td>{r.grossYield}</td></tr>)}</tbody></table></div></section>
-      <section className="bg-[#121212] p-7 text-white"><p className="text-[10px] tracking-[.18em] uppercase text-[#c4a262]">Satis view</p><h2 className="mt-5 text-2xl leading-8">Selective optimism in a supply-constrained market.</h2><p className="mt-5 text-sm leading-6 text-white/60">We remain focused on connected neighbourhoods where high-quality converted stock can meet resilient occupier demand.</p><div className="mt-8 space-y-4 border-t border-white/10 pt-6 text-xs text-white/70"><p>01 &nbsp; Flight to quality continues</p><p>02 &nbsp; Rental demand remains resilient</p><p>03 &nbsp; Build-cost inflation is moderating</p></div></section>
+      <section className="bg-[#121212] p-7 text-white"><p className="text-[10px] tracking-[.18em] uppercase text-[#c4a262]">Satis Group view</p><h2 className="mt-5 text-2xl leading-8">Selective optimism in a supply-constrained market.</h2><p className="mt-5 text-sm leading-6 text-white/60">We remain focused on connected neighbourhoods where high-quality converted stock can meet resilient occupier demand.</p><div className="mt-8 space-y-4 border-t border-white/10 pt-6 text-xs text-white/70"><p>01 &nbsp; Flight to quality continues</p><p>02 &nbsp; Rental demand remains resilient</p><p>03 &nbsp; Build-cost inflation is moderating</p></div></section>
     </div>
     <div className="mt-6 text-[10px] leading-5 text-[#858b8e]">{market.attribution}</div>
   </>;
@@ -433,7 +433,7 @@ function Insights({ insights }: { insights: PortalData["insights"] }) {
     return <article className="mx-auto max-w-3xl">
       <button onClick={() => setOpenSlug(null)} className="mb-8 text-[10px] tracking-[.16em] uppercase text-[#8a6c3f] hover:text-[#121212]">← All insights</button>
       <div className="flex h-24 items-end p-5" style={{ backgroundColor: INSIGHT_THEME[open.theme] }}><span className="bg-white/90 px-2.5 py-1 text-[10px] uppercase tracking-[.16em] text-[#121212]">{open.category}</span></div>
-      <p className="mt-6 text-[10px] tracking-[.16em] uppercase text-[#96723d]">{open.date} · {open.read} read · Satis research team</p>
+      <p className="mt-6 text-[10px] tracking-[.16em] uppercase text-[#96723d]">{open.date} · {open.read} read · Satis Group research team</p>
       <h1 className="mt-4 text-4xl font-medium leading-tight tracking-tight text-[#121212] sm:text-5xl">{open.title}</h1>
       <p className="mt-6 text-xl leading-9 text-[#626a6e]">{open.summary}</p>
       <div className="mt-8 border-t border-[#d8d7d0] pt-2">{open.body.map((block, i) => <InsightBlockView key={i} block={block} />)}</div>
@@ -444,7 +444,7 @@ function Insights({ insights }: { insights: PortalData["insights"] }) {
     </article>;
   }
   const [featured, ...rest] = insights;
-  return <><PageTitle eyebrow="Research & perspective" title="Insights for considered investment." copy="Research notes, guides and perspectives from the Satis development and investment teams." />
+  return <><PageTitle eyebrow="Research & perspective" title="Insights for considered investment." copy="Research notes, guides and perspectives from the Satis Group development and investment teams." />
     {featured && (
       <button type="button" onClick={() => setOpenSlug(featured.slug)} className="group grid w-full border border-[#d8d7d0] bg-white text-left transition hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#121212]/5 lg:grid-cols-[.9fr_1.1fr]">
         <span className="block min-h-40" style={{ backgroundColor: INSIGHT_THEME[featured.theme] }} aria-hidden="true" />

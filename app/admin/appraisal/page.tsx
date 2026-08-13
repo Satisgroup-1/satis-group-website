@@ -21,7 +21,7 @@ const MAC_URL = `${RELEASES}/latest/download/Satis-Appraisal.dmg`;
 const WINDOWS_STEPS = [
   "Click the Windows button above — the file Satis-Appraisal-Setup.exe saves to your Downloads folder.",
   "Open your Downloads folder and double-click Satis-Appraisal-Setup.exe.",
-  "If Windows shows a blue “Windows protected your PC” message, click “More info” and then “Run anyway” — this appears because the app is distributed privately by Satis rather than through the Microsoft Store.",
+  "If Windows shows a blue “Windows protected your PC” message, click “More info” and then “Run anyway” — this appears because the app is distributed privately by Satis Group rather than through the Microsoft Store.",
   "Follow the installer: click Next, choose where to install (the suggested folder is fine), and click Install.",
   "When it finishes, Satis Appraisal appears in your Start menu like any other program.",
 ];
@@ -29,7 +29,7 @@ const WINDOWS_STEPS = [
 const MAC_STEPS = [
   "Click the Mac button above — the file Satis-Appraisal.dmg saves to your Downloads folder.",
   "Open your Downloads folder and double-click Satis-Appraisal.dmg, then drag the Satis Appraisal icon into the Applications folder shown next to it.",
-  "Open your Applications folder, hold the Control key and click Satis Appraisal, then choose “Open” and confirm — this is only needed the first time, because the app is distributed privately by Satis rather than through the App Store.",
+  "Open your Applications folder, hold the Control key and click Satis Appraisal, then choose “Open” and confirm — this is only needed the first time, because the app is distributed privately by Satis Group rather than through the App Store.",
   "After that first launch it opens normally from Launchpad or the Applications folder.",
 ];
 

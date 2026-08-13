@@ -45,7 +45,7 @@ export default async function AdminPage() {
           Admin
         </span>
         <h1 className="mt-4 max-w-lg text-3xl font-medium tracking-tight sm:text-4xl">
-          {authed ? "Satis control room." : "Sign in to continue."}
+          {authed ? "Satis Group control room." : "Sign in to continue."}
         </h1>
 
         {!authed ? (

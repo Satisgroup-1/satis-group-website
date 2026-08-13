@@ -495,7 +495,7 @@ export async function saveOpportunity(
     closesOn,
     structure:
       text(formData, "structure") ||
-      "Ordinary shares in a Satis single-asset SPV",
+      "Ordinary shares in a Satis Group single-asset SPV",
     summary,
     highlights: text(formData, "highlights")
       .split(/\r?\n/)
@@ -912,7 +912,7 @@ function validateSnapshot(value: unknown): Snapshot {
       address: o.address ?? o.place,
       targetMultiple: o.targetMultiple ?? "—",
       horizon: o.horizon ?? "—",
-      structure: o.structure ?? "Ordinary shares in a Satis single-asset SPV",
+      structure: o.structure ?? "Ordinary shares in a Satis Group single-asset SPV",
       highlights: Array.isArray(o.highlights) ? o.highlights : [],
     };
   });

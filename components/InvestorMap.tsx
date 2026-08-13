@@ -101,7 +101,7 @@ export function InvestorMap({
 
   return (
     <div className="relative h-full min-h-[520px]">
-      <div ref={containerRef} className="absolute inset-0" aria-label="Map of Satis developments" role="application" />
+      <div ref={containerRef} className="absolute inset-0" aria-label="Map of Satis Group developments" role="application" />
       <style>{`
         .satis-pin{width:22px;height:22px;border-radius:9999px;background:#b18c4d;border:3px solid #ffffff;box-shadow:0 1px 6px rgba(0,0,0,.4);cursor:pointer;transition:transform .15s ease,background .15s ease;}
         .satis-pin:hover{transform:scale(1.2);}

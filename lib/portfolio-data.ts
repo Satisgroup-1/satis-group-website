@@ -175,6 +175,6 @@ export const PORTFOLIO: Property[] = [
     status: "Coming Soon",
     image: "/images/pipeline/mayor-street.jpg",
     blurb:
-      "A new Satis development currently in preparation. Imagery and details to follow.",
+      "A new Satis Group development currently in preparation. Imagery and details to follow.",
   },
 ];

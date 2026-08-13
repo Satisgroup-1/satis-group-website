@@ -132,6 +132,6 @@ async function resolveMarketData(): Promise<MarketData> {
     source: "live",
     asOf: monthLabel(period),
     attribution:
-      "House prices: HM Land Registry UK House Price Index (Open Government Licence). Rents and yields: Satis research.",
+      "House prices: HM Land Registry UK House Price Index (Open Government Licence). Rents and yields: Satis Group research.",
   };
 }
