@@ -690,7 +690,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     type: "Commercial",
     status: "Completed",
     heroImage: "/images/tabula/hero.jpg",
-    heroPosition: "center 30%",
+    heroPosition: "center 60%",
     intro: {
       heading: "A workspace built around modern business",
       body: [
