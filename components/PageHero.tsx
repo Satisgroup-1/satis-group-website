@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Reveal } from "./Reveal";
 
 type PageHeroProps = {
@@ -9,6 +10,11 @@ type PageHeroProps = {
   backdrop?: React.ReactNode;
   /** Tighter vertical rhythm, for pages whose content should surface sooner. */
   compact?: boolean;
+  /**
+   * Lead photograph shown beside the copy on large screens, beneath it on
+   * small ones. Loaded eagerly: it is above the fold.
+   */
+  image?: { src: string; alt: string; position?: string };
 };
 
 export function PageHero({
@@ -17,6 +23,7 @@ export function PageHero({
   description,
   backdrop,
   compact = false,
+  image,
 }: PageHeroProps) {
   const paragraphs =
     typeof description === "string"
@@ -34,8 +41,12 @@ export function PageHero({
         </div>
       )}
       <div
-        className={`relative z-10 mx-auto flex max-w-7xl flex-col gap-6 px-6 lg:px-10 ${
+        className={`relative z-10 mx-auto max-w-7xl px-6 lg:px-10 ${
           compact ? "py-16 lg:py-20" : "py-24 lg:py-32"
+        } ${
+          image
+            ? "grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.05fr_.95fr] lg:gap-16"
+            : "flex flex-col gap-6"
         }`}
       >
         <Reveal>
@@ -60,6 +71,25 @@ export function PageHero({
             </div>
           )}
         </Reveal>
+        {image && (
+          <Reveal delay={0.15}>
+            <div className="relative aspect-[3/2] overflow-hidden bg-surface">
+              <Image
+                src={image.src}
+                alt={image.alt}
+                fill
+                preload
+                sizes="(min-width: 1024px) 45vw, 100vw"
+                className="object-cover"
+                style={
+                  image.position
+                    ? { objectPosition: image.position }
+                    : undefined
+                }
+              />
+            </div>
+          </Reveal>
+        )}
       </div>
     </section>
   );

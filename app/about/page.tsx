@@ -122,6 +122,11 @@ export default function AboutPage() {
         title="A trusted partner."
         description="Satis Group is a property development company based in Cheshire, specialising in the meticulous renovation of neglected buildings — transforming them into stylish contemporary homes and adaptable commercial spaces."
         backdrop={<ParallaxSkyline />}
+        image={{
+          src: "/images/about-plaque.jpg",
+          alt: "Gold plaque reading “Another development by Satis Group”",
+          position: "center 45%",
+        }}
         compact
       />
 

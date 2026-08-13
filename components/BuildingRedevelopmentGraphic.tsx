@@ -69,8 +69,8 @@ function PhaseStepper({
   const trackScaleX = useTransform(progress, [0.05, 0.95], [0, 1]);
 
   return (
-    <div className="border-t border-border bg-surface/80 backdrop-blur">
-      <div className="mx-auto w-full max-w-7xl px-6 pb-5 pt-7 lg:px-10 lg:pt-9">
+    <div className="relative z-20 mt-auto border-t border-border bg-surface">
+      <div className="mx-auto w-full max-w-7xl px-6 pb-5 pt-7 [@media(max-height:800px)]:pb-3 [@media(max-height:800px)]:pt-4 lg:px-10 lg:pt-9 lg:[@media(max-height:800px)]:pt-4">
         <p className="text-[0.6rem] tracking-[0.3em] uppercase text-muted">
           The story of every Satis Group building, told as you scroll
         </p>
@@ -202,9 +202,11 @@ export function BuildingRedevelopmentGraphic({
         {/* minmax(0,1fr) + min-h-0 let the graphic row shrink on short
             viewports, so the phase stepper below is never pushed out of the
             fixed-height sticky frame and cropped */}
-        <div className="mx-auto grid h-full w-full min-h-0 max-w-7xl flex-1 grid-rows-[auto_minmax(0,1fr)] gap-4 px-6 pt-10 lg:grid-cols-[1fr_1fr] lg:grid-rows-none lg:items-center lg:gap-10 lg:px-10 lg:pt-0">
+        <div className="mx-auto grid h-full w-full min-h-0 max-w-7xl flex-1 grid-rows-[auto_minmax(0,1fr)] gap-4 px-6 pt-10 [@media(max-height:800px)]:pt-4 lg:grid-cols-[1fr_1fr] lg:grid-rows-none lg:items-center lg:gap-10 lg:px-10 lg:pt-0">
           {children && (
-            <div className="relative z-10 max-w-xl pb-4 lg:pb-8">{children}</div>
+            <div className="relative z-10 min-h-0 max-w-xl pb-6 [@media(max-height:800px)]:pb-3 lg:pb-10">
+              {children}
+            </div>
           )}
 
           <div className="relative flex min-h-0 items-end justify-center">
