@@ -77,7 +77,7 @@ const DIRECTORS: TeamMember[] = [
     name: "Tom Morley",
     role: "Acquisition & Exit",
     bio: "Tom specialises in property development and investment, leading projects through the full delivery lifecycle to ensure efficient execution and high-quality outcomes. He heads up acquisitions, due diligence and exit strategy, playing a key role in identifying opportunities and maximising returns through his hands-on approach and strong commercial insight.",
-    image: "/images/team/tom.jpg",
+    image: "/images/team/tom-v4.jpg",
   },
   {
     name: "Shaunak Rauniar",
@@ -122,11 +122,6 @@ export default function AboutPage() {
         title="A trusted partner."
         description="Satis Group is a property development company based in Cheshire, specialising in the meticulous renovation of neglected buildings — transforming them into stylish contemporary homes and adaptable commercial spaces."
         backdrop={<ParallaxSkyline />}
-        image={{
-          src: "/images/about-plaque.jpg",
-          alt: "Gold plaque reading “Another development by Satis Group”",
-          position: "center 45%",
-        }}
         compact
       />
 
@@ -137,14 +132,15 @@ export default function AboutPage() {
           <Reveal className="group relative">
             <div className="relative aspect-[4/3] overflow-hidden bg-surface lg:h-full lg:aspect-auto">
               <Image
-                src="/images/barrington/altrincham.jpg"
-                alt="Altrincham town, home of Barrington House"
+                src="/images/about-plaque.jpg"
+                alt="Gold plaque reading “Another development by Satis Group”"
                 fill
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 className="object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105"
+                style={{ objectPosition: "center 45%" }}
               />
               <span className="absolute bottom-4 left-4 z-20 bg-background/90 px-3 py-1.5 text-[0.6rem] tracking-[0.25em] uppercase backdrop-blur">
-                Altrincham, Cheshire
+                Another development by Satis Group
               </span>
             </div>
             <FrameCorners />

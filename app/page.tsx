@@ -50,8 +50,7 @@ export default function Home() {
         </h1>
         <p className="mt-5 max-w-md text-sm leading-relaxed text-muted [@media(max-height:800px)]:mt-3 lg:text-base">
           Satis Group acquires, redevelops and manages residential and
-          commercial property across the North West. Keep scrolling to watch one come
-          to life.
+          commercial property across the North West.
         </p>
         <div className="mt-6 flex flex-wrap items-center gap-4 [@media(max-height:800px)]:mt-4">
           <Link

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { NewsletterForm } from "@/components/NewsletterForm";
@@ -13,6 +14,50 @@ export const metadata: Metadata = {
     "News from Satis Group: new redevelopments, acquisitions and openings, plus every award, press feature and judging appointment.",
 };
 
+// Thumbnail per update, matched on the issue slug so new issues degrade
+// gracefully (no image, text-only row) until a match is added here.
+const UPDATE_IMAGES: Array<{ match: string; src: string; alt: string }> = [
+  {
+    match: "chester-house",
+    src: "/images/hazelgate/exterior.jpg",
+    alt: "Hazelgate (Chester House), Hazel Grove",
+  },
+  {
+    match: "22stjohn",
+    src: "/images/22stjohn/building.jpg",
+    alt: "22 St John, Manchester",
+  },
+  {
+    match: "courthouse-topping-out",
+    src: "/images/courthouse/hero.jpg",
+    alt: "The Courthouse, Macclesfield",
+  },
+  {
+    match: "barrington",
+    src: "/images/barrington/hero.jpg",
+    alt: "Barrington House, Altrincham",
+  },
+  {
+    match: "courthouse-launch",
+    src: "/images/courthouse/kitchen.jpg",
+    alt: "A kitchen at The Courthouse",
+  },
+  {
+    match: "hazelgate",
+    src: "/images/hazelgate/living-kitchen.jpg",
+    alt: "Living space at Hazelgate",
+  },
+  {
+    match: "stockport",
+    src: "/images/qube/hero.jpg",
+    alt: "QUBE, Stockport town centre",
+  },
+];
+
+function updateImage(slug: string) {
+  return UPDATE_IMAGES.find((entry) => slug.includes(entry.match));
+}
+
 export default function NewsPage() {
   const issues = getNewsletters();
 
@@ -22,9 +67,10 @@ export default function NewsPage() {
         eyebrow="News"
         title="Stay ahead of what we build next."
         description="Occasional updates on new acquisitions, redevelopments underway, and finished projects. No spam, unsubscribe any time."
+        compact
       />
       <section className="border-b border-border">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-6 py-12 lg:grid-cols-2 lg:gap-16 lg:px-10 lg:py-14">
           <Reveal>
             <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
               Sign up
@@ -33,12 +79,24 @@ export default function NewsPage() {
               <NewsletterForm />
             </div>
           </Reveal>
+          <Reveal delay={0.12} className="hidden lg:block">
+            <div className="relative aspect-[5/2] overflow-hidden bg-surface">
+              <Image
+                src="/images/22stjohn/building.jpg"
+                alt="22 St John, Manchester — a Satis Group redevelopment"
+                fill
+                sizes="(min-width: 1024px) 45vw, 100vw"
+                className="object-cover"
+                style={{ objectPosition: "center 70%" }}
+              />
+            </div>
+          </Reveal>
         </div>
       </section>
 
       {/* Awards & recognition — the full list, summarised on About */}
       <section id="awards" className="scroll-mt-28 border-b border-border">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
+        <div className="mx-auto max-w-7xl px-6 py-14 lg:px-10 lg:py-16">
           <Reveal>
             <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
               Awards &amp; recognition
@@ -61,10 +119,10 @@ export default function NewsPage() {
             </p>
           </Reveal>
 
-          <div className="mt-14 flex flex-col">
+          <div className="mt-10 flex flex-col">
             {ACCOLADES.map((item, index) => (
               <Reveal key={item.title} delay={Math.min(index * 0.07, 0.3)}>
-                <div className="group grid grid-cols-1 gap-2 border-t border-border py-8 transition-colors duration-300 hover:border-accent sm:grid-cols-[1fr_auto] sm:items-baseline sm:gap-8 lg:grid-cols-[minmax(0,16rem)_1fr_auto]">
+                <div className="group grid grid-cols-1 gap-2 border-t border-border py-6 transition-colors duration-300 hover:border-accent sm:grid-cols-[1fr_auto] sm:items-baseline sm:gap-8 lg:grid-cols-[minmax(0,16rem)_1fr_auto]">
                   <div className="flex items-baseline gap-4">
                     <span
                       aria-hidden="true"
@@ -91,7 +149,7 @@ export default function NewsPage() {
       </section>
 
       <section>
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
+        <div className="mx-auto max-w-7xl px-6 py-14 lg:px-10 lg:py-16">
           <Reveal>
             <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
               Past updates
@@ -100,40 +158,56 @@ export default function NewsPage() {
               What we&rsquo;ve been up to.
             </h2>
           </Reveal>
-          <div className="mt-12 flex flex-col">
+          <div className="mt-10 flex flex-col">
             {issues.length === 0 && (
               <p className="text-sm text-muted">
                 No updates published yet. Check back soon.
               </p>
             )}
-            {issues.map((issue, index) => (
-              <Reveal key={issue.slug} delay={Math.min(index * 0.08, 0.3)}>
-                <Link
-                  href={`/news/${issue.slug}`}
-                  className="group flex flex-col gap-2 border-t border-border py-8 transition-colors duration-300 hover:border-accent sm:flex-row sm:items-baseline sm:justify-between sm:gap-8"
-                >
-                  <div className="max-w-2xl">
-                    <h3 className="text-xl font-medium tracking-tight transition-colors group-hover:text-accent">
-                      {issue.title}
-                    </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted">
-                      {issue.summary}
-                    </p>
-                  </div>
-                  <div className="flex shrink-0 items-center gap-4">
-                    <span className="text-xs tracking-[0.15em] uppercase text-muted">
-                      {formatNewsletterDate(issue.date)}
-                    </span>
-                    <span
-                      aria-hidden="true"
-                      className="text-accent transition-transform duration-300 group-hover:translate-x-1.5"
-                    >
-                      →
-                    </span>
-                  </div>
-                </Link>
-              </Reveal>
-            ))}
+            {issues.map((issue, index) => {
+              const image = updateImage(issue.slug);
+              return (
+                <Reveal key={issue.slug} delay={Math.min(index * 0.08, 0.3)}>
+                  <Link
+                    href={`/news/${issue.slug}`}
+                    className="group flex flex-col gap-4 border-t border-border py-6 transition-colors duration-300 hover:border-accent sm:flex-row sm:items-center sm:justify-between sm:gap-8"
+                  >
+                    <div className="flex items-center gap-5 sm:gap-6">
+                      {image && (
+                        <span className="relative hidden h-20 w-28 shrink-0 overflow-hidden bg-surface sm:block">
+                          <Image
+                            src={image.src}
+                            alt={image.alt}
+                            fill
+                            sizes="112px"
+                            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                          />
+                        </span>
+                      )}
+                      <div className="max-w-2xl">
+                        <h3 className="text-xl font-medium tracking-tight transition-colors group-hover:text-accent">
+                          {issue.title}
+                        </h3>
+                        <p className="mt-2 text-sm leading-relaxed text-muted">
+                          {issue.summary}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex shrink-0 items-center gap-4">
+                      <span className="text-xs tracking-[0.15em] uppercase text-muted">
+                        {formatNewsletterDate(issue.date)}
+                      </span>
+                      <span
+                        aria-hidden="true"
+                        className="text-accent transition-transform duration-300 group-hover:translate-x-1.5"
+                      >
+                        →
+                      </span>
+                    </div>
+                  </Link>
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>
