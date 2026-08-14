@@ -139,9 +139,6 @@ export default function AboutPage() {
                 className="object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105"
                 style={{ objectPosition: "center 45%" }}
               />
-              <span className="absolute bottom-4 left-4 z-20 bg-background/90 px-3 py-1.5 text-[0.6rem] tracking-[0.25em] uppercase backdrop-blur">
-                Another development by Satis Group
-              </span>
             </div>
             <FrameCorners />
           </Reveal>
