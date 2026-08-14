@@ -245,7 +245,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     tagline: "A new collection of nineteen apartments",
     type: "Residential",
     status: "Selling Fast",
-    heroImage: "/images/hazelgate/exterior.jpg",
+    heroImage: "/images/hazelgate/exterior-v4.jpg",
     intro: {
       heading: "A new way of living in Hazel Grove",
       body: [

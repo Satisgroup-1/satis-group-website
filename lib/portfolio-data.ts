@@ -39,7 +39,7 @@ export const PORTFOLIO: Property[] = [
     location: "Hazel Grove, Stockport",
     type: "Residential",
     status: "Selling Fast",
-    image: "/images/hazelgate/exterior.jpg",
+    image: "/images/hazelgate/exterior-v4.jpg",
     hoverImage: "/images/hazelgate/living-kitchen.jpg",
     logo: { src: "/images/logos/hazelgate.jpg", bg: "#2f3237" },
     blurb:
