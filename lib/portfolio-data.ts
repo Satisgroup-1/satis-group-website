@@ -66,7 +66,7 @@ export const PORTFOLIO: Property[] = [
     image: "/images/22stjohn/building.jpg",
     imagePosition: "center 70%",
     hoverImage: "/images/22stjohn/gallery-1.jpg",
-    logo: { src: "/images/logos/22-st-john.png", bg: "#000000" },
+    logo: { src: "/images/logos/22-st-john.png", bg: "#262644" },
     blurb:
       "A Grade II listed Georgian building between Deansgate and Spinningfields, remodelled into 13 private office suites.",
   },
