@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 const UPDATE_IMAGES: Array<{ match: string; src: string; alt: string }> = [
   {
     match: "chester-house",
-    src: "/images/hazelgate/exterior.jpg",
+    src: "/images/hazelgate/exterior-v4.jpg",
     alt: "Hazelgate (Chester House), Hazel Grove",
   },
   {
