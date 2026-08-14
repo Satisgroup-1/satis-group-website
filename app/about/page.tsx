@@ -77,7 +77,7 @@ const DIRECTORS: TeamMember[] = [
     name: "Tom Morley",
     role: "Acquisition & Exit",
     bio: "Tom specialises in property development and investment, leading projects through the full delivery lifecycle to ensure efficient execution and high-quality outcomes. He heads up acquisitions, due diligence and exit strategy, playing a key role in identifying opportunities and maximising returns through his hands-on approach and strong commercial insight.",
-    image: "/images/team/tom.jpg",
+    image: "/images/team/tom-v4.jpg",
   },
   {
     name: "Shaunak Rauniar",
