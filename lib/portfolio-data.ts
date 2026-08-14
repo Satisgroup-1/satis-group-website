@@ -171,13 +171,14 @@ export const PORTFOLIO: Property[] = [
       "A completed terrace of contemporary townhouses, each with its own entrance and private frontage.",
   },
   {
-    slug: "mayor-street",
-    name: "Mayor Street",
-    location: "North West",
+    slug: "meyer-street",
+    name: "Meyer Street",
+    location: "Stockport",
     type: "Residential",
-    status: "Coming Soon",
-    image: "/images/pipeline/mayor-street.jpg",
+    status: "Completed",
+    image: "/images/meyer/hero.jpg",
+    hoverImage: "/images/meyer/terrace.jpg",
     blurb:
-      "A new Satis Group development currently in preparation. Imagery and details to follow.",
+      "A light residential conversion in Stockport delivering three HMOs — fourteen en-suite bedrooms in total — with a shared roof terrace.",
   },
 ];
