@@ -13,7 +13,7 @@ import { TeamGrid, type TeamMember } from "@/components/TeamGrid";
 import { ValuesGrid } from "@/components/ValuesGrid";
 
 export const metadata: Metadata = {
-  title: "About — property developers in Cheshire",
+  title: "About: property developers in Cheshire",
   alternates: { canonical: "/about" },
   description:
     "Satis Group is a Cheshire-based property development company specialising in the meticulous renovation of neglected buildings across the North West.",
@@ -120,7 +120,7 @@ export default function AboutPage() {
       <PageHero
         eyebrow="About Satis Group"
         title="A trusted partner."
-        description="Satis Group is a property development company based in Cheshire, specialising in the meticulous renovation of neglected buildings — transforming them into stylish contemporary homes and adaptable commercial spaces."
+        description="Satis Group is a property development company based in Cheshire, specialising in the meticulous renovation of neglected buildings, transforming them into stylish contemporary homes and adaptable commercial spaces."
         backdrop={<ParallaxSkyline />}
         compact
       />
@@ -151,8 +151,8 @@ export default function AboutPage() {
             <p className="text-base leading-relaxed text-muted">
               We look for buildings with good bones in the wrong condition:
               tired offices, disused yards, terraces neglected for years. We
-              give them a use that fits how people want to live and work today
-              — every project managed in-house from acquisition and planning
+              give them a use that fits how people want to live and work today.
+              Every project is managed in-house from acquisition and planning
               through to construction and long-term management, in strategic
               locations across the North West.
             </p>
@@ -415,7 +415,7 @@ export default function AboutPage() {
                 UK Property Award for 22 St John and Rising Star of the Year at
                 the North West Homebuilder Awards. Our work has been the cover
                 feature of Your Property Network, and Satis Group directors sit
-                on the judging panel of the Property Investors Awards —
+                on the judging panel of the Property Investors Awards,
                 assessing the field as well as competing in it.
               </p>
               <Link

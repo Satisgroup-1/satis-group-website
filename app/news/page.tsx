@@ -83,7 +83,7 @@ export default function NewsPage() {
             <div className="relative aspect-[5/2] overflow-hidden bg-surface">
               <Image
                 src="/images/22stjohn/building.jpg"
-                alt="22 St John, Manchester — a Satis Group redevelopment"
+                alt="22 St John, Manchester, a Satis Group redevelopment"
                 fill
                 sizes="(min-width: 1024px) 45vw, 100vw"
                 className="object-cover"

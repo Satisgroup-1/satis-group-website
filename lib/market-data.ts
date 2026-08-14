@@ -105,7 +105,7 @@ async function resolveMarketData(): Promise<MarketData> {
     source: "fallback",
     asOf: monthLabel(fallback.asOf),
     attribution:
-      "Curated snapshot — live HM Land Registry feed unavailable. Figures indicative.",
+      "Curated snapshot. Live HM Land Registry feed unavailable, figures indicative.",
   };
 
   const months = candidateMonths();

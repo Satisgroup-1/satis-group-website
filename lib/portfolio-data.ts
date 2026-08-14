@@ -179,6 +179,6 @@ export const PORTFOLIO: Property[] = [
     image: "/images/meyer/hero.jpg",
     hoverImage: "/images/meyer/terrace.jpg",
     blurb:
-      "A light residential conversion in Stockport delivering three HMOs — fourteen en-suite bedrooms in total — with a shared roof terrace.",
+      "A light residential conversion in Stockport delivering three HMOs (fourteen en-suite bedrooms in total) with a shared roof terrace.",
   },
 ];

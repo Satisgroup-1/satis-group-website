@@ -14,7 +14,7 @@ export const ACCOLADES: Accolade[] = [
     kind: "Award",
     title: "UK Property Awards",
     detail: "Best Commercial Renovation & Redevelopment, five star",
-    subject: "22 St John — Greater Manchester & United Kingdom",
+    subject: "22 St John, Greater Manchester & United Kingdom",
   },
   {
     kind: "Award",
@@ -26,12 +26,12 @@ export const ACCOLADES: Accolade[] = [
     kind: "Recognition",
     title: "Your Property Network",
     detail: "Cover feature, Issue 196",
-    subject: "22 St John — award-winning refurbishment",
+    subject: "22 St John, award-winning refurbishment",
   },
   {
     kind: "Recognition",
     title: "Insider Property Disruptors",
-    detail: "Featured — Building the Future",
+    detail: "Featured: Building the Future",
     subject: "Satis Group",
   },
   {

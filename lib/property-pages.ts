@@ -249,7 +249,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     intro: {
       heading: "A new way of living in Hazel Grove",
       body: [
-        "Hazelgate — the transformation of the former Chester House on Chester Road — is an exclusive collection of beautifully designed apartments in the vibrant centre of Hazel Grove, blending contemporary architecture with elegant modern interiors in a refined balance of style, comfort and convenience — with sweeping views towards the Peak District from the upper floors.",
+        "Hazelgate, the transformation of the former Chester House on Chester Road, is an exclusive collection of beautifully designed apartments in the vibrant centre of Hazel Grove. Contemporary architecture meets elegant modern interiors in a refined balance of style, comfort and convenience, with sweeping views towards the Peak District from the upper floors.",
         "Open-plan living areas feel bright and effortlessly stylish, paired with modern kitchens of handleless cabinetry and integrated appliances. Bedrooms are softly carpeted; bathrooms wrap in large-format tiling with wall-hung fittings. Seven of the nineteen apartments are already sold.",
       ],
       image: "/images/hazelgate/living-kitchen.jpg",
@@ -721,7 +721,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     intro: {
       heading: "Eleven homes on a well-connected corner",
       body: [
-        "St John's Corner is a residential development of eleven apartments at 3-5 St John Street, in Manchester's St John's conservation area — a few doors from our workspace scheme at number 22.",
+        "St John's Corner is a residential development of eleven apartments at 3-5 St John Street, in Manchester's St John's conservation area, a few doors from our workspace scheme at number 22.",
         "Each home was finished to the standard our buyers and tenants expect: light-filled layouts, quality kitchens and bathrooms, and a specification designed to last.",
       ],
       image: "/images/stjohnscorner/hero.jpg",
@@ -747,7 +747,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     intro: {
       heading: "Twenty-six homes from one tired building",
       body: [
-        "Lancaster House — also known simply as London Road — is a residential conversion of twenty-six apartments delivered by Satis Group above an active retail frontage.",
+        "Lancaster House (also known simply as London Road) is a residential conversion of twenty-six apartments delivered by Satis Group above an active retail frontage.",
         "The project is a good example of the scale we work at: large enough to matter, small enough that every apartment still gets individual attention.",
       ],
       image: "/images/lancaster/hero.jpg",
@@ -846,9 +846,9 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     status: "Coming Soon",
     heroImage: "/images/alldis/hero.jpg",
     intro: {
-      heading: "The Press — coming soon to Great Moor",
+      heading: "The Press: coming soon to Great Moor",
       body: [
-        "The Press is a forthcoming Satis Group residential development at 15 Alldis Street in Great Moor, Stockport — creative heritage, contemporary living.",
+        "The Press is a forthcoming Satis Group residential development at 15 Alldis Street in Great Moor, Stockport: creative heritage, contemporary living.",
         "Plans, specification and availability will be published here as the scheme progresses. Register your interest with the team to be kept informed.",
       ],
       image: "/images/alldis/hero.jpg",
@@ -900,7 +900,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       heading: "A terrace of contemporary townhouses",
       body: [
         "Southbank is a completed residential development delivered by Satis Group: a terrace of contemporary townhouses in warm red brick, each with its own front door, private frontage and generous glazing across three storeys.",
-        "The scheme shows how new-build can sit comfortably in an established streetscape — traditional materials and a rhythmic gabled roofline, paired with the layouts and efficiency buyers expect today.",
+        "The scheme shows how new-build can sit comfortably in an established streetscape: traditional materials and a rhythmic gabled roofline, paired with the layouts and efficiency buyers expect today.",
       ],
       image: "/images/southbank/hero.jpg",
       imageAlt: "Southbank townhouses at dusk",
@@ -925,7 +925,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       heading: "Fourteen en-suite rooms behind a restored facade",
       body: [
         "Meyer Street is a light residential conversion in Stockport, delivered by Satis Group as three houses in multiple occupation: one four-bedroom and two five-bedroom homes, every bedroom with its own en-suite.",
-        "The building's arched windows, gabled roofline and rendered elevations were repaired and repainted rather than replaced, while the interiors were rebuilt to a contemporary standard throughout — and a shared roof terrace added above.",
+        "The building's arched windows, gabled roofline and rendered elevations were repaired and repainted rather than replaced, while the interiors were rebuilt to a contemporary standard throughout, and a shared roof terrace added above.",
       ],
       image: "/images/meyer/living.jpg",
       imageAlt: "Open-plan living space at Meyer Street",
