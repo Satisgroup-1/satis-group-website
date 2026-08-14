@@ -29,7 +29,7 @@ export const PORTFOLIO: Property[] = [
     status: "For Sale",
     image: "/images/courthouse/hero.jpg",
     hoverImage: "/images/courthouse/kitchen.jpg",
-    logo: { src: "/images/logos/the-courthouse.png", bg: "#eae5da" },
+    logo: { src: "/images/logos/the-courthouse-purple-v2.jpg", bg: "#54306c" },
     blurb:
       "An elegant conversion of the former Macclesfield courthouse: 13 one and two-bedroom apartments in the heart of the market town.",
   },
@@ -87,7 +87,8 @@ export const PORTFOLIO: Property[] = [
     location: "London Road, Manchester",
     type: "Residential",
     status: "Completed",
-    image: "/images/legacy/lancaster-house.jpg",
+    image: "/images/lancaster/hero.jpg",
+    imagePosition: "center 58%",
     blurb:
       "A residential conversion of twenty-six apartments, delivered with individual attention to every home.",
   },
@@ -97,7 +98,8 @@ export const PORTFOLIO: Property[] = [
     location: "3-5 St John Street, Manchester",
     type: "Residential",
     status: "Completed",
-    image: "/images/legacy/st-johns-corner.jpg",
+    image: "/images/stjohnscorner/hero.jpg",
+    imagePosition: "center 45%",
     logo: { src: "/images/logos/st-johns-corner.jpg", bg: "#414747" },
     blurb:
       "Eleven apartments on a well-connected corner, finished to the standard our buyers expect.",
@@ -109,7 +111,7 @@ export const PORTFOLIO: Property[] = [
     type: "Commercial",
     status: "Completed",
     image: "/images/tabula/hero.jpg",
-    imagePosition: "center 55%",
+    imagePosition: "center 62%",
     logo: { src: "/images/logos/tabula.jpg", bg: "#0a0a0a" },
     blurb:
       "The repositioning of Barnett House on Fountain Street: character retained, fabric upgraded, workspace businesses want.",
@@ -132,6 +134,7 @@ export const PORTFOLIO: Property[] = [
     type: "Commercial",
     status: "Completed",
     image: "/images/woodfield/hero.jpg",
+    logo: { src: "/images/logos/woodfield-road-v2.jpg", bg: "#1b252e" },
     blurb:
       "A corner mixed-use scheme in Altrincham: a commercial unit at street level with homes on the floors above.",
   },
@@ -142,7 +145,7 @@ export const PORTFOLIO: Property[] = [
     type: "Residential",
     status: "Coming Soon",
     image: "/images/alldis/hero.jpg",
-    logo: { src: "/images/logos/the-press.jpg", bg: "#f2ebe1" },
+    logo: { src: "/images/logos/the-press-v2.jpg", bg: "#d59f63" },
     blurb:
       "Creative heritage, contemporary living: a forthcoming residential development at 15 Alldis Street, Great Moor.",
   },
@@ -168,13 +171,14 @@ export const PORTFOLIO: Property[] = [
       "A completed terrace of contemporary townhouses, each with its own entrance and private frontage.",
   },
   {
-    slug: "mayor-street",
-    name: "Mayor Street",
-    location: "North West",
+    slug: "meyer-street",
+    name: "Meyer Street",
+    location: "Stockport",
     type: "Residential",
-    status: "Coming Soon",
-    image: "/images/pipeline/mayor-street.jpg",
+    status: "Completed",
+    image: "/images/meyer/hero.jpg",
+    hoverImage: "/images/meyer/terrace.jpg",
     blurb:
-      "A new Satis Group development currently in preparation. Imagery and details to follow.",
+      "A light residential conversion in Stockport delivering three HMOs — fourteen en-suite bedrooms in total — with a shared roof terrace.",
   },
 ];

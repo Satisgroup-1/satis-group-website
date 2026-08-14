@@ -43,6 +43,12 @@ const nextConfig: NextConfig = {
         destination: "/news/:slug",
         permanent: true,
       },
+      // Mayor Street was corrected to Meyer Street.
+      {
+        source: "/portfolio/mayor-street",
+        destination: "/portfolio/meyer-street",
+        permanent: true,
+      },
       // Petersgate House was renamed QUBE.
       {
         source: "/portfolio/petersgate-house",
