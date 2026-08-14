@@ -511,7 +511,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     eyebrow: "Deansgate · Manchester",
     tagline: "Sophisticated workspace in Manchester",
     type: "Commercial",
-    status: "Workspace",
+    status: "Workspace (To Let)",
     heroImage: "/images/22stjohn/building.jpg",
     heroPosition: "center 75%",
     intro: {
@@ -688,7 +688,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     eyebrow: "Barnett House · 53 Fountain Street · Manchester",
     tagline: "A contemporary office development at Barnett House",
     type: "Commercial",
-    status: "Completed",
+    status: "Coming Soon",
     heroImage: "/images/tabula/hero.jpg",
     heroPosition: "center 60%",
     intro: {
@@ -715,7 +715,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     eyebrow: "3-5 St John Street · Manchester",
     tagline: "Eleven apartments",
     type: "Residential",
-    status: "Completed",
+    status: "Coming Soon",
     heroImage: "/images/stjohnscorner/hero.jpg",
     heroPosition: "center 42%",
     intro: {
@@ -741,7 +741,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     eyebrow: "London Road · Manchester",
     tagline: "Twenty-six apartments",
     type: "Residential",
-    status: "Completed",
+    status: "Coming Soon",
     heroImage: "/images/lancaster/hero.jpg",
     heroPosition: "center 55%",
     intro: {
@@ -755,7 +755,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     },
     stats: [
       { value: "26", label: "Apartments" },
-      { value: "Completed", label: "Status" },
+      { value: "Coming Soon", label: "Status" },
       { value: "Manchester", label: "City" },
     ],
     micrositeUrl: "https://www.satisgroup.co.uk/#portfolio",
@@ -767,7 +767,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     eyebrow: "St Petersgate · Stockport",
     tagline: "Fifty-eight apartments and two commercial units",
     type: "Residential",
-    status: "Completed",
+    status: "Coming Soon",
     heroImage: "/images/qube/hero.jpg",
     intro: {
       heading: "Our largest scheme to date",
@@ -792,7 +792,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     eyebrow: "North West",
     tagline: "Five apartments",
     type: "Residential",
-    status: "Completed",
+    status: "Coming Soon",
     heroImage: "/images/springfield/hero.jpg",
     heroPosition: "center 58%",
     intro: {
@@ -806,7 +806,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     },
     stats: [
       { value: "5", label: "Apartments" },
-      { value: "Completed", label: "Status" },
+      { value: "Coming Soon", label: "Status" },
       { value: "North West", label: "Region" },
     ],
     micrositeUrl: "https://www.satisgroup.co.uk/#portfolio",

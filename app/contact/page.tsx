@@ -16,9 +16,10 @@ export default function ContactPage() {
         eyebrow="Contact"
         title="Let's talk about a property."
         description="Whether you have a site in mind, a project to discuss, or a general enquiry, we'd like to hear from you."
+        compact
       />
       <section>
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-16 px-6 py-20 lg:grid-cols-3 lg:px-10">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 py-12 lg:grid-cols-3 lg:gap-16 lg:px-10 lg:py-14">
           <div className="lg:col-span-2">
             <ContactFormFromQuery />
           </div>
