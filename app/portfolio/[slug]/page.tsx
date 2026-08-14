@@ -23,16 +23,16 @@ export async function generateMetadata({
   const card = PORTFOLIO.find((entry) => entry.slug === slug);
   const description =
     card?.blurb ??
-    `${property.tagline} — a Satis Group ${property.type.toLowerCase()} development.`;
+    `${property.tagline}. A Satis Group ${property.type.toLowerCase()} development.`;
   const title = card
-    ? `${property.name} — ${property.type.toLowerCase()} development, ${card.location}`
+    ? `${property.name}: ${property.type.toLowerCase()} development, ${card.location}`
     : property.name;
   return {
     title,
     description,
     alternates: { canonical: `/portfolio/${slug}` },
     openGraph: {
-      title: `${property.name} — ${property.tagline}`,
+      title: `${property.name}: ${property.tagline}`,
       description,
       images: [
         { url: property.heroImage, width: 1200, height: 630, alt: property.name },

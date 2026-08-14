@@ -3,7 +3,7 @@ import { PageHero } from "@/components/PageHero";
 import { ContactFormFromQuery } from "@/components/ContactFormFromQuery";
 
 export const metadata: Metadata = {
-  title: "Contact — sites, sales & lettings enquiries",
+  title: "Contact: sites, sales & lettings enquiries",
   alternates: { canonical: "/contact" },
   description:
     "Get in touch with Satis Group about a property, a project, or a partnership.",

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     template: "%s | Satis Group",
   },
   description:
-    "Satis Group acquires, redevelops and manages residential and commercial property across the North West — 60+ properties redeveloped and £120m in development value delivered.",
+    "Satis Group acquires, redevelops and manages residential and commercial property across the North West. 60+ properties redeveloped and £120m in development value delivered.",
   openGraph: {
     type: "website",
     siteName: SITE_NAME,

@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 
 const NAV_LINKS = [
+  { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/portfolio", label: "Portfolio" },
   { href: "/news", label: "News" },
@@ -35,7 +36,12 @@ export function Header() {
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-10">
         <nav aria-label="Primary" className="hidden items-center gap-10 md:flex">
           {NAV_LINKS.map((link) => {
-            const isActive = pathname?.startsWith(link.href);
+            // Home would match every route under startsWith, so it needs an
+            // exact comparison to avoid reading as current everywhere.
+            const isActive =
+              link.href === "/"
+                ? pathname === "/"
+                : pathname?.startsWith(link.href);
             return (
               <Link
                 key={link.href}

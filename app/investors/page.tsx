@@ -223,7 +223,7 @@ function buildPortalData(
       badge:
         market.source === "live"
           ? `HM Land Registry UK House Price Index · ${market.asOf}`
-          : `Curated snapshot · ${market.asOf} — live feed unavailable`,
+          : `Curated snapshot · ${market.asOf} · live feed unavailable`,
       attribution: market.attribution,
       live: market.source === "live",
     },
