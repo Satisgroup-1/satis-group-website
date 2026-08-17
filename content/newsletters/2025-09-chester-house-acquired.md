@@ -8,7 +8,7 @@ We have completed the acquisition of Chester House, a three-storey former office
 
 ## The plan
 
-Our proposal converts the building into nineteen one and two-bedroom apartments, retaining the confident concrete-banded frame and undercroft parking while replacing services, glazing and interiors throughout. The working name for the scheme is Hazelgate.
+Our proposal converts the building into nineteen one-bedroom apartments, retaining the confident concrete-banded frame and undercroft parking while replacing services, glazing and interiors throughout. The working name for the scheme is Hazelgate.
 
 - Nineteen apartments across three storeys
 - Undercroft parking retained

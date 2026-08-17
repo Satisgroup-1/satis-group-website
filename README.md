@@ -1,8 +1,8 @@
 # Satis Group
 
-Marketing website for Satis Group, a Cheshire-based property development
-company specialising in the renovation of neglected buildings across the
-North West.
+Marketing website for Satis Group, a Manchester-based property development
+company specialising in the renovation of neglected buildings across Greater
+Manchester and the North West.
 
 ## Stack
 

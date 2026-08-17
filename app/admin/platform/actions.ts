@@ -5,6 +5,7 @@ import { isAuthenticated } from "@/lib/admin-auth";
 import { hashPassword } from "@/lib/investor-auth";
 import {
   INVESTOR_DATASETS,
+  INVESTOR_TIERS,
   mutateDataset,
   readDataset,
   writeDataset,
@@ -16,7 +17,9 @@ import {
   type InvestorDataset,
   type InvestorDocument,
   type InvestorProfile,
+  type InvestorTier,
   type Opportunity,
+  type ReportTask,
   type SiteUpdate,
 } from "@/lib/investor-platform";
 
@@ -99,6 +102,10 @@ export async function saveInvestor(
   }
   const id = text(formData, "id") || slugify(name);
   if (!id) return { error: "The account name must contain letters or numbers." };
+  const tierInput = text(formData, "tier");
+  const tier = INVESTOR_TIERS.includes(tierInput as InvestorTier)
+    ? (tierInput as InvestorTier)
+    : undefined;
 
   return runMutation(() => {
     mutateDataset<InvestorProfile>("investors", (investors) => {
@@ -122,6 +129,7 @@ export async function saveInvestor(
           ? hashPassword(password)
           : existing!.passwordHash,
         joined: existing?.joined ?? new Date().toISOString().slice(0, 10),
+        tier: tier ?? existing?.tier,
         valueHistory: existing?.valueHistory ?? [],
       };
       return existing
@@ -405,7 +413,29 @@ export async function deleteCashEvent(
 }
 
 // ---------------------------------------------------------------------------
-// Site updates
+// Monthly project reports (stored in the "updates" dataset)
+
+/**
+ * Report line items, one per line: "Title — detail — status". The em dash or
+ * a double hyphen separates the parts, and only the title is required.
+ */
+function parseReportTasks(raw: string): ReportTask[] {
+  return raw
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => {
+      const [title, detail, status] = line
+        .split(/\s+(?:—|--)\s+/)
+        .map((part) => part.trim());
+      return {
+        title,
+        ...(detail ? { detail } : {}),
+        ...(status ? { status } : {}),
+      };
+    })
+    .filter((task) => Boolean(task.title));
+}
 
 export async function saveUpdate(
   _prev: PlatformActionState,
@@ -416,19 +446,25 @@ export async function saveUpdate(
   const title = text(formData, "title");
   const body = text(formData, "body");
   if (!developmentId || !title || !body) {
-    return { error: "Development, title and update text are required." };
+    return { error: "Development, title and report summary are required." };
   }
   if (!isValidDate(date)) return { error: "Date must be YYYY-MM-DD." };
+  const period = text(formData, "period");
+  const file = text(formData, "file");
+  const tasks = parseReportTasks(String(formData.get("tasks") ?? ""));
   const update: SiteUpdate = {
     date,
     developmentId,
     title,
     body,
     tag: text(formData, "tag") || "Update",
+    ...(period ? { period } : {}),
+    ...(file ? { file } : {}),
+    ...(tasks.length ? { tasks } : {}),
   };
   return runMutation(() => {
     mutateDataset<SiteUpdate>("updates", (updates) => [update, ...updates]);
-  }, "Site update published.");
+  }, "Monthly report published.");
 }
 
 export async function deleteUpdate(

@@ -13,7 +13,7 @@ const PROCESS = [
   {
     step: "01",
     title: "Acquire",
-    body: "We find neglected buildings with good bones in strategic North West locations.",
+    body: "We find neglected buildings with good bones across Manchester and the North West.",
   },
   {
     step: "02",
@@ -27,8 +27,8 @@ const PROCESS = [
   },
   {
     step: "04",
-    title: "Manage",
-    body: "We hold and manage what we build, so quality is designed to last.",
+    title: "Sell",
+    body: "Most schemes are brought to market on completion; where we retain a building, we manage it ourselves.",
   },
 ];
 
@@ -49,8 +49,8 @@ export default function Home() {
           We turn overlooked buildings into places people want to be.
         </h1>
         <p className="mt-5 max-w-md text-sm leading-relaxed text-muted [@media(max-height:800px)]:mt-3 lg:text-base">
-          Satis Group acquires, redevelops and manages residential and
-          commercial property across the North West.
+          Satis Group acquires, redevelops and sells residential and commercial
+          property across Manchester and the North West.
         </p>
         <div className="mt-6 flex flex-wrap items-center gap-4 [@media(max-height:800px)]:mt-4">
           <Link

@@ -12,11 +12,11 @@ import { SITE_NAME, SITE_URL } from "@/lib/site";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Satis Group: property redevelopment in the North West",
+    default: "Satis Group: property redevelopment in Manchester",
     template: "%s | Satis Group",
   },
   description:
-    "Satis Group acquires, redevelops and manages residential and commercial property across the North West. 60+ properties redeveloped and £120m in development value delivered.",
+    "Satis Group acquires, redevelops and sells residential and commercial property across Manchester and the North West. 60+ properties redeveloped and £120m in development value delivered.",
   openGraph: {
     type: "website",
     siteName: SITE_NAME,
@@ -39,7 +39,7 @@ const ORGANIZATION_JSON_LD = {
     "@type": "PostalAddress",
     streetAddress: "Peel House, 30 The Downs",
     addressLocality: "Altrincham",
-    addressRegion: "Cheshire",
+    addressRegion: "Greater Manchester",
     postalCode: "WA14 2PX",
     addressCountry: "GB",
   },

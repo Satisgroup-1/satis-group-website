@@ -15,10 +15,12 @@ import {
   getDocumentsFor,
   getInsights,
   getInvestorById,
+  getInvestorTier,
   getOpportunities,
   getUpdates,
   type Development,
   type InvestorProfile,
+  type InvestorTier,
 } from "@/lib/investor-platform";
 import { investorLogout } from "./actions";
 
@@ -36,9 +38,11 @@ export const dynamic = "force-dynamic";
 
 function buildPortalData(
   investor: InvestorProfile,
+  tier: InvestorTier,
   developments: Development[],
   market: MarketData
 ): PortalData {
+  const invested = tier === "invested";
   const summary = computePortfolio(investor.id);
   const developmentById = new Map(developments.map((d) => [d.id, d]));
   const developmentName = (id?: string) =>
@@ -55,6 +59,10 @@ function buildPortalData(
   const greeting = `${
     hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening"
   }, ${investor.contactName}.`;
+  const opportunities = getOpportunities();
+  const documents = getDocumentsFor(investor.id, tier);
+  // Read once: the datasets are re-read from disk on every accessor call.
+  const reports = getUpdates();
   const lastUpdated = `${now.toLocaleDateString("en-GB", {
     day: "numeric",
     month: "long",
@@ -75,7 +83,7 @@ function buildPortalData(
       : "Awaiting first investment";
   const nextEvent = summary.nextForecastEvent;
 
-  const upcomingEvents = getCashEventsFor(investor.id)
+  const upcomingEvents = (invested ? getCashEventsFor(investor.id) : [])
     .filter((event) => event.status === "Forecast")
     .slice(0, 3)
     .map((event) => ({
@@ -90,45 +98,84 @@ function buildPortalData(
 
   const delta = summary.value - summary.invested;
 
+  const openRaises = opportunities.filter((o) => o.status === "Open");
+  const minCommitment = openRaises.length
+    ? Math.min(...openRaises.map((o) => o.minCommitment))
+    : 0;
+
+  // Prospective accounts see the pipeline they could invest in; invested
+  // accounts see their own position. Nothing private to an SPV (cap tables,
+  // equity values, cash events) is assembled for a prospective account.
+  const prospectStats = [
+    {
+      label: "Open raises",
+      value: String(openRaises.length),
+      note: openRaises.length
+        ? "Accepting commitments now"
+        : "Next raise announced soon",
+    },
+    {
+      label: "Minimum commitment",
+      value: minCommitment ? formatMoneyCompact(minCommitment) : "—",
+      note: "Per single-asset vehicle",
+    },
+    {
+      label: "In your data room",
+      value: String(documents.length),
+      note: "Memoranda, appraisals and guides",
+    },
+    {
+      label: "Live developments",
+      value: String(developments.length),
+      note: "Across Greater Manchester",
+    },
+  ];
+
   return {
     accountName: investor.name,
-    greeting,
+    tier,
+    greeting: invested ? greeting : `Welcome, ${investor.contactName}.`,
     lastUpdated,
-    stats: [
-      {
-        label: "Portfolio value",
-        value: formatMoneyCompact(summary.value),
-        note: growth,
-      },
-      {
-        label: "Capital committed",
-        value: formatMoneyCompact(summary.invested),
-        note: `Across ${summary.holdingsCount} SPV position${
-          summary.holdingsCount === 1 ? "" : "s"
-        }`,
-      },
-      {
-        label: "Forecast IRR",
-        value: `${summary.weightedIrr.toFixed(1)}%`,
-        note: "Site IRRs, weighted by current value",
-      },
-      {
-        label: "Distributions to date",
-        value: formatMoneyCompact(summary.distributionsToDate),
-        note: nextEvent
-          ? `Next forecast: ${formatPortalDate(nextEvent.date)}`
-          : "No forecast events",
-      },
-    ],
-    valueHistory: investor.valueHistory ?? [],
+    stats: invested
+      ? [
+          {
+            label: "Portfolio value",
+            value: formatMoneyCompact(summary.value),
+            note: growth,
+          },
+          {
+            label: "Capital committed",
+            value: formatMoneyCompact(summary.invested),
+            note: `Across ${summary.holdingsCount} SPV position${
+              summary.holdingsCount === 1 ? "" : "s"
+            }`,
+          },
+          {
+            label: "Forecast IRR",
+            value: `${summary.weightedIrr.toFixed(1)}%`,
+            note: "Site IRRs, weighted by current value",
+          },
+          {
+            label: "Distributions to date",
+            value: formatMoneyCompact(summary.distributionsToDate),
+            note: nextEvent
+              ? `Next forecast: ${formatPortalDate(nextEvent.date)}`
+              : "No forecast events",
+          },
+        ]
+      : prospectStats,
+    valueHistory: invested ? investor.valueHistory ?? [] : [],
     developments: developments.map((d) => {
-      const capTable = getCapTableFor(d.id).map((position) => ({
-        holder: position.holder,
-        sharePercent: `${position.sharePercent}%`,
-        committed: formatMoneyCompact(position.committed),
-        isYou: position.investorId === investor.id,
-      }));
+      const capTable = invested
+        ? getCapTableFor(d.id).map((position) => ({
+            holder: position.holder,
+            sharePercent: `${position.sharePercent}%`,
+            committed: formatMoneyCompact(position.committed),
+            isYou: position.investorId === investor.id,
+          }))
+        : [];
       const mine = summary.holdings.find((h) => h.developmentId === d.id);
+      const latest = reports.find((u) => u.developmentId === d.id);
       return {
         id: d.id,
         name: d.name,
@@ -142,13 +189,22 @@ function buildPortalData(
         phase: d.phase,
         nextReport: formatPortalDate(d.nextReport),
         summary: d.summary,
-        spv: {
-          name: d.spv.name,
-          equityValue: formatMoneyCompact(d.spv.equityValue),
-          totalCommitted: formatMoneyCompact(d.spv.totalCommitted),
-          seniorDebt: formatMoneyCompact(d.spv.seniorDebt),
-          forecastIrr: `${d.spv.forecastIrr.toFixed(1)}%`,
-        },
+        latestReport: latest
+          ? {
+              title: latest.title,
+              period: latest.period ?? formatPortalDate(latest.date),
+              file: latest.file,
+            }
+          : undefined,
+        spv: invested
+          ? {
+              name: d.spv.name,
+              equityValue: formatMoneyCompact(d.spv.equityValue),
+              totalCommitted: formatMoneyCompact(d.spv.totalCommitted),
+              seniorDebt: formatMoneyCompact(d.spv.seniorDebt),
+              forecastIrr: `${d.spv.forecastIrr.toFixed(1)}%`,
+            }
+          : undefined,
         capTable,
         yourPosition: mine
           ? {
@@ -175,23 +231,34 @@ function buildPortalData(
       delta: `${delta >= 0 ? "+" : "−"}${formatMoneyCompact(Math.abs(delta))}`,
     },
     upcomingEvents,
-    updates: getUpdates().map((u) => ({
-      date: formatPortalDate(u.date),
-      site: developmentName(u.developmentId),
-      title: u.title,
-      body: u.body,
-      tag: u.tag,
-    })),
+    reports: invested
+      ? reports.map((u) => ({
+          date: formatPortalDate(u.date),
+          period: u.period ?? formatPortalDate(u.date),
+          site: developmentName(u.developmentId),
+          title: u.title,
+          body: u.body,
+          tag: u.tag,
+          file: u.file,
+          tasks: (u.tasks ?? []).map((task) => ({
+            title: task.title,
+            detail: task.detail,
+            status: task.status,
+          })),
+        }))
+      : [],
     insights: getInsights().map((insight) => ({
       ...insight,
       date: formatInsightDate(insight.date),
     })),
-    documents: getDocumentsFor(investor.id).map((doc) => ({
+    documents: documents.map((doc) => ({
       title: doc.title,
       kind: doc.kind,
+      summary: doc.summary,
+      file: doc.file,
       published: formatPortalDate(doc.published),
     })),
-    opportunities: getOpportunities().map((o) => ({
+    opportunities: opportunities.map((o) => ({
       id: o.id,
       name: o.name,
       place: o.place,
@@ -258,7 +325,12 @@ export default async function InvestorsPage() {
   const market = await getMarketData();
   return (
     <InvestorPortal
-      data={buildPortalData(investor, developments, market)}
+      data={buildPortalData(
+        investor,
+        getInvestorTier(investor),
+        developments,
+        market
+      )}
       logout={investorLogout}
     />
   );

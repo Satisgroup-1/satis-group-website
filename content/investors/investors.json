@@ -6,6 +6,7 @@
     "email": "test",
     "passwordHash": "scrypt:c00015f7dba9ddbab99f45d767d3b404:39a44bd0712df1d714c3f9c36c454a2733775bb9b45154dafd2fed83b4ab997a192c7307502d69cc142a795a5d1c9a18b13b98291ef6bffeb0a1f721e861b8d8",
     "joined": "2023-01-15",
+    "tier": "invested",
     "valueHistory": [
       {
         "label": "Q1 2023",
@@ -76,6 +77,7 @@
     "email": "sarah@elmrowcapital.co.uk",
     "passwordHash": "scrypt:f4477f13bdd27c9988251683151ed073:d1e229409df198798be6d20b11be9943cd966188cc4e3147b3fcc7ef9e4c74eaf922fb2ec9e0a28d400caeb79d6cb30672e9ca8d3f867c5ccc07cf89364a55b6",
     "joined": "2025-02-03",
+    "tier": "invested",
     "valueHistory": [
       {
         "label": "Q1 2025",
@@ -106,5 +108,15 @@
         "value": 1600000
       }
     ]
+  },
+  {
+    "id": "brookfold",
+    "name": "Brookfold Family Office",
+    "contactName": "Alex",
+    "email": "prospect",
+    "passwordHash": "scrypt:76075f134d1bb3418c6676ad14bfd6bd:dc7ffe37a77f697061bfefa8a08ad7f19ee49ba0f1ea961c656f27144aafd4f7fe01bd0a00932c21a0c0c1ae84ca9d91dabdecb3a1c5d3ad95c74cc59dce697c",
+    "joined": "2026-07-28",
+    "tier": "prospective",
+    "valueHistory": []
   }
 ]

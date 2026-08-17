@@ -130,8 +130,8 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
         {
           title: "Bathrooms",
           items: [
-            "Sanitaryware by Villeroy & Boch",
-            "Brassware by Grohe",
+            "Contemporary branded sanitaryware",
+            "Chrome brassware and thermostatic showers",
             "Full-height tiling to wet areas",
             "Heated towel rails",
           ],
@@ -230,11 +230,6 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       { src: "/images/courthouse/macc-forest.jpg", alt: "Walks in Macclesfield Forest" },
       { src: "/images/courthouse/macc-treacle.jpg", alt: "Treacle Market in the town centre" },
     ],
-    agent: {
-      name: "Gascoigne Halman",
-      detail: "Macclesfield Branch",
-      phone: "01625 511367",
-    },
     micrositeUrl: "https://thecourthousesatis.lovable.app",
     micrositeLabel: "thecourthousesatis.lovable.app",
   },
@@ -242,15 +237,15 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     slug: "hazelgate",
     name: "Hazelgate",
     eyebrow: "Hazel Grove · Stockport",
-    tagline: "A new collection of nineteen apartments",
+    tagline: "A new collection of nineteen one-bedroom apartments",
     type: "Residential",
-    status: "Selling Fast",
+    status: "For Sale",
     heroImage: "/images/hazelgate/exterior-v4.jpg",
     intro: {
       heading: "A new way of living in Hazel Grove",
       body: [
         "Hazelgate, the transformation of the former Chester House on Chester Road, is an exclusive collection of beautifully designed apartments in the vibrant centre of Hazel Grove. Contemporary architecture meets elegant modern interiors in a refined balance of style, comfort and convenience, with sweeping views towards the Peak District from the upper floors.",
-        "Open-plan living areas feel bright and effortlessly stylish, paired with modern kitchens of handleless cabinetry and integrated appliances. Bedrooms are softly carpeted; bathrooms wrap in large-format tiling with wall-hung fittings. Seven of the nineteen apartments are already sold.",
+        "Open-plan living areas feel bright and effortlessly stylish, paired with modern kitchens of handleless cabinetry and integrated appliances. Bedrooms are softly carpeted; bathrooms wrap in large-format tiling with wall-hung fittings.",
       ],
       image: "/images/hazelgate/living-kitchen.jpg",
       imageAlt: "Open-plan living and kitchen at Hazelgate",
@@ -326,7 +321,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     floors: {
       heading: "The Apartments",
       description:
-        "Nineteen homes across three storeys, in a considered mix of one and two-bedroom apartments.",
+        "Nineteen one-bedroom homes across three storeys, from 37 to 56 sq m.",
       schedule: [
         {
           name: "Ground Floor",
@@ -339,7 +334,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
         {
           name: "First Floor",
           units: [
-            { apt: "04", beds: "2 Beds", size: "56 sq m · 603 sq ft" },
+            { apt: "04", beds: "1 Bed", size: "56 sq m · 603 sq ft" },
             { apt: "05", beds: "1 Bed", size: "41 sq m · 441 sq ft" },
             { apt: "06", beds: "1 Bed", size: "38 sq m · 409 sq ft" },
             { apt: "07", beds: "1 Bed", size: "39 sq m · 420 sq ft" },
@@ -352,7 +347,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
         {
           name: "Second Floor",
           units: [
-            { apt: "12", beds: "2 Beds", size: "56 sq m · 603 sq ft" },
+            { apt: "12", beds: "1 Bed", size: "56 sq m · 603 sq ft" },
             { apt: "13", beds: "1 Bed", size: "43 sq m · 463 sq ft" },
             { apt: "14", beds: "1 Bed", size: "38 sq m · 409 sq ft" },
             { apt: "15", beds: "1 Bed", size: "39 sq m · 420 sq ft" },
@@ -722,7 +717,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       heading: "Eleven homes on a well-connected corner",
       body: [
         "St John's Corner is a residential development of eleven apartments at 3-5 St John Street, in Manchester's St John's conservation area, a few doors from our workspace scheme at number 22.",
-        "Each home was finished to the standard our buyers and tenants expect: light-filled layouts, quality kitchens and bathrooms, and a specification designed to last.",
+        "Each home will be finished to the standard our buyers and tenants expect: light-filled layouts, quality kitchens and bathrooms, and a specification designed to last.",
       ],
       image: "/images/stjohnscorner/hero.jpg",
       imageAlt: "St John's Corner: the restored corner building with its rooftop storey",
@@ -747,7 +742,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     intro: {
       heading: "Twenty-six homes from one tired building",
       body: [
-        "Lancaster House (also known simply as London Road) is a residential conversion of twenty-six apartments delivered by Satis Group above an active retail frontage.",
+        "Lancaster House (also known simply as London Road) is a residential conversion of twenty-six apartments being brought forward by Satis Group above an active retail frontage.",
         "The project is a good example of the scale we work at: large enough to matter, small enough that every apartment still gets individual attention.",
       ],
       image: "/images/lancaster/hero.jpg",
@@ -773,7 +768,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       heading: "Our largest scheme to date",
       body: [
         "QUBE (formerly Petersgate House) is a mixed-use redevelopment of fifty-eight apartments and two commercial units in Stockport town centre.",
-        "Delivered as Stockport's regeneration gathered pace, it brought a significant number of new homes to a town The Sunday Times has since named the best place to live in the North West.",
+        "Coming forward as Stockport's regeneration gathers pace, it will bring a significant number of new homes to a town The Sunday Times has named the best place to live in the North West.",
       ],
       image: "/images/qube/hero.jpg",
       imageAlt: "QUBE on St Petersgate, Stockport",
@@ -798,7 +793,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     intro: {
       heading: "A boutique conversion of five homes",
       body: [
-        "Springfield House is a boutique residential conversion of five apartments delivered by Satis Group.",
+        "Springfield House is a boutique residential conversion of five apartments being brought forward by Satis Group.",
         "Smaller schemes like this one let us take particular care over detail, giving each home its own character within a single building.",
       ],
       image: "/images/springfield/hero.jpg",

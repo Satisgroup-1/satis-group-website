@@ -13,16 +13,16 @@ import { TeamGrid, type TeamMember } from "@/components/TeamGrid";
 import { ValuesGrid } from "@/components/ValuesGrid";
 
 export const metadata: Metadata = {
-  title: "About: property developers in Cheshire",
+  title: "About: property developers in Manchester",
   alternates: { canonical: "/about" },
   description:
-    "Satis Group is a Cheshire-based property development company specialising in the meticulous renovation of neglected buildings across the North West.",
+    "Satis Group is a Manchester-based property development company specialising in the meticulous renovation of neglected buildings across Greater Manchester and the North West.",
 };
 
 const VALUES = [
   {
-    title: "Long-term thinking",
-    body: "We hold and manage what we build, so every decision is made for the next decade, not the next sale.",
+    title: "Built to a standard",
+    body: "Most schemes are built for sale, and we build them to the standard we would want as the long-term owner.",
   },
   {
     title: "Considered design",
@@ -39,7 +39,7 @@ const VALUES = [
 const STATS = [
   { value: "40+", label: "Years of combined experience" },
   { value: "10", label: "Developments delivered and underway" },
-  { value: "100%", label: "Delivered and managed in-house" },
+  { value: "100%", label: "Delivered in-house" },
 ];
 
 const PARTNERS = [
@@ -49,9 +49,9 @@ const PARTNERS = [
     body: "Our proprietary investor platform, giving partners access to the Satis Group development pipeline.",
   },
   {
-    name: "Gascoigne Halman",
-    role: "Sales Agent",
-    body: "Appointed agent for our residential sales, including The Courthouse in Macclesfield.",
+    name: "Satis Group Sales",
+    role: "In-house Sales",
+    body: "Residential sales enquiries are handled directly by our own team, so buyers deal with the developer.",
   },
   {
     name: "Rightmove",
@@ -120,7 +120,7 @@ export default function AboutPage() {
       <PageHero
         eyebrow="About Satis Group"
         title="A trusted partner."
-        description="Satis Group is a property development company based in Cheshire, specialising in the meticulous renovation of neglected buildings, transforming them into stylish contemporary homes and adaptable commercial spaces."
+        description="Satis Group is a property development company based in Manchester, specialising in the meticulous renovation of neglected buildings, transforming them into stylish contemporary homes and adaptable commercial spaces."
         backdrop={<ParallaxSkyline />}
         compact
       />
@@ -153,8 +153,8 @@ export default function AboutPage() {
               tired offices, disused yards, terraces neglected for years. We
               give them a use that fits how people want to live and work today.
               Every project is managed in-house from acquisition and planning
-              through to construction and long-term management, in strategic
-              locations across the North West.
+              through to construction and sale, in strategic locations across
+              Manchester and the North West.
             </p>
             <p className="border-l-2 border-accent pl-4 text-base leading-relaxed">
               Redeveloping properties into places people want to live and

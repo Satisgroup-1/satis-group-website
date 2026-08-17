@@ -29,6 +29,7 @@ export type AdminPlatformData = {
     contactName: string;
     email: string;
     joined: string;
+    tier: string;
     value: string;
     positions: number;
   }[];
@@ -61,7 +62,16 @@ export type AdminPlatformData = {
     amount: string;
     status: string;
   }[];
-  updates: { key: string; date: string; site: string; title: string; tag: string }[];
+  updates: {
+    key: string;
+    date: string;
+    period?: string;
+    site: string;
+    title: string;
+    tag: string;
+    tasks: number;
+    file?: string;
+  }[];
   insights: { slug: string; category: string; date: string; title: string; read: string }[];
   opportunities: {
     id: string;
@@ -180,6 +190,11 @@ function InvestorsTab({ data }: { data: AdminPlatformData }) {
                   <p className="mt-1 text-xs text-muted">
                     ID {inv.id} · joined {inv.joined}
                   </p>
+                  <p className="mt-2 inline-block bg-surface px-2 py-1 text-[10px] tracking-[.12em] uppercase text-accent-text">
+                    {inv.tier === "invested"
+                      ? "Invested"
+                      : "Prospective investor"}
+                  </p>
                 </div>
                 <DeleteButton action={deleteInvestor} fields={{ id: inv.id }} />
               </div>
@@ -229,6 +244,17 @@ function InvestorsTab({ data }: { data: AdminPlatformData }) {
           <label className={LABEL}>
             Login email
             <input className={INPUT} name="email" required />
+          </label>
+          <label className={LABEL}>
+            Account type
+            <select className={INPUT} name="tier" defaultValue="prospective">
+              <option value="prospective">
+                Prospective — data room, raises and research
+              </option>
+              <option value="invested">
+                Invested — positions, financials and monthly reports
+              </option>
+            </select>
           </label>
           <label className={LABEL}>
             Password (blank keeps the current one)
@@ -593,7 +619,7 @@ function UpdatesTab({ data }: { data: AdminPlatformData }) {
     <div className="grid gap-10 xl:grid-cols-[1.15fr_.85fr]">
       <div>
         <h3 className="text-xs tracking-[.16em] uppercase text-muted">
-          Site updates
+          Monthly project reports
         </h3>
         <ul className="mt-4 space-y-3">
           {data.updates.map((u) => (
@@ -603,9 +629,13 @@ function UpdatesTab({ data }: { data: AdminPlatformData }) {
             >
               <div>
                 <p className="text-[10px] tracking-[.12em] uppercase text-accent-text">
-                  {u.date} · {u.site} · {u.tag}
+                  {u.period ?? u.date} · {u.site} · {u.tag}
                 </p>
                 <h4 className="mt-2 font-medium">{u.title}</h4>
+                <p className="mt-1 text-xs text-muted">
+                  {u.tasks} task{u.tasks === 1 ? "" : "s"} ·{" "}
+                  {u.file ? "report uploaded" : "no report file yet"}
+                </p>
               </div>
               <DeleteButton action={deleteUpdate} fields={{ key: u.key }} />
             </li>
@@ -613,7 +643,12 @@ function UpdatesTab({ data }: { data: AdminPlatformData }) {
         </ul>
       </div>
       <form action={action} className="h-fit space-y-4 border border-border bg-surface p-5">
-        <h3 className="text-sm font-medium">Publish site update</h3>
+        <h3 className="text-sm font-medium">Publish monthly report</h3>
+        <p className="text-xs leading-5 text-muted">
+          Investors see these under &ldquo;Monthly reports&rdquo;. Add a file
+          path to make the full report downloadable, and list the tasks so they
+          can ask about any single item.
+        </p>
         <label className={LABEL}>
           Development
           <select className={INPUT} name="developmentId" required>
@@ -634,16 +669,38 @@ function UpdatesTab({ data }: { data: AdminPlatformData }) {
             <input className={INPUT} name="tag" placeholder="Construction" />
           </label>
         </div>
+        <div className="grid grid-cols-2 gap-3">
+          <label className={LABEL}>
+            Period
+            <input className={INPUT} name="period" placeholder="August 2026" />
+          </label>
+          <label className={LABEL}>
+            Report file (optional)
+            <input
+              className={INPUT}
+              name="file"
+              placeholder="/investor-reports/august-2026.pdf"
+            />
+          </label>
+        </div>
         <label className={LABEL}>
           Title
           <input className={INPUT} name="title" required />
         </label>
         <label className={LABEL}>
-          Update
+          Summary
           <textarea className={`${INPUT} min-h-28`} name="body" required />
         </label>
+        <label className={LABEL}>
+          Tasks (one per line: Title — detail — status)
+          <textarea
+            className={`${INPUT} min-h-28`}
+            name="tasks"
+            placeholder="Superstructure — Frame at level three — On programme"
+          />
+        </label>
         <Result state={state} />
-        <Submit pending={pending}>Publish update</Submit>
+        <Submit pending={pending}>Publish report</Submit>
       </form>
     </div>
   );
@@ -920,7 +977,7 @@ export function AdminPlatform({ data }: { data: AdminPlatformData }) {
     ["investors", "Investors", data.investors.length],
     ["developments", "Developments & SPVs", data.developments.length],
     ["captables", "Cap tables & returns", data.capPositions.length + data.cashEvents.length],
-    ["updates", "Site updates", data.updates.length],
+    ["updates", "Monthly reports", data.updates.length],
     ["insights", "Insights", data.insights.length],
     ["opportunities", "Opportunities", data.opportunities.length],
     ["data", "Import / export", 0],

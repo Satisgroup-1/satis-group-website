@@ -16,6 +16,7 @@ import {
   getDevelopments,
   getInsights,
   getInvestors,
+  getInvestorTier,
   getOpportunities,
   getUpdates,
   readDataset,
@@ -47,6 +48,7 @@ function buildAdminData(): AdminPlatformData {
         contactName: inv.contactName,
         email: inv.email,
         joined: formatPortalDate(inv.joined),
+        tier: getInvestorTier(inv),
         value: formatMoneyCompact(summary.value),
         positions: summary.holdingsCount,
       };
@@ -86,9 +88,12 @@ function buildAdminData(): AdminPlatformData {
     updates: getUpdates().map((u) => ({
       key: `${u.date}|${u.title}`,
       date: formatPortalDate(u.date),
+      period: u.period,
       site: developmentName(u.developmentId),
       title: u.title,
       tag: u.tag,
+      tasks: u.tasks?.length ?? 0,
+      file: u.file,
     })),
     insights: getInsights().map((i) => ({
       slug: i.slug,
@@ -133,7 +138,7 @@ export default async function AdminPlatformPage() {
           <>
             <p className="mt-4 max-w-2xl text-sm leading-6 text-muted">
               Manage investor accounts, developments and their SPV cap tables,
-              project returns, site updates, insight articles and upcoming
+              project returns, monthly project reports, insight articles and upcoming
               investments — or import a full JSON dataset. Portfolio figures
               are derived from the cap tables, so changes appear immediately
               in the investor platform.{" "}

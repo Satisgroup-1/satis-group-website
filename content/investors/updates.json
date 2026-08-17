@@ -2,43 +2,151 @@
   {
     "date": "2026-08-08",
     "developmentId": "22-st-john-street",
-    "title": "Show apartment released",
-    "body": "Final joinery is complete and the first show apartment has been handed over to the sales team.",
-    "tag": "Milestone"
+    "period": "August 2026",
+    "title": "22 St John Street: August project report",
+    "body": "Final joinery is complete and the first show apartment has been handed over to the sales team. The scheme remains on programme for handover in the autumn.",
+    "tag": "Fit-out",
+    "tasks": [
+      {
+        "title": "Show apartment handover",
+        "detail": "Joinery, decoration and furnishing complete; handed to the sales team on 6 August.",
+        "status": "Complete"
+      },
+      {
+        "title": "Suite fit-out, levels two and three",
+        "detail": "Second fix under way across six suites, with commissioning to follow in September.",
+        "status": "On programme"
+      },
+      {
+        "title": "Common parts and entrance",
+        "detail": "Stone flooring laid; lighting and signage scheduled for the first week of September.",
+        "status": "On programme"
+      }
+    ]
   },
   {
     "date": "2026-08-04",
     "developmentId": "barnett-house",
-    "title": "Envelope works complete",
-    "body": "The building is now weather-tight. First-fix MEP is progressing across levels two to five.",
-    "tag": "Construction"
+    "period": "August 2026",
+    "title": "Barnett House: August project report",
+    "body": "The building is now weather-tight. First-fix MEP is progressing across levels two to five, and the programme is unchanged.",
+    "tag": "Construction",
+    "tasks": [
+      {
+        "title": "Building envelope",
+        "detail": "Roof, glazing and cladding complete; the building is weather-tight.",
+        "status": "Complete"
+      },
+      {
+        "title": "First-fix MEP, levels two to five",
+        "detail": "Containment and risers installed to level four, with level five following this month.",
+        "status": "On programme"
+      },
+      {
+        "title": "Cost report",
+        "detail": "Contract sum unchanged. Provisional sums for the entrance remain open pending final design.",
+        "status": "Monitoring"
+      }
+    ]
   },
   {
     "date": "2026-07-29",
     "developmentId": "court-house",
-    "title": "Planning submission validated",
-    "body": "The full planning submission has been validated by Cheshire East Council and consultation is under way.",
-    "tag": "Planning"
+    "period": "July 2026",
+    "title": "Court House: July project report",
+    "body": "The full planning submission has been validated and public consultation is under way. Pre-construction procurement continues in parallel.",
+    "tag": "Planning",
+    "tasks": [
+      {
+        "title": "Planning submission",
+        "detail": "Validated by the local authority; consultation period runs to late August.",
+        "status": "Complete"
+      },
+      {
+        "title": "Contractor procurement",
+        "detail": "Two-stage tender issued to a shortlist of three; returns expected in September.",
+        "status": "On programme"
+      },
+      {
+        "title": "Funding",
+        "detail": "Senior terms agreed in principle, subject to a satisfactory planning outcome.",
+        "status": "Monitoring"
+      }
+    ]
   },
   {
     "date": "2026-07-22",
     "developmentId": "chester-house",
-    "title": "Practical completion forecast confirmed",
-    "body": "The project team has reconfirmed practical completion for September following the latest programme review.",
-    "tag": "Programme"
+    "period": "July 2026",
+    "title": "Chester House: July project report",
+    "body": "The project team has reconfirmed practical completion for September following the latest programme review, keeping the scheme ahead of the original date.",
+    "tag": "Programme",
+    "tasks": [
+      {
+        "title": "Programme review",
+        "detail": "Practical completion reconfirmed for September, three weeks ahead of the original date.",
+        "status": "Ahead"
+      },
+      {
+        "title": "Apartment fit-out",
+        "detail": "Kitchens and bathrooms installed to the first and second floors; snagging begins in August.",
+        "status": "On programme"
+      },
+      {
+        "title": "Sales and marketing",
+        "detail": "Reservations open, with viewings handled directly by the Satis Group team.",
+        "status": "Under way"
+      }
+    ]
   },
   {
     "date": "2026-07-15",
     "developmentId": "davenport",
-    "title": "Superstructure reaches third floor",
+    "period": "July 2026",
+    "title": "Davenport Park: July project report",
     "body": "The concrete frame has reached level three and blockwork is following two floors behind. The tower crane comes down in early October.",
-    "tag": "Construction"
+    "tag": "Construction",
+    "tasks": [
+      {
+        "title": "Superstructure",
+        "detail": "Frame at level three; remaining pours scheduled through August and September.",
+        "status": "On programme"
+      },
+      {
+        "title": "Blockwork",
+        "detail": "Following two floors behind the frame, with no reported labour constraints.",
+        "status": "On programme"
+      },
+      {
+        "title": "Crane off hire",
+        "detail": "Tower crane dismantle booked for the first week of October.",
+        "status": "Planned"
+      }
+    ]
   },
   {
     "date": "2026-07-08",
     "developmentId": "barrington-road",
-    "title": "Ground works complete",
-    "body": "Foundations and drainage are signed off across all plots. The timber-frame erection sequence begins with the garden-square townhouses.",
-    "tag": "Construction"
+    "period": "July 2026",
+    "title": "Barrington Road: July project report",
+    "body": "Ground works are complete and the substructure is signed off, clearing the way for the frame to start on site.",
+    "tag": "Construction",
+    "tasks": [
+      {
+        "title": "Ground works",
+        "detail": "Excavation, drainage and foundations complete and signed off by the engineer.",
+        "status": "Complete"
+      },
+      {
+        "title": "Superstructure start",
+        "detail": "Frame package let; first deliveries to site in the last week of July.",
+        "status": "Planned"
+      },
+      {
+        "title": "Cost report",
+        "detail": "Ground works settled within the allowance, with no drawdown on contingency.",
+        "status": "On budget"
+      }
+    ]
   }
 ]

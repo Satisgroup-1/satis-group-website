@@ -18,6 +18,16 @@ import bundledOpportunities from "@/content/investors/opportunities.json";
 // traces files referenced through the module graph, so without them a fresh
 // deployment could fail to find the JSON on disk.
 
+/**
+ * Platform accounts come in two kinds. A "prospective" investor has a login
+ * so they can read the investment memorandum, appraisals and market work
+ * before committing; an "invested" investor additionally sees their own
+ * positions, financials and the monthly project reports for their sites.
+ */
+export type InvestorTier = "prospective" | "invested";
+
+export const INVESTOR_TIERS: InvestorTier[] = ["prospective", "invested"];
+
 export type InvestorProfile = {
   id: string;
   name: string;
@@ -25,6 +35,8 @@ export type InvestorProfile = {
   email: string;
   passwordHash: string;
   joined: string;
+  /** Omitted on older records: the tier is then derived from cap tables. */
+  tier?: InvestorTier;
   valueHistory: { label: string; value: number }[];
 };
 
@@ -79,19 +91,42 @@ export type CashEvent = {
   status: "Paid" | "Forecast";
 };
 
+/** One line item inside a monthly report, so an investor can query it. */
+export type ReportTask = {
+  title: string;
+  detail?: string;
+  status?: string;
+};
+
+/**
+ * A monthly project report. Stored in updates.json (the dataset kept its
+ * original name) and surfaced to invested accounts as "Monthly reports":
+ * `period` names the month covered, `file` makes the full report
+ * downloadable, and `tasks` lists the individual items investors can ask
+ * questions about.
+ */
 export type SiteUpdate = {
   date: string;
   developmentId: string;
   title: string;
   body: string;
   tag: string;
+  period?: string;
+  file?: string;
+  tasks?: ReportTask[];
 };
 
 export type InvestorDocument = {
+  /** An account id, or "all" to share the document with every account. */
   investorId: string;
   title: string;
   kind: string;
   published: string;
+  /** Path or URL to the file; without one the portal shows a demo action. */
+  file?: string;
+  /** Restricts a shared document to one tier. */
+  audience?: InvestorTier;
+  summary?: string;
 };
 
 export type Opportunity = {
@@ -260,9 +295,30 @@ export function getUpdates(): SiteUpdate[] {
   );
 }
 
-export function getDocumentsFor(investorId: string): InvestorDocument[] {
+/**
+ * An account's tier: the stored value when set, otherwise derived — anyone
+ * holding a cap-table position has invested, everyone else is prospective.
+ */
+export function getInvestorTier(investor: InvestorProfile): InvestorTier {
+  if (investor.tier) return investor.tier;
+  return getPositionsFor(investor.id).length > 0 ? "invested" : "prospective";
+}
+
+/**
+ * Documents visible to one account: their own, plus anything published to
+ * "all" that either carries no audience or matches their tier (an
+ * investment memorandum for prospective investors, say).
+ */
+export function getDocumentsFor(
+  investorId: string,
+  tier?: InvestorTier
+): InvestorDocument[] {
   return readDataset<InvestorDocument>("documents")
-    .filter((doc) => doc.investorId === investorId)
+    .filter((doc) => {
+      if (doc.investorId === investorId) return true;
+      if (doc.investorId !== "all") return false;
+      return !doc.audience || !tier || doc.audience === tier;
+    })
     .sort((a, b) => b.published.localeCompare(a.published));
 }
 

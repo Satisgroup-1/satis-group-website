@@ -59,7 +59,7 @@ export function Footer() {
             info@satisgroup.co.uk
           </a>
           <span className="text-sm tracking-[0.05em] text-ink-foreground/60">
-            Cheshire, United Kingdom
+            Manchester, United Kingdom
           </span>
         </div>
       </div>
@@ -81,7 +81,7 @@ export function Footer() {
               </Link>
             ))}
           </nav>
-          <span>Developing across the North West</span>
+          <span>Developing across Manchester &amp; the North West</span>
         </div>
       </div>
     </footer>

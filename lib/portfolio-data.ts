@@ -18,8 +18,13 @@ export type Property = {
   blurb: string;
 };
 
-// The four live Satis Group developments. Each links through to a detail
-// page at /portfolio/[slug], built from lib/property-pages.ts.
+// Every Satis Group development, live and legacy. Each links through to a
+// detail page at /portfolio/[slug], built from lib/property-pages.ts.
+//
+// `status` is the label shown on the card and the detail page, so it has to
+// stay true: only schemes that have actually reached practical completion
+// carry "Completed". Anything still to come is "Coming Soon", and the copy
+// for those entries is written in the future tense to match.
 export const PORTFOLIO: Property[] = [
   {
     slug: "the-courthouse",
@@ -38,12 +43,12 @@ export const PORTFOLIO: Property[] = [
     name: "Hazelgate",
     location: "Hazel Grove, Stockport",
     type: "Residential",
-    status: "Selling Fast",
+    status: "For Sale",
     image: "/images/hazelgate/exterior-v4.jpg",
     hoverImage: "/images/hazelgate/living-kitchen.jpg",
     logo: { src: "/images/logos/hazelgate.jpg", bg: "#2f3237" },
     blurb:
-      "A new collection of nineteen contemporary one and two-bedroom apartments in the vibrant centre of Hazel Grove.",
+      "A new collection of nineteen contemporary one-bedroom apartments in the vibrant centre of Hazel Grove.",
   },
   {
     slug: "barrington-house",
@@ -90,7 +95,7 @@ export const PORTFOLIO: Property[] = [
     image: "/images/lancaster/hero.jpg",
     imagePosition: "center 58%",
     blurb:
-      "A residential conversion of twenty-six apartments, delivered with individual attention to every home.",
+      "A residential conversion of twenty-six apartments, with individual attention given to every home.",
   },
   {
     slug: "st-johns-corner",
@@ -102,7 +107,7 @@ export const PORTFOLIO: Property[] = [
     imagePosition: "center 45%",
     logo: { src: "/images/logos/st-johns-corner.jpg", bg: "#414747" },
     blurb:
-      "Eleven apartments on a well-connected corner, finished to the standard our buyers expect.",
+      "Eleven apartments on a well-connected corner, to be finished to the standard our buyers expect.",
   },
   {
     slug: "tabula",

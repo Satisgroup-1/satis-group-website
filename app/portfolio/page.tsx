@@ -3,10 +3,10 @@ import { PageHero } from "@/components/PageHero";
 import { PortfolioGrid } from "@/components/PortfolioGrid";
 
 export const metadata: Metadata = {
-  title: "Property development portfolio, North West",
+  title: "Property development portfolio, Manchester",
   alternates: { canonical: "/portfolio" },
   description:
-    "A selection of residential and commercial redevelopments delivered by Satis Group across the North West.",
+    "Residential and commercial redevelopments delivered and under way with Satis Group across Manchester and the North West.",
 };
 
 export default function PortfolioPage() {
@@ -15,7 +15,7 @@ export default function PortfolioPage() {
       <PageHero
         eyebrow="Portfolio"
         title="Projects: past, present &amp; future."
-        description="A selection of the residential and commercial redevelopments we've delivered across the North West."
+        description="Residential and commercial redevelopments across Manchester and the North West: schemes we have completed, sites on site now, and those still to come."
       />
       <PortfolioGrid />
     </>

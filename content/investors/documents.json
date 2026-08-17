@@ -1,5 +1,37 @@
 [
   {
+    "investorId": "all",
+    "audience": "prospective",
+    "title": "Satis Group Investment Memorandum 2026",
+    "kind": "Investment memorandum",
+    "summary": "Strategy, track record, team and current pipeline, with the terms on which we raise single-asset equity.",
+    "published": "2026-08-01"
+  },
+  {
+    "investorId": "all",
+    "audience": "prospective",
+    "title": "The Press, Great Moor: Development Appraisal",
+    "kind": "Appraisal",
+    "summary": "Full residual appraisal for the current raise: costs, programme, sales values and sensitivity analysis.",
+    "published": "2026-07-24"
+  },
+  {
+    "investorId": "all",
+    "audience": "prospective",
+    "title": "Springfield House: Development Appraisal",
+    "kind": "Appraisal",
+    "summary": "Appraisal and outline programme for the next scheme coming to the platform.",
+    "published": "2026-07-10"
+  },
+  {
+    "investorId": "all",
+    "audience": "prospective",
+    "title": "How a Satis Group SPV Works",
+    "kind": "Guide",
+    "summary": "How each single-asset vehicle is structured, how equity is held, and how distributions are paid.",
+    "published": "2026-06-18"
+  },
+  {
     "investorId": "hartwell",
     "title": "Q2 2026 Portfolio Report",
     "kind": "Quarterly report",
