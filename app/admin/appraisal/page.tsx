@@ -197,12 +197,23 @@ export default async function AdminAppraisalPage() {
                   download and run it again.
                 </li>
                 <li>
-                  To use the AI floorplan reader (PDF and photo import), open
-                  Settings inside the app and connect a Claude account: either
-                  sign in through your browser, or paste an Anthropic API key if
-                  you have one. Settings shows which is in use and can test the
-                  connection. DXF files and manual floor entry work without
-                  either.
+                  To use the AI features (floorplan reading from PDFs and
+                  photos, pricing research), open Settings inside the app and
+                  connect a Claude account: either sign in through your browser
+                  — the app now fetches everything it needs by itself — or
+                  paste an Anthropic API key if you have one. Settings shows
+                  which is in use and can test the connection. DXF files and
+                  manual floor entry work without either.
+                </li>
+                <li>
+                  New in v0.2.2: the Pricing step can research live market
+                  evidence for a project — local sale and rent comparables,
+                  build cost benchmarks and current finance rates — and shows
+                  each figure as a suggestion with its range, reasoning and
+                  sources, applied only when you choose. Stamp duty now
+                  calculates itself from HMRC bands, and your own tender
+                  results and lender term sheets can be recorded in Settings to
+                  anchor the estimates.
                 </li>
                 <li>
                   Earlier versions remain available on the{" "}
