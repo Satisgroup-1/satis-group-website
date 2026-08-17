@@ -29,7 +29,7 @@ const UPDATE_IMAGES: Array<{ match: string; src: string; alt: string }> = [
   },
   {
     match: "courthouse-topping-out",
-    src: "/images/courthouse/hero.jpg",
+    src: "/images/courthouse/hero-v2.jpg",
     alt: "The Courthouse, Macclesfield",
   },
   {
