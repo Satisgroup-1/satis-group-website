@@ -52,6 +52,31 @@ const UPDATE_IMAGES: Array<{ match: string; src: string; alt: string }> = [
     src: "/images/qube/hero.jpg",
     alt: "QUBE, Stockport town centre",
   },
+  {
+    match: "uk-property-award",
+    src: "/images/22stjohn/building.jpg",
+    alt: "22 St John, Manchester",
+  },
+  {
+    match: "your-property-network",
+    src: "/images/22stjohn/offices.jpg",
+    alt: "Private offices at 22 St John",
+  },
+  {
+    match: "rising-star",
+    src: "/images/team/founders-v2.jpg",
+    alt: "The Satis Group founders",
+  },
+  {
+    match: "insider-property-disruptors",
+    src: "/images/about-plaque.jpg",
+    alt: "Another development by Satis Group",
+  },
+  {
+    match: "property-investors-awards",
+    src: "/images/team/founders-v2.jpg",
+    alt: "The Satis Group founders",
+  },
 ];
 
 function updateImage(slug: string) {

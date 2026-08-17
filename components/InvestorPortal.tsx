@@ -562,7 +562,7 @@ function InsightBlockView({ block }: { block: InsightBlock }) {
     case "list":
       return <ul className="mt-6 space-y-3">{block.items.map((item) => <li key={item} className="flex gap-3 text-base leading-7 text-[#4f585d]"><span aria-hidden="true" className="mt-[.7em] h-px w-6 shrink-0 bg-[#b18c4d]" />{item}</li>)}</ul>;
     case "quote":
-      return <figure className="mt-10 border-l-2 border-[#b18c4d] bg-[#faf8f3] px-7 py-6"><blockquote className="text-xl leading-9 text-[#3c444a]">“{block.text}”</blockquote>{block.attribution && <figcaption className="mt-3 text-[10px] uppercase tracking-[.16em] text-[#8a6c3f]">— {block.attribution}</figcaption>}</figure>;
+      return <figure className="mt-10 border-l-2 border-[#b18c4d] bg-[#faf8f3] px-7 py-6"><blockquote className="text-xl leading-9 text-[#3c444a]">“{block.text}”</blockquote>{block.attribution && <figcaption className="mt-3 text-[10px] uppercase tracking-[.16em] text-[#8a6c3f]">{block.attribution}</figcaption>}</figure>;
     case "stats":
       return <div className="mt-10 grid gap-px overflow-hidden border border-[#e2ddd0] bg-[#e2ddd0] sm:grid-cols-3">{block.items.map((s) => <div key={s.label} className="bg-[#faf8f3] p-6"><p className="text-3xl font-medium tracking-tight text-[#8a6c3f]">{s.value}</p><p className="mt-2 text-xs leading-5 text-[#687077]">{s.label}</p></div>)}</div>;
     case "table":
