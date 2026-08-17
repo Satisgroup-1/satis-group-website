@@ -191,7 +191,7 @@ export default function AboutPage() {
             <div className="relative aspect-[4/3] overflow-hidden bg-surface lg:h-full lg:aspect-auto">
               <Image
                 src="/images/team/founders-v2.jpg"
-                alt="The three Satis Group founders outside 22 St John Street"
+                alt="Satis Group founders Tom Morley, Shiro Rauniar and Shaunak Rauniar outside 22 St John Street"
                 fill
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 className="object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105"
