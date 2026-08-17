@@ -42,7 +42,7 @@ export default function ContactPage() {
               <p className="mt-2 text-sm leading-relaxed text-muted">
                 Satis Group
                 <br />
-                Cheshire, United Kingdom
+                Manchester, United Kingdom
               </p>
             </div>
           </div>

@@ -33,7 +33,7 @@ const SECTIONS: GuideSection[] = [
       {
         heading: "Demo credentials — replace before real use",
         body: [
-          "Admin sign-in and the demo investor account both use test / test. Before onboarding real investors: create real investor accounts in /admin/platform (passwords are hashed, never stored in plain text), then ask the development team to retire the demo account and set SATIS_ADMIN_SECRET and SATIS_INVESTOR_SECRET environment variables in the hosting platform.",
+          "Admin sign-in and the demo investor accounts use test / test (an invested account) and prospect / test (a prospective one). Before onboarding real investors: create real investor accounts in /admin/platform (passwords are hashed, never stored in plain text), then ask the development team to retire the demo accounts and set SATIS_ADMIN_SECRET and SATIS_INVESTOR_SECRET environment variables in the hosting platform.",
         ],
       },
     ],
@@ -61,6 +61,7 @@ const SECTIONS: GuideSection[] = [
         heading: "Adding an investor",
         body: [
           "Investors tab → Add or update investor. The account ID is derived from the name (or set your own); the email is their login. Passwords are scrypt-hashed on save.",
+          "Account type sets what they see. Prospective accounts get the data room, the current raises, the track record and the research — no cap tables, financials or monthly reports. Invested accounts get all of it. Leave it as it is and the platform derives the type from whether they hold a cap-table position.",
           "Then give them exposure on the Cap tables & returns tab: choose the development, their committed capital and their share % of the vehicle. The cap table for any SPV cannot exceed 100% — the form enforces this.",
         ],
       },
@@ -74,7 +75,10 @@ const SECTIONS: GuideSection[] = [
       {
         heading: "Publishing to investors",
         body: [
-          "Site updates and Insights tabs publish directly into the portal. The insight composer uses the same markdown-ish syntax as the newsletter studio, plus \"> \" for pull quotes; richer blocks (stat rows, tables, callouts) can be added through the JSON importer.",
+          "Monthly reports and Insights tabs publish directly into the portal. The insight composer uses the same markdown-ish syntax as the newsletter studio, plus \"> \" for pull quotes; richer blocks (stat rows, tables, callouts) can be added through the JSON importer.",
+          "A monthly report carries a period (\"August 2026\"), a summary and a task list, one item per line as \"Title — detail — status\". Investors can ask a question about any single task from the report itself.",
+          "To make a report downloadable, drop the PDF into public/investor-reports/ in the repository and put its path (for example /investor-reports/august-2026.pdf) in the Report file box. Without a file the download button stays a placeholder.",
+          "Data-room documents live in content/investors/documents.json. Set investorId to an account id for a private document, or to \"all\" with audience \"prospective\" for material every prospective investor should see — an investment memorandum or an appraisal. Add a \"file\" path the same way to make it downloadable.",
           "Upcoming investments (the deal-flow page investors see) are managed on the Opportunities tab, including raise progress and status.",
         ],
       },

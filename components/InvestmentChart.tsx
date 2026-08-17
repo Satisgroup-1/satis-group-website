@@ -12,7 +12,7 @@ import { AnimatedStat } from "./AnimatedStat";
 const METRICS = [
   { value: "£135m", label: "Gross development value", note: "Past, current & future combined", fill: 0.92 },
   { value: "109,000", label: "Sq ft of upcoming developments", note: "Residential & commercial", fill: 0.74 },
-  { value: "482", label: "Units developed & developing", note: "Across the North West", fill: 0.66 },
+  { value: "482", label: "Units developed & developing", note: "Across Manchester & the North West", fill: 0.66 },
 ];
 
 export function InvestmentChart() {

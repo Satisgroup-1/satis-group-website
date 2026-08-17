@@ -582,7 +582,7 @@ export function BuildingRedevelopmentGraphic({
 
             <div className="pointer-events-none absolute left-0 top-2 hidden items-center gap-3 text-[0.58rem] tracking-[0.25em] uppercase text-muted xl:flex">
               <span className="h-px w-10 bg-accent" />
-              Elevation study · North West
+              Elevation study · Manchester
             </div>
 
             {/* scroll hint */}

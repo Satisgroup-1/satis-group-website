@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import {
   investorLogin,
@@ -11,6 +12,26 @@ type HeroStats = {
   gdv: string;
   onProgramme: string;
 };
+
+/** Where "become an investor" goes: the contact form, investment topic. */
+const BECOME_HREF = "/contact?topic=Investment";
+
+// What an account gives someone who has not invested yet. This is the pitch
+// on the login page: the platform is worth signing up for before you commit.
+const ACCOUNT_BENEFITS = [
+  {
+    title: "The investment memorandum",
+    body: "Our strategy, track record and terms, in full, before you speak to anyone.",
+  },
+  {
+    title: "Appraisals for every raise",
+    body: "Costs, programme, sales values and sensitivities for each scheme we are raising against.",
+  },
+  {
+    title: "Answers from the team",
+    body: "Ask about any scheme and get a reply from the people delivering it.",
+  },
+];
 
 export function InvestorLogin({ stats }: { stats: HeroStats }) {
   const [state, action, pending] = useActionState<InvestorLoginState, FormData>(
@@ -36,8 +57,15 @@ export function InvestorLogin({ stats }: { stats: HeroStats }) {
             </h1>
             <p className="mt-8 max-w-lg text-lg leading-8 text-white/60">
               A single view of your Satis Group investments, live developments and
-              the Greater Manchester market.
+              the Greater Manchester market. Prospective investors get an account
+              too, with the memorandum and appraisals to review before committing.
             </p>
+            <Link
+              href={BECOME_HREF}
+              className="shimmer-btn mt-9 inline-block bg-[#b18c4d] px-8 py-4 text-xs tracking-[.18em] uppercase transition hover:bg-[#c3a164]"
+            >
+              Become an investor →
+            </Link>
           </div>
           <div className="relative grid grid-cols-3 gap-8 border-t border-white/15 pt-7 text-sm text-white/55">
             <span>
@@ -110,13 +138,32 @@ export function InvestorLogin({ stats }: { stats: HeroStats }) {
               </button>
             </form>
             <div className="mt-7 flex justify-between text-xs text-white/45">
-              <span>Demo email: test · Password: test</span>
+              <span>Demo: test / test · prospect / test</span>
               <a
                 href="mailto:info@satisgroup.co.uk"
                 className="hover:text-white"
               >
                 Need help?
               </a>
+            </div>
+
+            {/* The route for anyone without a login: as prominent as the
+                sign-in button itself. */}
+            <div className="mt-10 border border-[#b18c4d]/50 bg-[#b18c4d]/10 p-6">
+              <p className="text-xs tracking-[.2em] uppercase text-[#c3a164]">
+                No account yet?
+              </p>
+              <p className="mt-3 text-sm leading-6 text-white/70">
+                You do not have to be an investor to have a login. Request access
+                as a prospective investor and we will open a data room with the
+                memorandum and the appraisals for our current raises.
+              </p>
+              <Link
+                href={BECOME_HREF}
+                className="mt-5 inline-block border border-[#c3a164] px-6 py-3.5 text-xs tracking-[.18em] uppercase text-[#c3a164] transition hover:bg-[#c3a164] hover:text-black"
+              >
+                Become an investor →
+              </Link>
             </div>
           </div>
         </section>
@@ -174,17 +221,36 @@ export function InvestorLogin({ stats }: { stats: HeroStats }) {
             ))}
           </dl>
 
+          <div className="mt-16 border-t border-white/10 pt-12">
+            <span className="text-xs tracking-[.3em] uppercase text-[#c3a164]">
+              What an account gives you
+            </span>
+            <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-3">
+              {ACCOUNT_BENEFITS.map((benefit) => (
+                <div key={benefit.title} className="border-t border-white/15 pt-5">
+                  <h3 className="text-lg font-medium tracking-tight">
+                    {benefit.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-white/55">
+                    {benefit.body}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
           <div className="mt-14 flex flex-wrap items-center gap-6 border-t border-white/10 pt-10">
             <p className="max-w-md text-sm leading-relaxed text-white/55">
-              Access to the platform is by invitation, for investors we work
-              with. To discuss joining, get in touch with the Satis Group team.
+              Once you invest, the same login carries your positions, your
+              financials and a downloadable monthly report on every scheme you
+              are in.
             </p>
-            <a
-              href="mailto:info@satisgroup.co.uk?subject=Investor%20enquiry"
+            <Link
+              href={BECOME_HREF}
               className="shimmer-btn bg-[#b18c4d] px-8 py-4 text-xs tracking-[.18em] uppercase transition hover:bg-[#c3a164]"
             >
-              Request access →
-            </a>
+              Become an investor →
+            </Link>
           </div>
         </div>
       </section>

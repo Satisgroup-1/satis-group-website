@@ -503,7 +503,7 @@ export default async function PropertyDetailPage({
                   : "For sales enquiries please contact our appointed agent, or get in touch with the Satis Group team."
                 : property.listings
                   ? "Enquiries and viewings are handled directly by our appointed letting agents via the live listings."
-                  : "Get in touch with the Satis Group team for more information or to arrange a viewing."}
+                  : "Enquiries and viewings are handled directly by the Satis Group team, so you deal with the developer rather than an agent."}
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Link
@@ -555,6 +555,33 @@ export default async function PropertyDetailPage({
                       </a>
                     </>
                   )}
+                </p>
+              </div>
+            )}
+            {/* No appointed agent and no live listings: Satis Group is the
+                point of contact, so the enquiry routes straight to us. */}
+            {!property.agent && !property.listings && (
+              <div>
+                <span className="text-xs tracking-[0.2em] uppercase text-accent-text">
+                  {property.type === "Commercial"
+                    ? "Lettings Enquiries"
+                    : "Sales Enquiries"}
+                </span>
+                <p className="mt-2 text-sm leading-relaxed">
+                  Satis Group
+                  <br />
+                  <span className="text-muted">
+                    Handled in-house by our own team
+                  </span>
+                  <br />
+                  <a
+                    href={`mailto:info@satisgroup.co.uk?subject=${encodeURIComponent(
+                      `${property.name} enquiry`
+                    )}`}
+                    className="underline decoration-border underline-offset-4 transition-colors hover:text-accent hover:decoration-accent"
+                  >
+                    info@satisgroup.co.uk
+                  </a>
                 </p>
               </div>
             )}
