@@ -32,7 +32,7 @@ export const PORTFOLIO: Property[] = [
     location: "Macclesfield",
     type: "Residential",
     status: "For Sale",
-    image: "/images/courthouse/hero.jpg",
+    image: "/images/courthouse/hero-v2.jpg",
     hoverImage: "/images/courthouse/kitchen.jpg",
     logo: { src: "/images/logos/the-courthouse-purple-v2.jpg", bg: "#54306c" },
     blurb:
@@ -82,7 +82,7 @@ export const PORTFOLIO: Property[] = [
     type: "Residential",
     status: "Coming Soon",
     image: "/images/qube/hero.jpg",
-    logo: { src: "/images/logos/qube.jpg", bg: "#f4efe7" },
+    logo: { src: "/images/logos/qube-v2.jpg", bg: "#f4efe7" },
     blurb:
       "Our largest scheme to date: fifty-eight apartments and two commercial units in Stockport town centre.",
   },
@@ -139,7 +139,7 @@ export const PORTFOLIO: Property[] = [
     type: "Commercial",
     status: "Completed",
     image: "/images/woodfield/hero.jpg",
-    logo: { src: "/images/logos/woodfield-road-v2.jpg", bg: "#1b252e" },
+    logo: { src: "/images/logos/woodfield-road-on-navy.png", bg: "#101c28" },
     blurb:
       "A corner mixed-use scheme in Altrincham: a commercial unit at street level with homes on the floors above.",
   },
@@ -181,7 +181,7 @@ export const PORTFOLIO: Property[] = [
     location: "Stockport",
     type: "Residential",
     status: "Completed",
-    image: "/images/meyer/hero.jpg",
+    image: "/images/meyer/hero-v2.jpg",
     hoverImage: "/images/meyer/terrace.jpg",
     blurb:
       "A light residential conversion in Stockport delivering three HMOs (fourteen en-suite bedrooms in total) with a shared roof terrace.",

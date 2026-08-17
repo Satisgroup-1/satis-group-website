@@ -97,7 +97,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     tagline: "A collection of 13 one & two bedroom apartments",
     type: "Residential",
     status: "For Sale",
-    heroImage: "/images/courthouse/hero.jpg",
+    heroImage: "/images/courthouse/hero-v2.jpg",
     intro: {
       heading: "Welcome to The Courthouse",
       body: [
@@ -474,16 +474,46 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     },
     address: "Barrington House, Barrington Road, Altrincham",
     gallery: [
-      { src: "/images/barrington/gallery-1.jpg", alt: "Inside Barrington House" },
-      { src: "/images/barrington/gallery-2.jpg", alt: "Living space detail" },
-      { src: "/images/barrington/gallery-3.jpg", alt: "Interior finish" },
-      { src: "/images/barrington/gallery-4.jpg", alt: "Apartment interior" },
-      { src: "/images/barrington/gallery-5.jpg", alt: "Bedroom interior" },
+      {
+        src: "/images/barrington/one-bed.jpg",
+        alt: "Open-plan kitchen and living space with the stair to the mezzanine above",
+      },
+      {
+        src: "/images/barrington/two-bed.jpg",
+        alt: "Kitchen with island and marble-tiled floor in the two-bedroom apartment",
+      },
+      {
+        src: "/images/barrington/ensuite.jpg",
+        alt: "Furnished en-suite room with a desk and the shower room beyond",
+      },
+      {
+        src: "/images/barrington/gallery-5.jpg",
+        alt: "En-suite room with a bay window over the street",
+      },
+      {
+        src: "/images/barrington/gallery-6.jpg",
+        alt: "Desk, shelving and shower room in an en-suite room",
+      },
+      {
+        src: "/images/barrington/gallery-1.jpg",
+        alt: "Mezzanine living space beneath the arched dormer window",
+      },
+      {
+        src: "/images/barrington/gallery-2.jpg",
+        alt: "Top-floor living space with an oak stair and arched window",
+      },
+      {
+        src: "/images/barrington/gallery-4.jpg",
+        alt: "Porcelain-tiled bathroom with bath and shower screen",
+      },
       {
         src: "/images/barrington/exterior-dusk.jpg",
         alt: "Barrington House exterior at dusk",
       },
-      { src: "/images/barrington/altrincham.jpg", alt: "Altrincham town" },
+      {
+        src: "/images/barrington/altrincham.jpg",
+        alt: "Altrincham town centre",
+      },
     ],
     listings: [
       {
@@ -915,7 +945,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     tagline: "A light residential conversion to three HMOs",
     type: "Residential",
     status: "Completed",
-    heroImage: "/images/meyer/hero.jpg",
+    heroImage: "/images/meyer/hero-v2.jpg",
     intro: {
       heading: "Fourteen en-suite rooms behind a restored facade",
       body: [
