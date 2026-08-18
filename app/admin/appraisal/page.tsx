@@ -206,14 +206,14 @@ export default async function AdminAppraisalPage() {
                   manual floor entry work without either.
                 </li>
                 <li>
-                  New in v0.2.2: the Pricing step can research live market
-                  evidence for a project — local sale and rent comparables,
-                  build cost benchmarks and current finance rates — and shows
-                  each figure as a suggestion with its range, reasoning and
-                  sources, applied only when you choose. Stamp duty now
-                  calculates itself from HMRC bands, and your own tender
-                  results and lender term sheets can be recorded in Settings to
-                  anchor the estimates.
+                  The Pricing step can research live market evidence for a
+                  project — local sale and rent comparables, build cost
+                  benchmarks and current finance rates — with a progress bar
+                  showing each web search as it happens, and shows each figure
+                  as a suggestion with its range, reasoning and sources,
+                  applied only when you choose. Stamp duty calculates itself
+                  from HMRC bands, and your own tender results and lender term
+                  sheets can be recorded in Settings to anchor the estimates.
                 </li>
                 <li>
                   Earlier versions remain available on the{" "}
