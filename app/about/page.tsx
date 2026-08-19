@@ -120,7 +120,7 @@ export default function AboutPage() {
       <PageHero
         eyebrow="About Satis Group"
         title="A trusted partner."
-        description="Satis Group is a property development company based in Manchester, specialising in the meticulous renovation of neglected buildings, transforming them into stylish contemporary homes and adaptable commercial spaces."
+        description="Satis Group acquires, redevelops and sells residential and commercial property across Manchester and the North West."
         backdrop={<ParallaxSkyline />}
         compact
       />
