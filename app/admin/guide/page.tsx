@@ -80,11 +80,12 @@ export default async function AdminGuidePage() {
                 </li>
                 <li>
                   <b className="font-medium text-foreground">
-                    The live site is read-only
+                    Every change goes through the repository
                   </b>{" "}
-                  — if a Save button refuses on live hosting, that is by
-                  design; the chapter “Making changes stick on live hosting”
-                  shows the routine that works everywhere.
+                  — on the live site the platform studio commits saves for you
+                  (allow a minute for the redeploy), and anything that refuses
+                  to save goes via the routine in “Making changes stick on
+                  live hosting”.
                 </li>
               </ul>
             </div>

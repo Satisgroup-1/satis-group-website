@@ -520,10 +520,10 @@ export const GUIDE_CHAPTERS: GuideChapter[] = [
         ],
       },
       {
-        title: "Where changes take effect — and the one big caveat",
+        title: "Where changes take effect — and the one delay to expect",
         body: [
-          "In a writable environment (the site running locally, or a Claude Code session), every Save button in the studio takes effect immediately. On the live Vercel hosting, the deployed files are read-only and Save buttons will politely refuse, telling you why.",
-          "This is not a fault — it is how the hosting keeps the site safe and fast. The chapter “Making changes stick on live hosting” walks through the routine that works everywhere: export, edit, commit.",
+          "In a writable environment (the site running locally, or a Claude Code session), every Save button in the studio takes effect immediately. On the live hosting, each save is instead committed to the website's repository and goes live when the automatic redeploy finishes — about a minute or two. A note above the tabs tells you which mode you are in, and a just-saved change may briefly not show in the lists yet: give it a minute and refresh.",
+          "If a Save button refuses outright on the live site, the hosting's repository token is missing or has expired — the chapter “Making changes stick on live hosting” explains the token and the fallback routine that works everywhere.",
         ],
       },
     ],
@@ -922,14 +922,27 @@ export const GUIDE_CHAPTERS: GuideChapter[] = [
       "Why Save buttons refuse on the live site, and the export → edit → commit routine that works everywhere.",
     lede: [
       "This is the most important technical idea in the whole guide, and it is genuinely simple once seen. The live website runs on Vercel, a hosting platform that treats the deployed site as read-only — like a printed brochure. You cannot scribble on a printed brochure; you change the master copy and print a new one.",
-      "The master copy of this website lives in a GitHub repository (a shared, version-tracked folder of all the site's files). Changing the master and letting the site republish itself is the routine below — and Claude does the technical parts for you.",
+      "The master copy of this website lives in a GitHub repository (a shared, version-tracked folder of all the site's files). Everything below follows from that: the platform studio saves on the live site by committing to the repository for you (once a repository token is configured), and everything else — news stories, website content — reaches the live site by changing the repository through Claude.",
     ],
     time: "About 10 minutes once you've done it twice",
     steps: [
       {
-        title: "Recognise the moment",
+        title: "How the platform studio saves on the live site",
         body: [
-          "You press Save or Publish on the live site's admin and it refuses, with a message about read-only hosting or not being able to write a file. Nothing is broken and nothing was lost — the site is telling you this change needs to go through the master copy.",
+          "When the hosting has a repository token configured, every Save in the platform studio quietly becomes a commit to the repository, and the change goes live when the automatic redeploy finishes — about a minute or two. You just press Save as normal; a note above the studio's tabs confirms this mode, and the only difference you notice is that a just-saved change can take a minute to show. This applies to investor-platform data only; news stories and website content always go the Claude route below.",
+        ],
+        callouts: [
+          tip(
+            "Setting up (or renewing) the repository token — one-time",
+            "If the studio instead warns that changes will not save, the token is missing or expired. Anyone with access to the Satis Group GitHub account can fix it: in GitHub go to Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token; grant it access to only the satis-group-website repository with “Contents: Read and write” permission; then in Vercel add it as an environment variable named SATIS_GITHUB_TOKEN and redeploy.",
+            "GitHub gives every token an expiry date — when it lapses, the studio starts warning again: generate a new token and update the variable the same way. Ask Claude or the development team to walk through it the first time."
+          ),
+        ],
+      },
+      {
+        title: "Recognise the moment a change needs the repository route",
+        body: [
+          "You press Save or Publish on the live site's admin and it refuses, with a message about read-only hosting or not being able to write a file. That happens for news stories (which always publish through the repository on live hosting), and for platform data when the token above is missing. Nothing is broken and nothing was lost — the site is telling you this change needs to go through the master copy, which is the routine below.",
         ],
       },
       {
@@ -988,7 +1001,7 @@ export const GUIDE_CHAPTERS: GuideChapter[] = [
         title: "The same routine, other direction: bulk import",
         body: [
           "The Import / export tab also accepts a prepared file: choose it in the JSON file box (or paste its text) and click Validate & import. Only the datasets present in the file are replaced, everything is validated first (including the 100% cap-table rule), and investor records may include a plain password which is scrambled on the way in.",
-          "On the live site the import button hits the same read-only wall — so in practice imports are for writable environments, and the commit routine above is how prepared data reaches the live site.",
+          "On the live site the import works like any other studio save: with the repository token configured it becomes a commit and goes live after the redeploy; without it, the commit routine above is how prepared data reaches the live site.",
         ],
       },
     ],
@@ -1152,6 +1165,7 @@ export const GUIDE_CHAPTERS: GuideChapter[] = [
       { q: "Repository (repo)", a: ["The shared, version-tracked folder on GitHub holding the master copy of the website's files."] },
       { q: "Commit", a: ["A saved snapshot of the repository with a note of what changed. The site's audit trail, and the unit of change that triggers republishing."] },
       { q: "Deploy / republish", a: ["Vercel (the hosting platform) rebuilding the live site from the latest master copy. Automatic after each merged commit; takes a few minutes."] },
+      { q: "Repository token (SATIS_GITHUB_TOKEN)", a: ["A credential stored in the hosting environment that lets the platform studio commit its saves to the repository from the live site. When it expires, saves start refusing until a new token is set — see “Making changes stick on live hosting”."] },
       { q: "Slug", a: ["The address-friendly version of a title, e.g. “2026-08-19-courthouse-launches”. Used in web addresses for news stories and insight articles."] },
       { q: "Data room", a: ["The document library inside the investor portal — memorandums, appraisals and private documents, each with an audience."] },
     ],
