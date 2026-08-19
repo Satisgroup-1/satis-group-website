@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { unstable_cache } from "next/cache";
+import { AdminHomeLink } from "@/components/AdminHomeLink";
 import { AdminLogin } from "@/components/AdminLogin";
 import { isAuthenticated } from "@/lib/admin-auth";
 
@@ -77,6 +77,7 @@ export default async function AdminAppraisalPage() {
   return (
     <section>
       <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
+        {authed && <AdminHomeLink />}
         <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
           Admin
         </span>
@@ -95,14 +96,7 @@ export default async function AdminAppraisalPage() {
               and Mac. It imports floorplans of existing buildings, generates
               the ways they could be converted, checks every layout against UK
               minimum-space rules, and runs a full development appraisal of
-              each option — mirroring the Satis Appraisal Model workbook.{" "}
-              <Link
-                href="/admin"
-                className="underline decoration-border underline-offset-4 transition-colors hover:text-accent"
-              >
-                Back to the admin home
-              </Link>
-              .
+              each option — mirroring the Satis Appraisal Model workbook.
             </p>
 
             {version && (

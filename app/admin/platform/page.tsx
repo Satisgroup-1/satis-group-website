@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { AdminHomeLink } from "@/components/AdminHomeLink";
 import { AdminLogin } from "@/components/AdminLogin";
 import {
   AdminPlatform,
@@ -125,6 +125,7 @@ export default async function AdminPlatformPage() {
   return (
     <section>
       <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
+        {authed && <AdminHomeLink />}
         <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
           Admin
         </span>
@@ -143,14 +144,7 @@ export default async function AdminPlatformPage() {
               project returns, monthly project reports, insight articles and upcoming
               investments — or import a full JSON dataset. Portfolio figures
               are derived from the cap tables, so changes appear immediately
-              in the investor platform.{" "}
-              <Link
-                href="/admin"
-                className="underline decoration-border underline-offset-4 transition-colors hover:text-accent"
-              >
-                Back to the admin home
-              </Link>
-              .
+              in the investor platform.
             </p>
             {isGitHubPersistenceEnabled() ? (
               <p className="mt-4 max-w-2xl text-xs leading-relaxed text-muted">

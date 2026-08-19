@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AdminAccounts } from "@/components/AdminAccounts";
+import { AdminHomeLink } from "@/components/AdminHomeLink";
 import { AdminLogin } from "@/components/AdminLogin";
 import {
   getAdminAccounts,
@@ -22,6 +23,7 @@ export default async function AdminAccountsPage() {
   return (
     <section>
       <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
+        {authed && <AdminHomeLink />}
         <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
           Admin
         </span>
@@ -43,13 +45,6 @@ export default async function AdminAccountsPage() {
                 className="underline decoration-border underline-offset-4 transition-colors hover:text-accent"
               >
                 Investors tab
-              </Link>
-              .{" "}
-              <Link
-                href="/admin"
-                className="underline decoration-border underline-offset-4 transition-colors hover:text-accent"
-              >
-                Back to the admin home
               </Link>
               .
             </p>
