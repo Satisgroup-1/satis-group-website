@@ -111,16 +111,17 @@ export const GUIDE_CHAPTERS: GuideChapter[] = [
         body: [
           "After signing in you land on the control room — the front door to everything. It shows four cards; each one opens a different tool. Click anywhere on a card to open it, and use your browser's Back button (the ← arrow at the top left of the browser) to return here at any time.",
         ],
-        screenshot: shot("home.png", "The admin control room with its four section cards and the sign-out button highlighted", 2720, 2964, [
+        screenshot: shot("home.png", "The admin control room with its five section cards and the sign-out button highlighted", 2720, 3582, [
           { n: 1, text: "Newsletter — write and publish news stories for the public News page." },
           { n: 2, text: "Investors — the investor platform studio: accounts, developments, cap tables, reports and raises." },
-          { n: 3, text: "Instructions — this guide." },
-          { n: 4, text: "Appraisal agent download — install the Satis Appraisal desktop app, with its own step-by-step instructions on the page." },
-          { n: 5, text: "Sign out when you are finished, especially on a shared computer." },
+          { n: 3, text: "Admin accounts — who can sign in to this admin area, and adding someone (see the chapter “Managing admin accounts”)." },
+          { n: 4, text: "Instructions — this guide." },
+          { n: 5, text: "Appraisal agent download — install the Satis Appraisal desktop app, with its own step-by-step instructions on the page." },
+          { n: 6, text: "Sign out when you are finished, especially on a shared computer." },
         ]),
         callouts: [
           check(
-            "The heading reads “Satis Group control room.” and four numbered cards are visible. If you still see the sign-in boxes, the username or password was not accepted — try again slowly."
+            "The heading reads “Satis Group control room.” and five numbered cards are visible. If you still see the sign-in boxes, the username or password was not accepted — try again slowly."
           ),
         ],
       },
@@ -147,9 +148,81 @@ export const GUIDE_CHAPTERS: GuideChapter[] = [
         ],
       },
       {
-        q: "I see a note about a “demo signing secret” or test/test.",
+        q: "I see a note about demo credentials (test/test) or a “demo signing secret”.",
         a: [
-          "The site starts life with demonstration credentials (username test, password test) so it can be tried safely. That yellow-flagged note on the control room is a reminder to the development team to set real credentials before real investor data goes in. If you can see it, mention it to whoever looks after the website.",
+          "Real admin accounts live in the hosting environment (a setting called SATIS_ADMIN_USERS). Until that is set, the site falls back to the public demonstration pair test/test so it can be tried safely — and shows this note as a reminder. The moment real accounts are configured, the demo pair stops working.",
+          "If you can see the note, set up the first real account: the chapter “Managing admin accounts” walks through it, and the development team can help with the hosting step.",
+        ],
+      },
+    ],
+  },
+
+  {
+    slug: "admin-accounts",
+    group: "Getting started",
+    title: "Managing admin accounts",
+    summary:
+      "Who can sign in to the admin area, adding a colleague, and resetting an admin password.",
+    lede: [
+      "Admin accounts are separate from investor accounts, and they are deliberately not stored on the website itself — they live as a setting in the hosting platform (Vercel), where an attacker who somehow read the site's files still could not see them. The Admin accounts page bridges the two: it shows who can sign in, and generates the setting value for you to paste into Vercel.",
+      "Investor logins are managed elsewhere — the Investors tab of the platform studio (see “Creating an investor account”).",
+    ],
+    time: "About 10 minutes, including the hosting step",
+    youNeed: [
+      "The new admin's email address",
+      "Access to the Vercel project settings (or someone who has it)",
+    ],
+    steps: [
+      {
+        title: "Open the Admin accounts page",
+        body: [
+          "From the control room click the Admin accounts card. The top of the page lists every account that can currently sign in. If it instead says the site is running on the public demo credentials (test/test), no real accounts exist yet — creating the first one below is exactly how you fix that, and the demo pair stops working the moment you do.",
+        ],
+      },
+      {
+        title: "Generate the credential entry",
+        body: [
+          "Adding an account is a two-step job: generate the entry here, then paste it into Vercel. Fill in the “Add an account” form:",
+        ],
+        substeps: [
+          "Email — the address the person will sign in with.",
+          "Password — leave it blank and a strong password is generated for you (recommended), or type one of at least 12 characters.",
+          "Click Generate credential entry.",
+        ],
+        screenshot: shot("accounts-form.png", "The add an account form on the admin accounts page with the email box, password box and generate button highlighted", 1672, 1044, [
+          { n: 1, text: "Email — what the new admin signs in with." },
+          { n: 2, text: "Password — leave blank to have a strong one generated." },
+          { n: 3, text: "Generate credential entry — nothing changes yet; this only prepares the value for Vercel." },
+        ]),
+        callouts: [
+          warn(
+            "The generated password is shown once",
+            "The result box shows the new password a single time — record it now, before leaving the page. Like investor passwords, it is stored only as a one-way hash and can never be read back, only replaced."
+          ),
+        ],
+      },
+      {
+        title: "Paste the value into Vercel and redeploy",
+        body: [
+          "The result box shows the complete new SATIS_ADMIN_USERS value — it includes every existing account as well, so pasting it wholesale keeps everyone working. The box lists the exact clicks:",
+        ],
+        substeps: [
+          "In Vercel open the project → Settings → Environment Variables → edit SATIS_ADMIN_USERS (create it if it does not exist).",
+          "Replace its value with the full value from the result box.",
+          "Redeploy the site — environment changes only apply to new deployments. If any of this is unfamiliar, hand the value to the development team or ask Claude to talk you through the Vercel screens.",
+        ],
+        callouts: [
+          check(
+            "After the redeploy, the new admin can sign in at /admin — and the Admin accounts page lists them. Tell them their password over a trusted channel (phone, or split across two channels), never in one email."
+          ),
+        ],
+      },
+      {
+        title: "Resetting a password or removing an account",
+        body: [
+          "Reset: generate a new entry for the same email — re-using an existing email produces a replacement entry — then paste the new value into Vercel and redeploy, exactly as above.",
+          "Remove: edit SATIS_ADMIN_USERS in Vercel, delete that account's email=… entry from the value, and redeploy. Removal takes effect on the next request — no waiting for their session to expire.",
+          "A forgotten admin password cannot be recovered, only replaced — that is the reset above. If nobody can sign in at all, the development team can still edit SATIS_ADMIN_USERS directly in Vercel, so you are never truly locked out.",
         ],
       },
     ],
@@ -317,7 +390,7 @@ export const GUIDE_CHAPTERS: GuideChapter[] = [
         title: "Publish and verify",
         body: [
           "Click Publish report. The new report appears at the top of the list on the left, showing its period, how many tasks it carries, and whether a report file is attached (“report uploaded” or “no report file yet”).",
-          "To see exactly what investors see, sign in to the investor portal with an invested test account and open Monthly reports — see the chapter “Helping investors sign in” for how.",
+          "To see exactly what investors see, sign in to the investor portal with an in-house invested account and open Monthly reports — see the chapter “Helping investors sign in” for how.",
         ],
         callouts: [
           check(
@@ -777,7 +850,7 @@ export const GUIDE_CHAPTERS: GuideChapter[] = [
           ),
           warn(
             "Check private really means private",
-            "After a private document is added, sign in to the portal as a different test account and confirm the document is NOT visible, then as the right account to confirm it is. Thirty seconds of checking beats a confidentiality slip."
+            "After a private document is added, sign in to the portal as a different account (the in-house one) and confirm the document is NOT visible, then as the right account to confirm it is. Thirty seconds of checking beats a confidentiality slip."
           ),
         ],
       },
@@ -827,14 +900,14 @@ export const GUIDE_CHAPTERS: GuideChapter[] = [
       {
         title: "See exactly what an investor sees",
         body: [
-          "When an investor reports something odd (“my valuation looks wrong”, “I can't find the report”), the fastest diagnosis is to look at the portal yourself. Sign in at the website's Investors page with a test account of the right kind — an invested test account to check figures and reports, a prospective one to check the data room and raises.",
+          "When an investor reports something odd (“my valuation looks wrong”, “I can't find the report”), the fastest diagnosis is to look at the portal yourself. Sign in at the website's Investors page with an in-house account of the right kind — it is worth keeping one invested and one prospective account for the team for exactly this (the Satis Group internal account already exists for the purpose).",
           "If a figure genuinely is wrong, remember the golden rule: it is always the share % on the cap table or the SPV's equity value. Check both and the culprit will be one of them.",
         ],
       },
       {
         title: "Locked-out admin (you)",
         body: [
-          "The admin sign-in throttles the same way: five wrong tries, 15-minute pause. If the admin password itself is lost, it cannot be recovered from the site — whoever manages the hosting sets a new one in the hosting platform's settings (the SATIS_ADMIN_SECRET environment variable). Ask the development team or Claude to walk through it.",
+          "The admin sign-in throttles the same way: five wrong tries, 15-minute pause. A forgotten admin password cannot be recovered, only replaced: another admin generates a replacement entry on the Admin accounts page and updates the hosting setting — the chapter “Managing admin accounts” walks through it. If nobody can sign in at all, the development team can edit the SATIS_ADMIN_USERS setting directly in Vercel.",
         ],
       },
     ],

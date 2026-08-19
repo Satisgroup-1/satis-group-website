@@ -137,8 +137,7 @@ export function InvestorLogin({ stats }: { stats: HeroStats }) {
                 {pending ? "Signing in…" : "Enter platform"} <span>→</span>
               </button>
             </form>
-            <div className="mt-7 flex justify-between text-xs text-white/45">
-              <span>Demo: test / test · prospect / test</span>
+            <div className="mt-7 flex justify-end text-xs text-white/45">
               <a
                 href="mailto:info@satisgroup.co.uk"
                 className="hover:text-white"

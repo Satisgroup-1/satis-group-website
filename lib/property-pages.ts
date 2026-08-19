@@ -85,6 +85,11 @@ export type PropertyPageData = {
     phone?: string;
   };
   listings?: Array<{ label: string; detail: string; href: string }>;
+  /**
+   * The scheme's own microsite. Schemes without one yet point at their own
+   * page here (a relative path), which the detail page renders as an
+   * internal link rather than an external one.
+   */
   micrositeUrl: string;
   micrositeLabel: string;
 };
@@ -731,8 +736,8 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       { value: "53", label: "Fountain Street" },
       { value: "Manchester", label: "City" },
     ],
-    micrositeUrl: "https://www.satisgroup.co.uk/#portfolio",
-    micrositeLabel: "satisgroup.co.uk",
+    micrositeUrl: "/portfolio/tabula",
+    micrositeLabel: "Tabula",
   },
   {
     slug: "st-johns-corner",
@@ -757,8 +762,8 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       { value: "3-5", label: "St John Street" },
       { value: "Manchester", label: "City" },
     ],
-    micrositeUrl: "https://www.satisgroup.co.uk/#portfolio",
-    micrositeLabel: "satisgroup.co.uk",
+    micrositeUrl: "/portfolio/st-johns-corner",
+    micrositeLabel: "St John's Corner",
   },
   {
     slug: "lancaster-house",
@@ -783,8 +788,8 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       { value: "Coming Soon", label: "Status" },
       { value: "Manchester", label: "City" },
     ],
-    micrositeUrl: "https://www.satisgroup.co.uk/#portfolio",
-    micrositeLabel: "satisgroup.co.uk",
+    micrositeUrl: "/portfolio/lancaster-house",
+    micrositeLabel: "Lancaster House",
   },
   {
     slug: "qube",
@@ -808,8 +813,8 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       { value: "2", label: "Commercial units" },
       { value: "Stockport", label: "Location" },
     ],
-    micrositeUrl: "https://www.satisgroup.co.uk/#portfolio",
-    micrositeLabel: "satisgroup.co.uk",
+    micrositeUrl: "/portfolio/qube",
+    micrositeLabel: "QUBE",
   },
   {
     slug: "springfield-house",
@@ -834,8 +839,8 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       { value: "Coming Soon", label: "Status" },
       { value: "North West", label: "Region" },
     ],
-    micrositeUrl: "https://www.satisgroup.co.uk/#portfolio",
-    micrositeLabel: "satisgroup.co.uk",
+    micrositeUrl: "/portfolio/springfield-house",
+    micrositeLabel: "Springfield House",
   },
   {
     slug: "woodfield-road",
@@ -884,8 +889,8 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       { value: "Coming soon", label: "Status" },
       { value: "Stockport", label: "Location" },
     ],
-    micrositeUrl: "https://www.satisgroup.co.uk/contact",
-    micrositeLabel: "Register interest",
+    micrositeUrl: "/portfolio/the-press",
+    micrositeLabel: "The Press",
   },
   {
     slug: "davenport-park",
@@ -910,8 +915,8 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       { value: "Completed", label: "Status" },
       { value: "Stockport", label: "Location" },
     ],
-    micrositeUrl: "https://www.satisgroup.co.uk/contact",
-    micrositeLabel: "Register interest",
+    micrositeUrl: "/portfolio/davenport-park",
+    micrositeLabel: "Davenport Park",
   },
   {
     slug: "southbank",
@@ -935,8 +940,8 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       { value: "Completed", label: "Status" },
       { value: "North West", label: "Region" },
     ],
-    micrositeUrl: "https://www.satisgroup.co.uk/contact",
-    micrositeLabel: "Register interest",
+    micrositeUrl: "/portfolio/southbank",
+    micrositeLabel: "Southbank",
   },
   {
     slug: "meyer-street",
@@ -983,8 +988,8 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       { src: "/images/meyer/living.jpg", alt: "Open-plan living space" },
     ],
     address: "Meyer Street, Stockport",
-    micrositeUrl: "https://www.satisgroup.co.uk/contact",
-    micrositeLabel: "Enquire about Meyer Street",
+    micrositeUrl: "/portfolio/meyer-street",
+    micrositeLabel: "Meyer Street",
   },
 ];
 

@@ -2,16 +2,14 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { timingSafeEqual } from "node:crypto";
 import { cookies, headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import {
   ADMIN_COOKIE,
-  ADMIN_PASSWORD,
-  ADMIN_USERNAME,
   SESSION_TTL_MS,
   isAuthenticated,
   sessionToken,
+  verifyAdminCredentials,
 } from "@/lib/admin-auth";
 
 export type LoginState = { error?: string };
@@ -22,15 +20,6 @@ export type LoginState = { error?: string };
 const LOGIN_WINDOW_MS = 15 * 60 * 1000;
 const LOGIN_MAX_ATTEMPTS = 5;
 const loginAttempts = new Map<string, { count: number; resetAt: number }>();
-
-function safeEquals(a: string, b: string): boolean {
-  const max = Math.max(a.length, b.length, 1);
-  const bufA = Buffer.alloc(max);
-  const bufB = Buffer.alloc(max);
-  bufA.write(a);
-  bufB.write(b);
-  return timingSafeEqual(bufA, bufB) && a.length === b.length;
-}
 
 export async function login(
   _prev: LoginState,
@@ -47,8 +36,7 @@ export async function login(
 
   const username = String(formData.get("username") ?? "");
   const password = String(formData.get("password") ?? "");
-  const ok =
-    safeEquals(username, ADMIN_USERNAME) && safeEquals(password, ADMIN_PASSWORD);
+  const ok = verifyAdminCredentials(username, password);
   if (!ok) {
     const entry =
       attempts && attempts.resetAt > now
@@ -62,7 +50,7 @@ export async function login(
   // Secure when actually served over https (hosting platforms set
   // x-forwarded-proto); a plain-http localhost `next start` still works.
   const proto = (await headers()).get("x-forwarded-proto");
-  (await cookies()).set(ADMIN_COOKIE, sessionToken(), {
+  (await cookies()).set(ADMIN_COOKIE, sessionToken(username), {
     httpOnly: true,
     secure: proto === "https",
     sameSite: "lax",

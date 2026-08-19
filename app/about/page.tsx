@@ -4,8 +4,7 @@ import Link from "next/link";
 import { Eyebrow } from "@/components/Eyebrow";
 import { FrameCorners } from "@/components/FrameCorners";
 import { InvestmentChart } from "@/components/InvestmentChart";
-import { PageHero } from "@/components/PageHero";
-import { BuildingBackdrop } from "@/components/BuildingBackdrop";
+import { BuildingRedevelopmentGraphic } from "@/components/BuildingRedevelopmentGraphic";
 import { Reveal } from "@/components/Reveal";
 import { AWARD_COUNT } from "@/lib/accolades";
 import { StatMeter } from "@/components/StatMeter";
@@ -18,29 +17,6 @@ export const metadata: Metadata = {
   description:
     "Satis Group is a Manchester-based property development company specialising in the meticulous renovation of neglected buildings across Greater Manchester and the North West.",
 };
-
-const PROCESS = [
-  {
-    step: "01",
-    title: "Acquire",
-    body: "We find neglected buildings with good potential across Manchester and the North West.",
-  },
-  {
-    step: "02",
-    title: "Design",
-    body: "Every scheme starts from the building's own character, never a template.",
-  },
-  {
-    step: "03",
-    title: "Build",
-    body: "Delivered in-house to the highest standard, from planning to completion.",
-  },
-  {
-    step: "04",
-    title: "Sell",
-    body: "Most schemes are brought to market on completion; where we retain a building, we manage it ourselves.",
-  },
-];
 
 const VALUES = [
   {
@@ -140,48 +116,18 @@ const FOUNDER_ROLES = [
 export default function AboutPage() {
   return (
     <>
-      <PageHero
-        eyebrow="About Satis Group"
-        title="A trusted partner."
-        description="Satis Group acquires, redevelops and sells residential and commercial property across Manchester and the North West."
-        backdrop={<BuildingBackdrop />}
-        compact
-      />
-
-      {/* How we work — moved here from the home page. */}
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
-          <Reveal>
-            <Eyebrow index="01" label="How we work" />
-            <h2 className="mt-4 max-w-lg text-3xl font-medium tracking-tight sm:text-4xl">
-              From neglected to lived-in.
-            </h2>
-          </Reveal>
-          <div className="mt-14 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
-            {PROCESS.map((item, index) => (
-              <Reveal key={item.step} delay={index * 0.1}>
-                <div className="group relative overflow-hidden border-t border-border pt-6 transition-colors duration-300 hover:border-accent">
-                  <span
-                    aria-hidden="true"
-                    className="pointer-events-none absolute -right-1 -top-5 text-7xl font-medium tracking-tighter text-accent opacity-[0.07] transition-all duration-500 group-hover:-translate-y-1 group-hover:opacity-[0.14]"
-                  >
-                    {item.step}
-                  </span>
-                  <span className="text-xs tracking-[0.25em] text-accent">
-                    {item.step}
-                  </span>
-                  <h3 className="mt-3 text-lg font-medium tracking-tight">
-                    {item.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-muted">
-                    {item.body}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+      <BuildingRedevelopmentGraphic>
+        <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
+          About Satis Group
+        </span>
+        <h1 className="mt-4 max-w-2xl text-3xl font-medium leading-[1.1] tracking-tight [@media(max-height:800px)]:text-2xl sm:text-4xl lg:text-5xl lg:[@media(max-height:800px)]:text-4xl">
+          A trusted partner.
+        </h1>
+        <p className="mt-5 max-w-md text-sm leading-relaxed text-muted [@media(max-height:800px)]:mt-3 lg:text-base">
+          Satis Group acquires, redevelops and sells residential and commercial
+          property across Manchester and the North West.
+        </p>
+      </BuildingRedevelopmentGraphic>
 
       {/* Stats band */}
       <section className="relative overflow-hidden bg-ink text-ink-foreground">
@@ -222,7 +168,7 @@ export default function AboutPage() {
             <FrameCorners />
           </Reveal>
           <Reveal delay={0.12} className="flex flex-col justify-center gap-6">
-            <Eyebrow index="02" label="Our founders" />
+            <Eyebrow index="01" label="Our founders" />
             <h2 className="text-3xl font-medium tracking-tight sm:text-4xl">
               Forty years of combined experience.
             </h2>
@@ -260,7 +206,7 @@ export default function AboutPage() {
       <section className="border-b border-border">
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
           <Reveal>
-            <Eyebrow index="03" label="Our team" />
+            <Eyebrow index="02" label="Our team" />
             <h2 className="mt-4 max-w-lg text-3xl font-medium tracking-tight sm:text-4xl">
               A small team, on every project.
             </h2>
@@ -297,7 +243,7 @@ export default function AboutPage() {
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20">
             <Reveal>
-              <Eyebrow index="04" label="Investment opportunities" />
+              <Eyebrow index="03" label="Investment opportunities" />
               <h2 className="mt-4 text-3xl font-medium tracking-tight sm:text-4xl">
                 A market with momentum.
               </h2>
@@ -372,7 +318,7 @@ export default function AboutPage() {
       <section className="border-b border-border">
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
           <Reveal>
-            <Eyebrow index="05" label="Our principles" />
+            <Eyebrow index="04" label="Our principles" />
             <h2 className="mt-4 max-w-lg text-3xl font-medium tracking-tight sm:text-4xl">
               Principles we build by.
             </h2>
@@ -385,7 +331,7 @@ export default function AboutPage() {
       <section className="bg-surface">
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
           <Reveal>
-            <Eyebrow index="06" label="Partnerships" />
+            <Eyebrow index="05" label="Partnerships" />
             <h2 className="mt-4 max-w-lg text-3xl font-medium tracking-tight sm:text-4xl">
               Who we work with.
             </h2>
@@ -424,7 +370,7 @@ export default function AboutPage() {
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_auto] lg:items-end lg:gap-20">
             <Reveal>
-              <Eyebrow index="07" label="Awards & recognition" />
+              <Eyebrow index="06" label="Awards & recognition" />
               <h2 className="mt-4 max-w-xl text-3xl font-medium tracking-tight sm:text-4xl">
                 Award winners, and judges of the awards.
               </h2>
@@ -432,7 +378,7 @@ export default function AboutPage() {
                 Our buildings and our people have been recognised nationally: a
                 five-star UK Property Award for 22 St John, Rising Star of the
                 Year for Shiro Rauniar at the North West Homebuilder Awards, and
-                Rising Star of the Year for Shaun Rauniar at the Property Week
+                Rising Star of the Year for Shaunak Rauniar at the Property Week
                 RESI Awards. Our work has been the cover feature of Your Property
                 Network, and Satis Group directors sit on the judging panel of
                 the Property Investors Awards, assessing the field as well as

@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AdminLogin } from "@/components/AdminLogin";
-import { isAuthenticated, isUsingFallbackSecret } from "@/lib/admin-auth";
+import {
+  isAuthenticated,
+  isUsingDemoCredentials,
+  isUsingFallbackSecret,
+} from "@/lib/admin-auth";
 import { logout } from "./actions";
 
 export const metadata: Metadata = {
@@ -22,6 +26,11 @@ const SEGMENTS = [
     href: "/admin/platform",
     title: "Investors",
     body: "Manage investor accounts, developments and SPV cap tables, project returns, insights and upcoming raises — with bulk import and export.",
+  },
+  {
+    href: "/admin/accounts",
+    title: "Admin accounts",
+    body: "See who can sign in here, and add a new admin account — generates the credential entry to paste into the hosting environment.",
   },
   {
     href: "/admin/guide",
@@ -58,11 +67,12 @@ export default async function AdminPage() {
               Everything for running the website and investor platform, in one
               place.
             </p>
-            {isUsingFallbackSecret() && (
+            {(isUsingFallbackSecret() || isUsingDemoCredentials()) && (
               <p className="mt-4 max-w-xl text-xs leading-relaxed text-muted">
-                Running on the built-in demo signing secret. Before real
-                credentials replace test/test, set SATIS_ADMIN_SECRET in the
-                hosting environment.
+                {isUsingDemoCredentials() &&
+                  "Signed in with the public demo credentials (test/test) — set SATIS_ADMIN_USERS in the hosting environment to switch to real accounts (generate entries under Admin accounts below). "}
+                {isUsingFallbackSecret() &&
+                  "Running on the built-in demo signing secret — set SATIS_ADMIN_SECRET in the hosting environment to make sessions unforgeable."}
               </p>
             )}
             <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2">

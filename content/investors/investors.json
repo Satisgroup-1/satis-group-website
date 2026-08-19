@@ -1,76 +1,5 @@
 [
   {
-    "id": "hartwell",
-    "name": "The Hartwell Partnership",
-    "contactName": "James",
-    "email": "test",
-    "passwordHash": "scrypt:c00015f7dba9ddbab99f45d767d3b404:39a44bd0712df1d714c3f9c36c454a2733775bb9b45154dafd2fed83b4ab997a192c7307502d69cc142a795a5d1c9a18b13b98291ef6bffeb0a1f721e861b8d8",
-    "joined": "2023-01-15",
-    "tier": "invested",
-    "valueHistory": [
-      {
-        "label": "Q1 2023",
-        "value": 1200000
-      },
-      {
-        "label": "Q2 2023",
-        "value": 1240000
-      },
-      {
-        "label": "Q3 2023",
-        "value": 1310000
-      },
-      {
-        "label": "Q4 2023",
-        "value": 1380000
-      },
-      {
-        "label": "Q1 2024",
-        "value": 1900000
-      },
-      {
-        "label": "Q2 2024",
-        "value": 2050000
-      },
-      {
-        "label": "Q3 2024",
-        "value": 2480000
-      },
-      {
-        "label": "Q4 2024",
-        "value": 2610000
-      },
-      {
-        "label": "Q1 2025",
-        "value": 3150000
-      },
-      {
-        "label": "Q2 2025",
-        "value": 3420000
-      },
-      {
-        "label": "Q3 2025",
-        "value": 3900000
-      },
-      {
-        "label": "Q4 2025",
-        "value": 4050000
-      },
-      {
-        "label": "Q1 2026",
-        "value": 4320000
-      },
-      {
-        "label": "Q2 2026",
-        "value": 4610000
-      },
-      {
-        "label": "Q3 2026",
-        "value": 4820000
-      }
-    ]
-  },
-  {
     "id": "elm-row",
     "name": "Elm Row Capital",
     "contactName": "Sarah",
@@ -110,12 +39,12 @@
     ]
   },
   {
-    "id": "brookfold",
-    "name": "Brookfold Family Office",
-    "contactName": "Alex",
-    "email": "prospect",
-    "passwordHash": "scrypt:76075f134d1bb3418c6676ad14bfd6bd:dc7ffe37a77f697061bfefa8a08ad7f19ee49ba0f1ea961c656f27144aafd4f7fe01bd0a00932c21a0c0c1ae84ca9d91dabdecb3a1c5d3ad95c74cc59dce697c",
-    "joined": "2026-07-28",
+    "id": "satis-team",
+    "name": "Satis Group (internal)",
+    "contactName": "Satis team",
+    "email": "info@satisgroup.co.uk",
+    "passwordHash": "scrypt:68ae95200f9b53bc5813a32840ec946b:e0100f40142dc9ad86a9c0861305bb1be4e1c4d0725be819aa14c6a6fd16886131bb0378263c1998f81b6fa69d3c302d24df58942a1ecab47d1b9bb40b344a67",
+    "joined": "2026-08-19",
     "tier": "prospective",
     "valueHistory": []
   }

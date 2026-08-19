@@ -512,16 +512,28 @@ export default async function PropertyDetailPage({
               >
                 Contact us
               </Link>
-              <a
-                href={property.micrositeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="border border-border px-6 py-3 text-xs tracking-[0.2em] uppercase transition-colors duration-300 hover:border-accent hover:text-accent"
-              >
-                Visit {property.micrositeLabel}{" "}
-                <span aria-hidden="true">{"↗"}</span>
-                <span className="sr-only">(opens in new tab)</span>
-              </a>
+              {/* A relative path means the scheme has no microsite yet, so it
+                  links to its own page as an internal link: no new tab and no
+                  external-link affordance. */}
+              {property.micrositeUrl.startsWith("/") ? (
+                <Link
+                  href={property.micrositeUrl}
+                  className="border border-border px-6 py-3 text-xs tracking-[0.2em] uppercase transition-colors duration-300 hover:border-accent hover:text-accent"
+                >
+                  About {property.micrositeLabel}
+                </Link>
+              ) : (
+                <a
+                  href={property.micrositeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="border border-border px-6 py-3 text-xs tracking-[0.2em] uppercase transition-colors duration-300 hover:border-accent hover:text-accent"
+                >
+                  Visit {property.micrositeLabel}{" "}
+                  <span aria-hidden="true">{"↗"}</span>
+                  <span className="sr-only">(opens in new tab)</span>
+                </a>
+              )}
             </div>
           </Reveal>
           <Reveal delay={0.15} className="flex flex-col gap-8">

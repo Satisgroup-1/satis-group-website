@@ -210,9 +210,22 @@ await annotate(page, [
   { selector: card(2), n: 2, side: "right", gap: 50 },
   { selector: card(3), n: 3, side: "left", gap: 50 },
   { selector: card(4), n: 4, side: "right", gap: 50 },
-  { selector: 'form button[type="submit"]', n: 5, side: "right", gap: 44 },
+  { selector: card(5), n: 5, side: "left", gap: 50 },
+  { selector: 'form button[type="submit"]', n: 6, side: "right", gap: 44 },
 ]);
 await shootFull(page, "home.png");
+await clearAnnotations(page);
+
+// ---------- 2b. Admin accounts ----------
+await page.goto(`${BASE}/admin/accounts`, { waitUntil: "networkidle" });
+await annotate(page, [
+  { selector: 'input[name="username"]', n: 1, side: "left", gap: 48 },
+  { selector: 'input[name="password"]', n: 2, side: "left", gap: 48 },
+  { selector: 'form button[type="submit"]', n: 3, side: "right", gap: 44 },
+]);
+await shootRegion(page, "form", "accounts-form.png", {
+  left: 84, right: 84, top: 260, bottom: 40,
+});
 await clearAnnotations(page);
 
 // ---------- 3. Newsletter studio ----------
@@ -404,11 +417,15 @@ await shootRegion(page, 'section:has(a[href^="/news/2"])', "news-public.png", {
 });
 
 // ---------- 14. What investors see: the portal after signing in ----------
+// Needs a real investor credential (the demo accounts are retired); pass
+// GUIDE_INVESTOR_EMAIL / GUIDE_INVESTOR_PASS. Skipped otherwise, keeping
+// whatever investor-portal.png is already committed.
 const ipage = await context.newPage();
 await ipage.goto(`${BASE}/investors`, { waitUntil: "networkidle" });
 try {
-  await ipage.fill('input[name="email"]', "test");
-  await ipage.fill('input[name="password"]', "test");
+  if (!process.env.GUIDE_INVESTOR_EMAIL) throw new Error("no investor credential provided");
+  await ipage.fill('input[name="email"]', process.env.GUIDE_INVESTOR_EMAIL);
+  await ipage.fill('input[name="password"]', process.env.GUIDE_INVESTOR_PASS ?? "");
   await ipage.click('form button[type="submit"]');
   await ipage.waitForLoadState("networkidle");
   await ipage.waitForTimeout(1500);
