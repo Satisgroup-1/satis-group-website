@@ -13,8 +13,9 @@ type HeroStats = {
   onProgramme: string;
 };
 
-/** Where "become an investor" goes: the contact form, investment topic. */
-const BECOME_HREF = "/contact?topic=Investment";
+/** Where "become an investor" goes: the investor-only enquiry form, which is
+    separate from the general contact form. */
+const BECOME_HREF = "/investors/enquire";
 
 // What an account gives someone who has not invested yet. This is the pitch
 // on the login page: the platform is worth signing up for before you commit.
