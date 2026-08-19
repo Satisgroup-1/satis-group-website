@@ -11,6 +11,7 @@ import {
   formatPortalDate,
   getCapTableFor,
   getCashEventsFor,
+  getDevelopmentDocumentsFor,
   getDevelopments,
   getDocumentsFor,
   getInsights,
@@ -227,6 +228,45 @@ function buildPortalData(
           : undefined,
       };
     }),
+    // One entry per cap-table position: the investment's headline figures
+    // plus its private file library (legal papers, meeting recordings,
+    // accounts), for the per-investment tabs under My Portfolio.
+    portfolio: invested
+      ? summary.holdings.map((h) => {
+          const d = developmentById.get(h.developmentId);
+          return {
+            developmentId: h.developmentId,
+            name: h.developmentName,
+            spvName: h.spvName,
+            place: d?.place ?? "",
+            status: d?.status ?? h.status,
+            phase: d?.phase ?? "",
+            progress: d?.progress ?? 0,
+            nextReport: d ? formatPortalDate(d.nextReport) : "—",
+            position: {
+              sharePercent: `${h.sharePercent}%`,
+              committed: formatMoneyCompact(h.committed),
+              currentValue: formatMoneyCompact(h.currentValue),
+              forecastIrr: `${h.siteIrr.toFixed(1)}%`,
+              multiple:
+                h.committed > 0
+                  ? `${(h.currentValue / h.committed).toFixed(2)}x`
+                  : "—",
+              status: h.status,
+            },
+            files: getDevelopmentDocumentsFor(investor.id, h.developmentId).map(
+              (doc) => ({
+                title: doc.title,
+                kind: doc.kind,
+                category: doc.category,
+                summary: doc.summary,
+                file: doc.file,
+                published: formatPortalDate(doc.published),
+              })
+            ),
+          };
+        })
+      : [],
     holdings: summary.holdings.map((h) => ({
       name: h.developmentName,
       spvName: h.spvName,
@@ -247,6 +287,7 @@ function buildPortalData(
       ? reports
           .filter((u) => memberOf(u.developmentId))
           .map((u) => ({
+          developmentId: u.developmentId,
           date: formatPortalDate(u.date),
           period: u.period ?? formatPortalDate(u.date),
           site: developmentName(u.developmentId),
@@ -272,7 +313,9 @@ function buildPortalData(
       file: doc.file,
       published: formatPortalDate(doc.published),
     })),
-    opportunities: opportunities.map((o) => ({
+    // Upcoming raises are for prospective accounts only: invested accounts
+    // have no opportunities section, so nothing is assembled for them.
+    opportunities: invested ? [] : opportunities.map((o) => ({
       id: o.id,
       name: o.name,
       place: o.place,

@@ -6,6 +6,7 @@ import { InvestorMap } from "@/components/InvestorMap";
 
 type Section =
   | "overview"
+  | "portfolio"
   | "developments"
   | "opportunities"
   | "market"
@@ -29,9 +30,9 @@ const NAV: Record<InvestorTier, { id: Section; label: string; icon: string }[]> 
     ],
     invested: [
       { id: "overview", label: "Overview", icon: "⌂" },
+      { id: "portfolio", label: "My portfolio", icon: "◆" },
       { id: "developments", label: "Developments", icon: "◇" },
       { id: "reports", label: "Monthly reports", icon: "○" },
-      { id: "opportunities", label: "Upcoming investments", icon: "◈" },
       { id: "market", label: "Market intelligence", icon: "↗" },
       { id: "insights", label: "Insights", icon: "≡" },
       { id: "financials", label: "Financials", icon: "£" },
@@ -82,6 +83,37 @@ export type PortalData = {
     capTable: { holder: string; sharePercent: string; committed: string; isYou: boolean }[];
     yourPosition?: { sharePercent: string; committed: string; currentValue: string };
   }[];
+  /**
+   * One entry per cap-table position the account holds, carrying the
+   * private file library behind the per-investment My Portfolio tabs.
+   * Assembled for invested accounts only.
+   */
+  portfolio: {
+    developmentId: string;
+    name: string;
+    spvName: string;
+    place: string;
+    status: string;
+    phase: string;
+    progress: number;
+    nextReport: string;
+    position: {
+      sharePercent: string;
+      committed: string;
+      currentValue: string;
+      forecastIrr: string;
+      multiple: string;
+      status: string;
+    };
+    files: {
+      title: string;
+      kind: string;
+      category?: "legal" | "meetings" | "accounts";
+      summary?: string;
+      file?: string;
+      published: string;
+    }[];
+  }[];
   holdings: {
     name: string;
     spvName: string;
@@ -95,6 +127,7 @@ export type PortalData = {
   financialsHeadline: { value: string; delta: string };
   upcomingEvents: { date: string; type: string; amount: string }[];
   reports: {
+    developmentId: string;
     date: string;
     period: string;
     site: string;
@@ -417,18 +450,11 @@ function ProspectOverview({ data, go }: { data: PortalData; go: (s: Section) => 
 }
 
 function Overview({ data, go }: { data: PortalData; go: (s: Section) => void }) {
-  const openOpportunity = data.opportunities.find((o) => o.status === "Open");
   return <>
     <div className="mb-8 flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><PageTitle eyebrow="Portfolio overview" title={data.greeting} copy="Here’s what’s happening across your Satis Group portfolio." /><div className="mb-9 text-right text-xs text-[#7c8285]"><span className="mb-1 block uppercase tracking-[.16em]">Last updated</span>{data.lastUpdated}</div></div>
     <div className="grid gap-px overflow-hidden border border-[#d8d7d0] bg-[#d8d7d0] sm:grid-cols-2 xl:grid-cols-4">
       {data.stats.map((x,i)=><div key={x.label} className="bg-white p-6"><div className="flex justify-between text-[10px] tracking-[.16em] uppercase text-[#777e82]"><span>{x.label}</span><span>0{i+1}</span></div><p className="mt-6 text-3xl font-medium tracking-tight text-[#121212]">{x.value}</p><p className="mt-2 text-xs text-[#617260]">{x.note}</p></div>)}
     </div>
-    {openOpportunity && (
-      <button onClick={() => go("opportunities")} className="mt-6 flex w-full flex-wrap items-center justify-between gap-3 border border-[#c9b98f] bg-[#f3ecdc] px-6 py-4 text-left transition hover:border-[#b18c4d]">
-        <span className="text-sm text-[#4f4633]"><b className="mr-2 bg-[#b18c4d] px-2 py-1 text-[10px] uppercase tracking-wider text-white">Now raising</b>{openOpportunity.name}, {openOpportunity.place} — target {openOpportunity.targetIrr} IRR · closes {openOpportunity.closesOn}</span>
-        <span className="text-[10px] uppercase tracking-[.16em] text-[#8a6c3f]">View opportunity →</span>
-      </button>
-    )}
     <div className="mt-6 grid gap-6 xl:grid-cols-[1.45fr_.85fr]">
       <ValueChart history={data.valueHistory} />
       <section className="bg-[#121212] p-7 text-white"><p className="text-[10px] tracking-[.18em] uppercase text-[#c4a262]">Latest reports</p><div className="mt-6 space-y-6">{data.reports.slice(0,3).map((r,i)=><div key={r.title} className={i<2?"border-b border-white/10 pb-6":""}><p className="text-[10px] uppercase tracking-wider text-white/40">{r.period} · {r.site}</p><p className="mt-2 text-sm">{r.title}</p></div>)}{data.reports.length === 0 && <p className="text-sm text-white/55">Your first monthly report will appear here.</p>}</div><button onClick={()=>go("reports")} className="mt-8 text-[10px] tracking-[.16em] uppercase text-[#c4a262]">View monthly reports →</button></section>
@@ -609,6 +635,41 @@ function Insights({ insights }: { insights: PortalData["insights"] }) {
     <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">{rest.map((x)=><button type="button" onClick={() => setOpenSlug(x.slug)} key={x.slug} className="group flex min-h-[340px] flex-col border border-[#d8d7d0] bg-white p-7 text-left transition hover:-translate-y-1 hover:shadow-xl hover:shadow-[#121212]/5"><span className="mb-7 block h-24 w-full" style={{ backgroundColor: INSIGHT_THEME[x.theme] }} aria-hidden="true" /><span className="text-[10px] tracking-[.16em] uppercase text-[#96723d]">{x.category} · {x.date}</span><span className="mt-4 block text-xl font-medium leading-7 text-[#121212]">{x.title}</span><span className="mt-4 block text-sm leading-6 text-[#747b7f]">{x.summary}</span><span className="mt-auto flex w-full justify-between pt-6 text-[10px] uppercase tracking-wider"><span>{x.read} read</span><ArrowIcon/></span></button>)}</div></>;
 }
 
+/** One monthly report card, shared by the Reports and My Portfolio views. */
+function ReportArticle({ r }: { r: PortalData["reports"][number] }) {
+  return (
+    <article className="border border-[#d8d7d0] bg-white">
+      <div className="flex flex-wrap items-start justify-between gap-4 border-b border-[#ebe9e3] p-6 sm:p-7">
+        <div>
+          <p className="text-[10px] uppercase tracking-wider text-[#8a6c3f]">{r.period} · {r.site}</p>
+          <h2 className="mt-2 text-xl font-medium text-[#121212]">{r.title}</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-[#737a7e]">{r.body}</p>
+        </div>
+        <div className="flex flex-col items-end gap-3">
+          <span className="w-fit bg-[#eee9df] px-3 py-2 text-[10px] uppercase tracking-wider text-[#79613b]">{r.tag}</span>
+          <DownloadAction file={r.file} label="Download report ↓" className="border border-[#d8d7d0] px-4 py-3 text-[10px] tracking-[.15em] uppercase text-[#8a6c3f] transition hover:border-[#b18c4d]" />
+        </div>
+      </div>
+      {r.tasks.length > 0 && (
+        <ul className="divide-y divide-[#ebe9e3]">
+          {r.tasks.map((task)=>(
+            <li key={task.title} className="flex flex-wrap items-start justify-between gap-4 px-6 py-5 sm:px-7">
+              <div className="max-w-2xl">
+                <p className="text-sm font-medium text-[#121212]">{task.title}</p>
+                {task.detail && <p className="mt-1 text-sm leading-6 text-[#737a7e]">{task.detail}</p>}
+              </div>
+              <div className="flex items-center gap-4">
+                {task.status && <span className="text-[10px] uppercase tracking-wider text-[#63775e]">{task.status}</span>}
+                <a href={mailto(`${r.site} — ${r.period}: ${task.title}`, `Hello Satis Group,\n\nRegarding "${task.title}" in the ${r.period} report for ${r.site}:\n`)} className="text-[10px] uppercase tracking-wider text-[#8a6c3f] transition hover:text-[#121212]">Ask a question →</a>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </article>
+  );
+}
+
 /**
  * Monthly project reports. Each report is downloadable in full, and every
  * line item carries its own question link so an investor can query one task
@@ -617,37 +678,105 @@ function Insights({ insights }: { insights: PortalData["insights"] }) {
 function Reports({ reports }: { reports: PortalData["reports"] }) {
   return <><PageTitle eyebrow="From the ground" title="Monthly reports." copy="One report per site, per month: programme, cost and the individual items behind them. Download the full report, or ask us about any single task." />
     {reports.length === 0 && <p className="border border-[#d8d7d0] bg-white p-7 text-sm text-[#687077]">Your first monthly report will appear here as soon as it is published.</p>}
-    <div className="space-y-5">{reports.map((r)=>(
-      <article key={`${r.date}-${r.title}`} className="border border-[#d8d7d0] bg-white">
-        <div className="flex flex-wrap items-start justify-between gap-4 border-b border-[#ebe9e3] p-6 sm:p-7">
+    <div className="space-y-5">{reports.map((r)=><ReportArticle key={`${r.date}-${r.title}`} r={r} />)}</div>
+  </>;
+}
+
+// ---------------------------------------------------------------------------
+// My Portfolio: one view per cap-table position, each with its own file
+// library split across All files / Legal / Monthly reports / Shareholder
+// meetings / Accounts tabs.
+
+type PortfolioTab = "files" | "legal" | "reports" | "meetings" | "accounts";
+
+const PORTFOLIO_TABS: { id: PortfolioTab; label: string }[] = [
+  { id: "files", label: "All files" },
+  { id: "legal", label: "Legal" },
+  { id: "reports", label: "Monthly reports" },
+  { id: "meetings", label: "Shareholder meetings" },
+  { id: "accounts", label: "Accounts" },
+];
+
+/** Document table shared by the file tabs of an investment. */
+function FileRows({
+  files,
+  action = "Download ↓",
+  empty,
+}: {
+  files: PortalData["portfolio"][number]["files"];
+  action?: string;
+  empty: string;
+}) {
+  return (
+    <div className="border border-[#d8d7d0] bg-white">
+      <div className="grid grid-cols-[1fr_auto] border-b border-[#d8d7d0] px-6 py-4 text-[10px] uppercase tracking-wider text-[#858b8e] sm:grid-cols-[1fr_170px_150px]"><span>Document</span><span className="hidden sm:block">Published</span><span>Action</span></div>
+      {files.length === 0 && <p className="px-6 py-7 text-sm text-[#687077]">{empty}</p>}
+      {files.map((x)=>(
+        <div key={x.title} className="grid grid-cols-[1fr_auto] items-center border-b border-[#ebe9e3] px-6 py-5 last:border-0 sm:grid-cols-[1fr_170px_150px]">
           <div>
-            <p className="text-[10px] uppercase tracking-wider text-[#8a6c3f]">{r.period} · {r.site}</p>
-            <h2 className="mt-2 text-xl font-medium text-[#121212]">{r.title}</h2>
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-[#737a7e]">{r.body}</p>
+            <p className="text-sm font-medium text-[#121212]">{x.title}</p>
+            <p className="mt-1 text-[10px] uppercase tracking-wider text-[#858b8e]">{x.kind}</p>
+            {x.summary && <p className="mt-2 max-w-xl text-sm leading-6 text-[#737a7e]">{x.summary}</p>}
           </div>
-          <div className="flex flex-col items-end gap-3">
-            <span className="w-fit bg-[#eee9df] px-3 py-2 text-[10px] uppercase tracking-wider text-[#79613b]">{r.tag}</span>
-            <DownloadAction file={r.file} label="Download report ↓" className="border border-[#d8d7d0] px-4 py-3 text-[10px] tracking-[.15em] uppercase text-[#8a6c3f] transition hover:border-[#b18c4d]" />
-          </div>
+          <span className="hidden text-xs text-[#777e82] sm:block">{x.published}</span>
+          <DownloadAction file={x.file} label={action} className="text-xs uppercase tracking-wider text-[#8a6c3f]" />
         </div>
-        {r.tasks.length > 0 && (
-          <ul className="divide-y divide-[#ebe9e3]">
-            {r.tasks.map((task)=>(
-              <li key={task.title} className="flex flex-wrap items-start justify-between gap-4 px-6 py-5 sm:px-7">
-                <div className="max-w-2xl">
-                  <p className="text-sm font-medium text-[#121212]">{task.title}</p>
-                  {task.detail && <p className="mt-1 text-sm leading-6 text-[#737a7e]">{task.detail}</p>}
-                </div>
-                <div className="flex items-center gap-4">
-                  {task.status && <span className="text-[10px] uppercase tracking-wider text-[#63775e]">{task.status}</span>}
-                  <a href={mailto(`${r.site} — ${r.period}: ${task.title}`, `Hello Satis Group,\n\nRegarding "${task.title}" in the ${r.period} report for ${r.site}:\n`)} className="text-[10px] uppercase tracking-wider text-[#8a6c3f] transition hover:text-[#121212]">Ask a question →</a>
-                </div>
-              </li>
-            ))}
-          </ul>
+      ))}
+    </div>
+  );
+}
+
+function MyPortfolio({ portfolio, reports }: { portfolio: PortalData["portfolio"]; reports: PortalData["reports"] }) {
+  const [selectedId, setSelectedId] = useState(portfolio[0]?.developmentId ?? "");
+  const [tab, setTab] = useState<PortfolioTab>("files");
+  const inv = portfolio.find((p) => p.developmentId === selectedId) ?? portfolio[0];
+  if (!inv) {
+    return <PageTitle eyebrow="My portfolio" title="No positions yet." copy="Your investments will appear here once you hold a position in one of our vehicles." />;
+  }
+  const invReports = reports.filter((r) => r.developmentId === inv.developmentId);
+  const byCategory = (category: "legal" | "meetings" | "accounts") =>
+    inv.files.filter((f) => f.category === category);
+  return <><PageTitle eyebrow="My portfolio" title="Your investments." copy="Every vehicle you hold a position in, with its legal papers, monthly reports, shareholder meeting recordings and accounts." />
+    <div className="grid gap-px overflow-hidden border border-[#d8d7d0] bg-[#d8d7d0] sm:grid-cols-2 xl:grid-cols-3" role="group" aria-label="Your investments">
+      {portfolio.map((p)=>(
+        <button key={p.developmentId} onClick={()=>{setSelectedId(p.developmentId);}} aria-pressed={p.developmentId===inv.developmentId} className={`p-6 text-left transition ${p.developmentId===inv.developmentId ? "bg-[#121212] text-white" : "bg-white hover:bg-[#faf8f3]"}`}>
+          <div className="flex justify-between"><span className={`text-[10px] uppercase tracking-[.14em] ${p.developmentId===inv.developmentId ? "text-[#c4a262]" : "text-[#6b7969]"}`}>{p.status}</span><span className={`text-xs ${p.developmentId===inv.developmentId ? "text-white/50" : "text-[#8a8e90]"}`}>{p.position.sharePercent} held</span></div>
+          <h3 className="mt-4 text-lg font-medium">{p.name}</h3>
+          <p className={`mt-1 text-xs ${p.developmentId===inv.developmentId ? "text-white/50" : "text-[#83888b]"}`}>{p.spvName}</p>
+          <p className={`mt-4 text-sm ${p.developmentId===inv.developmentId ? "text-white/85" : "text-[#121212]"}`}>{p.position.currentValue} <span className={p.developmentId===inv.developmentId ? "text-white/45" : "text-[#8a8e90]"}>current value</span></p>
+        </button>
+      ))}
+    </div>
+    <section className="mt-6 border border-[#d8d7d0] bg-white">
+      <div className="flex flex-wrap items-start justify-between gap-4 border-b border-[#ebe9e3] p-6 sm:p-7">
+        <div>
+          <p className="text-[10px] uppercase tracking-[.18em] text-[#8a6c3f]">{inv.spvName}</p>
+          <h2 className="mt-2 text-2xl font-medium text-[#121212]">{inv.name}</h2>
+          <p className="mt-1 text-xs text-[#83888b]">{inv.place} · {inv.phase} · next report {inv.nextReport}</p>
+        </div>
+        <dl className="grid grid-cols-2 gap-x-8 gap-y-4 text-sm sm:grid-cols-5">
+          {[["Holding",inv.position.sharePercent],["Committed",inv.position.committed],["Current value",inv.position.currentValue],["Site IRR",inv.position.forecastIrr],["Multiple",inv.position.multiple]].map(([l,v])=>(
+            <div key={l}><dt className="text-[10px] uppercase tracking-wider text-[#a0a5a8]">{l}</dt><dd className="mt-1 font-medium text-[#121212]">{v}</dd></div>
+          ))}
+        </dl>
+      </div>
+      <div className="flex overflow-x-auto border-b border-[#ebe9e3]" role="tablist" aria-label={`${inv.name} sections`}>
+        {PORTFOLIO_TABS.map((t)=>(
+          <button key={t.id} role="tab" aria-selected={tab===t.id} onClick={()=>setTab(t.id)} className={`min-w-max border-b-2 px-5 py-4 text-[10px] uppercase tracking-[.14em] transition ${tab===t.id ? "border-[#b18c4d] text-[#121212]" : "border-transparent text-[#858b8e] hover:text-[#121212]"}`}>{t.label}</button>
+        ))}
+      </div>
+      <div className="p-6 sm:p-7">
+        {tab==="files" && <FileRows files={inv.files} empty="No files have been published for this investment yet." />}
+        {tab==="legal" && <FileRows files={byCategory("legal")} empty="Your shareholder agreement and share certificate for this investment will appear here." />}
+        {tab==="reports" && (
+          invReports.length > 0
+            ? <div className="space-y-5">{invReports.map((r)=><ReportArticle key={`${r.date}-${r.title}`} r={r} />)}</div>
+            : <p className="text-sm text-[#687077]">The first monthly report for this investment will appear here as soon as it is published.</p>
         )}
-      </article>
-    ))}</div>
+        {tab==="meetings" && <FileRows files={byCategory("meetings")} action="Open recording →" empty="Recordings of this vehicle's shareholder meetings will appear here." />}
+        {tab==="accounts" && <FileRows files={byCategory("accounts")} empty="The vehicle's annual accounts will appear here once filed." />}
+      </div>
+    </section>
   </>;
 }
 
@@ -687,5 +816,5 @@ export function InvestorPortal({ data, logout }: { data: PortalData; logout: () 
   const allowed = NAV[data.tier].some((item) => item.id === active);
   const section = allowed ? active : "overview";
   const invested = data.tier === "invested";
-  return <div className="min-h-[calc(100vh-5rem)] bg-[#f4f2ed] text-[#2a2a2a]"><div className="grid lg:grid-cols-[240px_1fr]"><Sidebar accountName={data.accountName} tier={data.tier} active={section} setActive={setActive} logout={logout} /><main className="min-w-0 px-5 py-9 sm:px-8 lg:px-10 lg:py-12 xl:px-14">{section==="overview"&&(invested ? <Overview data={data} go={setActive}/> : <ProspectOverview data={data} go={setActive}/>)} {section==="developments"&&<Developments developments={data.developments} tier={data.tier} go={setActive}/>} {section==="opportunities"&&<Opportunities opportunities={data.opportunities}/>} {section==="market"&&<Market market={data.market}/>} {section==="insights"&&<Insights insights={data.insights}/>} {section==="reports"&&<Reports reports={data.reports}/>} {section==="financials"&&<Financials data={data}/>} {section==="documents"&&<Documents documents={data.documents} tier={data.tier}/>}</main></div></div>;
+  return <div className="min-h-[calc(100vh-5rem)] bg-[#f4f2ed] text-[#2a2a2a]"><div className="grid lg:grid-cols-[240px_1fr]"><Sidebar accountName={data.accountName} tier={data.tier} active={section} setActive={setActive} logout={logout} /><main className="min-w-0 px-5 py-9 sm:px-8 lg:px-10 lg:py-12 xl:px-14">{section==="overview"&&(invested ? <Overview data={data} go={setActive}/> : <ProspectOverview data={data} go={setActive}/>)} {section==="portfolio"&&<MyPortfolio portfolio={data.portfolio} reports={data.reports}/>} {section==="developments"&&<Developments developments={data.developments} tier={data.tier} go={setActive}/>} {section==="opportunities"&&<Opportunities opportunities={data.opportunities}/>} {section==="market"&&<Market market={data.market}/>} {section==="insights"&&<Insights insights={data.insights}/>} {section==="reports"&&<Reports reports={data.reports}/>} {section==="financials"&&<Financials data={data}/>} {section==="documents"&&<Documents documents={data.documents} tier={data.tier}/>}</main></div></div>;
 }
