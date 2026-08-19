@@ -49,8 +49,10 @@ export default function Home() {
           We turn overlooked buildings into places people want to be.
         </h1>
         <p className="mt-5 max-w-md text-sm leading-relaxed text-muted [@media(max-height:800px)]:mt-3 lg:text-base">
-          Satis Group acquires, redevelops and sells residential and commercial
-          property across Manchester and the North West.
+          Satis Group is a property development company based in Manchester,
+          specialising in the meticulous renovation of neglected buildings,
+          transforming them into stylish contemporary homes and adaptable
+          commercial spaces.
         </p>
         <div className="mt-6 flex flex-wrap items-center gap-4 [@media(max-height:800px)]:mt-4">
           <Link
