@@ -187,3 +187,25 @@ export const PORTFOLIO: Property[] = [
       "A light residential conversion in Stockport delivering three HMOs (fourteen en-suite bedrooms in total) with a shared roof terrace.",
   },
 ];
+
+export type PortfolioPhase = "Present" | "Future" | "Past";
+
+/**
+ * Which group a scheme sits in on the portfolio page. Derived from `status`
+ * so the two can never drift: anything completed is Past, anything still to
+ * come is Future, and everything on the market or occupied now is Present.
+ */
+export function portfolioPhase(property: Property): PortfolioPhase {
+  if (property.status === "Completed") return "Past";
+  if (property.status === "Coming Soon") return "Future";
+  return "Present";
+}
+
+export const PORTFOLIO_PHASES: Array<{
+  phase: PortfolioPhase;
+  blurb: string;
+}> = [
+  { phase: "Present", blurb: "On the market or occupied now." },
+  { phase: "Future", blurb: "Coming forward across Manchester and the North West." },
+  { phase: "Past", blurb: "Completed and delivered." },
+];
