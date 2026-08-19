@@ -7,6 +7,11 @@ export type Accolade = {
   title: string;
   detail: string;
   subject: string;
+  /**
+   * Award logo or judging graphic. `dark` marks artwork whose lettering is
+   * white, so it needs the ink panel behind it rather than the page.
+   */
+  image?: { src: string; alt: string; dark?: boolean };
 };
 
 export const ACCOLADES: Accolade[] = [
@@ -21,6 +26,11 @@ export const ACCOLADES: Accolade[] = [
     title: "North West Homebuilder Awards",
     detail: "Rising Star of the Year",
     subject: "Shiro Rauniar",
+    image: {
+      src: "/images/awards/north-west-homebuilder-awards.png",
+      alt: "North West Homebuilder Awards 2026",
+      dark: true,
+    },
   },
   {
     kind: "Recognition",
@@ -37,8 +47,12 @@ export const ACCOLADES: Accolade[] = [
   {
     kind: "Recognition",
     title: "Property Investors Awards",
-    detail: "Official Judge",
+    detail: "Official Judge, 2025 and 2026",
     subject: "Shaunak Rauniar",
+    image: {
+      src: "/images/awards/property-investors-awards-judge-2026.jpg",
+      alt: "Property Investors Awards 2026: Shaunak Rauniar, official judge",
+    },
   },
 ];
 

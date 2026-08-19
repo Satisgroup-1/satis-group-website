@@ -139,7 +139,24 @@ export default function NewsPage() {
           <div className="mt-10 flex flex-col">
             {ACCOLADES.map((item, index) => (
               <Reveal key={item.title} delay={Math.min(index * 0.07, 0.3)}>
-                <div className="group grid grid-cols-1 gap-2 border-t border-border py-6 transition-colors duration-300 hover:border-accent sm:grid-cols-[1fr_auto] sm:items-baseline sm:gap-8 lg:grid-cols-[minmax(0,16rem)_1fr_auto]">
+                <div className="group grid grid-cols-1 gap-2 border-t border-border py-6 transition-colors duration-300 hover:border-accent sm:grid-cols-[1fr_auto] sm:items-baseline sm:gap-8 lg:grid-cols-[auto_minmax(0,14rem)_1fr_auto] lg:items-center">
+                  {item.image ? (
+                    <span
+                      className={`relative hidden h-16 w-24 shrink-0 overflow-hidden lg:block ${
+                        item.image.dark ? "bg-ink" : "bg-surface"
+                      }`}
+                    >
+                      <Image
+                        src={item.image.src}
+                        alt={item.image.alt}
+                        fill
+                        sizes="96px"
+                        className="object-contain p-2"
+                      />
+                    </span>
+                  ) : (
+                    <span aria-hidden="true" className="hidden lg:block lg:h-16 lg:w-24" />
+                  )}
                   <div className="flex items-baseline gap-4">
                     <span
                       aria-hidden="true"
@@ -182,7 +199,10 @@ export default function NewsPage() {
               </p>
             )}
             {issues.map((issue, index) => {
-              const image = updateImage(issue.slug);
+              // An article's own frontmatter image wins over the slug map.
+              const image = issue.image?.src
+                ? { src: issue.image.src, alt: issue.image.alt }
+                : updateImage(issue.slug);
               return (
                 <Reveal key={issue.slug} delay={Math.min(index * 0.08, 0.3)}>
                   <Link

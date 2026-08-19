@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Reveal } from "@/components/Reveal";
@@ -28,6 +29,7 @@ export async function generateMetadata({
       title: issue.title,
       description: issue.summary,
       publishedTime: issue.date,
+      ...(issue.image && { images: [{ url: issue.image.src, alt: issue.image.alt }] }),
     },
   };
 }
@@ -54,6 +56,7 @@ export default async function NewsletterIssuePage({
         url: `${SITE_URL}/images/satis-logo-white.png`,
       },
     },
+    ...(issue.image && { image: `${SITE_URL}${issue.image.src}` }),
     mainEntityOfPage: `${SITE_URL}/news/${issue.slug}`,
   };
 
@@ -92,6 +95,24 @@ export default async function NewsletterIssuePage({
           </Reveal>
         </div>
       </section>
+
+      {issue.image && (
+        <section className="border-b border-border">
+          <div className="mx-auto max-w-3xl px-6 py-10 lg:py-14">
+            <Reveal>
+              <div className="relative aspect-[16/9] overflow-hidden bg-ink">
+                <Image
+                  src={issue.image.src}
+                  alt={issue.image.alt}
+                  fill
+                  sizes="(min-width: 768px) 48rem, 100vw"
+                  className="object-contain p-6"
+                />
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      )}
 
       <section>
         <article className="mx-auto flex max-w-3xl flex-col gap-6 px-6 py-16 lg:py-20">

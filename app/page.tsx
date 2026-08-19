@@ -63,28 +63,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-3xl px-6 py-20 lg:px-10 lg:py-24">
-          <Reveal className="flex flex-col gap-6">
-            <p className="text-xl font-medium leading-snug tracking-tight sm:text-2xl">
-              Satis Group was founded to prove that redevelopment doesn&rsquo;t
-              have to mean starting from scratch.
-            </p>
-            <p className="text-base leading-relaxed text-muted">
-              We look for buildings with good potential in the wrong condition:
-              tired offices, disused yards, terraces neglected for years. We
-              give them a use that fits how people want to live and work today.
-              Every project is managed in-house from acquisition and planning
-              through to construction and sale, in strategic locations across
-              Manchester and the North West.
-            </p>
-            <p className="border-l-2 border-accent pl-4 text-base leading-relaxed">
-              Redeveloping properties into places people want to live and work.
-            </p>
-          </Reveal>
-        </div>
-      </section>
-
       <PortfolioPreview />
     </>
   );
