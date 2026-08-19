@@ -31,9 +31,10 @@ const SECTIONS: GuideSection[] = [
         ],
       },
       {
-        heading: "Demo credentials — replace before real use",
+        heading: "Accounts and credentials",
         body: [
-          "Admin sign-in and the demo investor accounts use test / test (an invested account) and prospect / test (a prospective one). Before onboarding real investors: create real investor accounts in /admin/platform (passwords are hashed, never stored in plain text), then ask the development team to retire the demo accounts and set SATIS_ADMIN_SECRET and SATIS_INVESTOR_SECRET environment variables in the hosting platform.",
+          "Admin sign-in: real accounts live in the SATIS_ADMIN_USERS environment variable in the hosting platform (Vercel) — the /admin/accounts page lists them and generates the entry for a new account. The public demo pair test/test only works while SATIS_ADMIN_USERS is unset. SATIS_ADMIN_SECRET and SATIS_INVESTOR_SECRET must also be set so sessions are unforgeable.",
+          "Investor accounts live in the repository (passwords are hashed, never stored in plain text) and are managed on the Investors tab of /admin/platform. The demo accounts (test / test and prospect / test) have been retired.",
         ],
       },
     ],
@@ -87,7 +88,7 @@ const SECTIONS: GuideSection[] = [
         body: [
           "Forgotten password: open the investor on the Investors tab and enter a new password — saving re-hashes it; tell the investor their new credential over a trusted channel.",
           "\"Too many attempts\": sign-in throttles after 5 failed tries from one address; it clears after 15 minutes. Sessions last 24 hours, after which investors simply sign in again.",
-          "Locked-out admin: the admin login is fixed (test/test until real credentials are configured) and throttles the same way.",
+          "Locked-out admin: admin sign-in throttles the same way. A forgotten admin password can't be recovered — generate a fresh entry at /admin/accounts (or have the development team do it) and replace that account's entry in SATIS_ADMIN_USERS.",
         ],
       },
     ],

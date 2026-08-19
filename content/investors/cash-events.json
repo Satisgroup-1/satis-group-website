@@ -1,53 +1,5 @@
 [
   {
-    "investorId": "hartwell",
-    "date": "2025-11-15",
-    "type": "Distribution",
-    "amount": 186000,
-    "developmentId": "chester-house",
-    "status": "Paid"
-  },
-  {
-    "investorId": "hartwell",
-    "date": "2026-03-31",
-    "type": "Distribution",
-    "amount": 152500,
-    "developmentId": "22-st-john-street",
-    "status": "Paid"
-  },
-  {
-    "investorId": "hartwell",
-    "date": "2026-06-30",
-    "type": "Interest payment",
-    "amount": 89500,
-    "developmentId": "barnett-house",
-    "status": "Paid"
-  },
-  {
-    "investorId": "hartwell",
-    "date": "2026-09-30",
-    "type": "Capital call",
-    "amount": 125000,
-    "developmentId": "court-house",
-    "status": "Forecast"
-  },
-  {
-    "investorId": "hartwell",
-    "date": "2026-11-15",
-    "type": "Forecast distribution",
-    "amount": 86500,
-    "developmentId": "chester-house",
-    "status": "Forecast"
-  },
-  {
-    "investorId": "hartwell",
-    "date": "2026-12-20",
-    "type": "Interest payment",
-    "amount": 31200,
-    "developmentId": "barnett-house",
-    "status": "Forecast"
-  },
-  {
     "investorId": "elm-row",
     "date": "2026-06-30",
     "type": "Interest payment",
