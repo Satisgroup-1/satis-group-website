@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AdminHomeLink } from "@/components/AdminHomeLink";
 import { AdminLogin } from "@/components/AdminLogin";
 import { isAuthenticated } from "@/lib/admin-auth";
 import {
@@ -174,6 +175,7 @@ export default async function AdminGuideChapterPage({
           </>
         ) : (
           <div className="max-w-3xl">
+            <AdminHomeLink />
             <nav aria-label="Breadcrumb" className="text-xs tracking-[0.2em] uppercase text-muted">
               <Link
                 href="/admin/guide"

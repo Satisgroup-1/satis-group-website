@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AdminHomeLink } from "@/components/AdminHomeLink";
 import { AdminLogin } from "@/components/AdminLogin";
 import { isAuthenticated } from "@/lib/admin-auth";
 import { GUIDE_GROUPS, orderedChapters } from "@/lib/admin-guide";
@@ -29,6 +30,7 @@ export default async function AdminGuidePage() {
   return (
     <section>
       <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
+        {authed && <AdminHomeLink />}
         <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
           Admin
         </span>
@@ -161,14 +163,7 @@ export default async function AdminGuidePage() {
               >
                 appraisal page
               </Link>{" "}
-              (it carries its own install walkthrough).{" "}
-              <Link
-                href="/admin"
-                className="underline decoration-border underline-offset-4 transition-colors hover:text-accent"
-              >
-                Back to the admin home
-              </Link>
-              .
+              (it carries its own install walkthrough).
             </p>
           </>
         )}

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AdminHomeLink } from "@/components/AdminHomeLink";
 import { AdminLogin } from "@/components/AdminLogin";
 import { NewsletterComposer } from "@/components/NewsletterComposer";
 import { isAuthenticated } from "@/lib/admin-auth";
@@ -22,6 +23,7 @@ export default async function AdminNewsletterPage() {
   return (
     <section>
       <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
+        {authed && <AdminHomeLink />}
         <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
           Admin
         </span>
@@ -36,14 +38,7 @@ export default async function AdminNewsletterPage() {
         ) : (
           <>
             <p className="mt-4 max-w-2xl text-sm leading-6 text-muted">
-              Issues publish straight to the news page.{" "}
-              <Link
-                href="/admin"
-                className="underline decoration-border underline-offset-4 transition-colors hover:text-accent"
-              >
-                Back to the admin home
-              </Link>
-              .
+              Issues publish straight to the news page.
             </p>
             <div className="mt-12 grid grid-cols-1 gap-16 lg:grid-cols-[1fr_20rem]">
               <div>
