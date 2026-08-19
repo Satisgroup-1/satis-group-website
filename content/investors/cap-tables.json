@@ -2,42 +2,42 @@
   {
     "developmentId": "22-st-john-street",
     "holder": "The Hartwell Partnership",
-    "committed": 1200000,
+    "committed": 540000,
     "sharePercent": 30,
     "status": "Active"
   },
   {
     "developmentId": "22-st-john-street",
     "holder": "Satis Group (GP)",
-    "committed": 1000000,
+    "committed": 450000,
     "sharePercent": 25,
     "status": "Active"
   },
   {
     "developmentId": "22-st-john-street",
     "holder": "Other private investors",
-    "committed": 1800000,
+    "committed": 810000,
     "sharePercent": 45,
     "status": "Active"
   },
   {
     "developmentId": "barnett-house",
     "holder": "The Hartwell Partnership",
-    "committed": 950000,
+    "committed": 500000,
     "sharePercent": 25,
     "status": "Active"
   },
   {
     "developmentId": "barnett-house",
     "holder": "Satis Group (GP)",
-    "committed": 1140000,
+    "committed": 600000,
     "sharePercent": 30,
     "status": "Active"
   },
   {
     "developmentId": "barnett-house",
     "holder": "Other private investors",
-    "committed": 1710000,
+    "committed": 900000,
     "sharePercent": 45,
     "status": "Active"
   },
@@ -65,21 +65,21 @@
   {
     "developmentId": "barrington-road",
     "holder": "The Hartwell Partnership",
-    "committed": 700000,
+    "committed": 300000,
     "sharePercent": 30,
     "status": "Active"
   },
   {
     "developmentId": "barrington-road",
     "holder": "Satis Group (GP)",
-    "committed": 933000,
+    "committed": 400000,
     "sharePercent": 40,
     "status": "Active"
   },
   {
     "developmentId": "barrington-road",
     "holder": "Other private investors",
-    "committed": 700000,
+    "committed": 300000,
     "sharePercent": 30,
     "status": "Active"
   },
@@ -87,21 +87,21 @@
     "developmentId": "court-house",
     "investorId": "elm-row",
     "holder": "Elm Row Capital",
-    "committed": 950000,
+    "committed": 240000,
     "sharePercent": 20,
     "status": "Active"
   },
   {
     "developmentId": "court-house",
     "holder": "Satis Group (GP)",
-    "committed": 1425000,
+    "committed": 360000,
     "sharePercent": 30,
     "status": "Active"
   },
   {
     "developmentId": "court-house",
     "holder": "Other private investors",
-    "committed": 2375000,
+    "committed": 600000,
     "sharePercent": 50,
     "status": "Active"
   },

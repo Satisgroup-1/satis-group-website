@@ -3,7 +3,7 @@
     "id": "qube-stockport",
     "name": "QUBE",
     "place": "Stockport",
-    "address": "St Petersgate, Stockport SK1 (exact address TBC)",
+    "address": "QUBE (formerly Petersgate House), St Petersgate, Stockport SK1",
     "status": "Open",
     "targetRaise": 3200000,
     "raisedToDate": 2100000,
@@ -13,19 +13,19 @@
     "horizon": "30 months",
     "closesOn": "2026-10-31",
     "structure": "Ordinary shares in Satis (QUBE) Ltd, a single-asset SPV",
-    "summary": "The comprehensive repositioning of a landmark former office building in Stockport's old town as QUBE — design-led workspace over an activated ground floor, at the centre of the town's regeneration corridor.",
+    "summary": "The mixed-use redevelopment of the former Petersgate House in Stockport town centre as QUBE — fifty-eight apartments and two commercial units at the centre of the town's regeneration corridor.",
     "highlights": [
-      "Planning consent secured; enabling works priced with two-stage contractor engagement",
-      "Stockport's office supply is the tightest in the city region, with no competing Grade A refurbishment on site",
-      "Eight minutes to Manchester Piccadilly by rail from the adjacent interchange",
+      "Fifty-eight apartments and two commercial units in Stockport town centre",
+      "Stockport's regeneration programme is the most active in the city region",
+      "Eight minutes to Manchester Piccadilly by rail from the nearby interchange",
       "Senior debt terms agreed in principle at 55% loan-to-cost"
     ]
   },
   {
-    "id": "st-johns-corner-ii",
-    "name": "St John's Corner, Phase II",
+    "id": "st-johns-corner",
+    "name": "St John's Corner",
     "place": "Manchester M3",
-    "address": "St John Street conservation area, Manchester M3 (exact address TBC)",
+    "address": "3-5 St John Street, Manchester M3",
     "status": "Coming soon",
     "targetRaise": 2400000,
     "raisedToDate": 0,
@@ -35,10 +35,10 @@
     "horizon": "36 months",
     "closesOn": "2027-01-31",
     "structure": "Ordinary shares in a new single-asset SPV (to be incorporated)",
-    "summary": "The second phase of our St John's Corner assembly: extending the restored-workspace cluster in Manchester's conservation-area legal quarter, adjacent to the fully-let Phase I.",
+    "summary": "A residential development of eleven apartments at 3-5 St John Street, in Manchester's St John's conservation area — a few doors from our workspace scheme at 22 St John Street.",
     "highlights": [
-      "Off-market acquisition agreed, exchanging Q4 2026",
-      "Phase I let ahead of appraisal rents, de-risking the leasing assumptions",
+      "Eleven apartments in Manchester's St John's conservation area",
+      "A few doors from our restored workspace scheme at 22 St John Street",
       "Registration of interest opens ahead of formal launch — allocations prioritised by registration date"
     ]
   },
@@ -46,7 +46,7 @@
     "id": "woodfield-road",
     "name": "Woodfield Road",
     "place": "Altrincham",
-    "address": "Woodfield Road, Altrincham WA14 (exact address TBC)",
+    "address": "Woodfield Road, Altrincham WA14",
     "status": "Fully subscribed",
     "targetRaise": 1800000,
     "raisedToDate": 1800000,
@@ -56,11 +56,11 @@
     "horizon": "24 months",
     "closesOn": "2026-05-15",
     "structure": "Ordinary shares in Satis (Woodfield) Ltd",
-    "summary": "A mews infill of eight family houses behind Altrincham's Woodfield Road, fully subscribed in twenty-one days. Included here for reference — quarterly reporting begins Q4 2026.",
+    "summary": "A completed mixed-use development on an Altrincham corner plot — a commercial unit behind a restored shopfront at street level, with homes on the floors above. Fully subscribed; included here for reference.",
     "highlights": [
       "Fully subscribed within three weeks of launch",
-      "Detailed planning consent in place at acquisition",
-      "First investor report scheduled alongside groundworks completion"
+      "Completed: restored shopfront and the homes above handed over",
+      "Quarterly investor reporting begins Q4 2026"
     ]
   }
 ]

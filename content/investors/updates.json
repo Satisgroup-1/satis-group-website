@@ -4,23 +4,23 @@
     "developmentId": "22-st-john-street",
     "period": "August 2026",
     "title": "22 St John Street: August project report",
-    "body": "Final joinery is complete and the first show apartment has been handed over to the sales team. The scheme remains on programme for handover in the autumn.",
-    "tag": "Fit-out",
+    "body": "The building launched to the market in August and the lettings campaign is under way, with enquiry led by professional-services occupiers.",
+    "tag": "Leasing",
     "tasks": [
       {
-        "title": "Show apartment handover",
-        "detail": "Joinery, decoration and furnishing complete; handed to the sales team on 6 August.",
+        "title": "Launch",
+        "detail": "Launch event held on site on 14 August; the show suite is now open for viewings.",
         "status": "Complete"
       },
       {
-        "title": "Suite fit-out, levels two and three",
-        "detail": "Second fix under way across six suites, with commissioning to follow in September.",
-        "status": "On programme"
+        "title": "Show suite handover",
+        "detail": "Fit-out, decoration and furnishing complete; handed to the lettings team.",
+        "status": "Complete"
       },
       {
-        "title": "Common parts and entrance",
-        "detail": "Stone flooring laid; lighting and signage scheduled for the first week of September.",
-        "status": "On programme"
+        "title": "Suite lettings",
+        "detail": "Viewings under way across all floors, with the first offers in negotiation.",
+        "status": "Under way"
       }
     ]
   },
@@ -29,22 +29,22 @@
     "developmentId": "barnett-house",
     "period": "August 2026",
     "title": "Barnett House: August project report",
-    "body": "The building is now weather-tight. First-fix MEP is progressing across levels two to five, and the programme is unchanged.",
-    "tag": "Construction",
+    "body": "Design development for Tabula continues ahead of a start on site, with contractor procurement running in parallel.",
+    "tag": "Pre-construction",
     "tasks": [
       {
-        "title": "Building envelope",
-        "detail": "Roof, glazing and cladding complete; the building is weather-tight.",
-        "status": "Complete"
-      },
-      {
-        "title": "First-fix MEP, levels two to five",
-        "detail": "Containment and risers installed to level four, with level five following this month.",
+        "title": "Design development",
+        "detail": "Detailed design progressing, with the existing building surveyed and incorporated.",
         "status": "On programme"
       },
       {
-        "title": "Cost report",
-        "detail": "Contract sum unchanged. Provisional sums for the entrance remain open pending final design.",
+        "title": "Contractor procurement",
+        "detail": "Two-stage tender issued to a shortlist of three; returns expected in the autumn.",
+        "status": "On programme"
+      },
+      {
+        "title": "Funding",
+        "detail": "Senior terms agreed in principle against the funding appraisal.",
         "status": "Monitoring"
       }
     ]
@@ -53,24 +53,24 @@
     "date": "2026-07-29",
     "developmentId": "court-house",
     "period": "July 2026",
-    "title": "Court House: July project report",
-    "body": "The full planning submission has been validated and public consultation is under way. Pre-construction procurement continues in parallel.",
-    "tag": "Planning",
+    "title": "The Courthouse: July project report",
+    "body": "All thirteen apartments are complete and the sales campaign continues, with reservations converting to exchange through the summer.",
+    "tag": "Sales",
     "tasks": [
       {
-        "title": "Planning submission",
-        "detail": "Validated by the local authority; consultation period runs to late August.",
+        "title": "Building handover",
+        "detail": "Common parts complete and the building fully commissioned.",
         "status": "Complete"
       },
       {
-        "title": "Contractor procurement",
-        "detail": "Two-stage tender issued to a shortlist of three; returns expected in September.",
-        "status": "On programme"
+        "title": "Sales",
+        "detail": "Reservations and exchanges progressing across the thirteen apartments, handled by the in-house team.",
+        "status": "Under way"
       },
       {
-        "title": "Funding",
-        "detail": "Senior terms agreed in principle, subject to a satisfactory planning outcome.",
-        "status": "Monitoring"
+        "title": "Distributions",
+        "detail": "First distribution forecast for December as sales complete.",
+        "status": "Forecast"
       }
     ]
   },
@@ -78,7 +78,7 @@
     "date": "2026-07-22",
     "developmentId": "chester-house",
     "period": "July 2026",
-    "title": "Chester House: July project report",
+    "title": "Hazelgate: July project report",
     "body": "The project team has reconfirmed practical completion for September following the latest programme review, keeping the scheme ahead of the original date.",
     "tag": "Programme",
     "tasks": [
@@ -104,23 +104,23 @@
     "developmentId": "davenport",
     "period": "July 2026",
     "title": "Davenport Park: July project report",
-    "body": "The concrete frame has reached level three and blockwork is following two floors behind. The tower crane comes down in early October.",
-    "tag": "Construction",
+    "body": "Davenport Park is complete, with the final homes handed over and the scheme performing in line with the business plan.",
+    "tag": "Complete",
     "tasks": [
       {
-        "title": "Superstructure",
-        "detail": "Frame at level three; remaining pours scheduled through August and September.",
+        "title": "Practical completion",
+        "detail": "Achieved, with all homes handed over.",
+        "status": "Complete"
+      },
+      {
+        "title": "Final account",
+        "detail": "Agreement of the final account with the contractor under way.",
         "status": "On programme"
       },
       {
-        "title": "Blockwork",
-        "detail": "Following two floors behind the frame, with no reported labour constraints.",
+        "title": "Distributions",
+        "detail": "June distribution paid; the next is forecast for January.",
         "status": "On programme"
-      },
-      {
-        "title": "Crane off hire",
-        "detail": "Tower crane dismantle booked for the first week of October.",
-        "status": "Planned"
       }
     ]
   },
@@ -128,24 +128,24 @@
     "date": "2026-07-08",
     "developmentId": "barrington-road",
     "period": "July 2026",
-    "title": "Barrington Road: July project report",
-    "body": "Ground works are complete and the substructure is signed off, clearing the way for the frame to start on site.",
-    "tag": "Construction",
+    "title": "Barrington House: July project report",
+    "body": "The building is complete and letting well, with residences and en-suite rooms marketed through Rightmove and SpareRoom.",
+    "tag": "Lettings",
     "tasks": [
       {
-        "title": "Ground works",
-        "detail": "Excavation, drainage and foundations complete and signed off by the engineer.",
+        "title": "Occupancy",
+        "detail": "Lettings progressing across the en-suite rooms and apartments, with strong local demand.",
+        "status": "Under way"
+      },
+      {
+        "title": "Snagging",
+        "detail": "Residual snagging closed out floor by floor.",
         "status": "Complete"
       },
       {
-        "title": "Superstructure start",
-        "detail": "Frame package let; first deliveries to site in the last week of July.",
-        "status": "Planned"
-      },
-      {
-        "title": "Cost report",
-        "detail": "Ground works settled within the allowance, with no drawdown on contingency.",
-        "status": "On budget"
+        "title": "Income",
+        "detail": "Rental income building towards the stabilised business plan.",
+        "status": "On programme"
       }
     ]
   }

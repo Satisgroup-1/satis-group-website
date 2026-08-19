@@ -1,6 +1,8 @@
 # Investor platform sample-data audit
 
 **Date:** 19 August 2026
+**Resolution (19 August 2026):** the client confirmed the public website is authoritative, and the investor datasets have been updated to match it — scheme names, locations, build statuses, asset mixes, raise descriptions, pipeline sequencing and the insights-article references are now consistent with the public portfolio pages, and the financial figures were rescaled to plausible levels for each scheme (they remain illustrative sample data, not real accounts). Still open: real SPV financials (§4), sources for the market statistics quoted in the insights (§4), and the Hazelgate address — the investor data now follows the public page's address field ("London Road, Hazel Grove"), but that page's own intro copy says "Chester Road", so the public page still contradicts itself.
+
 **Scope:** every dataset in `content/investors/` (`developments`, `cap-tables`, `cash-events`, `investors`, `updates`, `documents`, `opportunities`, `insights`, `market-fallback`), cross-checked against each other and against the public site content in `lib/property-pages.ts`, `app/about/page.tsx` and `app/page.tsx`.
 
 The investor platform data is sample/seed data. Much of it is internally consistent, but a number of records contradict the public website (which appears to be the authoritative, client-supplied content), and all of the financial figures are invented and need replacing or confirming before real investors see them. Items needing client input are marked **[NEEDS INFO]**.

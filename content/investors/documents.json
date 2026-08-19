@@ -10,7 +10,7 @@
   {
     "investorId": "all",
     "audience": "prospective",
-    "title": "The Press, Great Moor: Development Appraisal",
+    "title": "QUBE, Stockport: Development Appraisal",
     "kind": "Appraisal",
     "summary": "Full residual appraisal for the current raise: costs, programme, sales values and sensitivity analysis.",
     "published": "2026-07-24"
@@ -18,9 +18,17 @@
   {
     "investorId": "all",
     "audience": "prospective",
+    "title": "The Press, Great Moor: Development Appraisal",
+    "kind": "Appraisal",
+    "summary": "Appraisal and outline programme for a forthcoming residential scheme at 15 Alldis Street, Great Moor, Stockport.",
+    "published": "2026-07-18"
+  },
+  {
+    "investorId": "all",
+    "audience": "prospective",
     "title": "Springfield House: Development Appraisal",
     "kind": "Appraisal",
-    "summary": "Appraisal and outline programme for the next scheme coming to the platform.",
+    "summary": "Appraisal and outline programme for a boutique residential conversion of five apartments coming to the platform.",
     "published": "2026-07-10"
   },
   {
@@ -39,13 +47,13 @@
   },
   {
     "investorId": "elm-row",
-    "title": "Court House Planning Summary",
+    "title": "The Courthouse Sales Report",
     "kind": "Project report",
     "published": "2026-07-05"
   },
   {
     "investorId": "elm-row",
-    "title": "2025\u201326 Tax Statement",
+    "title": "2025–26 Tax Statement",
     "kind": "Tax document",
     "published": "2026-06-30"
   }
