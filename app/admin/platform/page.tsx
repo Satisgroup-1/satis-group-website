@@ -70,9 +70,10 @@ function buildAdminData(): AdminPlatformData {
       developmentId: p.developmentId,
       developmentName: developmentName(p.developmentId),
       holder: p.holder,
-      linked: Boolean(p.investorId),
+      investorId: p.investorId,
       committed: formatMoneyCompact(p.committed),
-      sharePercent: `${p.sharePercent}%`,
+      committedRaw: p.committed,
+      sharePercentRaw: p.sharePercent,
       status: p.status ?? "Active",
     })),
     cashEvents: readDataset<CashEvent>("cash-events")

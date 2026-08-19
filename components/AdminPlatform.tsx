@@ -49,9 +49,12 @@ export type AdminPlatformData = {
     developmentId: string;
     developmentName: string;
     holder: string;
-    linked: boolean;
+    /** Set when the holder is a registered platform account. */
+    investorId?: string;
     committed: string;
-    sharePercent: string;
+    /** Raw values so inline edits can resubmit the untouched fields. */
+    committedRaw: number;
+    sharePercentRaw: number;
     status: string;
   }[];
   cashEvents: {
@@ -417,6 +420,199 @@ function DevelopmentsTab({ data }: { data: AdminPlatformData }) {
   );
 }
 
+type CapPosition = AdminPlatformData["capPositions"][number];
+
+function formatMoneyShort(value: number): string {
+  if (value >= 1_000_000)
+    return `£${(value / 1_000_000).toFixed(value % 1_000_000 === 0 ? 0 : 1)}m`;
+  if (value >= 1_000) return `£${Math.round(value / 1_000)}k`;
+  return `£${value}`;
+}
+
+/** One cap-table line: share % editable in place, everything else fixed. */
+function CapPositionRow({ position }: { position: CapPosition }) {
+  const [state, action, pending] = useActionState(saveCapPosition, {});
+  return (
+    <li className="px-5 py-3">
+      <form action={action} className="flex flex-wrap items-center gap-3">
+        <input type="hidden" name="developmentId" value={position.developmentId} />
+        {position.investorId ? (
+          <input type="hidden" name="investorId" value={position.investorId} />
+        ) : (
+          <input type="hidden" name="holder" value={position.holder} />
+        )}
+        <input type="hidden" name="committed" value={position.committedRaw} />
+        <input type="hidden" name="status" value={position.status} />
+        <span className="min-w-0 flex-1 basis-48">
+          <span className="block truncate text-sm font-medium">
+            {position.holder}
+            {position.investorId && (
+              <span className="ml-2 bg-accent px-1.5 py-0.5 align-middle text-[9px] uppercase tracking-wider text-ink">
+                Account
+              </span>
+            )}
+          </span>
+          <span className="mt-0.5 block text-xs text-muted">
+            {position.committed} committed · {position.status}
+          </span>
+        </span>
+        <label className="flex items-center gap-1 text-xs text-muted">
+          <input
+            name="sharePercent"
+            type="number"
+            step="0.01"
+            min="0.01"
+            max="100"
+            required
+            defaultValue={position.sharePercentRaw}
+            className={`${INPUT} w-24 py-2`}
+            aria-label={`Share % for ${position.holder}`}
+          />
+          %
+        </label>
+        <button
+          type="submit"
+          disabled={pending}
+          className="border border-border px-3 py-2 text-[10px] tracking-[.15em] uppercase transition-colors hover:border-accent hover:text-accent disabled:opacity-60"
+        >
+          {pending ? "Saving…" : "Save"}
+        </button>
+        <DeleteButton
+          action={deleteCapPosition}
+          fields={{
+            developmentId: position.developmentId,
+            holder: position.holder,
+          }}
+        />
+        <Result state={state} />
+      </form>
+    </li>
+  );
+}
+
+/** Adds a registered platform account to one development's cap table. */
+function CapAddAccountForm({
+  developmentId,
+  investors,
+}: {
+  developmentId: string;
+  investors: AdminPlatformData["investors"];
+}) {
+  const [state, action, pending] = useActionState(saveCapPosition, {});
+  return (
+    <form action={action} className="border-t border-border bg-surface px-5 py-4">
+      <p className="text-[10px] tracking-[.15em] uppercase text-muted">
+        Add account to this table
+      </p>
+      <div className="mt-2 flex flex-wrap items-center gap-3">
+        <input type="hidden" name="developmentId" value={developmentId} />
+        <select
+          name="investorId"
+          required
+          className={`${INPUT} w-auto min-w-44 flex-1 py-2`}
+          aria-label="Platform account"
+          defaultValue=""
+        >
+          <option value="" disabled>
+            Choose an account…
+          </option>
+          {investors.map((inv) => (
+            <option key={inv.id} value={inv.id}>
+              {inv.name} ({inv.email})
+            </option>
+          ))}
+        </select>
+        <input
+          name="committed"
+          placeholder="Committed, e.g. £250k"
+          required
+          className={`${INPUT} w-40 py-2`}
+          aria-label="Committed capital"
+        />
+        <label className="flex items-center gap-1 text-xs text-muted">
+          <input
+            name="sharePercent"
+            type="number"
+            step="0.01"
+            min="0.01"
+            max="100"
+            placeholder="Share"
+            required
+            className={`${INPUT} w-24 py-2`}
+            aria-label="Share percent"
+          />
+          %
+        </label>
+        <button
+          type="submit"
+          disabled={pending}
+          className="border border-foreground bg-foreground px-4 py-2 text-[10px] tracking-[.15em] uppercase text-background transition-colors hover:border-accent hover:bg-accent disabled:opacity-60"
+        >
+          {pending ? "Adding…" : "Add"}
+        </button>
+      </div>
+      <p className="mt-2 text-[11px] leading-4 text-muted">
+        Picking an account already on the table updates its line. External
+        (non-account) holders are added with the form on the right.
+      </p>
+      <Result state={state} />
+    </form>
+  );
+}
+
+/** One development's cap table as a collapsible dropdown. */
+function CapTableGroup({
+  development,
+  positions,
+  investors,
+}: {
+  development: AdminPlatformData["developments"][number];
+  positions: CapPosition[];
+  investors: AdminPlatformData["investors"];
+}) {
+  const allocated = positions.reduce((sum, p) => sum + p.sharePercentRaw, 0);
+  const committed = positions.reduce((sum, p) => sum + p.committedRaw, 0);
+  return (
+    <details className="group border border-border">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 [&::-webkit-details-marker]:hidden">
+        <span>
+          <span className="block font-medium">
+            {development.name}
+            <span className="ml-2 text-xs font-normal text-muted">
+              {development.spvName}
+            </span>
+          </span>
+          <span className="mt-1 block text-xs text-muted">
+            {positions.length} holder{positions.length === 1 ? "" : "s"} ·{" "}
+            {Number(allocated.toFixed(2))}% allocated ·{" "}
+            {formatMoneyShort(committed)} committed
+          </span>
+        </span>
+        <span
+          aria-hidden="true"
+          className="text-accent transition-transform duration-200 group-open:rotate-180"
+        >
+          ▾
+        </span>
+      </summary>
+      <ul className="divide-y divide-border border-t border-border">
+        {positions.length === 0 && (
+          <li className="px-5 py-3 text-xs text-muted">
+            No holders yet — add the first below.
+          </li>
+        )}
+        {positions.map((p) => (
+          <CapPositionRow
+            key={`${p.developmentId}-${p.investorId ?? p.holder}`}
+            position={p}
+          />
+        ))}
+      </ul>
+      <CapAddAccountForm developmentId={development.id} investors={investors} />
+    </details>
+  );
+}
+
 function CapTablesTab({ data }: { data: AdminPlatformData }) {
   const [positionState, positionAction, positionPending] = useActionState(
     saveCapPosition,
@@ -433,36 +629,22 @@ function CapTablesTab({ data }: { data: AdminPlatformData }) {
           <h3 className="text-xs tracking-[.16em] uppercase text-muted">
             SPV cap tables
           </h3>
-          <ul className="mt-4 space-y-3">
-            {data.capPositions.map((p) => (
-              <li
-                key={`${p.developmentId}-${p.holder}`}
-                className="flex items-start justify-between gap-4 border border-border p-5"
-              >
-                <div>
-                  <h4 className="font-medium">
-                    {p.developmentName} · {p.holder}
-                    {p.linked && (
-                      <span className="ml-2 bg-accent px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-ink">
-                        Platform account
-                      </span>
-                    )}
-                  </h4>
-                  <p className="mt-1 text-xs text-muted">
-                    {p.sharePercent} of the vehicle · {p.committed} committed ·{" "}
-                    {p.status}
-                  </p>
-                </div>
-                <DeleteButton
-                  action={deleteCapPosition}
-                  fields={{
-                    developmentId: p.developmentId,
-                    holder: p.holder,
-                  }}
-                />
-              </li>
+          <p className="mt-2 text-xs leading-5 text-muted">
+            One dropdown per development. Edit a share % in place, add a
+            registered account to the table, or remove a line.
+          </p>
+          <div className="mt-4 space-y-3">
+            {data.developments.map((d) => (
+              <CapTableGroup
+                key={d.id}
+                development={d}
+                positions={data.capPositions.filter(
+                  (p) => p.developmentId === d.id
+                )}
+                investors={data.investors}
+              />
             ))}
-          </ul>
+          </div>
         </div>
         <form
           action={positionAction}
