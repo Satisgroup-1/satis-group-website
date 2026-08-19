@@ -121,8 +121,24 @@ export type SiteUpdate = {
   tasks?: ReportTask[];
 };
 
+/**
+ * Buckets a per-development document into one of the My Portfolio tabs.
+ * Documents without a category still appear under "All files".
+ */
+export type DocumentCategory = "legal" | "meetings" | "accounts";
+
+export const DOCUMENT_CATEGORIES: DocumentCategory[] = [
+  "legal",
+  "meetings",
+  "accounts",
+];
+
 export type InvestorDocument = {
-  /** An account id, or "all" to share the document with every account. */
+  /**
+   * An account id, "all" to share the document with every account, or
+   * "members" to share it with every cap-table member of developmentId
+   * (SPV documents: shareholder agreements, meeting recordings, accounts).
+   */
   investorId: string;
   title: string;
   kind: string;
@@ -132,6 +148,10 @@ export type InvestorDocument = {
   /** Restricts a shared document to one tier. */
   audience?: InvestorTier;
   summary?: string;
+  /** Ties the document to one development's My Portfolio file library. */
+  developmentId?: string;
+  /** My Portfolio tab; uncategorised documents show under "All files" only. */
+  category?: DocumentCategory;
 };
 
 export type Opportunity = {
@@ -356,7 +376,10 @@ export function getInvestorTier(investor: InvestorProfile): InvestorTier {
 /**
  * Documents visible to one account: their own, plus anything published to
  * "all" that either carries no audience or matches their tier (an
- * investment memorandum for prospective investors, say).
+ * investment memorandum for prospective investors, say). Documents tied to
+ * a development — SPV papers published to "members" and personal documents
+ * like share certificates — are excluded here: they belong to that
+ * development's My Portfolio file library (see getDevelopmentDocumentsFor).
  */
 export function getDocumentsFor(
   investorId: string,
@@ -364,10 +387,30 @@ export function getDocumentsFor(
 ): InvestorDocument[] {
   return readDataset<InvestorDocument>("documents")
     .filter((doc) => {
+      if (doc.developmentId) return false;
       if (doc.investorId === investorId) return true;
       if (doc.investorId !== "all") return false;
       return !doc.audience || !tier || doc.audience === tier;
     })
+    .sort((a, b) => b.published.localeCompare(a.published));
+}
+
+/**
+ * One development's file library for one account: SPV documents shared with
+ * every cap-table member ("members"), plus the account's own documents tied
+ * to that development (their share certificate, say). Callers must check
+ * the account actually holds a cap-table position in the development.
+ */
+export function getDevelopmentDocumentsFor(
+  investorId: string,
+  developmentId: string
+): InvestorDocument[] {
+  return readDataset<InvestorDocument>("documents")
+    .filter(
+      (doc) =>
+        doc.developmentId === developmentId &&
+        (doc.investorId === "members" || doc.investorId === investorId)
+    )
     .sort((a, b) => b.published.localeCompare(a.published));
 }
 

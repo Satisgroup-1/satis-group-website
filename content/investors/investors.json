@@ -39,6 +39,33 @@
     ]
   },
   {
+    "id": "test-investor",
+    "name": "Satis Test Account",
+    "contactName": "Alex",
+    "email": "test@satisgroup.co.uk",
+    "passwordHash": "scrypt:d6d7ff2505295882f2bdb07e017e4f57:b4e31b91853c2621680c7e43e48bbd9486dac85549727af6885f4ae32117018324409a74aaa169ebc1716924ffe77903d76a35e43f0d77d82dc2d2de033dd102",
+    "joined": "2025-11-10",
+    "tier": "invested",
+    "valueHistory": [
+      {
+        "label": "Q4 2025",
+        "value": 600000
+      },
+      {
+        "label": "Q1 2026",
+        "value": 640000
+      },
+      {
+        "label": "Q2 2026",
+        "value": 735000
+      },
+      {
+        "label": "Q3 2026",
+        "value": 822500
+      }
+    ]
+  },
+  {
     "id": "satis-team",
     "name": "Satis Group (internal)",
     "contactName": "Satis team",

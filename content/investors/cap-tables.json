@@ -15,9 +15,17 @@
   },
   {
     "developmentId": "22-st-john-street",
+    "investorId": "test-investor",
+    "holder": "Satis Test Account",
+    "committed": 400000,
+    "sharePercent": 10,
+    "status": "Active"
+  },
+  {
+    "developmentId": "22-st-john-street",
     "holder": "Other private investors",
-    "committed": 1800000,
-    "sharePercent": 45,
+    "committed": 1400000,
+    "sharePercent": 35,
     "status": "Active"
   },
   {
@@ -57,9 +65,17 @@
   },
   {
     "developmentId": "chester-house",
+    "investorId": "test-investor",
+    "holder": "Satis Test Account",
+    "committed": 200000,
+    "sharePercent": 10,
+    "status": "Active"
+  },
+  {
+    "developmentId": "chester-house",
     "holder": "Other private investors",
-    "committed": 500000,
-    "sharePercent": 25,
+    "committed": 300000,
+    "sharePercent": 15,
     "status": "Active"
   },
   {
