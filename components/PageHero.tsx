@@ -15,6 +15,8 @@ type PageHeroProps = {
    * small ones. Loaded eagerly: it is above the fold.
    */
   image?: { src: string; alt: string; position?: string };
+  /** Calls to action rendered beneath the copy. */
+  actions?: React.ReactNode;
 };
 
 export function PageHero({
@@ -24,6 +26,7 @@ export function PageHero({
   backdrop,
   compact = false,
   image,
+  actions,
 }: PageHeroProps) {
   const paragraphs =
     typeof description === "string"
@@ -70,6 +73,7 @@ export function PageHero({
               ))}
             </div>
           )}
+          {actions && <div className="mt-8 flex flex-wrap items-center gap-4">{actions}</div>}
         </Reveal>
         {image && (
           <Reveal delay={0.15}>
