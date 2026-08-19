@@ -43,7 +43,28 @@ Open [http://localhost:3000](http://localhost:3000).
   `title`, `date` and `summary` frontmatter to publish a new issue.
 - **Theme**: light/dark, brand palette defined in `app/globals.css`.
 
+## Email
+
+The investor enquiry form (`/investors/enquire`) sends submissions to
+`noreply@satisgroup.co.uk` through [Resend](https://resend.com). Set these in
+the hosting environment (Vercel → Settings → Environment Variables):
+
+| Variable | Required | Default |
+| --- | --- | --- |
+| `SATIS_RESEND_API_KEY` | yes | — |
+| `SATIS_ENQUIRY_TO` | no | `noreply@satisgroup.co.uk` |
+| `SATIS_ENQUIRY_FROM` | no | `Satis Group website <noreply@satisgroup.co.uk>` |
+
+The sender must be on a domain verified in the Resend account, so it stays a
+satisgroup.co.uk address; the enquirer rides on `Reply-To`, so replying in the
+inbox reaches them.
+
+Without `SATIS_RESEND_API_KEY` nothing is sent: in development the submission
+is written to the server log and the sender still sees the confirmation, and
+in production the form says it could not send and points at
+info@satisgroup.co.uk rather than dropping an enquiry silently.
+
 ## Notes
 
-Contact and newsletter forms are front-end only; wire them to an email
-provider before relying on submissions.
+The contact and newsletter forms are still front-end only; wire them to
+`lib/email.ts` before relying on their submissions.

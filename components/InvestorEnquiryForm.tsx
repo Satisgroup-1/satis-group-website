@@ -1,18 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-type FormState = {
-  name: string;
-  email: string;
-  company: string;
-  message: string;
-};
-
-type FormErrors = Partial<Record<"name" | "email" | "company", string>>;
+import { useActionState, useEffect, useRef, useState } from "react";
+import {
+  submitInvestorEnquiry,
+  type InvestorEnquiryState,
+} from "@/app/investors/enquire/actions";
 
 // The investor pages are a fixed black-and-gold treatment rather than the
 // themed site palette, so these inputs mirror InvestorLogin's fields exactly.
@@ -50,59 +43,47 @@ function NextSteps({ className = "" }: { className?: string }) {
   );
 }
 
+type FormValues = {
+  name: string;
+  email: string;
+  company: string;
+  message: string;
+};
+
 export function InvestorEnquiryForm() {
-  const [values, setValues] = useState<FormState>({
+  const [state, action, pending] = useActionState<
+    InvestorEnquiryState,
+    FormData
+  >(submitInvestorEnquiry, {});
+  // React resets the form once an action settles, so the fields are held in
+  // state: a send that fails hands back everything the sender typed.
+  const [values, setValues] = useState<FormValues>({
     name: "",
     email: "",
     company: "",
     message: "",
   });
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [submitted, setSubmitted] = useState(false);
+
+  const set =
+    (fieldName: keyof FormValues) =>
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+      setValues((prev) => ({ ...prev, [fieldName]: event.target.value }));
 
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const companyRef = useRef<HTMLInputElement>(null);
   const successRef = useRef<HTMLDivElement>(null);
 
+  const errors = state.fieldErrors ?? {};
+
   useEffect(() => {
-    if (submitted) successRef.current?.focus();
-  }, [submitted]);
-
-  const handleChange =
-    (field: keyof FormState) =>
-    (
-      event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-      setValues((prev) => ({ ...prev, [field]: event.target.value }));
-    };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const nextErrors: FormErrors = {};
-    if (!values.name.trim()) nextErrors.name = "Enter your name.";
-    if (!EMAIL_PATTERN.test(values.email)) {
-      nextErrors.email = "Enter a valid email address.";
-    }
-    if (!values.company.trim()) {
-      nextErrors.company =
-        "Enter your company, or “Individual” if you invest personally.";
-    }
-
-    setErrors(nextErrors);
-    if (Object.keys(nextErrors).length > 0) {
-      // Move focus to the first invalid field.
-      if (nextErrors.name) nameRef.current?.focus();
-      else if (nextErrors.email) emailRef.current?.focus();
-      else if (nextErrors.company) companyRef.current?.focus();
-      return;
-    }
-
-    // Not wired to a backend yet; connect to an email provider (e.g. Resend)
-    // once one is chosen, then replace this with a real submission.
-    setSubmitted(true);
-  };
+    if (state.sent) successRef.current?.focus();
+    // The browser catches the empty and malformed cases before submitting;
+    // anything the server rejects still needs focus moved to it.
+    else if (errors.name) nameRef.current?.focus();
+    else if (errors.email) emailRef.current?.focus();
+    else if (errors.company) companyRef.current?.focus();
+  }, [state, errors.name, errors.email, errors.company]);
 
   return (
     <div className="bg-[#000000] text-white">
@@ -136,7 +117,7 @@ export function InvestorEnquiryForm() {
             <p className="text-xs tracking-[.28em] uppercase text-[#c3a164]">
               Request access
             </p>
-            {submitted ? (
+            {state.sent ? (
               <div
                 ref={successRef}
                 role="status"
@@ -144,12 +125,12 @@ export function InvestorEnquiryForm() {
                 className="mt-4 border border-[#b18c4d]/50 bg-[#b18c4d]/10 p-6"
               >
                 <h1 className="text-3xl font-medium tracking-tight">
-                  Thanks, {values.name.trim().split(" ")[0]}.
+                  Thanks, {state.sent.name.split(" ")[0]}.
                 </h1>
                 <p className="mt-4 text-sm leading-6 text-white/70">
                   We have your enquiry and will be in touch at{" "}
-                  <span className="text-white">{values.email.trim()}</span> to
-                  set up your investor login and the data room.
+                  <span className="text-white">{state.sent.email}</span> to set
+                  up your investor login and the data room.
                 </p>
                 <Link
                   href="/investors"
@@ -167,19 +148,28 @@ export function InvestorEnquiryForm() {
                   Three details are all we need to open your account. This form
                   reaches the investment team directly.
                 </p>
-                <form
-                  onSubmit={handleSubmit}
-                  noValidate
-                  className="mt-10 space-y-6"
-                >
+                <form action={action} className="mt-10 space-y-6">
+                  {/* Hidden from people, irresistible to form-filling bots.
+                      The action drops anything that fills it in. */}
+                  <input
+                    type="text"
+                    name="website"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    className="hidden"
+                  />
                   <div>
                     <label className="block">
                       <span className={LABEL_CLASS}>Name</span>
                       <input
                         type="text"
+                        name="name"
                         ref={nameRef}
                         value={values.name}
-                        onChange={handleChange("name")}
+                        onChange={set("name")}
+                        required
+                        maxLength={200}
                         autoComplete="name"
                         aria-invalid={Boolean(errors.name)}
                         aria-describedby={
@@ -204,9 +194,12 @@ export function InvestorEnquiryForm() {
                       <span className={LABEL_CLASS}>Email</span>
                       <input
                         type="email"
+                        name="email"
                         ref={emailRef}
                         value={values.email}
-                        onChange={handleChange("email")}
+                        onChange={set("email")}
+                        required
+                        maxLength={200}
                         autoComplete="email"
                         inputMode="email"
                         aria-invalid={Boolean(errors.email)}
@@ -232,9 +225,12 @@ export function InvestorEnquiryForm() {
                       <span className={LABEL_CLASS}>Company</span>
                       <input
                         type="text"
+                        name="company"
                         ref={companyRef}
                         value={values.company}
-                        onChange={handleChange("company")}
+                        onChange={set("company")}
+                        required
+                        maxLength={200}
                         autoComplete="organization"
                         aria-invalid={Boolean(errors.company)}
                         aria-describedby={`investor-company-hint${
@@ -267,17 +263,27 @@ export function InvestorEnquiryForm() {
                     </span>
                     <textarea
                       rows={4}
+                      name="message"
                       value={values.message}
-                      onChange={handleChange("message")}
+                      onChange={set("message")}
+                      maxLength={4000}
                       className={INPUT_CLASS}
                     />
                   </label>
 
+                  {state.error && (
+                    <p role="alert" className="text-sm text-[#e1a68e]">
+                      {state.error}
+                    </p>
+                  )}
+
                   <button
                     type="submit"
-                    className="shimmer-btn flex w-full items-center justify-between bg-[#b18c4d] px-5 py-4 text-xs font-medium tracking-[.18em] uppercase transition hover:bg-[#c3a164]"
+                    disabled={pending}
+                    className="shimmer-btn flex w-full items-center justify-between bg-[#b18c4d] px-5 py-4 text-xs font-medium tracking-[.18em] uppercase transition hover:bg-[#c3a164] disabled:opacity-60"
                   >
-                    Request investor access <span>→</span>
+                    {pending ? "Sending…" : "Request investor access"}{" "}
+                    <span>→</span>
                   </button>
                 </form>
               </>
