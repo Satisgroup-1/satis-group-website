@@ -2,6 +2,8 @@
 title: Shiro Rauniar named Rising Star of the Year
 date: 2026-02-12
 summary: Our co-founder takes Rising Star of the Year at the North West Homebuilder Awards.
+image: /images/awards/north-west-homebuilder-awards.png
+imageAlt: North West Homebuilder Awards 2026
 ---
 
 Shiro Rauniar has been named Rising Star of the Year at the North West Homebuilder Awards.

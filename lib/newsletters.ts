@@ -10,6 +10,8 @@ import path from "path";
 //   title: The issue title
 //   date: 2026-07-17
 //   summary: One-line summary shown in the archive list.
+//   image: /images/awards/example.png     (optional hero image)
+//   imageAlt: What the image shows          (optional, used with image)
 //   ---
 //
 //   Plain paragraphs of text.
@@ -31,6 +33,8 @@ export type Newsletter = {
   title: string;
   date: string;
   summary: string;
+  /** Optional hero image, from an `image:` (and `imageAlt:`) frontmatter key. */
+  image?: { src: string; alt: string };
   blocks: NewsletterBlock[];
 };
 
@@ -46,7 +50,10 @@ function parseFrontmatter(raw: string): {
   for (const line of match[1].split(/\r?\n/)) {
     const idx = line.indexOf(":");
     if (idx > 0) {
-      meta[line.slice(0, idx).trim()] = line.slice(idx + 1).trim();
+      // Values may be quoted, which is required when the value itself
+      // contains a colon.
+      const value = line.slice(idx + 1).trim();
+      meta[line.slice(0, idx).trim()] = value.replace(/^(['"])([\s\S]*)\1$/, "$2");
     }
   }
   return { meta, body: match[2] };
@@ -88,6 +95,9 @@ export function getNewsletters(): Newsletter[] {
         title: meta.title ?? file.replace(/\.md$/, ""),
         date: meta.date ?? "",
         summary: meta.summary ?? "",
+        ...(meta.image
+          ? { image: { src: meta.image, alt: meta.imageAlt ?? "" } }
+          : {}),
         blocks: parseBlocks(body),
       };
     })
