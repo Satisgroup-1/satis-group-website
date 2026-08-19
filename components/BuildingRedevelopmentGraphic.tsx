@@ -19,17 +19,17 @@ const PHASES = [
   {
     step: "01",
     title: "Acquire",
-    caption: "We find a neglected building with good bones.",
+    caption: "We find a neglected building with good potential.",
   },
   {
     step: "02",
     title: "Redevelop",
-    caption: "Scaffolding goes up and a new rooftop rises.",
+    caption: "Transformation takes place.",
   },
   {
     step: "03",
     title: "Complete",
-    caption: "The lights come on. Homes ready to live in.",
+    caption: "The lights come on. Space ready to occupy.",
   },
 ];
 

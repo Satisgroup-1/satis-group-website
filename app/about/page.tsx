@@ -7,7 +7,7 @@ import { InvestmentChart } from "@/components/InvestmentChart";
 import { PageHero } from "@/components/PageHero";
 import { ParallaxSkyline } from "@/components/ParallaxSkyline";
 import { Reveal } from "@/components/Reveal";
-import { ACCOLADES, AWARD_COUNT } from "@/lib/accolades";
+import { AWARD_COUNT } from "@/lib/accolades";
 import { StatMeter } from "@/components/StatMeter";
 import { TeamGrid, type TeamMember } from "@/components/TeamGrid";
 import { ValuesGrid } from "@/components/ValuesGrid";
@@ -18,6 +18,29 @@ export const metadata: Metadata = {
   description:
     "Satis Group is a Manchester-based property development company specialising in the meticulous renovation of neglected buildings across Greater Manchester and the North West.",
 };
+
+const PROCESS = [
+  {
+    step: "01",
+    title: "Acquire",
+    body: "We find neglected buildings with good potential across Manchester and the North West.",
+  },
+  {
+    step: "02",
+    title: "Design",
+    body: "Every scheme starts from the building's own character, never a template.",
+  },
+  {
+    step: "03",
+    title: "Build",
+    body: "Delivered in-house to the highest standard, from planning to completion.",
+  },
+  {
+    step: "04",
+    title: "Sell",
+    body: "Most schemes are brought to market on completion; where we retain a building, we manage it ourselves.",
+  },
+];
 
 const VALUES = [
   {
@@ -125,42 +148,38 @@ export default function AboutPage() {
         compact
       />
 
-      {/* Our story — deliberately compact: the founders and team follow
-          straight after, and should surface early on the page. */}
+      {/* How we work — moved here from the home page. */}
       <section className="border-b border-border">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 py-16 lg:grid-cols-2 lg:gap-16 lg:px-10 lg:py-20">
-          <Reveal className="group relative">
-            <div className="relative aspect-[4/3] overflow-hidden bg-surface lg:h-full lg:aspect-auto">
-              <Image
-                src="/images/about-plaque.jpg"
-                alt="Gold plaque reading “Another development by Satis Group”"
-                fill
-                sizes="(min-width: 1024px) 50vw, 100vw"
-                className="object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105"
-                style={{ objectPosition: "center 45%" }}
-              />
-            </div>
-            <FrameCorners />
+        <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
+          <Reveal>
+            <Eyebrow index="01" label="How we work" />
+            <h2 className="mt-4 max-w-lg text-3xl font-medium tracking-tight sm:text-4xl">
+              From neglected to lived-in.
+            </h2>
           </Reveal>
-          <Reveal delay={0.15} className="flex flex-col justify-center gap-6">
-            <Eyebrow index="01" label="Our story" />
-            <p className="text-xl font-medium leading-snug tracking-tight sm:text-2xl">
-              Satis Group was founded to prove that redevelopment doesn&rsquo;t
-              have to mean starting from scratch.
-            </p>
-            <p className="text-base leading-relaxed text-muted">
-              We look for buildings with good bones in the wrong condition:
-              tired offices, disused yards, terraces neglected for years. We
-              give them a use that fits how people want to live and work today.
-              Every project is managed in-house from acquisition and planning
-              through to construction and sale, in strategic locations across
-              Manchester and the North West.
-            </p>
-            <p className="border-l-2 border-accent pl-4 text-base leading-relaxed">
-              Redeveloping properties into places people want to live and
-              work.
-            </p>
-          </Reveal>
+          <div className="mt-14 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+            {PROCESS.map((item, index) => (
+              <Reveal key={item.step} delay={index * 0.1}>
+                <div className="group relative overflow-hidden border-t border-border pt-6 transition-colors duration-300 hover:border-accent">
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -right-1 -top-5 text-7xl font-medium tracking-tighter text-accent opacity-[0.07] transition-all duration-500 group-hover:-translate-y-1 group-hover:opacity-[0.14]"
+                  >
+                    {item.step}
+                  </span>
+                  <span className="text-xs tracking-[0.25em] text-accent">
+                    {item.step}
+                  </span>
+                  <h3 className="mt-3 text-lg font-medium tracking-tight">
+                    {item.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-muted">
+                    {item.body}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -353,7 +372,7 @@ export default function AboutPage() {
       <section className="border-b border-border">
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
           <Reveal>
-            <Eyebrow index="05" label="How we work" />
+            <Eyebrow index="05" label="Our principles" />
             <h2 className="mt-4 max-w-lg text-3xl font-medium tracking-tight sm:text-4xl">
               Principles we build by.
             </h2>
@@ -437,14 +456,6 @@ export default function AboutPage() {
                     {AWARD_COUNT}
                   </span>
                   <p className="mt-2 text-sm text-muted">Awards won</p>
-                </div>
-                <div>
-                  <span className="text-4xl font-medium tracking-tight text-accent">
-                    {ACCOLADES.length}
-                  </span>
-                  <p className="mt-2 text-sm text-muted">
-                    Accolades &amp; counting
-                  </p>
                 </div>
               </div>
             </Reveal>

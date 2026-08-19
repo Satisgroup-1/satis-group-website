@@ -2,7 +2,12 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { PORTFOLIO, type PropertyType } from "@/lib/portfolio-data";
+import {
+  PORTFOLIO,
+  PORTFOLIO_PHASES,
+  portfolioPhase,
+  type PropertyType,
+} from "@/lib/portfolio-data";
 import { PropertyCard } from "./PropertyCard";
 
 const FILTERS: Array<PropertyType | "All"> = ["All", "Residential", "Commercial"];
@@ -14,6 +19,13 @@ export function PortfolioGrid() {
     filter === "All"
       ? PORTFOLIO
       : PORTFOLIO.filter((property) => property.type === filter);
+
+  // Split into Present / Future / Past, dropping any group the current
+  // type filter leaves empty.
+  const groups = PORTFOLIO_PHASES.map((group) => ({
+    ...group,
+    items: properties.filter((property) => portfolioPhase(property) === group.phase),
+  })).filter((group) => group.items.length > 0);
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
@@ -42,25 +54,38 @@ export function PortfolioGrid() {
         {properties.length} projects shown
       </p>
 
-      <motion.div
-        layout
-        className="mt-14 grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3"
-      >
-        <AnimatePresence mode="popLayout">
-          {properties.map((property) => (
-            <motion.div
-              key={property.slug}
-              layout
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.96 }}
-              transition={{ duration: 0.35, ease: "easeOut" }}
-            >
-              <PropertyCard property={property} />
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </motion.div>
+      {groups.map((group) => (
+        <section key={group.phase} className="mt-16 first:mt-14">
+          <div className="border-t border-border pt-6">
+            <h2 className="text-2xl font-medium tracking-tight sm:text-3xl">
+              {group.phase}.
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-muted">
+              {group.blurb}
+            </p>
+          </div>
+
+          <motion.div
+            layout
+            className="mt-10 grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3"
+          >
+            <AnimatePresence mode="popLayout">
+              {group.items.map((property) => (
+                <motion.div
+                  key={property.slug}
+                  layout
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  transition={{ duration: 0.35, ease: "easeOut" }}
+                >
+                  <PropertyCard property={property} />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        </section>
+      ))}
 
       {properties.length === 0 && (
         <p className="mt-14 text-sm text-muted">No projects in this category yet.</p>

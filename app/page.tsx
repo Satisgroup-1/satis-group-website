@@ -9,29 +9,6 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-const PROCESS = [
-  {
-    step: "01",
-    title: "Acquire",
-    body: "We find neglected buildings with good bones across Manchester and the North West.",
-  },
-  {
-    step: "02",
-    title: "Design",
-    body: "Every scheme starts from the building's own character, never a template.",
-  },
-  {
-    step: "03",
-    title: "Build",
-    body: "Delivered in-house to the highest standard, from planning to completion.",
-  },
-  {
-    step: "04",
-    title: "Sell",
-    body: "Most schemes are brought to market on completion; where we retain a building, we manage it ourselves.",
-  },
-];
-
 const STATS = [
   { value: "60+", label: "Properties redeveloped across the North West" },
   { value: "£120m", label: "In gross development value delivered" },
@@ -70,44 +47,6 @@ export default function Home() {
         </div>
       </BuildingRedevelopmentGraphic>
 
-      <PortfolioPreview />
-
-      <section className="border-t border-border">
-        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
-          <Reveal>
-            <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
-              How we work
-            </span>
-            <h2 className="mt-4 max-w-lg text-3xl font-medium tracking-tight sm:text-4xl">
-              From neglected to lived-in.
-            </h2>
-          </Reveal>
-          <div className="mt-14 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
-            {PROCESS.map((item, index) => (
-              <Reveal key={item.step} delay={index * 0.1}>
-                <div className="group relative overflow-hidden border-t border-border pt-6 transition-colors duration-300 hover:border-accent">
-                  <span
-                    aria-hidden="true"
-                    className="pointer-events-none absolute -right-1 -top-5 text-7xl font-medium tracking-tighter text-accent opacity-[0.07] transition-all duration-500 group-hover:-translate-y-1 group-hover:opacity-[0.14]"
-                  >
-                    {item.step}
-                  </span>
-                  <span className="text-xs tracking-[0.25em] text-accent">
-                    {item.step}
-                  </span>
-                  <h3 className="mt-3 text-lg font-medium tracking-tight">
-                    {item.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-muted">
-                    {item.body}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <section className="bg-ink text-ink-foreground">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 py-24 lg:grid-cols-3 lg:px-10 lg:py-32">
           {STATS.map((stat, index) => (
@@ -123,6 +62,30 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      <section className="border-b border-border">
+        <div className="mx-auto max-w-3xl px-6 py-20 lg:px-10 lg:py-24">
+          <Reveal className="flex flex-col gap-6">
+            <p className="text-xl font-medium leading-snug tracking-tight sm:text-2xl">
+              Satis Group was founded to prove that redevelopment doesn&rsquo;t
+              have to mean starting from scratch.
+            </p>
+            <p className="text-base leading-relaxed text-muted">
+              We look for buildings with good potential in the wrong condition:
+              tired offices, disused yards, terraces neglected for years. We
+              give them a use that fits how people want to live and work today.
+              Every project is managed in-house from acquisition and planning
+              through to construction and sale, in strategic locations across
+              Manchester and the North West.
+            </p>
+            <p className="border-l-2 border-accent pl-4 text-base leading-relaxed">
+              Redeveloping properties into places people want to live and work.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      <PortfolioPreview />
     </>
   );
 }
