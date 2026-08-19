@@ -1,16 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import {
+  CONTACT_TOPICS,
+  EMAIL_PATTERN,
+  type ContactTopic,
+} from "@/lib/contact";
 
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-export const CONTACT_TOPICS = [
-  "General enquiry",
-  "Property enquiry",
-  "Investment",
-] as const;
-
-export type ContactTopic = (typeof CONTACT_TOPICS)[number];
+export { CONTACT_TOPICS, type ContactTopic };
 
 type FormState = {
   name: string;
@@ -36,11 +33,14 @@ export function ContactForm({
     message: "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
+  const [sending, setSending] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
 
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const messageRef = useRef<HTMLTextAreaElement>(null);
+  const companyRef = useRef<HTMLInputElement>(null);
   const successRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -57,8 +57,9 @@ export function ContactForm({
       setValues((prev) => ({ ...prev, [field]: event.target.value }));
     };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (sending) return;
 
     const nextErrors: FormErrors = {};
     if (!values.name.trim()) nextErrors.name = "Enter your name.";
@@ -76,9 +77,35 @@ export function ContactForm({
       return;
     }
 
-    // Not wired to a backend yet; connect to an email provider (e.g. Resend)
-    // once one is chosen, then replace this with a real submission.
-    setSubmitted(true);
+    setSending(true);
+    setSubmitError(null);
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...values,
+          company: companyRef.current?.value ?? "",
+        }),
+      });
+      if (!response.ok) {
+        const data = (await response.json().catch(() => null)) as {
+          error?: string;
+        } | null;
+        setSubmitError(
+          data?.error ??
+            "We couldn't send your message. Please try again later."
+        );
+        return;
+      }
+      setSubmitted(true);
+    } catch {
+      setSubmitError(
+        "We couldn't send your message. Please check your connection and try again."
+      );
+    } finally {
+      setSending(false);
+    }
   };
 
   if (submitted) {
@@ -186,11 +213,33 @@ export function ContactForm({
         )}
       </div>
 
+      {/* Honeypot: hidden from real visitors; bots that fill it are dropped
+          silently by the API. */}
+      <div aria-hidden="true" className="absolute -left-[9999px] top-auto">
+        <label>
+          Company
+          <input
+            type="text"
+            name="company"
+            ref={companyRef}
+            tabIndex={-1}
+            autoComplete="off"
+          />
+        </label>
+      </div>
+
+      {submitError && (
+        <p role="alert" className="text-sm text-clay">
+          {submitError}
+        </p>
+      )}
+
       <button
         type="submit"
-        className="self-start border border-foreground bg-foreground px-8 py-3 text-xs tracking-[0.2em] uppercase text-background transition-colors duration-300 hover:border-accent hover:bg-accent"
+        disabled={sending}
+        className="self-start border border-foreground bg-foreground px-8 py-3 text-xs tracking-[0.2em] uppercase text-background transition-colors duration-300 hover:border-accent hover:bg-accent disabled:cursor-not-allowed disabled:opacity-60"
       >
-        Send message
+        {sending ? "Sending…" : "Send message"}
       </button>
     </form>
   );

@@ -43,7 +43,25 @@ Open [http://localhost:3000](http://localhost:3000).
   `title`, `date` and `summary` frontmatter to publish a new issue.
 - **Theme**: light/dark, brand palette defined in `app/globals.css`.
 
+## Contact form email
+
+The contact form posts to `app/api/contact/route.ts`, which sends each
+submission through Microsoft 365 (Outlook) SMTP to `info@satisgroup.co.uk`
+(the visitor's address is set as reply-to, so replying in Outlook goes
+straight back to them).
+
+Setup — see `.env.example` for details on each variable:
+
+1. In the Microsoft 365 admin center, enable **Authenticated SMTP** on the
+   sending mailbox (e.g. `noreply@satisgroup.co.uk`).
+2. On Vercel: Project → Settings → Environment Variables, add `SMTP_USER`,
+   `SMTP_PASS` and (optionally) `CONTACT_TO_EMAIL`, then redeploy.
+3. Locally: copy `.env.example` to `.env.local` and fill in the values.
+
+If the variables are missing the API returns 503 and the form shows a
+"temporarily unavailable" message; submissions are never silently dropped.
+
 ## Notes
 
-Contact and newsletter forms are front-end only; wire them to an email
-provider before relying on submissions.
+The newsletter form is front-end only; wire it to an email provider before
+relying on submissions.
