@@ -18,7 +18,7 @@ export const ACCOLADES: Accolade[] = [
   {
     kind: "Award",
     title: "Property Week RESI Awards",
-    detail: "Rising Star of the Year, 2026",
+    detail: "Rising Star of the Year, 2025",
     subject: "Shaunak Rauniar, The Developers Club",
     image: {
       src: "/images/awards/property-week-resi-awards.png",
