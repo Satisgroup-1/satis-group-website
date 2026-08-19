@@ -44,6 +44,14 @@ function buildPortalData(
 ): PortalData {
   const invested = tier === "invested";
   const summary = computePortfolio(investor.id);
+  // Everything private to an SPV — its cap table, financials and monthly
+  // reports — is only assembled for accounts holding a cap-table position
+  // in that development. Other developments still show their public card.
+  const memberDevelopmentIds = new Set(
+    summary.holdings.map((h) => h.developmentId)
+  );
+  const memberOf = (developmentId: string) =>
+    invested && memberDevelopmentIds.has(developmentId);
   const developmentById = new Map(developments.map((d) => [d.id, d]));
   const developmentName = (id?: string) =>
     (id && developmentById.get(id)?.name) ?? "Portfolio";
@@ -105,7 +113,9 @@ function buildPortalData(
 
   // Prospective accounts see the pipeline they could invest in; invested
   // accounts see their own position. Nothing private to an SPV (cap tables,
-  // equity values, cash events) is assembled for a prospective account.
+  // equity values, cash events, monthly reports) is assembled for a
+  // prospective account, or for developments the account holds no
+  // cap-table position in — see memberOf above.
   const prospectStats = [
     {
       label: "Open raises",
@@ -166,7 +176,7 @@ function buildPortalData(
       : prospectStats,
     valueHistory: invested ? investor.valueHistory ?? [] : [],
     developments: developments.map((d) => {
-      const capTable = invested
+      const capTable = memberOf(d.id)
         ? getCapTableFor(d.id).map((position) => ({
             holder: position.holder,
             sharePercent: `${position.sharePercent}%`,
@@ -175,7 +185,9 @@ function buildPortalData(
           }))
         : [];
       const mine = summary.holdings.find((h) => h.developmentId === d.id);
-      const latest = reports.find((u) => u.developmentId === d.id);
+      const latest = memberOf(d.id)
+        ? reports.find((u) => u.developmentId === d.id)
+        : undefined;
       return {
         id: d.id,
         name: d.name,
@@ -196,7 +208,7 @@ function buildPortalData(
               file: latest.file,
             }
           : undefined,
-        spv: invested
+        spv: memberOf(d.id)
           ? {
               name: d.spv.name,
               equityValue: formatMoneyCompact(d.spv.equityValue),
@@ -232,7 +244,9 @@ function buildPortalData(
     },
     upcomingEvents,
     reports: invested
-      ? reports.map((u) => ({
+      ? reports
+          .filter((u) => memberOf(u.developmentId))
+          .map((u) => ({
           date: formatPortalDate(u.date),
           period: u.period ?? formatPortalDate(u.date),
           site: developmentName(u.developmentId),
