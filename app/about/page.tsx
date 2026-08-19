@@ -430,11 +430,13 @@ export default function AboutPage() {
               </h2>
               <p className="mt-6 max-w-xl text-base leading-relaxed text-muted">
                 Our buildings and our people have been recognised nationally: a
-                five-star UK Property Award for 22 St John, and Rising Star of
-                the Year at the North West Homebuilder Awards. Our work has been
-                the cover feature of Your Property Network, and Satis Group
-                directors sit on the judging panel of the Property Investors
-                Awards, assessing the field as well as competing in it.
+                five-star UK Property Award for 22 St John, Rising Star of the
+                Year for Shiro Rauniar at the North West Homebuilder Awards, and
+                Rising Star of the Year for Shaun Rauniar at the Property Week
+                RESI Awards. Our work has been the cover feature of Your Property
+                Network, and Satis Group directors sit on the judging panel of
+                the Property Investors Awards, assessing the field as well as
+                competing in it.
               </p>
               <Link
                 href="/news#awards"

@@ -17,6 +17,16 @@ export type Accolade = {
 export const ACCOLADES: Accolade[] = [
   {
     kind: "Award",
+    title: "Property Week RESI Awards",
+    detail: "Rising Star of the Year, 2026",
+    subject: "Shaun Rauniar, The Developers Club",
+    image: {
+      src: "/images/awards/property-week-resi-awards.png",
+      alt: "Property Week RESI Awards",
+    },
+  },
+  {
+    kind: "Award",
     title: "UK Property Awards",
     detail: "Best Commercial Renovation & Redevelopment, five star",
     subject: "22 St John, Greater Manchester & United Kingdom",
