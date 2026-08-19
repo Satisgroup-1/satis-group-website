@@ -202,7 +202,13 @@ export function BuildingRedevelopmentGraphic({
         {/* minmax(0,1fr) + min-h-0 let the graphic row shrink on short
             viewports, so the phase stepper below is never pushed out of the
             fixed-height sticky frame and cropped */}
-        <div className="mx-auto grid h-full w-full min-h-0 max-w-7xl flex-1 grid-rows-[auto_minmax(0,1fr)] gap-4 px-6 pt-10 [@media(max-height:800px)]:pt-4 lg:grid-cols-[1fr_1fr] lg:grid-rows-none lg:items-center lg:gap-10 lg:px-10 lg:pt-0">
+        <div
+          className={`mx-auto grid h-full w-full min-h-0 max-w-7xl flex-1 gap-4 px-6 pt-10 [@media(max-height:800px)]:pt-4 lg:items-center lg:gap-10 lg:px-10 lg:pt-0 ${
+            children
+              ? "grid-rows-[auto_minmax(0,1fr)] lg:grid-cols-[1fr_1fr] lg:grid-rows-none"
+              : "grid-rows-[minmax(0,1fr)]"
+          }`}
+        >
           {children && (
             <div className="relative z-10 min-h-0 max-w-xl pb-6 [@media(max-height:800px)]:pb-3 lg:pb-10">
               {children}

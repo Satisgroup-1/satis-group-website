@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AnimatedStat } from "@/components/AnimatedStat";
+import { BuildingRedevelopmentGraphic } from "@/components/BuildingRedevelopmentGraphic";
 import { PageHero } from "@/components/PageHero";
 import { ParallaxSkyline } from "@/components/ParallaxSkyline";
 import { PortfolioPreview } from "@/components/PortfolioPreview";
@@ -57,6 +58,12 @@ export default function Home() {
           </>
         }
       />
+
+      {/* The redevelopment story, scrubbed by scroll. It was the hero until
+          the backdrops swapped; it keeps its three-stage timeline here. */}
+      <section className="border-b border-border">
+        <BuildingRedevelopmentGraphic />
+      </section>
 
       <PortfolioPreview />
     </>
