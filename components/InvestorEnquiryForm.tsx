@@ -28,17 +28,13 @@ const NEXT_STEPS = [
     body: "A login with the investment memorandum and the appraisals for every scheme we are currently raising against.",
   },
   {
-    title: "We arrange a call",
-    body: "Fifteen minutes with the team delivering the developments, not a sales desk.",
-  },
-  {
     title: "You commit when ready",
     body: "Single-asset vehicles, per-scheme terms, and no obligation from having an account.",
   },
 ];
 
-/** The three steps, shown beside the form on large screens and beneath it on
-    small ones, where the left panel is hidden. */
+/** The steps, shown beside the form on large screens and beneath it on small
+    ones, where the left panel is hidden. */
 function NextSteps({ className = "" }: { className?: string }) {
   return (
     <div className={`grid grid-cols-1 gap-8 ${className}`}>
@@ -132,7 +128,7 @@ export function InvestorEnquiryForm() {
               raises to review before you commit to anything.
             </p>
           </div>
-          <NextSteps className="border-t border-white/15 pt-7 sm:grid-cols-3" />
+          <NextSteps className="border-t border-white/15 pt-7 sm:grid-cols-2" />
         </section>
 
         <section className="flex items-center justify-center px-6 py-16">
