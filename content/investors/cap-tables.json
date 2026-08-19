@@ -1,7 +1,6 @@
 [
   {
     "developmentId": "22-st-john-street",
-    "investorId": "hartwell",
     "holder": "The Hartwell Partnership",
     "committed": 1200000,
     "sharePercent": 30,
@@ -23,7 +22,6 @@
   },
   {
     "developmentId": "barnett-house",
-    "investorId": "hartwell",
     "holder": "The Hartwell Partnership",
     "committed": 950000,
     "sharePercent": 25,
@@ -45,7 +43,6 @@
   },
   {
     "developmentId": "chester-house",
-    "investorId": "hartwell",
     "holder": "The Hartwell Partnership",
     "committed": 800000,
     "sharePercent": 40,
@@ -67,7 +64,6 @@
   },
   {
     "developmentId": "barrington-road",
-    "investorId": "hartwell",
     "holder": "The Hartwell Partnership",
     "committed": 700000,
     "sharePercent": 30,
