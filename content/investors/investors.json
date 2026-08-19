@@ -118,5 +118,15 @@
     "joined": "2026-07-28",
     "tier": "prospective",
     "valueHistory": []
+  },
+  {
+    "id": "satis-team",
+    "name": "Satis Group (internal)",
+    "contactName": "Satis team",
+    "email": "info@satisgroup.co.uk",
+    "passwordHash": "scrypt:68ae95200f9b53bc5813a32840ec946b:e0100f40142dc9ad86a9c0861305bb1be4e1c4d0725be819aa14c6a6fd16886131bb0378263c1998f81b6fa69d3c302d24df58942a1ecab47d1b9bb40b344a67",
+    "joined": "2026-08-19",
+    "tier": "prospective",
+    "valueHistory": []
   }
 ]
