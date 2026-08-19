@@ -151,7 +151,7 @@ export function AdminSubscribers({ rows }: { rows: SubscriberRow[] }) {
     <div className="grid gap-10 xl:grid-cols-[1.2fr_.8fr]">
       <div>
         <div className="flex flex-wrap items-end justify-between gap-4">
-          <div className="flex gap-8">
+          <div className="flex gap-8" data-guide="counts">
             <span className="text-xs text-muted">
               <b className="block text-2xl font-medium text-foreground">
                 {counts.subscribed}
@@ -167,6 +167,7 @@ export function AdminSubscribers({ rows }: { rows: SubscriberRow[] }) {
           </div>
           <button
             type="button"
+            data-guide="download"
             onClick={download}
             disabled={visible.length === 0}
             className="border border-border px-5 py-3 text-[10px] tracking-[.15em] uppercase transition-colors hover:border-accent hover:text-accent disabled:opacity-50"
@@ -176,7 +177,11 @@ export function AdminSubscribers({ rows }: { rows: SubscriberRow[] }) {
         </div>
 
         <div className="mt-8 flex flex-wrap items-center gap-3">
-          <div className="flex flex-wrap gap-2">
+          <div
+            role="group"
+            aria-label="Filter the signup list"
+            className="flex flex-wrap gap-2"
+          >
             {FILTERS.map((option) => (
               <button
                 key={option.id}
@@ -212,7 +217,10 @@ export function AdminSubscribers({ rows }: { rows: SubscriberRow[] }) {
               : "No signups match that search."}
           </p>
         ) : (
-          <ul className="mt-8 divide-y divide-border border-t border-b border-border">
+          <ul
+            data-guide="signups"
+            className="mt-8 divide-y divide-border border-t border-b border-border"
+          >
             {visible.map((row) => (
               <li
                 key={row.email}
