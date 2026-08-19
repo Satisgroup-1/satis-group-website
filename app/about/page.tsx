@@ -410,13 +410,12 @@ export default function AboutPage() {
                 Award winners, and judges of the awards.
               </h2>
               <p className="mt-6 max-w-xl text-base leading-relaxed text-muted">
-                Our buildings and our people have been recognised nationally:
-                {" "}{AWARD_COUNT} competition wins to date, among them a five-star
-                UK Property Award for 22 St John and Rising Star of the Year at
-                the North West Homebuilder Awards. Our work has been the cover
-                feature of Your Property Network, and Satis Group directors sit
-                on the judging panel of the Property Investors Awards,
-                assessing the field as well as competing in it.
+                Our buildings and our people have been recognised nationally: a
+                five-star UK Property Award for 22 St John, and Rising Star of
+                the Year at the North West Homebuilder Awards. Our work has been
+                the cover feature of Your Property Network, and Satis Group
+                directors sit on the judging panel of the Property Investors
+                Awards, assessing the field as well as competing in it.
               </p>
               <Link
                 href="/news#awards"

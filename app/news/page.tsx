@@ -138,9 +138,9 @@ export default function NewsPage() {
               </span>
             </div>
             <p className="mt-4 max-w-xl text-base leading-relaxed text-muted">
-              {AWARD_COUNT} national awards for our buildings and our people,
-              cover features in the property press, and seats on the judging
-              panels that decide the rest.
+              {AWARD_COUNT} national awards for our buildings and our people, a
+              cover feature in the property press, and a seat on the panel that
+              judges the rest.
             </p>
           </Reveal>
 
