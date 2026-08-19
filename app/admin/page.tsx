@@ -23,6 +23,11 @@ const SEGMENTS = [
     body: "Compose and publish news issues, and review everything already live on the site.",
   },
   {
+    href: "/admin/newsletter/subscribers",
+    title: "Newsletter signup list",
+    body: "Everyone who has signed up through the website — added automatically when the form is submitted. Search it, unsubscribe or delete an address, and download it as a CSV.",
+  },
+  {
     href: "/admin/platform",
     title: "Investors",
     body: "Manage investor accounts, developments and SPV cap tables, project returns, insights and upcoming raises — with bulk import and export.",

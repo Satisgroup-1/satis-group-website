@@ -1,34 +1,27 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
+import {
+  subscribeToNewsletter,
+  type SubscribeState,
+} from "@/app/news/actions";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function NewsletterForm() {
+  const [state, action, pending] = useActionState<SubscribeState, FormData>(
+    subscribeToNewsletter,
+    {}
+  );
   const [email, setEmail] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [submitted, setSubmitted] = useState(false);
+  const [clientError, setClientError] = useState<string | null>(null);
   const successRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (submitted) successRef.current?.focus();
-  }, [submitted]);
+    if (state.success) successRef.current?.focus();
+  }, [state.success]);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (!EMAIL_PATTERN.test(email)) {
-      setError("Enter a valid email address.");
-      return;
-    }
-
-    setError(null);
-    // Not wired to a backend yet; connect to an email provider (e.g. Resend)
-    // once one is chosen, then replace this with a real submission.
-    setSubmitted(true);
-  };
-
-  if (submitted) {
+  if (state.success) {
     return (
       <div
         ref={successRef}
@@ -44,8 +37,23 @@ export function NewsletterForm() {
     );
   }
 
+  const error = clientError ?? state.error ?? null;
+
   return (
-    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
+    <form
+      action={action}
+      // Validate before the request so a typo doesn't cost a round trip.
+      onSubmit={(event) => {
+        if (!EMAIL_PATTERN.test(email)) {
+          event.preventDefault();
+          setClientError("Enter a valid email address.");
+          return;
+        }
+        setClientError(null);
+      }}
+      noValidate
+      className="flex flex-col gap-4"
+    >
       <div className="flex flex-col gap-2 sm:flex-row">
         <input
           type="email"
@@ -59,11 +67,21 @@ export function NewsletterForm() {
           aria-describedby={error ? "newsletter-email-error" : undefined}
           className="w-full border border-border bg-transparent px-4 py-3 text-sm outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition-colors placeholder:text-muted focus:border-accent sm:max-w-sm"
         />
+        {/* Honeypot: hidden from people and assistive tech, filled by bots. */}
+        <input
+          type="text"
+          name="company"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          className="hidden"
+        />
         <button
           type="submit"
-          className="border border-foreground bg-foreground px-6 py-3 text-xs tracking-[0.2em] uppercase text-background transition-colors duration-300 hover:border-accent hover:bg-accent"
+          disabled={pending}
+          className="border border-foreground bg-foreground px-6 py-3 text-xs tracking-[0.2em] uppercase text-background transition-colors duration-300 hover:border-accent hover:bg-accent disabled:opacity-60"
         >
-          Subscribe
+          {pending ? "Adding…" : "Subscribe"}
         </button>
       </div>
       {error && (
