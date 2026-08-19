@@ -2,11 +2,8 @@
 
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import {
-  CONTACT_TOPICS,
-  ContactForm,
-  type ContactTopic,
-} from "./ContactForm";
+import { ContactForm } from "./ContactForm";
+import { CONTACT_TOPICS, type ContactTopic } from "@/lib/contact-topics";
 
 function InnerForm() {
   const searchParams = useSearchParams();

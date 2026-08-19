@@ -1,26 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
+import { submitContactEnquiry, type ContactState } from "@/app/contact/actions";
+import { CONTACT_TOPICS, type ContactTopic } from "@/lib/contact-topics";
 
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-export const CONTACT_TOPICS = [
-  "General enquiry",
-  "Property enquiry",
-  "Investment",
-] as const;
-
-export type ContactTopic = (typeof CONTACT_TOPICS)[number];
-
-type FormState = {
+type FormValues = {
   name: string;
   email: string;
   topic: ContactTopic;
   message: string;
 };
-
-type FormErrors = Partial<Record<"name" | "email" | "message", string>>;
 
 const INPUT_CLASS =
   "border border-border bg-transparent px-4 py-3 text-sm outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition-colors focus:border-accent";
@@ -30,26 +20,46 @@ export function ContactForm({
 }: {
   initialTopic?: ContactTopic;
 }) {
-  const [values, setValues] = useState<FormState>({
+  const [state, action, pending] = useActionState<ContactState, FormData>(
+    submitContactEnquiry,
+    {}
+  );
+  // React resets the form once an action settles, so the fields are held in
+  // state: a send that fails hands back everything the sender typed.
+  const [values, setValues] = useState<FormValues>({
     name: "",
     email: "",
     topic: initialTopic,
     message: "",
   });
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [submitted, setSubmitted] = useState(false);
 
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
+  const topicRef = useRef<HTMLSelectElement>(null);
   const messageRef = useRef<HTMLTextAreaElement>(null);
   const successRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (submitted) successRef.current?.focus();
-  }, [submitted]);
+  const errors = state.fieldErrors ?? {};
 
-  const handleChange =
-    (field: keyof FormState) =>
+  // React resets the form once an action settles. Text fields are re-applied
+  // from state on the same render, but a select is left on its first option,
+  // which would show "General enquiry" while state still held the topic the
+  // sender picked — and that topic is what a retry would send.
+  useEffect(() => {
+    if (topicRef.current) topicRef.current.value = values.topic;
+  }, [state, values.topic]);
+
+  useEffect(() => {
+    if (state.sent) successRef.current?.focus();
+    // The browser catches the empty and malformed cases before submitting;
+    // anything the server rejects still needs focus moved to it.
+    else if (errors.name) nameRef.current?.focus();
+    else if (errors.email) emailRef.current?.focus();
+    else if (errors.message) messageRef.current?.focus();
+  }, [state, errors.name, errors.email, errors.message]);
+
+  const set =
+    (field: keyof FormValues) =>
     (
       event: React.ChangeEvent<
         HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -58,31 +68,7 @@ export function ContactForm({
       setValues((prev) => ({ ...prev, [field]: event.target.value }));
     };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const nextErrors: FormErrors = {};
-    if (!values.name.trim()) nextErrors.name = "Enter your name.";
-    if (!EMAIL_PATTERN.test(values.email)) {
-      nextErrors.email = "Enter a valid email address.";
-    }
-    if (!values.message.trim()) nextErrors.message = "Enter a message.";
-
-    setErrors(nextErrors);
-    if (Object.keys(nextErrors).length > 0) {
-      // Move focus to the first invalid field.
-      if (nextErrors.name) nameRef.current?.focus();
-      else if (nextErrors.email) emailRef.current?.focus();
-      else if (nextErrors.message) messageRef.current?.focus();
-      return;
-    }
-
-    // Not wired to a backend yet; connect to an email provider (e.g. Resend)
-    // once one is chosen, then replace this with a real submission.
-    setSubmitted(true);
-  };
-
-  if (submitted) {
+  if (state.sent) {
     return (
       <div
         ref={successRef}
@@ -91,7 +77,7 @@ export function ContactForm({
         className="border border-border px-6 py-8"
       >
         <p className="text-sm tracking-[0.05em]">
-          Thanks, {values.name.split(" ")[0]}. We&rsquo;ve received your
+          Thanks, {state.sent.name.split(" ")[0]}. We&rsquo;ve received your
           message and will get back to you shortly.
         </p>
       </div>
@@ -99,7 +85,17 @@ export function ContactForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
+    <form action={action} className="flex flex-col gap-6">
+      {/* Hidden from people, irresistible to form-filling bots. The action
+          drops anything that fills it in. */}
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="hidden"
+      />
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div className="flex flex-col gap-2">
           <label className="flex flex-col gap-2">
@@ -108,9 +104,12 @@ export function ContactForm({
             </span>
             <input
               type="text"
+              name="name"
               ref={nameRef}
               value={values.name}
-              onChange={handleChange("name")}
+              onChange={set("name")}
+              required
+              maxLength={200}
               autoComplete="name"
               aria-invalid={Boolean(errors.name)}
               aria-describedby={errors.name ? "name-error" : undefined}
@@ -131,9 +130,12 @@ export function ContactForm({
             </span>
             <input
               type="email"
+              name="email"
               ref={emailRef}
               value={values.email}
-              onChange={handleChange("email")}
+              onChange={set("email")}
+              required
+              maxLength={200}
               autoComplete="email"
               aria-invalid={Boolean(errors.email)}
               aria-describedby={errors.email ? "email-error" : undefined}
@@ -153,8 +155,10 @@ export function ContactForm({
           Topic
         </span>
         <select
+          name="topic"
+          ref={topicRef}
           value={values.topic}
-          onChange={handleChange("topic")}
+          onChange={set("topic")}
           className="border border-border bg-background px-4 py-3 text-sm outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition-colors focus:border-accent"
         >
           {CONTACT_TOPICS.map((topic) => (
@@ -188,9 +192,12 @@ export function ContactForm({
           </span>
           <textarea
             rows={6}
+            name="message"
             ref={messageRef}
             value={values.message}
-            onChange={handleChange("message")}
+            onChange={set("message")}
+            required
+            maxLength={4000}
             aria-invalid={Boolean(errors.message)}
             aria-describedby={errors.message ? "message-error" : undefined}
             className={INPUT_CLASS}
@@ -203,11 +210,18 @@ export function ContactForm({
         )}
       </div>
 
+      {state.error && (
+        <p role="alert" className="text-sm text-clay">
+          {state.error}
+        </p>
+      )}
+
       <button
         type="submit"
-        className="self-start border border-foreground bg-foreground px-8 py-3 text-xs tracking-[0.2em] uppercase text-background transition-colors duration-300 hover:border-accent hover:bg-accent"
+        disabled={pending}
+        className="self-start border border-foreground bg-foreground px-8 py-3 text-xs tracking-[0.2em] uppercase text-background transition-colors duration-300 hover:border-accent hover:bg-accent disabled:opacity-60"
       >
-        Send message
+        {pending ? "Sending…" : "Send message"}
       </button>
     </form>
   );

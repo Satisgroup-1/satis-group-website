@@ -45,15 +45,20 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Email
 
-The investor enquiry form (`/investors/enquire`) sends submissions to
-`noreply@satisgroup.co.uk` through [Resend](https://resend.com). Set these in
-the hosting environment (Vercel → Settings → Environment Variables):
+The investor enquiry form (`/investors/enquire`) and the contact form
+(`/contact`) send submissions to `noreply@satisgroup.co.uk` through
+[Resend](https://resend.com). Set these in the hosting environment
+(Vercel → Settings → Environment Variables):
 
 | Variable | Required | Default |
 | --- | --- | --- |
 | `SATIS_RESEND_API_KEY` | yes | — |
 | `SATIS_ENQUIRY_TO` | no | `noreply@satisgroup.co.uk` |
+| `SATIS_CONTACT_TO` | no | whatever `SATIS_ENQUIRY_TO` resolves to |
 | `SATIS_ENQUIRY_FROM` | no | `Satis Group website <noreply@satisgroup.co.uk>` |
+
+Both forms land in the same inbox unless `SATIS_CONTACT_TO` splits the general
+enquiries out.
 
 The sender must be on a domain verified in the Resend account, so it stays a
 satisgroup.co.uk address; the enquirer rides on `Reply-To`, so replying in the
@@ -64,7 +69,11 @@ is written to the server log and the sender still sees the confirmation, and
 in production the form says it could not send and points at
 info@satisgroup.co.uk rather than dropping an enquiry silently.
 
+`lib/email.ts` is the Resend client; `lib/enquiry.ts` holds the shared form
+plumbing (field reading, per-IP throttle, delivery and the not-configured
+behaviour) that both server actions use.
+
 ## Notes
 
-The contact and newsletter forms are still front-end only; wire them to
-`lib/email.ts` before relying on their submissions.
+The newsletter signup is still front-end only; wire it through
+`lib/enquiry.ts` before relying on its submissions.
