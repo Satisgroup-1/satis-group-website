@@ -4,8 +4,7 @@ import Link from "next/link";
 import { Eyebrow } from "@/components/Eyebrow";
 import { FrameCorners } from "@/components/FrameCorners";
 import { InvestmentChart } from "@/components/InvestmentChart";
-import { PageHero } from "@/components/PageHero";
-import { BuildingBackdrop } from "@/components/BuildingBackdrop";
+import { BuildingRedevelopmentGraphic } from "@/components/BuildingRedevelopmentGraphic";
 import { Reveal } from "@/components/Reveal";
 import { AWARD_COUNT } from "@/lib/accolades";
 import { StatMeter } from "@/components/StatMeter";
@@ -140,13 +139,18 @@ const FOUNDER_ROLES = [
 export default function AboutPage() {
   return (
     <>
-      <PageHero
-        eyebrow="About Satis Group"
-        title="A trusted partner."
-        description="Satis Group acquires, redevelops and sells residential and commercial property across Manchester and the North West."
-        backdrop={<BuildingBackdrop />}
-        compact
-      />
+      <BuildingRedevelopmentGraphic>
+        <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
+          About Satis Group
+        </span>
+        <h1 className="mt-4 max-w-2xl text-3xl font-medium leading-[1.1] tracking-tight [@media(max-height:800px)]:text-2xl sm:text-4xl lg:text-5xl lg:[@media(max-height:800px)]:text-4xl">
+          A trusted partner.
+        </h1>
+        <p className="mt-5 max-w-md text-sm leading-relaxed text-muted [@media(max-height:800px)]:mt-3 lg:text-base">
+          Satis Group acquires, redevelops and sells residential and commercial
+          property across Manchester and the North West.
+        </p>
+      </BuildingRedevelopmentGraphic>
 
       {/* How we work — moved here from the home page. */}
       <section className="border-b border-border">
