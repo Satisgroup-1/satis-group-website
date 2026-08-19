@@ -34,7 +34,8 @@ const SECTIONS: GuideSection[] = [
         heading: "Accounts and credentials",
         body: [
           "Admin sign-in: real accounts live in the SATIS_ADMIN_USERS environment variable in the hosting platform (Vercel) — the /admin/accounts page lists them and generates the entry for a new account. The public demo pair test/test only works while SATIS_ADMIN_USERS is unset. SATIS_ADMIN_SECRET and SATIS_INVESTOR_SECRET must also be set so sessions are unforgeable.",
-          "Investor accounts live in the repository (passwords are hashed, never stored in plain text) and are managed on the Investors tab of /admin/platform. The demo accounts (test / test and prospect / test) have been retired.",
+          "Investor accounts live in the repository (passwords are hashed, never stored in plain text) and are managed on the Investors tab of /admin/platform — add an account there and the investor can sign in as soon as the automatic deployment finishes. The demo accounts (test / test and prospect / test) have been retired.",
+          "Saving from /admin/platform on the live site needs a repository token, because the hosting has read-only storage: in GitHub go to Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token, grant it access to only the satis-group-website repository with Contents: Read and write permission, then add it in Vercel as SATIS_GITHUB_TOKEN and redeploy. Each save then becomes a commit to the repository, which redeploys the site with the change. When the token expires (GitHub sets an expiry date), generate a new one and update the variable.",
         ],
       },
     ],
