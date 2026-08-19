@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AnimatedStat } from "@/components/AnimatedStat";
-import { BuildingRedevelopmentGraphic } from "@/components/BuildingRedevelopmentGraphic";
+import { PageHero } from "@/components/PageHero";
+import { ParallaxSkyline } from "@/components/ParallaxSkyline";
 import { PortfolioPreview } from "@/components/PortfolioPreview";
 import { Reveal } from "@/components/Reveal";
 
@@ -18,37 +19,8 @@ const STATS = [
 export default function Home() {
   return (
     <>
-      <BuildingRedevelopmentGraphic>
-        <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
-          Property Redevelopment
-        </span>
-        <h1 className="mt-4 max-w-2xl text-3xl font-medium leading-[1.1] tracking-tight [@media(max-height:800px)]:text-2xl sm:text-4xl lg:text-5xl lg:[@media(max-height:800px)]:text-4xl">
-          We turn overlooked buildings into places people want to be.
-        </h1>
-        <p className="mt-5 max-w-md text-sm leading-relaxed text-muted [@media(max-height:800px)]:mt-3 lg:text-base">
-          Satis Group is a property development company based in Manchester,
-          specialising in the meticulous renovation of neglected buildings,
-          transforming them into stylish contemporary homes and adaptable
-          commercial spaces.
-        </p>
-        <div className="mt-6 flex flex-wrap items-center gap-4 [@media(max-height:800px)]:mt-4">
-          <Link
-            href="/portfolio"
-            className="border border-foreground bg-foreground px-6 py-3 text-xs tracking-[0.2em] uppercase text-background transition-colors duration-300 hover:border-accent hover:bg-accent"
-          >
-            View portfolio
-          </Link>
-          <Link
-            href="/contact"
-            className="border border-border px-6 py-3 text-xs tracking-[0.2em] uppercase transition-colors duration-300 hover:border-accent hover:text-accent"
-          >
-            Get in touch
-          </Link>
-        </div>
-      </BuildingRedevelopmentGraphic>
-
       <section className="bg-ink text-ink-foreground">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 py-24 lg:grid-cols-3 lg:px-10 lg:py-32">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 py-12 lg:grid-cols-3 lg:px-10 lg:py-14">
           {STATS.map((stat, index) => (
             <Reveal key={stat.label} delay={index * 0.1}>
               <AnimatedStat
@@ -62,6 +34,29 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      <PageHero
+        eyebrow="Property Redevelopment"
+        title="We turn overlooked buildings into places people want to be."
+        description="Satis Group is a property development company based in Manchester, specialising in the meticulous renovation of neglected buildings, transforming them into stylish contemporary homes and adaptable commercial spaces."
+        backdrop={<ParallaxSkyline />}
+        actions={
+          <>
+            <Link
+              href="/portfolio"
+              className="border border-foreground bg-foreground px-6 py-3 text-xs tracking-[0.2em] uppercase text-background transition-colors duration-300 hover:border-accent hover:bg-accent"
+            >
+              View portfolio
+            </Link>
+            <Link
+              href="/contact"
+              className="border border-border px-6 py-3 text-xs tracking-[0.2em] uppercase transition-colors duration-300 hover:border-accent hover:text-accent"
+            >
+              Get in touch
+            </Link>
+          </>
+        }
+      />
 
       <PortfolioPreview />
     </>

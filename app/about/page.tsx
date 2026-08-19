@@ -5,7 +5,7 @@ import { Eyebrow } from "@/components/Eyebrow";
 import { FrameCorners } from "@/components/FrameCorners";
 import { InvestmentChart } from "@/components/InvestmentChart";
 import { PageHero } from "@/components/PageHero";
-import { ParallaxSkyline } from "@/components/ParallaxSkyline";
+import { BuildingBackdrop } from "@/components/BuildingBackdrop";
 import { Reveal } from "@/components/Reveal";
 import { AWARD_COUNT } from "@/lib/accolades";
 import { StatMeter } from "@/components/StatMeter";
@@ -144,7 +144,7 @@ export default function AboutPage() {
         eyebrow="About Satis Group"
         title="A trusted partner."
         description="Satis Group acquires, redevelops and sells residential and commercial property across Manchester and the North West."
-        backdrop={<ParallaxSkyline />}
+        backdrop={<BuildingBackdrop />}
         compact
       />
 
