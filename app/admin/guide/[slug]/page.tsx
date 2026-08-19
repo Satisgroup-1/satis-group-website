@@ -103,7 +103,7 @@ function Screenshot({ screenshot }: { screenshot: GuideScreenshot }) {
 
 function Step({ step, index }: { step: GuideStep; index: number }) {
   return (
-    <section className="border-t border-border pt-8">
+    <section id={`step-${index + 1}`} className="scroll-mt-28 border-t border-border pt-8">
       <span className="flex items-center gap-3 text-xs tracking-[.35em] uppercase text-accent-text">
         <span>Step {String(index + 1).padStart(2, "0")}</span>
         <span className="h-px w-8 bg-accent/60" aria-hidden="true" />
@@ -224,6 +224,31 @@ export default async function AdminGuideChapterPage({
                   </div>
                 )}
               </dl>
+            )}
+
+            {chapter.steps.length > 1 && (
+              <nav aria-label="In this chapter" className="mt-8">
+                <p className="text-[10px] tracking-[.2em] uppercase text-accent-text">
+                  In this chapter
+                </p>
+                <ol className="mt-3 flex flex-col gap-1.5">
+                  {chapter.steps.map((step, i) => (
+                    <li key={i}>
+                      <a
+                        href={`#step-${i + 1}`}
+                        className="group inline-flex items-baseline gap-3 text-sm text-muted transition-colors hover:text-accent"
+                      >
+                        <span className="text-xs tracking-[.15em] text-accent-text">
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <span className="underline decoration-border underline-offset-4 group-hover:decoration-accent">
+                          {step.title}
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
             )}
 
             <div className="mt-12 flex flex-col gap-12">

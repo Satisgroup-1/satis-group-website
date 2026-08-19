@@ -164,7 +164,7 @@ export const GUIDE_CHAPTERS: GuideChapter[] = [
     summary:
       "Who can sign in to the admin area, adding a colleague, and resetting an admin password.",
     lede: [
-      "Admin accounts are separate from investor accounts, and they are deliberately not stored on the website itself — they live as a setting in the hosting platform (Vercel), where an attacker who somehow read the site's files still could not see them. The Admin accounts page bridges the two: it shows who can sign in, and generates the setting value for you to paste into Vercel.",
+      "Admin accounts are separate from investor accounts, and for safety they are stored in the hosting platform (Vercel) rather than on the website itself. The Admin accounts page does the fiddly part for you: it shows who can sign in, and generates the setting value you paste into Vercel.",
       "Investor logins are managed elsewhere — the Investors tab of the platform studio (see “Creating an investor account”).",
     ],
     time: "About 10 minutes, including the hosting step",
@@ -498,8 +498,8 @@ export const GUIDE_CHAPTERS: GuideChapter[] = [
       {
         title: "The golden rule: portfolio values are worked out, not typed in",
         body: [
-          "You never type an investor's portfolio value anywhere. The platform works it out: an investor's stake in a project = their share % (from the cap table) × the SPV's current equity value (from the Developments & SPVs tab). Their portfolio value is the sum of those stakes.",
-          "This has a very useful consequence: when a project is revalued, you update one number — the SPV's equity value — and every investor's figures update themselves, correctly, at the same moment. It also means that if a figure in a portal looks wrong, the cause is always one of two numbers: that investor's share %, or the SPV's equity value.",
+          "You never type an investor's portfolio value anywhere. The platform works it out: share % (from the cap table) × the SPV's equity value (from the Developments & SPVs tab), added up across their holdings.",
+          "Two things follow. When a project is revalued, you update one number — the SPV's equity value — and every investor's figures update at once. And if a portal figure ever looks wrong, the cause is always one of those two numbers: the share %, or the equity value.",
         ],
       },
       {
@@ -522,8 +522,8 @@ export const GUIDE_CHAPTERS: GuideChapter[] = [
       {
         title: "Where changes take effect — and the one delay to expect",
         body: [
-          "In a writable environment (the site running locally, or a Claude Code session), every Save button in the studio takes effect immediately. On the live hosting, each save is instead committed to the website's repository and goes live when the automatic redeploy finishes — about a minute or two. A note above the tabs tells you which mode you are in, and a just-saved change may briefly not show in the lists yet: give it a minute and refresh.",
-          "If a Save button refuses outright on the live site, the hosting's repository token is missing or has expired — the chapter “Making changes stick on live hosting” explains the token and the fallback routine that works everywhere.",
+          "Saves take effect immediately when the site runs locally or in a Claude session. On the live site they take a minute or two — each save goes live via an automatic republish, so a just-saved change may briefly not show in the lists. Give it a minute and refresh.",
+          "If a Save button refuses outright on the live site, see “Making changes stick on live hosting” — it explains the one setting that fixes it and the fallback routine that works everywhere.",
         ],
       },
     ],
@@ -616,8 +616,8 @@ export const GUIDE_CHAPTERS: GuideChapter[] = [
     summary:
       "Record who owns what share of each project, and log the capital calls, distributions and interest that flow to investors.",
     lede: [
-      "This is the money chapter. The Cap tables & returns tab records two things: positions (who owns what percentage of which SPV, and what they paid for it) and cash events (money moving — capital calls, distributions, interest). Between them they drive every financial figure an invested client sees.",
-      "Take these edits slowly and check each one after saving. The forms validate what they can — a cap table can never exceed 100% — but only you know whether the numbers themselves are right.",
+      "This is the money chapter. The Cap tables & returns tab records two things: positions (who owns what share of which SPV, and what they paid) and cash events (money moving in or out). Together they drive every financial figure an invested client sees.",
+      "Go slowly and check each save. The forms catch what they can — a cap table can never exceed 100% — but only you know whether the numbers themselves are right.",
     ],
     time: "5 minutes per position or event",
     youNeed: [
@@ -820,7 +820,7 @@ export const GUIDE_CHAPTERS: GuideChapter[] = [
     summary:
       "Share memorandums, appraisals and private documents with the right investors — everyone prospective, or one account only.",
     lede: [
-      "The portal's data room holds the documents investors can read: investment memorandums, appraisals, legal packs. Unlike everything else in this guide, documents are not yet managed by a form — they live in a small file (content/investors/documents.json) that is easiest to change by asking Claude. This chapter shows exactly what to ask for.",
+      "The portal's data room holds the documents investors can read: investment memorandums, appraisals, legal packs. Unlike everything else in this guide, documents are not yet managed by a form — the easiest way to change them is to ask Claude. This chapter shows exactly what to ask for.",
     ],
     time: "A few minutes per document",
     steps: [
@@ -921,15 +921,16 @@ export const GUIDE_CHAPTERS: GuideChapter[] = [
     summary:
       "Why Save buttons refuse on the live site, and the export → edit → commit routine that works everywhere.",
     lede: [
-      "This is the most important technical idea in the whole guide, and it is genuinely simple once seen. The live website runs on Vercel, a hosting platform that treats the deployed site as read-only — like a printed brochure. You cannot scribble on a printed brochure; you change the master copy and print a new one.",
-      "The master copy of this website lives in a GitHub repository (a shared, version-tracked folder of all the site's files). Everything below follows from that: the platform studio saves on the live site by committing to the repository for you (once a repository token is configured), and everything else — news stories, website content — reaches the live site by changing the repository through Claude.",
+      "One idea explains everything here: the live website is like a printed brochure. You cannot scribble on a printed brochure — you change the master copy and print a new one. The master copy lives in a GitHub repository (a shared, version-tracked folder of the site's files), and the live site reprints itself automatically whenever the master changes.",
+      "So there are only two routes for any change. The platform studio updates the master for you — you just press Save. Everything else (news stories, website content) reaches the master through Claude.",
     ],
     time: "About 10 minutes once you've done it twice",
     steps: [
       {
         title: "How the platform studio saves on the live site",
         body: [
-          "When the hosting has a repository token configured, every Save in the platform studio quietly becomes a commit to the repository, and the change goes live when the automatic redeploy finishes — about a minute or two. You just press Save as normal; a note above the studio's tabs confirms this mode, and the only difference you notice is that a just-saved change can take a minute to show. This applies to investor-platform data only; news stories and website content always go the Claude route below.",
+          "On the live site, every Save in the platform studio quietly updates the master copy for you, and the change goes live when the automatic reprint finishes — about a minute or two. Press Save as normal; the only difference you notice is that a just-saved change can take a minute to show. Give it a minute and refresh.",
+          "This applies to investor-platform data only. News stories and website content always go the Claude route below.",
         ],
         callouts: [
           tip(
