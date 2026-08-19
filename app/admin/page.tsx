@@ -26,7 +26,7 @@ const SEGMENTS = [
   {
     href: "/admin/guide",
     title: "Instructions",
-    body: "The operations guide: day-to-day publishing, investor login support, content updates, Claude agents & skills, and the SEO checklist.",
+    body: "The operations guide: step-by-step, illustrated walkthroughs of every admin task — publishing, investor accounts and figures, login support, content changes and the SEO checklist. Written for non-technical readers.",
   },
   {
     href: "/admin/appraisal",
