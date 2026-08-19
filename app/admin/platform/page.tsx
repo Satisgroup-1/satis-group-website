@@ -22,6 +22,7 @@ import {
   getUpdates,
   readDataset,
   type CashEvent,
+  type InvestorDocument,
 } from "@/lib/investor-platform";
 
 export const metadata: Metadata = {
@@ -86,6 +87,28 @@ function buildAdminData(): AdminPlatformData {
         type: e.type,
         amount: formatMoneyFull(e.amount),
         status: e.status,
+      })),
+    documents: readDataset<InvestorDocument>("documents")
+      .slice()
+      .sort((a, b) => b.published.localeCompare(a.published))
+      .map((d) => ({
+        key: `${d.investorId}|${d.published}|${d.title}`,
+        title: d.title,
+        kind: d.kind,
+        published: formatPortalDate(d.published),
+        visibility:
+          d.investorId === "all"
+            ? d.audience
+              ? `Every ${d.audience} account`
+              : "Every account"
+            : d.investorId === "members"
+              ? "Cap-table members"
+              : investorName(d.investorId),
+        development: d.developmentId
+          ? developmentName(d.developmentId)
+          : undefined,
+        category: d.category,
+        file: d.file,
       })),
     updates: getUpdates().map((u) => ({
       key: `${u.date}|${u.title}`,

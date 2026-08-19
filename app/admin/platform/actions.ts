@@ -4,12 +4,15 @@ import { revalidatePath } from "next/cache";
 import { isAuthenticated } from "@/lib/admin-auth";
 import { isGitHubPersistenceEnabled } from "@/lib/github-storage";
 import { hashPassword } from "@/lib/investor-auth";
+import { storeInvestorPdf } from "@/lib/investor-files";
 import {
+  DOCUMENT_CATEGORIES,
   INVESTOR_DATASETS,
   INVESTOR_TIERS,
   mutateDataset,
   readDataset,
   writeDataset,
+  type DocumentCategory,
   type CapTablePosition,
   type CashEvent,
   type Development,
@@ -455,19 +458,25 @@ export async function saveUpdate(
   }
   if (!isValidDate(date)) return { error: "Date must be YYYY-MM-DD." };
   const period = text(formData, "period");
-  const file = text(formData, "file");
+  const pathInput = text(formData, "file");
+  const pdf = formData.get("pdf");
   const tasks = parseReportTasks(String(formData.get("tasks") ?? ""));
-  const update: SiteUpdate = {
-    date,
-    developmentId,
-    title,
-    body,
-    tag: text(formData, "tag") || "Update",
-    ...(period ? { period } : {}),
-    ...(file ? { file } : {}),
-    ...(tasks.length ? { tasks } : {}),
-  };
   return runMutation(async () => {
+    // An uploaded PDF wins over a manually entered path.
+    const file =
+      pdf instanceof File && pdf.size > 0
+        ? await storeInvestorPdf(pdf)
+        : pathInput;
+    const update: SiteUpdate = {
+      date,
+      developmentId,
+      title,
+      body,
+      tag: text(formData, "tag") || "Update",
+      ...(period ? { period } : {}),
+      ...(file ? { file } : {}),
+      ...(tasks.length ? { tasks } : {}),
+    };
     await mutateDataset<SiteUpdate>("updates", (updates) => [update, ...updates]);
   }, "Monthly report published.");
 }
@@ -484,6 +493,99 @@ export async function deleteUpdate(
       return updates.filter((_, i) => i !== index);
     });
   }, "Site update removed.");
+}
+
+// ---------------------------------------------------------------------------
+// Documents (uploaded PDFs: legal papers, accounts, meeting recordings, …)
+
+/**
+ * Uploads one PDF and publishes its document record. The PDF is stored in
+ * content/investors/files/ and served only through the authenticated
+ * /investors/files/ route — never from a public URL.
+ */
+export async function uploadDocument(
+  _prev: PlatformActionState,
+  formData: FormData
+): Promise<PlatformActionState> {
+  const title = text(formData, "title");
+  const kind = text(formData, "kind");
+  if (!title || !kind) {
+    return { error: "Title and document type are required." };
+  }
+  const pdf = formData.get("pdf");
+  if (!(pdf instanceof File) || pdf.size === 0) {
+    return { error: "Choose a PDF file to upload." };
+  }
+  const published =
+    text(formData, "published") || new Date().toISOString().slice(0, 10);
+  if (!isValidDate(published)) {
+    return { error: "Published date must be YYYY-MM-DD." };
+  }
+  const developmentId = text(formData, "developmentId");
+  const investorId = text(formData, "investorId");
+  if (!investorId) {
+    return { error: "Choose who the document is visible to." };
+  }
+  if (investorId === "members" && !developmentId) {
+    return {
+      error:
+        'Sharing with "cap-table members" needs a development — pick one, or choose a specific account.',
+    };
+  }
+  const categoryInput = text(formData, "category");
+  const category = DOCUMENT_CATEGORIES.includes(
+    categoryInput as DocumentCategory
+  )
+    ? (categoryInput as DocumentCategory)
+    : undefined;
+  if (category && !developmentId) {
+    return {
+      error:
+        "The Legal / Meetings / Accounts tabs live inside a development — pick one, or leave the category blank.",
+    };
+  }
+  const audienceInput = text(formData, "audience");
+  const audience =
+    investorId === "all" &&
+    INVESTOR_TIERS.includes(audienceInput as InvestorTier)
+      ? (audienceInput as InvestorTier)
+      : undefined;
+  const summary = text(formData, "summary");
+
+  return runMutation(async () => {
+    const file = await storeInvestorPdf(pdf);
+    const record: InvestorDocument = {
+      investorId,
+      title,
+      kind,
+      published,
+      file,
+      ...(summary ? { summary } : {}),
+      ...(audience ? { audience } : {}),
+      ...(developmentId ? { developmentId } : {}),
+      ...(category ? { category } : {}),
+    };
+    await mutateDataset<InvestorDocument>("documents", (docs) => [
+      record,
+      ...docs,
+    ]);
+  }, "Document uploaded and published.");
+}
+
+export async function deleteDocument(
+  _prev: PlatformActionState,
+  formData: FormData
+): Promise<PlatformActionState> {
+  const key = text(formData, "key");
+  return runMutation(async () => {
+    await mutateDataset<InvestorDocument>("documents", (docs) => {
+      const index = docs.findIndex(
+        (d) => `${d.investorId}|${d.published}|${d.title}` === key
+      );
+      if (index < 0) throw new Error("Document not found.");
+      return docs.filter((_, i) => i !== index);
+    });
+  }, "Document removed. Its PDF stays in content/investors/files/ (and in git history) until deleted there.");
 }
 
 // ---------------------------------------------------------------------------
