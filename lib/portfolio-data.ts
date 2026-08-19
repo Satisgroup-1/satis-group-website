@@ -205,7 +205,7 @@ export const PORTFOLIO_PHASES: Array<{
   phase: PortfolioPhase;
   blurb: string;
 }> = [
-  { phase: "Present", blurb: "On the market or occupied now." },
-  { phase: "Future", blurb: "Coming forward across Manchester and the North West." },
   { phase: "Past", blurb: "Completed and delivered." },
+  { phase: "Future", blurb: "Coming forward across Manchester and the North West." },
+  { phase: "Present", blurb: "On the market or occupied now." },
 ];
