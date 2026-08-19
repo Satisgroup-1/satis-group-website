@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -163,6 +164,22 @@ export function ContactForm({
           ))}
         </select>
       </label>
+
+      {/* Investment enquiries have their own form, in the investor platform's
+          branding, which opens a data room rather than a general reply. */}
+      {values.topic === "Investment" && (
+        <p className="text-sm leading-relaxed text-muted">
+          Looking to invest?{" "}
+          <Link
+            href="/investors/enquire"
+            className="text-accent-text underline decoration-accent/50 underline-offset-4 transition-colors hover:text-accent"
+          >
+            Use the investor enquiry form
+          </Link>{" "}
+          and we will open an account with the memorandum and our current
+          appraisals.
+        </p>
+      )}
 
       <div className="flex flex-col gap-2">
         <label className="flex flex-col gap-2">
