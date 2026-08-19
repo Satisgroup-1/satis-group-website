@@ -6,6 +6,7 @@ import {
   type AdminPlatformData,
 } from "@/components/AdminPlatform";
 import { isAuthenticated } from "@/lib/admin-auth";
+import { isGitHubPersistenceEnabled } from "@/lib/github-storage";
 import {
   computePortfolio,
   formatInsightDate,
@@ -150,6 +151,19 @@ export default async function AdminPlatformPage() {
               </Link>
               .
             </p>
+            {isGitHubPersistenceEnabled() ? (
+              <p className="mt-4 max-w-2xl text-xs leading-relaxed text-muted">
+                Changes are committed straight to the repository and go live
+                when the automatic deployment finishes (about a minute) — a
+                just-saved change may briefly not show in these lists yet.
+              </p>
+            ) : process.env.VERCEL ? (
+              <p className="mt-4 max-w-2xl text-xs leading-relaxed text-clay">
+                This hosting has read-only storage and no repository token, so
+                changes made here will not save. Set SATIS_GITHUB_TOKEN in the
+                hosting environment — see the operations guide.
+              </p>
+            ) : null}
             <div className="mt-12">
               <AdminPlatform data={buildAdminData()} />
             </div>

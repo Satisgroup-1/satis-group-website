@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { isAuthenticated } from "@/lib/admin-auth";
+import { isGitHubPersistenceEnabled } from "@/lib/github-storage";
 import { hashPassword } from "@/lib/investor-auth";
 import {
   INVESTOR_DATASETS,
@@ -67,14 +68,14 @@ function parsePercent(raw: string): number | null {
  * read-only-hosting error surfaced as form feedback.
  */
 async function runMutation(
-  mutation: () => void,
+  mutation: () => void | Promise<void>,
   success: string
 ): Promise<PlatformActionState> {
   if (!(await isAuthenticated())) {
     return { error: "Your session has expired. Please sign in again." };
   }
   try {
-    mutation();
+    await mutation();
   } catch (err) {
     return {
       error:
@@ -83,7 +84,11 @@ async function runMutation(
   }
   revalidatePath("/investors");
   revalidatePath("/admin/platform");
-  return { success };
+  return {
+    success: isGitHubPersistenceEnabled()
+      ? `${success} Committed to the repository — it appears on the site once the automatic deployment finishes (about a minute).`
+      : success,
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -107,8 +112,8 @@ export async function saveInvestor(
     ? (tierInput as InvestorTier)
     : undefined;
 
-  return runMutation(() => {
-    mutateDataset<InvestorProfile>("investors", (investors) => {
+  return runMutation(async () => {
+    await mutateDataset<InvestorProfile>("investors", (investors) => {
       if (
         investors.some(
           (inv) => inv.email.toLowerCase() === email && inv.id !== id
@@ -144,20 +149,20 @@ export async function deleteInvestor(
   formData: FormData
 ): Promise<PlatformActionState> {
   const id = text(formData, "id");
-  return runMutation(() => {
-    mutateDataset<InvestorProfile>("investors", (investors) => {
+  return runMutation(async () => {
+    await mutateDataset<InvestorProfile>("investors", (investors) => {
       if (!investors.some((inv) => inv.id === id)) {
         throw new Error("Investor not found.");
       }
       return investors.filter((inv) => inv.id !== id);
     });
-    mutateDataset<CapTablePosition>("cap-tables", (positions) =>
+    await mutateDataset<CapTablePosition>("cap-tables", (positions) =>
       positions.filter((p) => p.investorId !== id)
     );
-    mutateDataset<CashEvent>("cash-events", (events) =>
+    await mutateDataset<CashEvent>("cash-events", (events) =>
       events.filter((e) => e.investorId !== id)
     );
-    mutateDataset<InvestorDocument>("documents", (docs) =>
+    await mutateDataset<InvestorDocument>("documents", (docs) =>
       docs.filter((d) => d.investorId !== id)
     );
   }, "Investor removed, along with their cap-table positions.");
@@ -173,8 +178,8 @@ export async function saveValueHistoryPoint(
   if (!investorId || !label || value === null) {
     return { error: "Investor, period label and a valid value are required." };
   }
-  return runMutation(() => {
-    mutateDataset<InvestorProfile>("investors", (investors) => {
+  return runMutation(async () => {
+    await mutateDataset<InvestorProfile>("investors", (investors) => {
       const investor = investors.find((inv) => inv.id === investorId);
       if (!investor) throw new Error("Investor not found.");
       const history = (investor.valueHistory ?? []).filter(
@@ -245,8 +250,8 @@ export async function saveDevelopment(
       forecastIrr: siteIrr,
     },
   };
-  return runMutation(() => {
-    mutateDataset<Development>("developments", (developments) => {
+  return runMutation(async () => {
+    await mutateDataset<Development>("developments", (developments) => {
       const index = developments.findIndex((d) => d.id === id);
       if (index >= 0) {
         return developments.map((d) => (d.id === id ? development : d));
@@ -261,7 +266,7 @@ export async function deleteDevelopment(
   formData: FormData
 ): Promise<PlatformActionState> {
   const id = text(formData, "id");
-  return runMutation(() => {
+  return runMutation(async () => {
     if (
       readDataset<CapTablePosition>("cap-tables").some(
         (p) => p.developmentId === id
@@ -269,10 +274,10 @@ export async function deleteDevelopment(
     ) {
       throw new Error("Remove this development's cap-table positions first.");
     }
-    mutateDataset<Development>("developments", (developments) =>
+    await mutateDataset<Development>("developments", (developments) =>
       developments.filter((d) => d.id !== id)
     );
-    mutateDataset<SiteUpdate>("updates", (updates) =>
+    await mutateDataset<SiteUpdate>("updates", (updates) =>
       updates.filter((u) => u.developmentId !== id)
     );
   }, "Development removed.");
@@ -302,7 +307,7 @@ export async function saveCapPosition(
   if (sharePercent <= 0 || sharePercent > 100) {
     return { error: "Share % must be between 0 and 100." };
   }
-  return runMutation(() => {
+  return runMutation(async () => {
     if (
       !readDataset<Development>("developments").some(
         (d) => d.id === developmentId
@@ -325,7 +330,7 @@ export async function saveCapPosition(
       sharePercent,
       status: text(formData, "status") || "Active",
     };
-    mutateDataset<CapTablePosition>("cap-tables", (positions) => {
+    await mutateDataset<CapTablePosition>("cap-tables", (positions) => {
       const matches = (p: CapTablePosition) =>
         p.developmentId === developmentId &&
         (investorId ? p.investorId === investorId : p.holder === holder && !p.investorId);
@@ -349,8 +354,8 @@ export async function deleteCapPosition(
 ): Promise<PlatformActionState> {
   const developmentId = text(formData, "developmentId");
   const holder = text(formData, "holder");
-  return runMutation(() => {
-    mutateDataset<CapTablePosition>("cap-tables", (positions) =>
+  return runMutation(async () => {
+    await mutateDataset<CapTablePosition>("cap-tables", (positions) =>
       positions.filter(
         (p) => !(p.developmentId === developmentId && p.holder === holder)
       )
@@ -384,7 +389,7 @@ export async function saveCashEvent(
     status,
     ...(developmentId ? { developmentId } : {}),
   };
-  return runMutation(() => {
+  return runMutation(async () => {
     if (
       !readDataset<InvestorProfile>("investors").some(
         (inv) => inv.id === investorId
@@ -392,7 +397,7 @@ export async function saveCashEvent(
     ) {
       throw new Error("Investor not found.");
     }
-    mutateDataset<CashEvent>("cash-events", (events) => [...events, event]);
+    await mutateDataset<CashEvent>("cash-events", (events) => [...events, event]);
   }, `Recorded ${type.toLowerCase()} for ${date}.`);
 }
 
@@ -401,8 +406,8 @@ export async function deleteCashEvent(
   formData: FormData
 ): Promise<PlatformActionState> {
   const key = text(formData, "key");
-  return runMutation(() => {
-    mutateDataset<CashEvent>("cash-events", (events) => {
+  return runMutation(async () => {
+    await mutateDataset<CashEvent>("cash-events", (events) => {
       const index = events.findIndex(
         (e) => `${e.investorId}|${e.date}|${e.type}|${e.amount}` === key
       );
@@ -462,8 +467,8 @@ export async function saveUpdate(
     ...(file ? { file } : {}),
     ...(tasks.length ? { tasks } : {}),
   };
-  return runMutation(() => {
-    mutateDataset<SiteUpdate>("updates", (updates) => [update, ...updates]);
+  return runMutation(async () => {
+    await mutateDataset<SiteUpdate>("updates", (updates) => [update, ...updates]);
   }, "Monthly report published.");
 }
 
@@ -472,8 +477,8 @@ export async function deleteUpdate(
   formData: FormData
 ): Promise<PlatformActionState> {
   const key = text(formData, "key");
-  return runMutation(() => {
-    mutateDataset<SiteUpdate>("updates", (updates) => {
+  return runMutation(async () => {
+    await mutateDataset<SiteUpdate>("updates", (updates) => {
       const index = updates.findIndex((u) => `${u.date}|${u.title}` === key);
       if (index < 0) throw new Error("Update not found.");
       return updates.filter((_, i) => i !== index);
@@ -538,8 +543,8 @@ export async function saveOpportunity(
       .map((line) => line.replace(/^-\s*/, "").trim())
       .filter(Boolean),
   };
-  return runMutation(() => {
-    mutateDataset<Opportunity>("opportunities", (opportunities) => {
+  return runMutation(async () => {
+    await mutateDataset<Opportunity>("opportunities", (opportunities) => {
       const index = opportunities.findIndex((o) => o.id === id);
       if (index >= 0) {
         return opportunities.map((o) => (o.id === id ? opportunity : o));
@@ -554,8 +559,8 @@ export async function deleteOpportunity(
   formData: FormData
 ): Promise<PlatformActionState> {
   const id = text(formData, "id");
-  return runMutation(() => {
-    mutateDataset<Opportunity>("opportunities", (opportunities) =>
+  return runMutation(async () => {
+    await mutateDataset<Opportunity>("opportunities", (opportunities) =>
       opportunities.filter((o) => o.id !== id)
     );
   }, "Opportunity removed.");
@@ -646,8 +651,8 @@ export async function saveInsight(
   if (insight.body.length === 0) {
     return { error: "The article body is empty after parsing." };
   }
-  return runMutation(() => {
-    mutateDataset<Insight>("insights", (insights) => {
+  return runMutation(async () => {
+    await mutateDataset<Insight>("insights", (insights) => {
       const index = insights.findIndex((i) => i.slug === slug);
       if (index >= 0) return insights.map((i) => (i.slug === slug ? insight : i));
       return [insight, ...insights];
@@ -660,8 +665,8 @@ export async function deleteInsight(
   formData: FormData
 ): Promise<PlatformActionState> {
   const slug = text(formData, "slug");
-  return runMutation(() => {
-    mutateDataset<Insight>("insights", (insights) =>
+  return runMutation(async () => {
+    await mutateDataset<Insight>("insights", (insights) =>
       insights.filter((i) => i.slug !== slug)
     );
   }, "Insight removed.");
@@ -998,7 +1003,7 @@ export async function importSnapshot(
   }
   try {
     for (const [dataset, records] of imported) {
-      writeDataset(dataset, records);
+      await writeDataset(dataset, records);
     }
   } catch (err) {
     return {

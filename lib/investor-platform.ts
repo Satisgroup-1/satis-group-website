@@ -1,5 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
+import {
+  commitRepoJson,
+  fetchRepoJson,
+  isGitHubPersistenceEnabled,
+} from "@/lib/github-storage";
 import bundledInvestors from "@/content/investors/investors.json";
 import bundledDevelopments from "@/content/investors/developments.json";
 import bundledCapTables from "@/content/investors/cap-tables.json";
@@ -208,32 +213,76 @@ export function readDataset<T>(dataset: InvestorDataset): T[] {
   }
 }
 
-/**
- * Persist a dataset. Throws a friendly error on read-only hosting so server
- * actions can surface it; on such deployments the exported JSON should be
- * committed to the repository instead.
- */
-export function writeDataset(dataset: InvestorDataset, records: unknown[]) {
-  if (!Array.isArray(records)) {
-    throw new Error(`Refusing to write non-array data to ${dataset}.json.`);
-  }
+function repoPath(dataset: InvestorDataset): string {
+  return `content/investors/${dataset}.json`;
+}
+
+function commitMessage(dataset: InvestorDataset): string {
+  return `Update ${dataset}.json via the admin platform`;
+}
+
+function writeDatasetToDisk(dataset: InvestorDataset, records: unknown[]) {
   const file = path.join(INVESTOR_DATA_DIR, `${dataset}.json`);
   try {
     fs.mkdirSync(INVESTOR_DATA_DIR, { recursive: true });
     fs.writeFileSync(file, `${JSON.stringify(records, null, 2)}\n`, "utf8");
   } catch {
     throw new Error(
-      "This deployment has read-only storage, so changes cannot be saved here. Export the dataset, apply your change and commit the JSON to the repository instead."
+      "This deployment has read-only storage, so changes cannot be saved here. Set SATIS_GITHUB_TOKEN in the hosting environment so the admin can commit changes to the repository (see the operations guide)."
     );
   }
 }
 
-export function mutateDataset<T>(
+/**
+ * Persist a dataset: committed to the repository when GitHub persistence is
+ * configured (read-only hosting), written to disk otherwise. Throws a
+ * friendly error either way so server actions can surface it.
+ */
+export async function writeDataset(
+  dataset: InvestorDataset,
+  records: unknown[]
+): Promise<void> {
+  if (!Array.isArray(records)) {
+    throw new Error(`Refusing to write non-array data to ${dataset}.json.`);
+  }
+  if (isGitHubPersistenceEnabled()) {
+    const current = await fetchRepoJson(repoPath(dataset));
+    await commitRepoJson(
+      repoPath(dataset),
+      records,
+      current?.sha,
+      commitMessage(dataset)
+    );
+    return;
+  }
+  writeDatasetToDisk(dataset, records);
+}
+
+export async function mutateDataset<T>(
   dataset: InvestorDataset,
   mutate: (records: T[]) => T[]
-): T[] {
+): Promise<T[]> {
+  if (isGitHubPersistenceEnabled()) {
+    // The repository is the source of truth here: reading it back (rather
+    // than the deployed files, which lag until the next deployment) keeps
+    // rapid successive edits from overwriting each other.
+    const current = await fetchRepoJson(repoPath(dataset));
+    const records = mutate(
+      current ? (current.records as T[]) : readDataset<T>(dataset)
+    );
+    if (!Array.isArray(records)) {
+      throw new Error(`Refusing to write non-array data to ${dataset}.json.`);
+    }
+    await commitRepoJson(
+      repoPath(dataset),
+      records,
+      current?.sha,
+      commitMessage(dataset)
+    );
+    return records;
+  }
   const records = mutate(readDataset<T>(dataset));
-  writeDataset(dataset, records as unknown[]);
+  writeDatasetToDisk(dataset, records as unknown[]);
   return records;
 }
 
