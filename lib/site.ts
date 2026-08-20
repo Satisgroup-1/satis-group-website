@@ -14,13 +14,16 @@ export const IS_LIVE_SITE = DEPLOY_ENV === "production";
 
 const PRODUCTION_URL = "https://www.satisgroup.co.uk";
 
-// Preview deployments get a per-deployment hostname; using it keeps sitemap,
-// canonical and Open Graph links pointing at the copy being reviewed instead
-// of bouncing testers over to the live site.
-const VERCEL_URL = process.env.NEXT_PUBLIC_VERCEL_URL;
+// Keeping sitemap, canonical and Open Graph links on the deployment's own
+// hostname stops a tester following a link out of staging and into the live
+// site. Vercel gives a preview two hostnames: a per-commit one, and a branch
+// alias that stays put across pushes. The branch alias is the one worth
+// linking to, so it wins; the per-commit URL is the fallback.
+const PREVIEW_HOST =
+  process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL ?? process.env.NEXT_PUBLIC_VERCEL_URL;
 
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ??
-  (!IS_LIVE_SITE && VERCEL_URL ? `https://${VERCEL_URL}` : PRODUCTION_URL);
+  (!IS_LIVE_SITE && PREVIEW_HOST ? `https://${PREVIEW_HOST}` : PRODUCTION_URL);
 
 export const SITE_NAME = "Satis Group";

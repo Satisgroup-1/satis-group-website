@@ -80,6 +80,17 @@ Every branch pushed to GitHub gets its own Vercel preview build, and the
 pipeline, separate URL, so a change can be looked at properly before it
 reaches www.satisgroup.co.uk.
 
+The staging URL is Vercel's own branch alias:
+
+```
+https://satis-group-website-git-staging-<team>.vercel.app
+```
+
+Vercel prints the exact hostname on the first deployment of the branch. It is
+a permanent alias — it always points at the newest commit on `staging`, so it
+can be bookmarked and shared as-is. A `staging.satisgroup.co.uk` domain can be
+put in front of it later without changing anything else (see below).
+
 ### Day-to-day use
 
 ```bash
@@ -94,16 +105,17 @@ merge the same commits into `main` to publish.
 
 ### One-time Vercel setup
 
-In the Vercel project (Settings → Git):
+In the Vercel project:
 
-1. **Production Branch** — `main`. Only `main` deploys to the live domain.
-2. **Preview Deployments** — leave enabled for all branches.
-3. Settings → Domains → add `staging.satisgroup.co.uk`, choose *Preview* and
-   assign it to the `staging` branch, then add the DNS `CNAME` Vercel shows.
-   Without a custom domain the staging URL is still stable at
-   `satis-group-website-git-staging-<team>.vercel.app`.
-4. Settings → Deployment Protection → turn on Vercel Authentication for
-   Preview deployments if staging should stay behind a login.
+1. Settings → Git → **Production Branch** = `main`. Only `main` deploys to the
+   live domain.
+2. Settings → Git → **Preview Deployments** — leave enabled for all branches.
+3. Settings → Deployment Protection → turn on Vercel Authentication for
+   Preview deployments if staging should stay behind a login. Worth doing
+   while the URL is a public `.vercel.app` one.
+
+That is the whole setup. No domain or DNS work is needed to start using
+staging.
 
 ### Environment variables
 
@@ -112,17 +124,27 @@ separately, and the staging deployment must not reach into live data:
 
 | Variable | Production | Preview (staging) |
 | --- | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | `https://www.satisgroup.co.uk` | leave unset, or the staging domain |
+| `NEXT_PUBLIC_SITE_URL` | `https://www.satisgroup.co.uk` | leave unset |
 | `SATIS_GITHUB_BRANCH` | `main` | `staging` |
 | `SATIS_GITHUB_TOKEN` | live token | set only if admin edits should be testable |
 | `SATIS_ENQUIRY_TO` / `SATIS_CONTACT_TO` | real inbox | a test inbox |
 | `SATIS_ADMIN_SECRET` / `SATIS_INVESTOR_SECRET` | live secrets | different values |
 
-`NEXT_PUBLIC_SITE_URL` in particular must be scoped to Production only —
-set for all environments it would make staging claim the live canonical URLs.
+`NEXT_PUBLIC_SITE_URL` must be scoped to Production only. Left unset on
+Preview, staging works out its own URL from the Vercel branch alias; set for
+all environments, it would make staging claim the live canonical URLs.
+
 `SATIS_GITHUB_BRANCH` matters because `/admin/platform` commits investor data
 back to the repository (`lib/github-storage.ts`); pointed at `main`, an edit
 made on staging would publish itself to the live site.
+
+### Adding staging.satisgroup.co.uk later
+
+Settings → Domains → add `staging.satisgroup.co.uk`, choose *Preview*, assign
+it to the `staging` branch, and add the `CNAME` record Vercel shows. Then set
+`NEXT_PUBLIC_SITE_URL` to `https://staging.satisgroup.co.uk` scoped to Preview
+so canonical and Open Graph links follow the new hostname. The `.vercel.app`
+alias keeps working either way.
 
 ### What the code does differently off production
 
@@ -131,9 +153,12 @@ deployment, and treats anything other than `production` as a copy:
 
 - `robots.txt` disallows everything, and every response carries
   `X-Robots-Tag: noindex, nofollow` plus a `noindex` meta tag, so staging
-  never competes with the live site in search results.
+  never competes with the live site in search results. This matters more on a
+  `.vercel.app` URL than on a protected custom domain, since the hostname is
+  guessable and publicly reachable.
 - Canonical, Open Graph and sitemap URLs use the deployment's own hostname
-  instead of www.satisgroup.co.uk.
+  instead of www.satisgroup.co.uk — the branch alias where there is one, the
+  per-commit URL otherwise.
 - A small "Staging" marker sits in the bottom-left corner
   (`components/StagingBadge.tsx`) so a staging tab is never mistaken for the
   live site. Locally it reads "Local".
