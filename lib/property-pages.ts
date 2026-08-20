@@ -847,7 +847,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     name: "Woodfield Road",
     eyebrow: "Woodfield Road · Altrincham",
     tagline: "A mixed-use development",
-    type: "Commercial",
+    type: "Mixed Use",
     status: "Completed",
     heroImage: "/images/woodfield/hero.jpg",
     intro: {

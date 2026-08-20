@@ -1,4 +1,4 @@
-export type PropertyType = "Residential" | "Commercial";
+export type PropertyType = "Residential" | "Commercial" | "Mixed Use";
 
 export type Property = {
   slug: string;
@@ -136,7 +136,7 @@ export const PORTFOLIO: Property[] = [
     slug: "woodfield-road",
     name: "Woodfield Road",
     location: "Altrincham",
-    type: "Commercial",
+    type: "Mixed Use",
     status: "Completed",
     image: "/images/woodfield/hero.jpg",
     logo: { src: "/images/logos/woodfield-road-on-navy.png", bg: "#101c28" },
@@ -205,7 +205,7 @@ export const PORTFOLIO_PHASES: Array<{
   phase: PortfolioPhase;
   blurb: string;
 }> = [
-  { phase: "Past", blurb: "Completed and delivered." },
-  { phase: "Future", blurb: "Coming forward across Manchester and the North West." },
   { phase: "Present", blurb: "On the market or occupied now." },
+  { phase: "Future", blurb: "Coming forward across Manchester and the North West." },
+  { phase: "Past", blurb: "Completed and delivered." },
 ];

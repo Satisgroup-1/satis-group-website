@@ -498,7 +498,7 @@ export default async function PropertyDetailPage({
             </h2>
             <p className="mt-4 max-w-md text-base leading-relaxed text-muted">
               {property.agent
-                ? property.type === "Commercial"
+                ? (property.type === "Commercial" || property.type === "Mixed Use")
                   ? "To arrange a viewing please contact our appointed agent, or get in touch with the Satis Group team."
                   : "For sales enquiries please contact our appointed agent, or get in touch with the Satis Group team."
                 : property.listings
@@ -550,7 +550,7 @@ export default async function PropertyDetailPage({
             {property.agent && (
               <div>
                 <span className="text-xs tracking-[0.2em] uppercase text-accent-text">
-                  {property.type === "Commercial" ? "Lettings Agent" : "Sales Agent"}
+                  {(property.type === "Commercial" || property.type === "Mixed Use") ? "Lettings Agent" : "Sales Agent"}
                 </span>
                 <p className="mt-2 text-sm leading-relaxed">
                   {property.agent.name}
@@ -575,7 +575,7 @@ export default async function PropertyDetailPage({
             {!property.agent && !property.listings && (
               <div>
                 <span className="text-xs tracking-[0.2em] uppercase text-accent-text">
-                  {property.type === "Commercial"
+                  {(property.type === "Commercial" || property.type === "Mixed Use")
                     ? "Lettings Enquiries"
                     : "Sales Enquiries"}
                 </span>
