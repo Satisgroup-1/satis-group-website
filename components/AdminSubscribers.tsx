@@ -86,7 +86,13 @@ function RowAction({
 }
 
 function toCsv(rows: SubscriberRow[]): string {
-  const escape = (value: string) => `"${value.replace(/"/g, '""')}"`;
+  // Spreadsheets treat a cell opening with = + - @ as a formula, and an
+  // address like "=cmd|..."@example.com passes the signup form's checks.
+  // Prefixing an apostrophe keeps the value text wherever it is opened.
+  const escape = (value: string) => {
+    const safe = /^[=+\-@\t\r]/.test(value) ? `'${value}` : value;
+    return `"${safe.replace(/"/g, '""')}"`;
+  };
   const lines = [
     ["Email", "Name", "Status", "Source", "Signed up"].join(","),
     ...rows.map((row) =>

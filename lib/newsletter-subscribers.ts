@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import {
+  RepoConflictError,
   commitRepoJson,
   fetchRepoJson,
   isGitHubPersistenceEnabled,
@@ -99,6 +100,11 @@ export function getSubscribers(): NewsletterSubscriber[] {
   return sortSubscribers(readFromDisk().map(normaliseRecord));
 }
 
+// Two people signing up seconds apart both commit against the same file
+// revision, and the second is rejected. Nobody is at a keyboard to retry a
+// public signup, so re-read and re-apply instead of losing the address.
+const MAX_COMMIT_ATTEMPTS = 3;
+
 /**
  * Apply a change to the list and persist it: committed to the repository
  * when GitHub persistence is configured, written to disk otherwise. Reading
@@ -109,13 +115,24 @@ async function mutateSubscribers(
   mutate: (records: NewsletterSubscriber[]) => NewsletterSubscriber[]
 ): Promise<NewsletterSubscriber[]> {
   if (isGitHubPersistenceEnabled()) {
-    const current = await fetchRepoJson(REPO_PATH);
-    const existing = current
-      ? current.records.filter(isSubscriber).map(normaliseRecord)
-      : getSubscribers();
-    const records = mutate(existing);
-    await commitRepoJson(REPO_PATH, records, current?.sha, COMMIT_MESSAGE);
-    return records;
+    for (let attempt = 1; ; attempt += 1) {
+      const current = await fetchRepoJson(REPO_PATH);
+      const existing = current
+        ? current.records.filter(isSubscriber).map(normaliseRecord)
+        : getSubscribers();
+      const records = mutate(existing);
+      try {
+        await commitRepoJson(REPO_PATH, records, current?.sha, COMMIT_MESSAGE);
+        return records;
+      } catch (err) {
+        if (
+          !(err instanceof RepoConflictError) ||
+          attempt >= MAX_COMMIT_ATTEMPTS
+        ) {
+          throw err;
+        }
+      }
+    }
   }
   const records = mutate(getSubscribers());
   writeToDisk(records);
