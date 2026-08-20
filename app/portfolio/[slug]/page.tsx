@@ -99,7 +99,13 @@ export default async function PropertyDetailPage({
   const plansIndex = property.floorPlans ? nextIndex() : "";
   const locationIndex = property.locationSection ? nextIndex() : "";
   const galleryIndex = property.gallery ? nextIndex() : "";
-  const enquireIndex = nextIndex();
+  // Sales and lettings are handled externally, so the enquire section only
+  // appears for schemes with an appointed agent or live listings to point at.
+  const hasEnquiries = Boolean(property.agent || property.listings);
+  const enquireIndex = hasEnquiries ? nextIndex() : "";
+  // Schemes still to come have nothing to sell or let yet, so the investor
+  // route is the useful call to action in place of an enquiry.
+  const showInvestmentCta = !hasEnquiries && property.status === "Coming Soon";
 
   return (
     <>
@@ -488,7 +494,9 @@ export default async function PropertyDetailPage({
         </section>
       )}
 
-      {/* Enquire */}
+      {/* Enquire: agent and listing details only, for schemes sold or let
+          through an appointed external agent. */}
+      {hasEnquiries && (
       <section id="enquire" className="scroll-mt-24">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 py-24 pb-40 lg:grid-cols-2 lg:px-10 lg:pb-24">
           <Reveal>
@@ -499,19 +507,11 @@ export default async function PropertyDetailPage({
             <p className="mt-4 max-w-md text-base leading-relaxed text-muted">
               {property.agent
                 ? (property.type === "Commercial" || property.type === "Mixed Use")
-                  ? "To arrange a viewing please contact our appointed agent, or get in touch with the Satis Group team."
-                  : "For sales enquiries please contact our appointed agent, or get in touch with the Satis Group team."
-                : property.listings
-                  ? "Enquiries and viewings are handled directly by our appointed letting agents via the live listings."
-                  : "Enquiries and viewings are handled directly by the Satis Group team, so you deal with the developer rather than an agent."}
+                  ? "To arrange a viewing please contact our appointed agent."
+                  : "Sales and viewings are handled by our appointed agent, who will be glad to help."
+                : "Enquiries and viewings are handled by our appointed letting agents via the live listings below."}
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Link
-                href="/contact"
-                className="border border-foreground bg-foreground px-6 py-3 text-xs tracking-[0.2em] uppercase text-background transition-colors duration-300 hover:border-accent hover:bg-accent"
-              >
-                Contact us
-              </Link>
               {/* A relative path means the scheme has no microsite yet, so it
                   links to its own page as an internal link: no new tab and no
                   external-link affordance. */}
@@ -550,7 +550,10 @@ export default async function PropertyDetailPage({
             {property.agent && (
               <div>
                 <span className="text-xs tracking-[0.2em] uppercase text-accent-text">
-                  {(property.type === "Commercial" || property.type === "Mixed Use") ? "Lettings Agent" : "Sales Agent"}
+                  {property.agent.label ??
+                    ((property.type === "Commercial" || property.type === "Mixed Use")
+                      ? "Lettings Agent"
+                      : "Sales Agent")}
                 </span>
                 <p className="mt-2 text-sm leading-relaxed">
                   {property.agent.name}
@@ -567,33 +570,6 @@ export default async function PropertyDetailPage({
                       </a>
                     </>
                   )}
-                </p>
-              </div>
-            )}
-            {/* No appointed agent and no live listings: Satis Group is the
-                point of contact, so the enquiry routes straight to us. */}
-            {!property.agent && !property.listings && (
-              <div>
-                <span className="text-xs tracking-[0.2em] uppercase text-accent-text">
-                  {(property.type === "Commercial" || property.type === "Mixed Use")
-                    ? "Lettings Enquiries"
-                    : "Sales Enquiries"}
-                </span>
-                <p className="mt-2 text-sm leading-relaxed">
-                  Satis Group
-                  <br />
-                  <span className="text-muted">
-                    Handled in-house by our own team
-                  </span>
-                  <br />
-                  <a
-                    href={`mailto:info@satisgroup.co.uk?subject=${encodeURIComponent(
-                      `${property.name} enquiry`
-                    )}`}
-                    className="underline decoration-border underline-offset-4 transition-colors hover:text-accent hover:decoration-accent"
-                  >
-                    info@satisgroup.co.uk
-                  </a>
                 </p>
               </div>
             )}
@@ -625,19 +601,55 @@ export default async function PropertyDetailPage({
           </Reveal>
         </div>
       </section>
+      )}
+
+      {showInvestmentCta && (
+        <section className="relative overflow-hidden bg-ink text-ink-foreground">
+          <div className="relative mx-auto flex max-w-7xl flex-col items-start justify-between gap-8 px-6 py-16 lg:flex-row lg:items-center lg:px-10">
+            <Reveal>
+              <span className="inline-block bg-accent px-4 py-2 text-xs tracking-[0.3em] uppercase text-black">
+                Investment opportunity
+              </span>
+              <p className="mt-3 text-2xl font-medium tracking-tight sm:text-3xl">
+                {property.name} is coming forward.
+              </p>
+              <p className="mt-3 max-w-md text-sm leading-relaxed text-ink-foreground/70">
+                Our investor platform gives partners access to schemes like this
+                one as they come through the pipeline.
+              </p>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <Link
+                href="/investors"
+                className="group inline-flex items-center gap-3 border border-accent bg-accent px-8 py-3 text-xs tracking-[0.2em] uppercase text-ink transition-colors duration-300 hover:bg-transparent hover:text-accent"
+              >
+                Investors
+                <span
+                  aria-hidden="true"
+                  className="transition-transform duration-300 group-hover:translate-x-1.5"
+                >
+                  →
+                </span>
+              </Link>
+            </Reveal>
+          </div>
+        </section>
+      )}
 
       {/* Mobile sticky enquiry bar: keeps the primary action one thumb-tap
           away on small screens; the enquire section carries extra bottom
           padding so the bar never covers content. */}
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
-        <a
-          href="#enquire"
-          className="flex min-h-12 w-full items-center justify-center gap-2 bg-foreground px-6 text-xs tracking-[0.2em] uppercase text-background transition-colors duration-300 active:bg-accent"
-        >
-          Enquire about {property.name}
-          <span aria-hidden="true">→</span>
-        </a>
-      </div>
+      {hasEnquiries && (
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
+          <a
+            href="#enquire"
+            className="flex min-h-12 w-full items-center justify-center gap-2 bg-foreground px-6 text-xs tracking-[0.2em] uppercase text-background transition-colors duration-300 active:bg-accent"
+          >
+            Enquire about {property.name}
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      )}
     </>
   );
 }

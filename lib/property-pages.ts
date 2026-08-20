@@ -83,6 +83,8 @@ export type PropertyPageData = {
     name: string;
     detail: string;
     phone?: string;
+    /** Overrides the use-derived "Sales Agent" / "Lettings Agent" heading. */
+    label?: string;
   };
   listings?: Array<{ label: string; detail: string; href: string }>;
   /**
@@ -227,6 +229,17 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       ],
     },
     address: "The Courthouse, Hibel Road, Macclesfield, Cheshire",
+    agent: {
+      name: "Bridgfords",
+      detail: "Appointed sales agent · Macclesfield",
+    },
+    listings: [
+      {
+        label: "One & Two Bedroom Apartments",
+        detail: "For Sale · Listed via Bridgfords on Rightmove",
+        href: "https://www.bridgfords.co.uk/properties/21990064/sales/LKS260140",
+      },
+    ],
     gallery: [
       { src: "/images/courthouse/bedroom.jpg", alt: "Bedroom with serene styling" },
       { src: "/images/courthouse/bathroom.jpg", alt: "Marble-tiled bathroom" },
@@ -520,6 +533,11 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
         alt: "Altrincham town centre",
       },
     ],
+    agent: {
+      name: "Gallacom",
+      detail: "Appointed letting agent · Altrincham",
+      label: "Letting Agent",
+    },
     listings: [
       {
         label: "En-suite Rooms",
@@ -720,16 +738,16 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     type: "Commercial",
     status: "Coming Soon",
     heroImage: "/images/tabula/hero.jpg",
-    heroPosition: "center 60%",
+    heroPosition: "center 88%",
     intro: {
       heading: "A workspace built around modern business",
       body: [
-        "Tabula is the repositioning of Barnett House at 53 Fountain Street in central Manchester, transforming an underused building into flexible, high-quality workspace.",
+        "Tabula is the repositioning of Barnett House at 53 Fountain Street in central Manchester, transforming a previous Regus office into flexible, high-quality workspace.",
         "The scheme reflects our approach to commercial redevelopment: retain the character, upgrade the fabric, and deliver space that modern businesses actually want to occupy.",
       ],
-      image: "/images/legacy/tabula-frontage.jpg",
-      imageAlt: "Tabula office development frontage and main entrance",
-      imagePosition: "center 85%",
+      image: "/images/tabula/hero.jpg",
+      imageAlt: "Tabula: the entrance canopy and signage at 53 Fountain Street",
+      imagePosition: "center 88%",
     },
     stats: [
       { value: "Office", label: "Use" },
@@ -743,7 +761,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     slug: "st-johns-corner",
     name: "St John's Corner",
     eyebrow: "3-5 St John Street · Manchester",
-    tagline: "Eleven apartments",
+    tagline: "Nine apartments & two penthouse suites",
     type: "Residential",
     status: "Coming Soon",
     heroImage: "/images/stjohnscorner/hero.jpg",
@@ -751,15 +769,15 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     intro: {
       heading: "Eleven homes on a well-connected corner",
       body: [
-        "St John's Corner is a residential development of eleven apartments at 3-5 St John Street, in Manchester's St John's conservation area, a few doors from our workspace scheme at number 22.",
+        "St John's Corner is a residential development of nine apartments and two penthouse suites at 3-5 St John Street, in Manchester's St John's conservation area, a few doors from our workspace scheme at number 22.",
         "Each home will be finished to the standard our buyers and tenants expect: light-filled layouts, quality kitchens and bathrooms, and a specification designed to last.",
       ],
       image: "/images/stjohnscorner/hero.jpg",
       imageAlt: "St John's Corner: the restored corner building with its rooftop storey",
     },
     stats: [
-      { value: "11", label: "Apartments" },
-      { value: "3-5", label: "St John Street" },
+      { value: "9", label: "Apartments" },
+      { value: "2", label: "Penthouse suites" },
       { value: "Manchester", label: "City" },
     ],
     micrositeUrl: "/portfolio/st-johns-corner",
@@ -768,17 +786,17 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
   {
     slug: "lancaster-house",
     name: "Lancaster House",
-    eyebrow: "London Road · Manchester",
+    eyebrow: "London Road · Hazel Grove · Stockport",
     tagline: "Twenty-six apartments",
     type: "Residential",
     status: "Coming Soon",
     heroImage: "/images/lancaster/hero.jpg",
     heroPosition: "center 55%",
     intro: {
-      heading: "Twenty-six homes from one tired building",
+      heading: "Twenty-six homes above an active frontage",
       body: [
         "Lancaster House (also known simply as London Road) is a residential conversion of twenty-six apartments being brought forward by Satis Group above an active retail frontage.",
-        "The project is a good example of the scale we work at: large enough to matter, small enough that every apartment still gets individual attention.",
+        "Brochure and branding for the scheme are in development, and fuller details will be published here in due course.",
       ],
       image: "/images/lancaster/hero.jpg",
       imageAlt: "Lancaster House on London Road at dusk",
@@ -786,7 +804,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     stats: [
       { value: "26", label: "Apartments" },
       { value: "Coming Soon", label: "Status" },
-      { value: "Manchester", label: "City" },
+      { value: "Hazel Grove, Stockport", label: "Location" },
     ],
     micrositeUrl: "/portfolio/lancaster-house",
     micrositeLabel: "Lancaster House",
@@ -819,7 +837,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
   {
     slug: "springfield-house",
     name: "Springfield House",
-    eyebrow: "North West",
+    eyebrow: "Ashton-under-Lyne",
     tagline: "Five apartments",
     type: "Residential",
     status: "Coming Soon",
@@ -837,7 +855,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     stats: [
       { value: "5", label: "Apartments" },
       { value: "Coming Soon", label: "Status" },
-      { value: "North West", label: "Region" },
+      { value: "Ashton-under-Lyne", label: "Location" },
     ],
     micrositeUrl: "/portfolio/springfield-house",
     micrositeLabel: "Springfield House",
@@ -851,7 +869,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     status: "Completed",
     heroImage: "/images/woodfield/hero.jpg",
     intro: {
-      heading: "Living and working under one roof",
+      heading: "A mixed-use development",
       body: [
         "Woodfield Road is a mixed-use development delivered by Satis Group on an Altrincham corner plot: a commercial unit behind a restored shopfront at street level, with homes on the floors above.",
         "The building's Victorian brickwork, canopied bay and stone detailing were retained and repaired, while the interiors were rebuilt to modern standards. Mixed-use projects like this keep a street active through the whole day, and reflect how town centres are changing across the North West.",
@@ -921,7 +939,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
   {
     slug: "southbank",
     name: "Southbank",
-    eyebrow: "North West",
+    eyebrow: "Altrincham",
     tagline: "A terrace of contemporary townhouses",
     type: "Residential",
     status: "Completed",
@@ -938,7 +956,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     stats: [
       { value: "Residential", label: "Use" },
       { value: "Completed", label: "Status" },
-      { value: "North West", label: "Region" },
+      { value: "Altrincham", label: "Location" },
     ],
     micrositeUrl: "/portfolio/southbank",
     micrositeLabel: "Southbank",
