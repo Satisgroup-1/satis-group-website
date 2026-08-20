@@ -3,8 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Eyebrow } from "@/components/Eyebrow";
 import { FrameCorners } from "@/components/FrameCorners";
-import { InvestmentChart } from "@/components/InvestmentChart";
-import { BuildingRedevelopmentGraphic } from "@/components/BuildingRedevelopmentGraphic";
+import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
 import { AWARD_COUNT } from "@/lib/accolades";
 import { StatMeter } from "@/components/StatMeter";
@@ -34,7 +33,7 @@ const VALUES = [
 ];
 
 // Firm-level facts for the stats band. Portfolio scale (GDV / sq ft / units)
-// lives in the InvestmentChart lower down, so the two don't duplicate.
+// lives in the InvestmentChart on the Home page, so the two don't duplicate.
 const STATS = [
   { value: "40+", label: "Years of combined experience" },
   { value: "10", label: "Developments delivered and underway" },
@@ -116,18 +115,16 @@ const FOUNDER_ROLES = [
 export default function AboutPage() {
   return (
     <>
-      <BuildingRedevelopmentGraphic>
-        <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
-          About Satis Group
-        </span>
-        <h1 className="mt-4 max-w-2xl text-3xl font-medium leading-[1.1] tracking-tight [@media(max-height:800px)]:text-2xl sm:text-4xl lg:text-5xl lg:[@media(max-height:800px)]:text-4xl">
-          A trusted partner.
-        </h1>
-        <p className="mt-5 max-w-md text-sm leading-relaxed text-muted [@media(max-height:800px)]:mt-3 lg:text-base">
-          Satis Group acquires, redevelops and sells residential and commercial
-          property across Manchester and the North West.
-        </p>
-      </BuildingRedevelopmentGraphic>
+      <PageHero
+        eyebrow="About Satis Group"
+        title="A trusted partner."
+        description="Satis Group acquires, redevelops and sells residential and commercial property across Manchester and the North West."
+        image={{
+          src: "/images/about-plaque.jpg",
+          alt: "A Satis Group development",
+        }}
+        compact
+      />
 
       {/* Stats band */}
       <section className="relative overflow-hidden bg-ink text-ink-foreground">
@@ -151,7 +148,7 @@ export default function AboutPage() {
       {/* Our Founders: content and photo taken from the SATIS Company &
           Projects PDF, page 4. */}
       <section id="people" className="scroll-mt-24 border-b border-border">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 py-24 lg:grid-cols-2 lg:gap-16 lg:px-10 lg:py-28">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 py-16 lg:grid-cols-2 lg:gap-16 lg:px-10 lg:py-20">
           <Reveal className="group relative">
             <div className="relative aspect-[4/3] overflow-hidden bg-surface lg:h-full lg:aspect-auto">
               <Image
@@ -204,7 +201,7 @@ export default function AboutPage() {
 
       {/* Team */}
       <section className="border-b border-border">
-        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
+        <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
           <Reveal>
             <Eyebrow index="02" label="Our team" />
             <h2 className="mt-4 max-w-lg text-3xl font-medium tracking-tight sm:text-4xl">
@@ -238,87 +235,11 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Investment */}
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20">
-            <Reveal>
-              <Eyebrow index="03" label="Investment opportunities" />
-              <h2 className="mt-4 text-3xl font-medium tracking-tight sm:text-4xl">
-                A market with momentum.
-              </h2>
-              <p className="mt-6 text-base leading-relaxed text-muted">
-                Manchester is a thriving city with a strong economy and a
-                growing population. This has created a high demand for housing,
-                resulting in a competitive rental market and the potential for
-                attractive rental yields. The city has seen significant
-                regeneration and development in recent years, with new
-                infrastructure projects and cultural attractions attracting
-                both residents and investors.
-              </p>
-            </Reveal>
-            <Reveal delay={0.15}>
-              <Eyebrow label="The Satis Group future" />
-              <h2 className="mt-4 text-3xl font-medium tracking-tight sm:text-4xl">
-                A £38m pipeline and growing.
-              </h2>
-              <p className="mt-6 text-base leading-relaxed text-muted">
-                We currently have a pipeline of £38m with 109,000 sq ft of both
-                residential and commercial developments. Looking ahead, our
-                growth plan is to scale significantly in the next 12 months by
-                delivering our existing projects, adding new opportunities to
-                the pipeline, and positioning Satis Group for sustainable
-                long-term expansion.
-              </p>
-            </Reveal>
-          </div>
-
-          <Reveal delay={0.1}>
-            <div className="mt-20">
-              <h3 className="text-xs tracking-[0.3em] uppercase text-muted">
-                Portfolio at a glance
-              </h3>
-              <div className="mt-8">
-                <InvestmentChart />
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Investor call-to-action banner, from the website sketch */}
-      <section className="relative overflow-hidden bg-ink text-ink-foreground">
-        <div className="relative mx-auto flex max-w-7xl flex-col items-start justify-between gap-8 px-6 py-16 lg:flex-row lg:items-center lg:px-10">
-          <Reveal>
-            <span className="inline-block bg-accent px-4 py-2 text-xs tracking-[0.3em] uppercase text-black">
-              Get full access to our latest investment opportunities
-            </span>
-            <p className="mt-3 text-2xl font-medium tracking-tight sm:text-3xl">
-              Invest in Satis Group.
-            </p>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <Link
-              href="/investors"
-              className="group inline-flex items-center gap-3 border border-accent-strong bg-accent-strong px-8 py-3 text-xs tracking-[0.2em] uppercase text-white transition-colors duration-300 hover:bg-transparent hover:text-accent-text dark:border-accent dark:bg-accent dark:text-ink dark:hover:bg-transparent dark:hover:text-accent"
-            >
-              Investors
-              <span
-                aria-hidden="true"
-                className="transition-transform duration-300 group-hover:translate-x-1.5"
-              >
-                →
-              </span>
-            </Link>
-          </Reveal>
-        </div>
-      </section>
-
       {/* Values */}
       <section className="border-b border-border">
-        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
+        <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
           <Reveal>
-            <Eyebrow index="04" label="Our principles" />
+            <Eyebrow index="03" label="Our principles" />
             <h2 className="mt-4 max-w-lg text-3xl font-medium tracking-tight sm:text-4xl">
               Principles we build by.
             </h2>
@@ -329,9 +250,9 @@ export default function AboutPage() {
 
       {/* Partnerships */}
       <section className="bg-surface">
-        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
+        <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
           <Reveal>
-            <Eyebrow index="05" label="Partnerships" />
+            <Eyebrow index="04" label="Partnerships" />
             <h2 className="mt-4 max-w-lg text-3xl font-medium tracking-tight sm:text-4xl">
               Who we work with.
             </h2>
@@ -367,10 +288,10 @@ export default function AboutPage() {
 
       {/* Awards & recognition — summary; the full list lives on News */}
       <section className="border-t border-border">
-        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
+        <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_auto] lg:items-end lg:gap-20">
             <Reveal>
-              <Eyebrow index="06" label="Awards & recognition" />
+              <Eyebrow index="05" label="Awards & recognition" />
               <h2 className="mt-4 max-w-xl text-3xl font-medium tracking-tight sm:text-4xl">
                 Award winners, and judges of the awards.
               </h2>

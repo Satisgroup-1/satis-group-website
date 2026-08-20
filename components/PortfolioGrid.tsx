@@ -18,7 +18,9 @@ export function PortfolioGrid() {
   const properties =
     filter === "All"
       ? PORTFOLIO
-      : PORTFOLIO.filter((property) => property.type === filter);
+      : PORTFOLIO.filter(
+          (property) => property.type === filter || property.type === "Mixed Use"
+        );
 
   // Split into Present / Future / Past, dropping any group the current
   // type filter leaves empty.

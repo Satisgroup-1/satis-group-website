@@ -6,7 +6,9 @@ export function PropertyCard({ property }: { property: Property }) {
   const typeChipClass =
     property.type === "Residential"
       ? "bg-sage text-white dark:text-ink"
-      : "bg-ink text-ink-foreground";
+      : property.type === "Mixed Use"
+        ? "bg-accent text-ink"
+        : "bg-ink text-ink-foreground";
 
   return (
     <Link href={`/portfolio/${property.slug}`} className="group flex flex-col">

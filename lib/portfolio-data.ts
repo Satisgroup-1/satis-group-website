@@ -1,4 +1,4 @@
-export type PropertyType = "Residential" | "Commercial";
+export type PropertyType = "Residential" | "Commercial" | "Mixed Use";
 
 export type Property = {
   slug: string;
@@ -79,7 +79,7 @@ export const PORTFOLIO: Property[] = [
     slug: "qube",
     name: "QUBE",
     location: "Stockport",
-    type: "Residential",
+    type: "Mixed Use",
     status: "Coming Soon",
     image: "/images/qube/hero.jpg",
     logo: { src: "/images/logos/qube-v2.jpg", bg: "#f4efe7" },
@@ -87,15 +87,18 @@ export const PORTFOLIO: Property[] = [
       "Our largest scheme to date: fifty-eight apartments and two commercial units in Stockport town centre.",
   },
   {
-    slug: "lancaster-house",
-    name: "Lancaster House",
-    location: "London Road, Manchester",
-    type: "Residential",
+    slug: "tabula",
+    name: "Tabula",
+    location: "Barnett House, 53 Fountain Street, Manchester",
+    type: "Commercial",
     status: "Coming Soon",
-    image: "/images/lancaster/hero.jpg",
-    imagePosition: "center 58%",
+    image: "/images/tabula/hero.jpg",
+    // Drops the crop to the entrance canopy and the TABULA signage, which sit
+    // low in this tall frame.
+    imagePosition: "center 88%",
+    logo: { src: "/images/logos/tabula.jpg", bg: "#0a0a0a" },
     blurb:
-      "A residential conversion of twenty-six apartments, with individual attention given to every home.",
+      "The repositioning of Barnett House on Fountain Street: character retained, fabric upgraded, workspace businesses want.",
   },
   {
     slug: "st-johns-corner",
@@ -107,24 +110,23 @@ export const PORTFOLIO: Property[] = [
     imagePosition: "center 45%",
     logo: { src: "/images/logos/st-johns-corner.jpg", bg: "#414747" },
     blurb:
-      "Eleven apartments on a well-connected corner, to be finished to the standard our buyers expect.",
+      "Nine apartments and two penthouse suites on a well-connected corner, to be finished to the standard our buyers expect.",
   },
   {
-    slug: "tabula",
-    name: "Tabula",
-    location: "Barnett House, 53 Fountain Street, Manchester",
-    type: "Commercial",
+    slug: "lancaster-house",
+    name: "Lancaster House",
+    location: "London Road, Hazel Grove, Stockport",
+    type: "Residential",
     status: "Coming Soon",
-    image: "/images/tabula/hero.jpg",
-    imagePosition: "center 62%",
-    logo: { src: "/images/logos/tabula.jpg", bg: "#0a0a0a" },
+    image: "/images/lancaster/hero.jpg",
+    imagePosition: "center 58%",
     blurb:
-      "The repositioning of Barnett House on Fountain Street: character retained, fabric upgraded, workspace businesses want.",
+      "A residential conversion of twenty-six apartments, with individual attention given to every home.",
   },
   {
     slug: "springfield-house",
     name: "Springfield House",
-    location: "North West",
+    location: "Ashton-under-Lyne",
     type: "Residential",
     status: "Coming Soon",
     image: "/images/springfield/hero.jpg",
@@ -136,7 +138,7 @@ export const PORTFOLIO: Property[] = [
     slug: "woodfield-road",
     name: "Woodfield Road",
     location: "Altrincham",
-    type: "Commercial",
+    type: "Mixed Use",
     status: "Completed",
     image: "/images/woodfield/hero.jpg",
     logo: { src: "/images/logos/woodfield-road-on-navy.png", bg: "#101c28" },
@@ -168,7 +170,7 @@ export const PORTFOLIO: Property[] = [
   {
     slug: "southbank",
     name: "Southbank",
-    location: "North West",
+    location: "Altrincham",
     type: "Residential",
     status: "Completed",
     image: "/images/southbank/hero.jpg",
@@ -182,7 +184,6 @@ export const PORTFOLIO: Property[] = [
     type: "Residential",
     status: "Completed",
     image: "/images/meyer/hero-v2.jpg",
-    hoverImage: "/images/meyer/terrace.jpg",
     blurb:
       "A light residential conversion in Stockport delivering three HMOs (fourteen en-suite bedrooms in total) with a shared roof terrace.",
   },
@@ -205,7 +206,7 @@ export const PORTFOLIO_PHASES: Array<{
   phase: PortfolioPhase;
   blurb: string;
 }> = [
-  { phase: "Past", blurb: "Completed and delivered." },
-  { phase: "Future", blurb: "Coming forward across Manchester and the North West." },
   { phase: "Present", blurb: "On the market or occupied now." },
+  { phase: "Future", blurb: "Coming forward across Manchester and the North West." },
+  { phase: "Past", blurb: "Completed and delivered." },
 ];
