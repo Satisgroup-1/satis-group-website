@@ -22,10 +22,17 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   experimental: {
     serverActions: {
-      // The admin investor-data importer accepts JSON uploads larger than
-      // the 1 MB server-action default.
-      bodySizeLimit: "5mb",
+      // The admin importer and PDF uploads exceed the 1 MB server-action
+      // default. Uploads are capped at 4MB in lib/investor-files.ts because
+      // Vercel rejects request bodies past ~4.5MB regardless of this value;
+      // the headroom here covers multipart overhead.
+      bodySizeLimit: "6mb",
     },
+  },
+  // Uploaded investor PDFs are read from disk at request time, which output
+  // tracing cannot see — include them in the download route's bundle.
+  outputFileTracingIncludes: {
+    "/investors/files/[name]": ["./content/investors/files/**/*"],
   },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];

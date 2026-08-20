@@ -5,11 +5,13 @@ import {
   deleteCapPosition,
   deleteCashEvent,
   deleteDevelopment,
+  deleteDocument,
   deleteInsight,
   deleteInvestor,
   deleteOpportunity,
   deleteUpdate,
   importSnapshot,
+  uploadDocument,
   saveCapPosition,
   saveCashEvent,
   saveDevelopment,
@@ -65,6 +67,16 @@ export type AdminPlatformData = {
     amount: string;
     status: string;
   }[];
+  documents: {
+    key: string;
+    title: string;
+    kind: string;
+    published: string;
+    visibility: string;
+    development?: string;
+    category?: string;
+    file?: string;
+  }[];
   updates: {
     key: string;
     date: string;
@@ -92,6 +104,7 @@ type Tab =
   | "developments"
   | "captables"
   | "updates"
+  | "documents"
   | "insights"
   | "opportunities"
   | "data";
@@ -827,9 +840,9 @@ function UpdatesTab({ data }: { data: AdminPlatformData }) {
       <form action={action} className="h-fit space-y-4 border border-border bg-surface p-5">
         <h3 className="text-sm font-medium">Publish monthly report</h3>
         <p className="text-xs leading-5 text-muted">
-          Investors see these under &ldquo;Monthly reports&rdquo;. Add a file
-          path to make the full report downloadable, and list the tasks so they
-          can ask about any single item.
+          Investors see these under &ldquo;Monthly reports&rdquo;. Upload the
+          full report as a PDF to make it downloadable, and list the tasks so
+          they can ask about any single item.
         </p>
         <label className={LABEL}>
           Development
@@ -851,20 +864,27 @@ function UpdatesTab({ data }: { data: AdminPlatformData }) {
             <input className={INPUT} name="tag" placeholder="Construction" />
           </label>
         </div>
-        <div className="grid grid-cols-2 gap-3">
-          <label className={LABEL}>
-            Period
-            <input className={INPUT} name="period" placeholder="August 2026" />
-          </label>
-          <label className={LABEL}>
-            Report file (optional)
-            <input
-              className={INPUT}
-              name="file"
-              placeholder="/investor-reports/august-2026.pdf"
-            />
-          </label>
-        </div>
+        <label className={LABEL}>
+          Period
+          <input className={INPUT} name="period" placeholder="August 2026" />
+        </label>
+        <label className={LABEL}>
+          Report PDF (optional, max 4MB)
+          <input
+            className={`${INPUT} normal-case tracking-normal`}
+            name="pdf"
+            type="file"
+            accept="application/pdf,.pdf"
+          />
+        </label>
+        <label className={LABEL}>
+          …or an existing file path
+          <input
+            className={INPUT}
+            name="file"
+            placeholder="/investors/files/august-2026.pdf"
+          />
+        </label>
         <label className={LABEL}>
           Title
           <input className={INPUT} name="title" required />
@@ -883,6 +903,151 @@ function UpdatesTab({ data }: { data: AdminPlatformData }) {
         </label>
         <Result state={state} />
         <Submit pending={pending}>Publish report</Submit>
+      </form>
+    </div>
+  );
+}
+
+function DocumentsTab({ data }: { data: AdminPlatformData }) {
+  const [state, action, pending] = useActionState(uploadDocument, {});
+  return (
+    <div className="grid gap-10 xl:grid-cols-[1.15fr_.85fr]">
+      <div>
+        <h3 className="text-xs tracking-[.16em] uppercase text-muted">
+          Published documents
+        </h3>
+        <p className="mt-2 text-xs leading-5 text-muted">
+          Uploaded PDFs are stored in <code>content/investors/files/</code>{" "}
+          and served only to signed-in accounts with the right to the
+          specific document — never from a public URL.
+        </p>
+        <ul className="mt-4 space-y-3">
+          {data.documents.map((d) => (
+            <li
+              key={d.key}
+              className="flex items-start justify-between gap-4 border border-border p-5"
+            >
+              <div>
+                <p className="text-[10px] tracking-[.12em] uppercase text-accent-text">
+                  {d.kind} · {d.published}
+                  {d.development && <> · {d.development}</>}
+                  {d.category && <> · {d.category}</>}
+                </p>
+                <h4 className="mt-2 font-medium">{d.title}</h4>
+                <p className="mt-1 text-xs text-muted">
+                  Visible to: {d.visibility} ·{" "}
+                  {d.file ? (
+                    <a
+                      href={d.file}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="underline decoration-border underline-offset-2 transition-colors hover:text-accent"
+                    >
+                      open PDF ↗
+                    </a>
+                  ) : (
+                    "no file attached"
+                  )}
+                </p>
+              </div>
+              <DeleteButton action={deleteDocument} fields={{ key: d.key }} />
+            </li>
+          ))}
+        </ul>
+      </div>
+      <form action={action} className="h-fit space-y-4 border border-border bg-surface p-5">
+        <h3 className="text-sm font-medium">Upload document</h3>
+        <p className="text-xs leading-5 text-muted">
+          Attach the PDF to a development to file it under that
+          investment&rsquo;s My Portfolio tabs (Legal, Shareholder meetings,
+          Accounts — or All files only when no category is set). Leave the
+          development blank for account-level documents like tax statements.
+        </p>
+        <label className={LABEL}>
+          PDF file (max 4MB)
+          <input
+            className={`${INPUT} normal-case tracking-normal`}
+            name="pdf"
+            type="file"
+            accept="application/pdf,.pdf"
+            required
+          />
+        </label>
+        <label className={LABEL}>
+          Title
+          <input className={INPUT} name="title" placeholder="Satis (Court House) Ltd — Annual Accounts 2025" required />
+        </label>
+        <div className="grid grid-cols-2 gap-3">
+          <label className={LABEL}>
+            Document type
+            <input className={INPUT} name="kind" placeholder="Annual accounts" list="document-kinds" required />
+            <datalist id="document-kinds">
+              {[
+                "Shareholder agreement",
+                "Share certificate",
+                "Annual accounts",
+                "Meeting recording",
+                "Monthly report",
+                "Tax document",
+                "Project document",
+              ].map((k) => (
+                <option key={k} value={k} />
+              ))}
+            </datalist>
+          </label>
+          <label className={LABEL}>
+            Published (blank = today)
+            <input className={INPUT} name="published" placeholder="2026-08-19" />
+          </label>
+        </div>
+        <label className={LABEL}>
+          Development (optional)
+          <select className={INPUT} name="developmentId" defaultValue="">
+            <option value="">— none / account-level —</option>
+            {data.developments.map((d) => (
+              <option key={d.id} value={d.id}>
+                {d.name} — {d.spvName}
+              </option>
+            ))}
+          </select>
+        </label>
+        <div className="grid grid-cols-2 gap-3">
+          <label className={LABEL}>
+            Portfolio tab
+            <select className={INPUT} name="category" defaultValue="">
+              <option value="">All files only</option>
+              <option value="legal">Legal</option>
+              <option value="meetings">Shareholder meetings</option>
+              <option value="accounts">Accounts</option>
+            </select>
+          </label>
+          <label className={LABEL}>
+            Visible to
+            <select className={INPUT} name="investorId" defaultValue="members" required>
+              <option value="members">Cap-table members (needs a development)</option>
+              {data.investors.map((inv) => (
+                <option key={inv.id} value={inv.id}>
+                  {inv.name}
+                </option>
+              ))}
+              <option value="all">Every account</option>
+            </select>
+          </label>
+        </div>
+        <label className={LABEL}>
+          Audience (only for &ldquo;Every account&rdquo;)
+          <select className={INPUT} name="audience" defaultValue="">
+            <option value="">Both tiers</option>
+            <option value="prospective">Prospective only</option>
+            <option value="invested">Invested only</option>
+          </select>
+        </label>
+        <label className={LABEL}>
+          Summary (optional)
+          <textarea className={`${INPUT} min-h-20`} name="summary" />
+        </label>
+        <Result state={state} />
+        <Submit pending={pending}>Upload &amp; publish</Submit>
       </form>
     </div>
   );
@@ -1086,6 +1251,7 @@ function DataTab({ data }: { data: AdminPlatformData }) {
     ["Cap-table lines", data.capPositions.length],
     ["Cash events", data.cashEvents.length],
     ["Updates", data.updates.length],
+    ["Documents", data.documents.length],
     ["Insights", data.insights.length],
     ["Opportunities", data.opportunities.length],
   ];
@@ -1160,6 +1326,7 @@ export function AdminPlatform({ data }: { data: AdminPlatformData }) {
     ["developments", "Developments & SPVs", data.developments.length],
     ["captables", "Cap tables & returns", data.capPositions.length + data.cashEvents.length],
     ["updates", "Monthly reports", data.updates.length],
+    ["documents", "Documents", data.documents.length],
     ["insights", "Insights", data.insights.length],
     ["opportunities", "Opportunities", data.opportunities.length],
     ["data", "Import / export", 0],
@@ -1190,6 +1357,7 @@ export function AdminPlatform({ data }: { data: AdminPlatformData }) {
         {tab === "developments" && <DevelopmentsTab data={data} />}
         {tab === "captables" && <CapTablesTab data={data} />}
         {tab === "updates" && <UpdatesTab data={data} />}
+        {tab === "documents" && <DocumentsTab data={data} />}
         {tab === "insights" && <InsightsTab data={data} />}
         {tab === "opportunities" && <OpportunitiesTab data={data} />}
         {tab === "data" && <DataTab data={data} />}

@@ -45,7 +45,7 @@
   },
   {
     "investorId": "elm-row",
-    "title": "2025\u201326 Tax Statement",
+    "title": "2025–26 Tax Statement",
     "kind": "Tax document",
     "published": "2026-06-30"
   },
@@ -53,7 +53,7 @@
     "investorId": "members",
     "developmentId": "court-house",
     "category": "legal",
-    "title": "Satis (Court House) Ltd \u2014 Shareholders' Agreement",
+    "title": "Satis (Court House) Ltd — Shareholders' Agreement",
     "kind": "Shareholder agreement",
     "summary": "The executed shareholders' agreement for the Court House vehicle, including transfer provisions and reserved matters.",
     "published": "2025-03-14"
@@ -62,7 +62,7 @@
     "investorId": "elm-row",
     "developmentId": "court-house",
     "category": "legal",
-    "title": "Share Certificate \u2014 Elm Row Capital, Satis (Court House) Ltd",
+    "title": "Share Certificate — Elm Row Capital, Satis (Court House) Ltd",
     "kind": "Share certificate",
     "summary": "Certificate for your 20% holding in Satis (Court House) Ltd.",
     "published": "2025-03-21"
@@ -71,7 +71,7 @@
     "investorId": "members",
     "developmentId": "court-house",
     "category": "meetings",
-    "title": "Court House shareholder meeting \u2014 Q2 2026 (recording)",
+    "title": "Court House shareholder meeting — Q2 2026 (recording)",
     "kind": "Meeting recording",
     "summary": "Planning submission walkthrough, procurement update and Q&A. 48 minutes.",
     "published": "2026-06-12"
@@ -80,7 +80,7 @@
     "investorId": "members",
     "developmentId": "court-house",
     "category": "accounts",
-    "title": "Satis (Court House) Ltd \u2014 Annual Accounts 2025",
+    "title": "Satis (Court House) Ltd — Annual Accounts 2025",
     "kind": "Annual accounts",
     "summary": "Audited accounts for the year ending 31 December 2025.",
     "published": "2026-04-30"
@@ -88,7 +88,7 @@
   {
     "investorId": "members",
     "developmentId": "court-house",
-    "title": "Court House \u2014 Planning Submission Pack",
+    "title": "Court House — Planning Submission Pack",
     "kind": "Project document",
     "summary": "The full planning submission as validated by the local authority.",
     "published": "2026-07-02"
@@ -97,7 +97,7 @@
     "investorId": "members",
     "developmentId": "davenport",
     "category": "legal",
-    "title": "Satis (Davenport) Ltd \u2014 Shareholders' Agreement",
+    "title": "Satis (Davenport) Ltd — Shareholders' Agreement",
     "kind": "Shareholder agreement",
     "summary": "The executed shareholders' agreement for the Davenport Park vehicle.",
     "published": "2024-11-08"
@@ -106,7 +106,7 @@
     "investorId": "elm-row",
     "developmentId": "davenport",
     "category": "legal",
-    "title": "Share Certificate \u2014 Elm Row Capital, Satis (Davenport) Ltd",
+    "title": "Share Certificate — Elm Row Capital, Satis (Davenport) Ltd",
     "kind": "Share certificate",
     "summary": "Certificate for your 25% holding in Satis (Davenport) Ltd.",
     "published": "2024-11-15"
@@ -115,7 +115,7 @@
     "investorId": "members",
     "developmentId": "davenport",
     "category": "meetings",
-    "title": "Davenport Park shareholder meeting \u2014 H1 2026 (recording)",
+    "title": "Davenport Park shareholder meeting — H1 2026 (recording)",
     "kind": "Meeting recording",
     "summary": "Superstructure progress, cost report and programme to completion. 39 minutes.",
     "published": "2026-05-20"
@@ -124,7 +124,7 @@
     "investorId": "members",
     "developmentId": "davenport",
     "category": "accounts",
-    "title": "Satis (Davenport) Ltd \u2014 Annual Accounts 2025",
+    "title": "Satis (Davenport) Ltd — Annual Accounts 2025",
     "kind": "Annual accounts",
     "summary": "Audited accounts for the year ending 31 December 2025.",
     "published": "2026-04-30"
@@ -133,7 +133,7 @@
     "investorId": "members",
     "developmentId": "22-st-john-street",
     "category": "legal",
-    "title": "Satis (22 St John) Ltd \u2014 Shareholders' Agreement",
+    "title": "Satis (22 St John) Ltd — Shareholders' Agreement",
     "kind": "Shareholder agreement",
     "summary": "The executed shareholders' agreement for the 22 St John Street vehicle.",
     "published": "2025-01-17"
@@ -142,7 +142,7 @@
     "investorId": "test-investor",
     "developmentId": "22-st-john-street",
     "category": "legal",
-    "title": "Share Certificate \u2014 Satis Test Account, Satis (22 St John) Ltd",
+    "title": "Share Certificate — Satis Test Account, Satis (22 St John) Ltd",
     "kind": "Share certificate",
     "summary": "Certificate for your 10% holding in Satis (22 St John) Ltd.",
     "published": "2025-11-14"
@@ -151,7 +151,7 @@
     "investorId": "members",
     "developmentId": "22-st-john-street",
     "category": "meetings",
-    "title": "22 St John Street shareholder meeting \u2014 Q2 2026 (recording)",
+    "title": "22 St John Street shareholder meeting — Q2 2026 (recording)",
     "kind": "Meeting recording",
     "summary": "Fit-out progress, sales launch preparation and Q&A. 52 minutes.",
     "published": "2026-06-05"
@@ -160,7 +160,7 @@
     "investorId": "members",
     "developmentId": "22-st-john-street",
     "category": "accounts",
-    "title": "Satis (22 St John) Ltd \u2014 Annual Accounts 2025",
+    "title": "Satis (22 St John) Ltd — Annual Accounts 2025",
     "kind": "Annual accounts",
     "summary": "Audited accounts for the year ending 31 December 2025.",
     "published": "2026-04-30"
@@ -168,7 +168,7 @@
   {
     "investorId": "members",
     "developmentId": "22-st-john-street",
-    "title": "22 St John Street \u2014 Insurance & Warranties Schedule",
+    "title": "22 St John Street — Insurance & Warranties Schedule",
     "kind": "Project document",
     "summary": "Current buildings insurance and latent defects warranty documentation.",
     "published": "2026-03-11"
@@ -177,7 +177,7 @@
     "investorId": "members",
     "developmentId": "chester-house",
     "category": "legal",
-    "title": "Satis (Chester House) Ltd \u2014 Shareholders' Agreement",
+    "title": "Satis (Chester House) Ltd — Shareholders' Agreement",
     "kind": "Shareholder agreement",
     "summary": "The executed shareholders' agreement for the Chester House vehicle.",
     "published": "2024-09-26"
@@ -186,7 +186,7 @@
     "investorId": "test-investor",
     "developmentId": "chester-house",
     "category": "legal",
-    "title": "Share Certificate \u2014 Satis Test Account, Satis (Chester House) Ltd",
+    "title": "Share Certificate — Satis Test Account, Satis (Chester House) Ltd",
     "kind": "Share certificate",
     "summary": "Certificate for your 10% holding in Satis (Chester House) Ltd.",
     "published": "2025-11-14"
@@ -195,7 +195,7 @@
     "investorId": "members",
     "developmentId": "chester-house",
     "category": "meetings",
-    "title": "Chester House shareholder meeting \u2014 Q2 2026 (recording)",
+    "title": "Chester House shareholder meeting — Q2 2026 (recording)",
     "kind": "Meeting recording",
     "summary": "Practical completion programme, sales reservations and distribution outlook. 44 minutes.",
     "published": "2026-06-19"
@@ -204,7 +204,7 @@
     "investorId": "members",
     "developmentId": "chester-house",
     "category": "accounts",
-    "title": "Satis (Chester House) Ltd \u2014 Annual Accounts 2025",
+    "title": "Satis (Chester House) Ltd — Annual Accounts 2025",
     "kind": "Annual accounts",
     "summary": "Audited accounts for the year ending 31 December 2025.",
     "published": "2026-04-30"
@@ -212,7 +212,7 @@
   {
     "investorId": "members",
     "developmentId": "chester-house",
-    "title": "Hazelgate \u2014 Sales & Marketing Pack",
+    "title": "Hazelgate — Sales & Marketing Pack",
     "kind": "Project document",
     "summary": "The launch brochure and price list for the Hazelgate apartments.",
     "published": "2026-07-08"

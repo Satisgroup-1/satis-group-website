@@ -67,6 +67,91 @@ export async function fetchRepoJson(path: string): Promise<GitHubFile | null> {
   return { records: Array.isArray(records) ? records : [], sha: file.sha };
 }
 
+/**
+ * Current committed contents of a binary repo file (an uploaded PDF, say),
+ * or null when it doesn't exist. Files up to ~1MB come back inline from the
+ * contents API; larger ones only return a download_url, so follow it.
+ */
+export async function fetchRepoFile(
+  path: string
+): Promise<{ content: Buffer; sha: string } | null> {
+  const response = await githubRequest(
+    `${contentsUrl(path)}?ref=${encodeURIComponent(BRANCH)}`
+  );
+  if (response.status === 404) return null;
+  if (!response.ok) {
+    throw new Error(
+      `The file could not be read (GitHub responded ${response.status}).`
+    );
+  }
+  const file = (await response.json()) as {
+    content?: string;
+    sha: string;
+    download_url?: string;
+  };
+  if (file.content) {
+    return { content: Buffer.from(file.content, "base64"), sha: file.sha };
+  }
+  if (file.download_url) {
+    const raw = await githubRequest(file.download_url);
+    if (!raw.ok) {
+      throw new Error(
+        `The file could not be downloaded (GitHub responded ${raw.status}).`
+      );
+    }
+    return {
+      content: Buffer.from(await raw.arrayBuffer()),
+      sha: file.sha,
+    };
+  }
+  return null;
+}
+
+/** True when a file already exists at this repo path. */
+export async function repoFileExists(path: string): Promise<boolean> {
+  const response = await githubRequest(
+    `${contentsUrl(path)}?ref=${encodeURIComponent(BRANCH)}`
+  );
+  if (response.status === 404) return false;
+  if (!response.ok) {
+    throw new Error(
+      `The repository could not be read (GitHub responded ${response.status}).`
+    );
+  }
+  return true;
+}
+
+/** Commit a new binary file (an uploaded PDF) to the repository. */
+export async function commitRepoFile(
+  path: string,
+  content: Buffer,
+  message: string
+): Promise<void> {
+  const response = await githubRequest(contentsUrl(path), {
+    method: "PUT",
+    body: JSON.stringify({
+      message,
+      content: content.toString("base64"),
+      branch: BRANCH,
+    }),
+  });
+  if (response.status === 409 || response.status === 422) {
+    throw new Error(
+      "A file with this name already exists — rename the PDF and try again."
+    );
+  }
+  if (response.status === 401 || response.status === 403) {
+    throw new Error(
+      "The repository token was rejected — check SATIS_GITHUB_TOKEN in the hosting environment."
+    );
+  }
+  if (!response.ok) {
+    throw new Error(
+      `The file could not be committed (GitHub responded ${response.status}).`
+    );
+  }
+}
+
 /** Commit new contents for a repo file; sha must match the current file. */
 export async function commitRepoJson(
   path: string,
