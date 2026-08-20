@@ -307,11 +307,15 @@ export const LEGAL_PAGES: LegalPage[] = [
       },
       {
         kind: "paragraph",
-        text: "2.4 We may process any of your personal data identified in this policy where necessary for administrative purposes including in the exercise or defence of legal claims. The legal basis for this processing is our legitimate interests, namely for administrative record keeping, processing transactions and maintaining business records or for the protection and assertion of our legal rights.",
+        text: "2.4 We may process the information that you provide to us when you sign up for our news updates (\"notification data\"). The notification data may include your name and email address, and is provided by you when you complete the sign-up form on our news page or when you ask us to add you to the list. It may be processed for the purpose of sending you our news updates, and for keeping a record of the fact that you asked to receive them. The legal basis for this processing is your consent, which you may withdraw at any time by replying to any update and asking to be removed, or by contacting us using the details in section 10. We do not sell or share the list with anyone outside our group of companies and our email service providers.",
       },
       {
         kind: "paragraph",
-        text: "2.5 If you supply any other person's personal data to us, you must do so only if you have the authority of such person to do so and you must comply with any obligations imposed upon you under the Data Protection Regulations.",
+        text: "2.5 We may process any of your personal data identified in this policy where necessary for administrative purposes including in the exercise or defence of legal claims. The legal basis for this processing is our legitimate interests, namely for administrative record keeping, processing transactions and maintaining business records or for the protection and assertion of our legal rights.",
+      },
+      {
+        kind: "paragraph",
+        text: "2.6 If you supply any other person's personal data to us, you must do so only if you have the authority of such person to do so and you must comply with any obligations imposed upon you under the Data Protection Regulations.",
       },
       { kind: "heading", text: "3. Providing your personal data to others" },
       {
@@ -365,7 +369,11 @@ export const LEGAL_PAGES: LegalPage[] = [
       },
       {
         kind: "paragraph",
-        text: "5.3 Notwithstanding the other provisions of this Section 5, we may retain your personal data where such retention is necessary for compliance with a legal obligation to which we are subject, or in order to protect your legal interests or the legal interests of another person.",
+        text: "5.3 Notification data is retained for as long as you wish to receive our news updates. If you ask to be removed from the list, we keep a record that you did so, so that we do not add you again in error; you may ask us to erase that record as well, and we will do so.",
+      },
+      {
+        kind: "paragraph",
+        text: "5.4 Notwithstanding the other provisions of this Section 5, we may retain your personal data where such retention is necessary for compliance with a legal obligation to which we are subject, or in order to protect your legal interests or the legal interests of another person.",
       },
       { kind: "heading", text: "6. Amendments" },
       {
