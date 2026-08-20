@@ -13,7 +13,7 @@ export const MAX_MESSAGE = 4000;
 
 /** What a submitter is told when the mail could not be handed over. */
 export const SEND_FAILED =
-  "We could not send that just now. Please email info@satisgroup.co.uk and we will pick it up.";
+  "We could not send that just now. Please email noreply.ai@satisgroup.co.uk and we will pick it up.";
 
 export function readField(
   formData: FormData,

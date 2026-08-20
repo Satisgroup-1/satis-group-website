@@ -14,10 +14,10 @@ export const deck = {
     {
       type: "agenda",
       title: "What this session covers.",
-      sub: "You need the new admin's email address, and access to the Vercel project settings — or someone who has it.",
+      sub: "You need the new admin's email address, and access to the Vercel project settings, or someone who has it.",
       items: [
-        { title: "Two kinds of account", sub: "Admin accounts vs investor accounts — different doors, different keys." },
-        { title: "Where admin accounts live", sub: "In the hosting platform, not on the website — and why." },
+        { title: "Two kinds of account", sub: "Admin accounts vs investor accounts: different doors, different keys." },
+        { title: "Where admin accounts live", sub: "In the hosting platform, not on the website, and why." },
         { title: "Adding an admin", sub: "Generate the entry, paste into Vercel, redeploy." },
         { title: "Resets and removals", sub: "Passwords are replaced, never recovered." },
         { title: "Lock-outs and sessions", sub: "Five tries, fifteen minutes, 24-hour sessions." },
@@ -25,10 +25,10 @@ export const deck = {
       aside: {
         tone: "tip",
         title: "Ten minutes, start to finish",
-        body: "Adding an account takes about ten minutes including the hosting step — and the page does the fiddly part for you.",
+        body: "Adding an account takes about ten minutes including the hosting step, and the page does the fiddly part for you.",
         h: 1.9,
       },
-      notes: "Small audience session usually — whoever runs operations. Clarify scope up front: investor logins are a different system, covered in the investor-platform webinar.",
+      notes: "Small audience session usually: whoever runs operations. Clarify scope up front: investor logins are a different system, covered in the investor-platform webinar.",
     },
     {
       type: "panels",
@@ -38,52 +38,52 @@ export const deck = {
       cols: 2,
       panels: [
         {
-          tone: "plain", title: "Admin accounts — the back office",
+          tone: "plain", title: "Admin accounts: the back office",
           body: [
             "Sign in at /admin with a username and password.",
             "Can publish news, run the investor platform, manage accounts, download the appraisal app.",
             "Stored in the hosting platform (Vercel) as a setting called SATIS_ADMIN_USERS.",
-            "Every admin has identical access — there are no roles or permission levels.",
+            "Every admin has identical access. There are no roles or permission levels.",
           ],
         },
         {
-          tone: "plain", title: "Investor accounts — the portal",
+          tone: "plain", title: "Investor accounts: the portal",
           body: [
             "Investors sign in at /investors with email and password.",
-            "See their own portfolio, reports and documents — never the admin area.",
+            "See their own portfolio, reports and documents, never the admin area.",
             "Created and managed on the Investors tab of the platform studio.",
-            "Covered in webinar 04 — The investor platform.",
+            "Covered in webinar 04, The investor platform.",
           ],
         },
       ],
       panelH: 3.3,
-      notes: "The distinction prevents the most common support confusion: resetting the wrong kind of account. If someone says “I can't get in”, first ask: which door — /admin or /investors?",
+      notes: "The distinction prevents the most common support confusion: resetting the wrong kind of account. If someone says “I can't get in”, first ask: which door, /admin or /investors?",
     },
     {
       type: "diagram",
       label: "Where accounts live",
-      title: "Admin accounts live with the hosting — deliberately.",
+      title: "Admin accounts live with the hosting. Deliberately.",
       intro: "For safety, the list of who can sign in is stored in the hosting platform rather than on the website itself. The Admin accounts page does the fiddly part: it shows who can sign in, and generates the setting value you paste into Vercel.",
       draw: (s, T) => {
         const y = 3.45, h = 1.15, w = 3.3, gap = 1.0;
         const x1 = MX + 0.35, x2 = x1 + w + gap, x3 = x2 + w + gap;
         T.node(s, { x: x1, y, w, h, label: "Admin accounts page", sub: "shows accounts · generates the entry" });
-        T.node(s, { x: x2, y, w, h, label: "Vercel — Environment Variables", sub: "SATIS_ADMIN_USERS holds every account", fillDark: true });
+        T.node(s, { x: x2, y, w, h, label: "Vercel: Environment Variables", sub: "SATIS_ADMIN_USERS holds every account", fillDark: true });
         T.node(s, { x: x3, y, w, h, label: "Sign-in at /admin", sub: "checked on every request" });
         T.arrow(s, x1 + w, y + h / 2, x2, y + h / 2);
         T.arrowLabel(s, "YOU PASTE THE VALUE", x1 + w - 0.35, y + h / 2 + 0.14, gap + 0.7);
         T.arrow(s, x2 + w, y + h / 2, x3, y + h / 2);
         T.arrowLabel(s, "AFTER A REDEPLOY", x2 + w - 0.35, y + h / 2 + 0.14, gap + 0.7);
         s.addText([
-          { text: "Passwords are stored “hashed” — one-way scrambled.  ", options: { fontSize: 11.5, bold: true, color: C.ink } },
+          { text: "Passwords are stored “hashed”: one-way scrambled.  ", options: { fontSize: 11.5, bold: true, color: C.ink } },
           { text: "The site can check a typed password is right, but nobody can read one back. That is why passwords are replaced, never recovered.", options: { fontSize: 11.5, color: C.muted } },
         ], { x: MX, y: 5.5, w: CW - 1, h: 0.65, fontFace: "Work Sans", margin: 0, lineSpacing: 17 });
       },
-      notes: "Two ideas here: the hosting is the source of truth (so a compromised website can't mint accounts), and hashing (so nobody — including us — can read a password). Both come up in support conversations.",
+      notes: "Two ideas here: the hosting is the source of truth (so a compromised website can't mint accounts), and hashing (so nobody, including us, can read a password). Both come up in support conversations.",
     },
     {
       type: "steps",
-      label: "Adding an admin — step 1 of 2",
+      label: "Adding an admin · step 1 of 2",
       title: "Generate the credential entry.",
       intro: "From the control room, open the Admin accounts card. The page lists every account that can currently sign in; the “Add an account” form is below.",
       image: "accounts-form.png",
@@ -91,22 +91,22 @@ export const deck = {
       caption: "The Add an account form on /admin/accounts.",
       steps: [
         { n: 1, title: "Email", body: "The address the person will sign in with." },
-        { n: 2, title: "Password — leave it blank", body: "A strong password is generated for you (recommended). Or type one of at least 12 characters." },
-        { n: 3, title: "Click Generate credential entry", body: "Nothing changes yet — this only prepares the value for Vercel." },
+        { n: 2, title: "Password: leave it blank", body: "A strong password is generated for you (recommended). Or type one of at least 12 characters." },
+        { n: 3, title: "Click Generate credential entry", body: "Nothing changes yet. This only prepares the value for Vercel." },
       ],
       panel: {
         tone: "warn",
         title: "The generated password is shown once",
-        body: "Record it before leaving the page. It is stored only as a one-way hash and can never be read back — only replaced.",
+        body: "Record it before leaving the page. It is stored only as a one-way hash and can never be read back, only replaced.",
         h: 1.15,
       },
-      notes: "The result box shows the password a single time — have a password manager or a secure note ready before clicking. If the page instead says the site is running on demo credentials (test/test), creating this first real account is exactly how you fix that.",
+      notes: "The result box shows the password a single time. Have a password manager or a secure note ready before clicking. If the page instead says the site is running on demo credentials (test/test), creating this first real account is exactly how you fix that.",
     },
     {
       type: "steps",
-      label: "Adding an admin — step 2 of 2",
+      label: "Adding an admin · step 2 of 2",
       title: "Paste the value into Vercel and redeploy.",
-      intro: "The result box shows the complete new SATIS_ADMIN_USERS value — it includes every existing account too, so pasting it wholesale keeps everyone working. The box lists the exact clicks:",
+      intro: "The result box shows the complete new SATIS_ADMIN_USERS value. It includes every existing account as well, so pasting it wholesale keeps everyone working. The box lists the exact clicks:",
       steps: [
         { n: 1, title: "Open the variable", body: "In Vercel: open the project → Settings → Environment Variables → edit SATIS_ADMIN_USERS (create it if it does not exist)." },
         { n: 2, title: "Replace its value", body: "Paste the full value from the result box over what is there." },
@@ -117,12 +117,12 @@ export const deck = {
         title: "After the redeploy",
         body: [
           "The new admin signs in at /admin, and the Admin accounts page lists them.",
-          "Tell them their password over a trusted channel — phone, or split across two channels. Never both credentials in one email.",
+          "Tell them their password over a trusted channel: phone, or split across two channels. Never both credentials in one email.",
         ],
         h: 2.5,
       },
       stepsW: 7.9,
-      notes: "The redeploy is the step people forget — the new account simply won't work until it happens. The handover rule matters: if one email thread carries both the address and the password, one compromised inbox is a compromised admin.",
+      notes: "The redeploy is the step people forget. The new account simply won't work until it happens. The handover rule matters: if one email thread carries both the address and the password, one compromised inbox is a compromised admin.",
     },
     {
       type: "twoCol",
@@ -132,7 +132,7 @@ export const deck = {
         heading: "Reset a password",
         numbered: true,
         items: [
-          "Generate a new entry for the same email — re-using an existing email produces a replacement entry.",
+          "Generate a new entry for the same email. Re-using an existing email produces a replacement entry.",
           "Paste the new SATIS_ADMIN_USERS value into Vercel, exactly as before.",
           "Redeploy. The old password stops working; the new one starts.",
         ],
@@ -143,7 +143,7 @@ export const deck = {
         items: [
           "Edit SATIS_ADMIN_USERS in Vercel.",
           "Delete that account's email=… entry from the value.",
-          "Redeploy. Removal takes effect on the next request — no waiting for their session to expire.",
+          "Redeploy. Removal takes effect on the next request. No waiting for their session to expire.",
         ],
       },
       panel: {
@@ -152,7 +152,7 @@ export const deck = {
         body: "A forgotten admin password is replaced by another admin. If nobody can sign in at all, the development team can edit SATIS_ADMIN_USERS directly in Vercel.",
         h: 0.95,
       },
-      notes: "Same mechanics in both columns: the env var is the account list, and a redeploy applies it. Point out the immediacy of removal — useful when someone leaves the business.",
+      notes: "Same mechanics in both columns: the env var is the account list, and a redeploy applies it. Point out the immediacy of removal. Useful when someone leaves the business.",
     },
     {
       type: "panels",
@@ -166,15 +166,15 @@ export const deck = {
         },
         {
           tone: "plain", title: "“Too many attempts …”",
-          body: ["Five wrong tries pauses that internet connection for 15 minutes — deliberate, to stop password guessing. Wait it out; nothing is broken. Genuinely forgotten? Reset it meanwhile."],
+          body: ["Five wrong tries pauses that internet connection for 15 minutes. Deliberate, to stop password guessing. Wait it out; nothing is broken. Genuinely forgotten? Reset it meanwhile."],
         },
         {
           tone: "plain", title: "“It signed me out by itself.”",
-          body: ["Sessions last 24 hours, then quietly expire — normal, and protective on shared devices. Sign in again; nothing saved is lost. On shared computers, always press Sign out when done."],
+          body: ["Sessions last 24 hours, then quietly expire. Normal, and protective on shared devices. Sign in again; nothing saved is lost. On shared computers, always press Sign out when done."],
         },
       ],
       panelH: 2.6,
-      notes: "These three cover essentially every admin sign-in complaint. The 15-minute throttle applies per internet connection — an office may share one, so one person's typos can pause everyone briefly.",
+      notes: "These three cover essentially every admin sign-in complaint. The 15-minute throttle applies per internet connection. An office may share one, so one person's typos can pause everyone briefly.",
     },
     {
       type: "steps",
@@ -182,7 +182,7 @@ export const deck = {
       title: "If the site still shows demo credentials.",
       intro: "Until real accounts are configured, the admin accepts the public demonstration pair test/test and shows a reminder note. The moment real accounts exist, the demo pair stops working.",
       steps: [
-        { n: 1, title: "See the note? Create the first real account", body: "Follow the two-step add flow from this session — that is the fix, not a separate procedure." },
+        { n: 1, title: "See the note? Create the first real account", body: "Follow the two-step add flow from this session. That is the fix, not a separate procedure." },
         { n: 2, title: "Also set the signing secret", body: "SATIS_ADMIN_SECRET in the same Vercel settings makes sign-in sessions unforgeable. The development team can generate one." },
         { n: 3, title: "Confirm the note is gone", body: "After the redeploy, the admin home shows no demo warning, and test/test no longer signs in." },
       ],
@@ -193,14 +193,14 @@ export const deck = {
         h: 1.9,
       },
       stepsW: 7.9,
-      notes: "Only relevant until first-time setup is done — but worth one slide because the warning banner is the first thing anyone sees on a fresh deployment, and the fix is exactly the session's main flow.",
+      notes: "Only relevant until first-time setup is done, but worth one slide because the warning banner is the first thing anyone sees on a fresh deployment, and the fix is exactly the session's main flow.",
     },
   ],
   takeaways: [
-    "Admin and investor accounts are separate systems — check which door before helping anyone.",
+    "Admin and investor accounts are separate systems. Check which door before helping anyone.",
     "Accounts live in SATIS_ADMIN_USERS in Vercel; the admin page generates the value for you.",
     "Adding = generate entry → paste into Vercel → redeploy. Ten minutes.",
-    "Passwords are shown once and stored scrambled — replaced, never recovered.",
+    "Passwords are shown once and stored scrambled: replaced, never recovered.",
     "Five wrong tries pauses sign-in for 15 minutes; sessions last 24 hours.",
   ],
   help: [

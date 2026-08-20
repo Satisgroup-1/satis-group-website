@@ -29,10 +29,10 @@ export default function ContactPage() {
                 Email
               </span>
               <a
-                href="mailto:info@satisgroup.co.uk"
+                href="mailto:noreply.ai@satisgroup.co.uk"
                 className="mt-2 block text-sm tracking-[0.05em] transition-colors hover:text-accent"
               >
-                info@satisgroup.co.uk
+                noreply.ai@satisgroup.co.uk
               </a>
             </div>
             <div>

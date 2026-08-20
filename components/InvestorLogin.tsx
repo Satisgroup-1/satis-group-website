@@ -140,7 +140,7 @@ export function InvestorLogin({ stats }: { stats: HeroStats }) {
             </form>
             <div className="mt-7 flex justify-end text-xs text-white/45">
               <a
-                href="mailto:info@satisgroup.co.uk"
+                href="mailto:noreply.ai@satisgroup.co.uk"
                 className="hover:text-white"
               >
                 Need help?

@@ -572,7 +572,7 @@ export async function deleteOpportunity(
 /**
  * Markdown-ish composer format: blocks separated by blank lines; "## " starts
  * a heading; consecutive "- " lines become a list; "> " starts a pull quote
- * (a trailing line beginning "— " becomes the attribution); everything else
+ * (a trailing line beginning "— " or "-- " becomes the attribution); everything else
  * is a paragraph. Stats rows, tables and callouts are available through the
  * JSON importer.
  */
@@ -592,10 +592,10 @@ function parseInsightBody(raw: string): InsightBlock[] {
       const lines = trimmed
         .split("\n")
         .map((line) => line.replace(/^>\s?/, "").trim());
-      const attributionIndex = lines.findIndex((line) => line.startsWith("— "));
+      const attributionIndex = lines.findIndex((line) => /^(?:—|--)\s/.test(line));
       const attribution =
         attributionIndex >= 0
-          ? lines[attributionIndex].replace(/^—\s*/, "")
+          ? lines[attributionIndex].replace(/^(?:—|--)\s*/, "")
           : undefined;
       const quoteText = (
         attributionIndex >= 0 ? lines.slice(0, attributionIndex) : lines

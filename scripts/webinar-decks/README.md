@@ -42,6 +42,9 @@ from `public/admin-guide/` (regenerate those first with
 
 Known state at generation time (2026-08-19): the contact and investor enquiry
 forms deliver by email through Resend (`SATIS_RESEND_API_KEY`, destinations
-`SATIS_ENQUIRY_TO`/`SATIS_CONTACT_TO`), enquiry email links use mailto, and
-the newsletter subscriber-list admin section was mid-rollout — decks 02 and
-07 carry clearly-marked slides to update when that lands.
+`SATIS_ENQUIRY_TO`/`SATIS_CONTACT_TO`), every site email address is unified on
+noreply.ai@satisgroup.co.uk, and the newsletter subscriber-list admin section
+was mid-rollout — decks 02 and 07 carry clearly-marked slides to update when
+that lands. House style for the decks: no em-dashes anywhere on slides or in
+notes (labels use `·`; the platform's task and pull-quote syntax is taught in
+its `--` form, which the parsers accept alongside the long dash).

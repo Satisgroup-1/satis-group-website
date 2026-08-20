@@ -48,7 +48,7 @@ export async function submitInvestorEnquiry(
   if (!(await allow())) {
     return {
       error:
-        "That is a lot of enquiries from one place. Try again later, or email info@satisgroup.co.uk.",
+        "That is a lot of enquiries from one place. Try again later, or email noreply.ai@satisgroup.co.uk.",
     };
   }
 

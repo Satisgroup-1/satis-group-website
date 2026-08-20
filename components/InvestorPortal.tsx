@@ -40,7 +40,7 @@ const NAV: Record<InvestorTier, { id: Section; label: string; icon: string }[]> 
     ],
   };
 
-const ENQUIRY_EMAIL = "info@satisgroup.co.uk";
+const ENQUIRY_EMAIL = "noreply.ai@satisgroup.co.uk";
 
 /** mailto: for a specific question, so nothing on the page is a dead click. */
 function mailto(subject: string, body?: string): string {
@@ -552,7 +552,7 @@ function Opportunities({ opportunities }: { opportunities: PortalData["opportuni
           {o.status === "Fully subscribed" ? (
             <p className="mt-7 text-xs leading-5 text-[#858b8e]">This raise is closed. Quarterly reporting will appear in the developments and documents sections.</p>
           ) : (
-            <a href={`mailto:info@satisgroup.co.uk?subject=${encodeURIComponent(`Investor interest: ${o.name}, ${o.place}`)}`} className="shimmer-btn mt-7 block w-full bg-[#121212] px-5 py-4 text-center text-xs tracking-[.15em] uppercase text-white transition hover:bg-[#b18c4d]">
+            <a href={`mailto:noreply.ai@satisgroup.co.uk?subject=${encodeURIComponent(`Investor interest: ${o.name}, ${o.place}`)}`} className="shimmer-btn mt-7 block w-full bg-[#121212] px-5 py-4 text-center text-xs tracking-[.15em] uppercase text-white transition hover:bg-[#b18c4d]">
               {o.status === "Open" ? "Register interest →" : "Join the launch list →"}
             </a>
           )}
@@ -614,7 +614,7 @@ function Insights({ insights }: { insights: PortalData["insights"] }) {
       <p className="mt-6 text-xl leading-9 text-[#626a6e]">{open.summary}</p>
       <div className="mt-8 border-t border-[#d8d7d0] pt-2">{open.body.map((block, i) => <InsightBlockView key={i} block={block} />)}</div>
       <div className="mt-14 flex flex-wrap items-center justify-between gap-4 border-t border-[#d8d7d0] pt-8">
-        <a href={`mailto:info@satisgroup.co.uk?subject=${encodeURIComponent(`Insight discussion: ${open.title}`)}`} className="shimmer-btn bg-[#121212] px-6 py-3.5 text-xs tracking-[.15em] uppercase text-white transition hover:bg-[#b18c4d]">Discuss with the team →</a>
+        <a href={`mailto:noreply.ai@satisgroup.co.uk?subject=${encodeURIComponent(`Insight discussion: ${open.title}`)}`} className="shimmer-btn bg-[#121212] px-6 py-3.5 text-xs tracking-[.15em] uppercase text-white transition hover:bg-[#b18c4d]">Discuss with the team →</a>
         {next && next.slug !== open.slug && <button onClick={() => setOpenSlug(next.slug)} className="text-left text-xs text-[#737a7e] transition hover:text-[#121212]"><span className="block text-[10px] uppercase tracking-[.16em] text-[#8a6c3f]">Read next</span><span className="mt-1 block max-w-60 font-medium">{next.title}</span></button>}
       </div>
     </article>;

@@ -487,7 +487,7 @@ export const LEGAL_PAGES: LegalPage[] = [
       },
       {
         kind: "paragraph",
-        text: "10.3 You can contact us: (a) by post, to the postal address given above; or (b) by email, to info@satisgroup.co.uk.",
+        text: "10.3 You can contact us: (a) by post, to the postal address given above; or (b) by email, to noreply.ai@satisgroup.co.uk.",
       },
     ],
   },

@@ -14,11 +14,11 @@ export const DIMS = JSON.parse(readFileSync(path.join(ASSETS, "dims.json"), "utf
 export const C = {
   ink: "000000",
   paper: "FFFFFF",
-  stone: "CED1D2",   // brand light grey — hairlines, frames, panels
+  stone: "CED1D2",   // brand light grey: hairlines, frames, panels
   stoneTint: "ECEEEE", // stone at panel strength on white
   muted: "5C6366",   // muted text (monochrome family)
   faint: "9AA0A2",   // footer / page numbers
-  marker: "B3400C",  // screenshot badge orange — step chips ONLY
+  marker: "B3400C",  // screenshot badge orange: step chips ONLY
   darkRule: "3A3A3A",
   darkMuted: "B9BDBE",
 };
@@ -83,7 +83,7 @@ export function header(slide, label, { dark = false, page, deckName } = {}) {
 }
 
 export function footer(slide, { dark = false, page, deckName } = {}) {
-  slide.addText(deckName ? `SATIS GROUP — ${deckName.toUpperCase()}` : "SATIS GROUP", {
+  slide.addText(deckName ? `SATIS GROUP · ${deckName.toUpperCase()}` : "SATIS GROUP", {
     x: MX, y: 7.08, w: 7, h: 0.22,
     fontFace: FONT, fontSize: 7, color: dark ? C.darkMuted : C.faint,
     charSpacing: 2, margin: 0,

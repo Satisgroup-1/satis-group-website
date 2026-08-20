@@ -11,7 +11,7 @@ const API_URL = process.env.SATIS_RESEND_API_URL ?? "https://api.resend.com/emai
 
 /** Where the investor enquiry form's submissions land. */
 export const ENQUIRY_RECIPIENT =
-  process.env.SATIS_ENQUIRY_TO ?? "noreply@satisgroup.co.uk";
+  process.env.SATIS_ENQUIRY_TO ?? "noreply.ai@satisgroup.co.uk";
 
 /** Where the general contact form's submissions land: the same inbox unless
     SATIS_CONTACT_TO splits them out. */

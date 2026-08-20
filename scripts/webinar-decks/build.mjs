@@ -221,7 +221,7 @@ export async function buildDeck(deck) {
   pres.title = deck.title;
 
   const cover = T.coverSlide(pres, {
-    photo: deck.cover, series: "Satis Group — Backend webinar series",
+    photo: deck.cover, series: "Satis Group · Backend webinar series",
     titleText: deck.title, sub: deck.subtitle, deckNo: deck.no,
   });
   if (deck.coverNotes) cover.addNotes(deck.coverNotes);

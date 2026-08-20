@@ -53,10 +53,10 @@ export function Footer() {
             Contact
           </span>
           <a
-            href="mailto:info@satisgroup.co.uk"
+            href="mailto:noreply.ai@satisgroup.co.uk"
             className="text-sm tracking-[0.05em] text-ink-foreground/80 transition-colors hover:text-accent"
           >
-            info@satisgroup.co.uk
+            noreply.ai@satisgroup.co.uk
           </a>
           <span className="text-sm tracking-[0.05em] text-ink-foreground/60">
             Manchester, United Kingdom

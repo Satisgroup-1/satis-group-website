@@ -49,7 +49,7 @@ export async function submitContactEnquiry(
   if (!(await allow())) {
     return {
       error:
-        "That is a lot of messages from one place. Try again later, or email info@satisgroup.co.uk.",
+        "That is a lot of messages from one place. Try again later, or email noreply.ai@satisgroup.co.uk.",
     };
   }
 

@@ -34,7 +34,7 @@ const ORGANIZATION_JSON_LD = {
   legalName: "RA Developments (NW) Limited",
   url: SITE_URL,
   logo: `${SITE_URL}/images/satis-logo-white.png`,
-  email: "info@satisgroup.co.uk",
+  email: "noreply.ai@satisgroup.co.uk",
   address: {
     "@type": "PostalAddress",
     streetAddress: "Peel House, 30 The Downs",
