@@ -7,7 +7,8 @@ import { SplashScreen } from "@/components/SplashScreen";
 import { TermsGate } from "@/components/TermsGate";
 import { ThemeProvider, THEME_INIT_SCRIPT } from "@/components/ThemeProvider";
 import { MotionProvider } from "@/components/MotionProvider";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { StagingBadge } from "@/components/StagingBadge";
+import { IS_LIVE_SITE, SITE_NAME, SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -23,6 +24,8 @@ export const metadata: Metadata = {
     locale: "en_GB",
   },
   twitter: { card: "summary_large_image" },
+  // Staging and preview copies must never be indexed alongside the live site.
+  robots: IS_LIVE_SITE ? undefined : { index: false, follow: false },
 };
 
 // Facts sourced from the legal pages (RA Developments (NW) Limited details)
@@ -78,6 +81,7 @@ export default function RootLayout({
               {children}
             </main>
             <Footer />
+            <StagingBadge />
           </MotionProvider>
         </ThemeProvider>
       </body>

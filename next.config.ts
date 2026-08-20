@@ -18,6 +18,16 @@ const securityHeaders = [
   { key: "Content-Security-Policy", value: "frame-ancestors 'none'" },
 ];
 
+// Vercel sets VERCEL_ENV on every deployment; anything other than
+// "production" is a staging or preview copy of the live site.
+const isLiveSite = process.env.VERCEL_ENV === "production";
+
+// robots.txt is advisory and does not cover assets or Open Graph images, so
+// staging deployments carry the header form too.
+const noIndexHeaders = [
+  { key: "X-Robots-Tag", value: "noindex, nofollow" },
+];
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   experimental: {
@@ -35,7 +45,14 @@ const nextConfig: NextConfig = {
     "/investors/files/[name]": ["./content/investors/files/**/*"],
   },
   async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
+    return [
+      {
+        source: "/:path*",
+        headers: isLiveSite
+          ? securityHeaders
+          : [...securityHeaders, ...noIndexHeaders],
+      },
+    ];
   },
   async redirects() {
     // The newsletter section became /news; keep old links working.
