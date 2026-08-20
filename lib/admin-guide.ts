@@ -80,7 +80,7 @@ export const GUIDE_CHAPTERS: GuideChapter[] = [
     group: "Getting started",
     title: "Signing in and finding your way around",
     summary:
-      "How to open the admin area, sign in safely, understand the four sections, and sign out.",
+      "How to open the admin area, sign in safely, understand the six sections, and sign out.",
     lede: [
       "Everything you can manage — news, investor accounts, project figures, reports — lives behind one private admin area. This chapter shows you how to get in and what each part does. No technical knowledge is needed; if you can use online banking, you can use this.",
       "You can never break the public website by looking around. Nothing changes until you press a Save or Publish button, and this guide flags every button that does.",
@@ -109,19 +109,20 @@ export const GUIDE_CHAPTERS: GuideChapter[] = [
       {
         title: "Get your bearings on the control room page",
         body: [
-          "After signing in you land on the control room — the front door to everything. It shows four cards; each one opens a different tool. Click anywhere on a card to open it, and use your browser's Back button (the ← arrow at the top left of the browser) to return here at any time.",
+          "After signing in you land on the control room — the front door to everything. It shows six cards; each one opens a different tool. Click anywhere on a card to open it, and use your browser's Back button (the ← arrow at the top left of the browser) to return here at any time.",
         ],
-        screenshot: shot("home.png", "The admin control room with its five section cards and the sign-out button highlighted", 2720, 3582, [
+        screenshot: shot("home.png", "The admin control room with its six section cards and the sign-out button highlighted", 2720, 3628, [
           { n: 1, text: "Newsletter — write and publish news stories for the public News page." },
-          { n: 2, text: "Investors — the investor platform studio: accounts, developments, cap tables, reports and raises." },
-          { n: 3, text: "Admin accounts — who can sign in to this admin area, and adding someone (see the chapter “Managing admin accounts”)." },
-          { n: 4, text: "Instructions — this guide." },
-          { n: 5, text: "Appraisal agent download — install the Satis Appraisal desktop app, with its own step-by-step instructions on the page." },
-          { n: 6, text: "Sign out when you are finished, especially on a shared computer." },
+          { n: 2, text: "Newsletter signup list — everyone who has signed up for updates through the website (see the chapter “The newsletter signup list”)." },
+          { n: 3, text: "Investors — the investor platform studio: accounts, developments, cap tables, reports and raises." },
+          { n: 4, text: "Admin accounts — who can sign in to this admin area, and adding someone (see the chapter “Managing admin accounts”)." },
+          { n: 5, text: "Instructions — this guide." },
+          { n: 6, text: "Appraisal agent download — install the Satis Appraisal desktop app, with its own step-by-step instructions on the page." },
+          { n: 7, text: "Sign out when you are finished, especially on a shared computer." },
         ]),
         callouts: [
           check(
-            "The heading reads “Satis Group control room.” and five numbered cards are visible. If you still see the sign-in boxes, the username or password was not accepted — try again slowly."
+            "The heading reads “Satis Group control room.” and six numbered cards are visible. If you still see the sign-in boxes, the username or password was not accepted — try again slowly."
           ),
         ],
       },
@@ -248,6 +249,7 @@ export const GUIDE_CHAPTERS: GuideChapter[] = [
         title: "Open the newsletter studio",
         body: [
           "From the control room, click the Newsletter card. You will see a form on the left headed “New issue” and, on the right, the list of everything already published — newest first. That right-hand list is also the quickest way to re-read a live story: click any title to open it exactly as visitors see it.",
+          "Below that list is the signup list panel — how many people have signed up for updates, and a link to the list itself. The chapter “The newsletter signup list” covers it.",
         ],
       },
       {
@@ -261,13 +263,14 @@ export const GUIDE_CHAPTERS: GuideChapter[] = [
           "Summary — one plain sentence shown under the headline in the news list. Think of it as the story in fifteen words.",
           "Body — the story itself. Type normal paragraphs and press Enter twice (leaving one empty line) between them.",
         ],
-        screenshot: shot("newsletter.png", "The newsletter studio with the title, date, summary and body boxes, the publish button, and the published issues list highlighted", 2720, 3834, [
+        screenshot: shot("newsletter.png", "The newsletter studio with the title, date, summary and body boxes, the publish button, the published issues list and the signup-list panel highlighted", 2720, 4178, [
           { n: 1, text: "Title — the headline." },
           { n: 2, text: "Date — pre-filled with today; click to change." },
           { n: 3, text: "Summary — the one-liner for the news list." },
           { n: 4, text: "Body — the story, in plain paragraphs." },
           { n: 5, text: "Publish issue — the story goes live the moment you click this." },
           { n: 6, text: "Published issues — click any title to read it as visitors do." },
+          { n: 7, text: "Signup list — how many people are subscribed, with a link to the list itself." },
         ]),
         callouts: [
           tip(
@@ -322,6 +325,167 @@ export const GUIDE_CHAPTERS: GuideChapter[] = [
       {
         q: "My paragraphs ran together into one block.",
         a: ["There must be a completely empty line between paragraphs — press Enter twice at the end of each paragraph, not once."],
+      },
+    ],
+  },
+  {
+    slug: "newsletter-list",
+    group: "Publishing",
+    title: "The newsletter signup list",
+    summary:
+      "Where signups from the website land, how to read and download the list, add someone by hand, and take someone off it.",
+    lede: [
+      "The News page invites visitors to sign up for occasional updates. Every address submitted there is added to the signup list automatically — you do not have to copy anything anywhere. This chapter shows you where that list lives, how to read it, and how to get it out as a spreadsheet when you want to send an update.",
+      "One thing this list does not do: send emails. The website collects and keeps the addresses; the sending is done from whatever email tool you prefer (Outlook, Mailchimp, Campaign Monitor). Step 4 covers getting the addresses into it.",
+    ],
+    time: "About 5 minutes",
+    youNeed: [
+      "To be signed in (see “Signing in and finding your way around”)",
+      "Nothing else — the list fills itself",
+    ],
+    steps: [
+      {
+        title: "Know what the visitor sees",
+        body: [
+          "On the public News page there is a short “Sign up” box: one email box and a Subscribe button. When someone fills it in and clicks Subscribe, the box is replaced by a thank-you message and their address is on your list from that second.",
+          "Nothing else is asked of them — no name, no phone number. Keeping it to one box is deliberate: every extra question loses signups.",
+        ],
+        screenshot: shot("signup-public.png", "The sign-up box on the public news page, with the email address box and the subscribe button highlighted", 1136, 476, [
+          { n: 1, text: "The visitor types their email address here." },
+          { n: 2, text: "Subscribe — one click, and they are on your list." },
+        ]),
+        callouts: [
+          tip(
+            "Signing up twice is harmless",
+            "If the same person signs up again — a year later, from a different device — they are not added twice. The list keeps one line per address, so you can never email somebody the same update twice by accident.",
+            "The thank-you message is the same either way, on purpose: it means a stranger cannot use the form to find out whether a particular person is on your list."
+          ),
+        ],
+      },
+      {
+        title: "Open the signup list",
+        body: [
+          "From the control room, click the Newsletter signup list card. (You can also get there from the newsletter studio: the “Signup list” panel on the right shows how many people are subscribed, with a “View the list” link underneath.)",
+          "The list shows everyone who has signed up, newest first. Above it are two counts — how many people are currently subscribed, and how many have opted out.",
+        ],
+        screenshot: shot("subscribers.png", "The newsletter signup list with the counts, filter buttons, search box, download button, per-person actions and the add-by-hand form highlighted", 2720, 2664, [
+          { n: 1, text: "The two counts: how many people are subscribed, and how many have opted out." },
+          { n: 2, text: "Download CSV — saves the list as a spreadsheet file (step 4)." },
+          { n: 3, text: "The three views: Subscribed (the people you may email), Unsubscribed, and Everyone." },
+          { n: 4, text: "Search — type part of a name or address to find one person in a long list." },
+          { n: 5, text: "One line per person: their address, the day they signed up, and where the signup came from." },
+          { n: 6, text: "Unsubscribe and Delete — the two ways to take somebody off (step 5)." },
+          { n: 7, text: "Add someone by hand — for people who ask to be added away from the website (step 6)." },
+        ]),
+        callouts: [
+          check(
+            "The heading reads “Newsletter signup list.” and, if anyone has signed up, you see a line for each person. If it says “Nobody has signed up yet”, the list is genuinely empty — it is not broken; try the form on the News page yourself with your own address to see a line appear."
+          ),
+        ],
+      },
+      {
+        title: "Read a line of the list",
+        body: [
+          "Each line has the person on the first row and the details underneath. A line reading “Amelia Hart · amelia.hart@example.com”, then “14 Aug 2026 · News page signup form”, means Amelia signed up herself through the website on 14 August. Where no name is shown, the person only ever gave an address — which is all the public form asks for.",
+          "The last part is where the signup came from. “News page signup form” means they signed themselves up; “Added by admin” means somebody here added them by hand (step 6). If the line ends with “unsubscribed”, that person has opted out and should not be emailed.",
+        ],
+        callouts: [
+          tip(
+            "Use the three views rather than reading everything",
+            "Subscribed is the list you may email. Unsubscribed is the record of people who opted out — kept deliberately, so an old spreadsheet can never quietly put them back. Everyone shows both together.",
+            "The counts next to each view name update as the list changes, so the Subscribed count is always the honest answer to “how many people are on our list?”."
+          ),
+        ],
+      },
+      {
+        title: "Download the list to send an update",
+        body: [
+          "Click Download CSV. Your browser saves a file named something like satis-newsletter-subscribers-2026-08-19.csv into your Downloads folder; double-click it and it opens in Excel (or Numbers, or Google Sheets) as a simple table: email, name, status, where it came from, and the date they signed up.",
+          "Then import or paste the email column into whatever you send the newsletter with. There is no automatic connection between this list and your email tool — which means the two can drift apart, so download a fresh copy each time you send rather than reusing last month's file.",
+        ],
+        callouts: [
+          warn(
+            "The download contains exactly what is on screen",
+            "The file follows the view and the search box you have open. Choose Subscribed before downloading and you get only the people you may email — which is almost always what you want. If you have typed something in the search box, only the matching lines are saved.",
+            "Never email anyone from the Unsubscribed view. Sending to someone who opted out is both bad manners and, under UK marketing rules, not allowed."
+          ),
+          term(
+            "CSV",
+            "“Comma-separated values” — the plainest possible spreadsheet file. Every spreadsheet program and every email tool can read one, which is why the list is offered in this format rather than as an Excel file."
+          ),
+        ],
+      },
+      {
+        title: "Add someone by hand",
+        body: [
+          "People will ask to be added in ways the website never sees — at a viewing, at an awards dinner, in a reply to an email. Use the “Add someone by hand” box on the right: type their address, optionally their name, and click Add to list.",
+          "A green confirmation appears underneath and the person joins the list immediately, marked “Added by admin” so you can always tell hand-added contacts from website signups. Adding somebody who is already there simply tells you so — it never creates a second line.",
+        ],
+        screenshot: shot("subscribers-add.png", "The add-someone-by-hand box with the email box, the optional name box and the add-to-list button highlighted", 1256, 808, [
+          { n: 1, text: "Email address — the only thing that is required." },
+          { n: 2, text: "Name — optional, but worth adding when you know it." },
+          { n: 3, text: "Add to list — they are on the list the moment this confirms." },
+        ]),
+        callouts: [
+          warn(
+            "Only add people who asked to be added",
+            "Typing in an address from a business card that was handed over for a different reason is not consent. If in doubt, email them and ask them to sign up on the News page themselves — then the record shows they opted in, which is exactly what you want if anyone ever queries it."
+          ),
+        ],
+      },
+      {
+        title: "Take someone off the list",
+        body: [
+          "Every line has two options, and the difference matters:",
+        ],
+        substeps: [
+          "Unsubscribe — the normal choice. The person stops appearing in the Subscribed view and will not be in your next download, but the line stays as a record that they opted out and when. Use this whenever someone replies “please take me off”.",
+          "Delete — removes the line completely, as if they had never signed up. Use this only when someone asks to be erased entirely (a data deletion request), because afterwards there is nothing to show they were ever there.",
+        ],
+        callouts: [
+          tip(
+            "Putting someone back",
+            "Switch to the Unsubscribed view and the same line offers Resubscribe — use it if someone asks to start hearing from you again, or if you clicked Unsubscribe on the wrong line. If the line was deleted instead, add them again by hand (step 6)."
+          ),
+          warn(
+            "Both actions happen immediately",
+            "There is no “are you sure?” step and no undo button. Read the address on the line before you click, particularly in a long list — the search box is the safe way to isolate one person first."
+          ),
+        ],
+      },
+    ],
+    faqsTitle: "If something goes wrong",
+    faqs: [
+      {
+        q: "Somebody says they signed up but they are not in the list.",
+        a: [
+          "Check the Everyone view and search for their address — if they signed up years ago and later unsubscribed, they are filed under Unsubscribed rather than missing.",
+          "If they are genuinely absent, test the form yourself: open the News page, sign up with your own address, and see whether a line appears. If your own test does not appear either, take the wording of any red message you see and follow the next answer.",
+        ],
+      },
+      {
+        q: "It says the signup list cannot be saved on read-only storage.",
+        a: [
+          "The live hosting keeps the website's files read-only unless a repository token is set — the same arrangement the platform studio relies on. Signups will not be recorded until that setting exists, so this one is worth fixing promptly: follow “Making changes stick on live hosting”, or ask the development team to check SATIS_GITHUB_TOKEN in Vercel.",
+        ],
+      },
+      {
+        q: "Does the website email the person when they sign up?",
+        a: [
+          "No. They see a thank-you message on the page, and nothing is sent — there is no automatic welcome email. If you want new signups welcomed, send it yourself from your email tool, or ask the development team to connect one.",
+        ],
+      },
+      {
+        q: "Can two people share one address, or one person appear twice?",
+        a: [
+          "One line per address, always. Capital letters and stray spaces are ignored when the list checks (Amelia@Example.com and amelia@example.com are the same person to it), so duplicates cannot creep in through the form.",
+        ],
+      },
+      {
+        q: "Is the list private?",
+        a: [
+          "Yes. It sits behind the same admin sign-in as everything else, search engines are told not to index it, and nothing on the public website links to it. Treat a downloaded CSV with the same care as any client list: it is personal data the moment it lands in your Downloads folder.",
+        ],
       },
     ],
   },

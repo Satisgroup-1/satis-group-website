@@ -211,7 +211,8 @@ await annotate(page, [
   { selector: card(3), n: 3, side: "left", gap: 50 },
   { selector: card(4), n: 4, side: "right", gap: 50 },
   { selector: card(5), n: 5, side: "left", gap: 50 },
-  { selector: 'form button[type="submit"]', n: 6, side: "right", gap: 44 },
+  { selector: card(6), n: 6, side: "right", gap: 50 },
+  { selector: 'form button[type="submit"]', n: 7, side: "right", gap: 44 },
 ]);
 await shootFull(page, "home.png");
 await clearAnnotations(page);
@@ -237,9 +238,67 @@ await annotate(page, [
   { selector: 'textarea[name="body"]', n: 4, side: "left" },
   { selector: 'form[class*="flex-col"] button[type="submit"]', n: 5, side: "right", gap: 44 },
   { selector: "aside ul", n: 6, side: "top", alignLeft: true, gap: 46 },
+  { selector: 'aside a[href="/admin/newsletter/subscribers"]', n: 7, side: "right", gap: 44 },
 ]);
 await shootFull(page, "newsletter.png");
 await clearAnnotations(page);
+
+// ---------- 3b. Newsletter signup list ----------
+// The list is empty on a fresh environment, so seed two plainly fictional
+// signups through the admin form itself, shoot, then delete them again —
+// the captures show a realistic screen without leaving test data behind.
+await page.goto(`${BASE}/admin/newsletter/subscribers`, { waitUntil: "networkidle" });
+const SAMPLE = [
+  { email: "amelia.hart@example.com", name: "Amelia Hart" },
+  { email: "t.whitfield@example.com", name: "Tom Whitfield" },
+];
+const ADD_FORM = 'form:has(input[name="name"])';
+for (const person of SAMPLE) {
+  await page.fill(`${ADD_FORM} input[name="email"]`, person.email);
+  await page.fill(`${ADD_FORM} input[name="name"]`, person.name);
+  await page.click(`${ADD_FORM} button[type="submit"]`);
+  // Any confirmation will do: a rerun finds them already listed, which is
+  // reported with a different wording but leaves the list just as usable.
+  await page.waitForSelector(`${ADD_FORM} p[role="status"]`, { timeout: 20000 });
+  await page.reload({ waitUntil: "networkidle" });
+  await page.waitForSelector(
+    `ul[data-guide="signups"] > li:has-text("${person.email}")`,
+    { timeout: 20000 }
+  );
+}
+
+const firstRow = 'ul[data-guide="signups"] > li:first-child';
+await annotate(page, [
+  { selector: '[data-guide="counts"]', n: 1, side: "left", gap: 52 },
+  { selector: '[data-guide="download"]', n: 2, side: "right", gap: 44 },
+  { selector: '[aria-label="Filter the signup list"]', n: 3, side: "left", gap: 52 },
+  { selector: 'input[type="search"]', n: 4, side: "bottom", alignLeft: true, gap: 40 },
+  { selector: `${firstRow} > div:first-child`, n: 5, side: "left", gap: 52 },
+  { selector: `${firstRow} > div:last-child`, n: 6, side: "top", gap: 42 },
+  { selector: ADD_FORM, n: 7, side: "right", gap: 46 },
+]);
+await shootFull(page, "subscribers.png");
+await clearAnnotations(page);
+
+await annotate(page, [
+  { selector: `${ADD_FORM} input[name="email"]`, n: 1, side: "left", gap: 48 },
+  { selector: `${ADD_FORM} input[name="name"]`, n: 2, side: "left", gap: 48 },
+  { selector: `${ADD_FORM} button[type="submit"]`, n: 3, side: "right", gap: 40 },
+]);
+await shootRegion(page, ADD_FORM, "subscribers-add.png", { left: 84, right: 84, top: 30, bottom: 30 }, [
+  'ul[data-guide="signups"]',
+]);
+await clearAnnotations(page);
+
+// Remove the seeded rows again, leaving the list exactly as it was found.
+for (const person of SAMPLE) {
+  const row = page.locator('ul[data-guide="signups"] > li', { hasText: person.email }).last();
+  await row.getByRole("button", { name: "Delete" }).click();
+  await page.waitForSelector(`ul[data-guide="signups"] > li:has-text("${person.email}")`, {
+    state: "detached",
+    timeout: 20000,
+  });
+}
 
 // ---------- Platform studio ----------
 await page.goto(`${BASE}/admin/platform`, { waitUntil: "networkidle" });
@@ -314,8 +373,12 @@ await clearAnnotations(page);
 
 // 7. Cap tables & returns tab
 await page.click(tab(3));
-await page.waitForSelector('input[name="sharePercent"]');
-const posForm = 'form:has(input[name="sharePercent"])';
+// Every row also carries an inline edit form with a sharePercent box, and
+// those sit inside collapsed <details>. Pin the selector to the add form —
+// the only one with a visible development picker.
+const posForm =
+  'form:has(select[name="developmentId"]):has(input[name="sharePercent"])';
+await page.waitForSelector(`${posForm} input[name="sharePercent"]`);
 const cashForm = 'form:has(select[name="type"])';
 await annotate(page, [
   { selector: `${posForm} select[name="developmentId"]`, n: 1, side: "left", gap: 48 },
@@ -415,6 +478,16 @@ await page.waitForTimeout(500);
 await shootRegion(page, 'section:has(a[href^="/news/2"])', "news-public.png", {
   left: 0, right: 0, top: 0, bottom: 0,
 });
+
+// ---------- 13b. The public signup box visitors use ----------
+await annotate(page, [
+  { selector: 'input[name="email"]', n: 1, side: "top", gap: 46 },
+  { selector: 'form button[type="submit"]', n: 2, side: "bottom", gap: 44 },
+]);
+await shootRegion(page, "form:has(input[name=\"email\"])", "signup-public.png", {
+  left: 60, right: 60, top: 96, bottom: 96,
+});
+await clearAnnotations(page);
 
 // ---------- 14. What investors see: the portal after signing in ----------
 // Needs a real investor credential (the demo accounts are retired); pass

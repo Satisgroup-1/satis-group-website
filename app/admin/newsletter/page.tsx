@@ -5,6 +5,10 @@ import { AdminLogin } from "@/components/AdminLogin";
 import { NewsletterComposer } from "@/components/NewsletterComposer";
 import { isAuthenticated } from "@/lib/admin-auth";
 import { formatNewsletterDate, getNewsletters } from "@/lib/newsletters";
+import {
+  countSubscribers,
+  getSubscribers,
+} from "@/lib/newsletter-subscribers";
 import { logout } from "../actions";
 
 export const metadata: Metadata = {
@@ -18,6 +22,9 @@ export const dynamic = "force-dynamic";
 export default async function AdminNewsletterPage() {
   const authed = await isAuthenticated();
   const issues = authed ? getNewsletters() : [];
+  const signups = authed
+    ? countSubscribers(getSubscribers())
+    : { subscribed: 0, unsubscribed: 0 };
   const today = new Date().toISOString().slice(0, 10);
 
   return (
@@ -69,6 +76,26 @@ export default async function AdminNewsletterPage() {
                       </li>
                     ))}
                   </ul>
+                </div>
+                <div>
+                  <h2 className="text-xs tracking-[0.2em] uppercase text-muted">
+                    Signup list
+                  </h2>
+                  <p className="mt-4 text-sm leading-6 text-muted">
+                    <b className="text-foreground">{signups.subscribed}</b>{" "}
+                    {signups.subscribed === 1 ? "person is" : "people are"}{" "}
+                    signed up for the newsletter. Everyone who submits the form
+                    on the news page is added automatically.
+                  </p>
+                  <Link
+                    href="/admin/newsletter/subscribers"
+                    className="mt-4 inline-flex items-center gap-2 text-xs tracking-[0.2em] uppercase transition-colors hover:text-accent"
+                  >
+                    View the list
+                    <span aria-hidden="true" className="text-accent">
+                      →
+                    </span>
+                  </Link>
                 </div>
                 <form action={logout}>
                   <button

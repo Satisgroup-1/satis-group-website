@@ -42,6 +42,14 @@ async function githubRequest(
 
 export type GitHubFile = { records: unknown[]; sha: string };
 
+/**
+ * Raised when a commit is rejected because the file moved on underneath it.
+ * A distinct type so callers appending to a list (the newsletter signup
+ * list) can re-read and retry, while the admin forms keep surfacing the
+ * message to the operator.
+ */
+export class RepoConflictError extends Error {}
+
 /** Current committed contents of a repo file, or null when it doesn't exist. */
 export async function fetchRepoJson(path: string): Promise<GitHubFile | null> {
   const response = await githubRequest(
@@ -172,7 +180,7 @@ export async function commitRepoJson(
     }),
   });
   if (response.status === 409 || response.status === 422) {
-    throw new Error(
+    throw new RepoConflictError(
       "The data changed while you were editing — reload the page and try again."
     );
   }
