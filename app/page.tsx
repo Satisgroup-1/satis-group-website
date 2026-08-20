@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { AnimatedStat } from "@/components/AnimatedStat";
 import { Eyebrow } from "@/components/Eyebrow";
+import { HeroVideoBackdrop } from "@/components/HeroVideoBackdrop";
 import { InvestmentChart } from "@/components/InvestmentChart";
 import { PageHero } from "@/components/PageHero";
-import { ParallaxSkyline } from "@/components/ParallaxSkyline";
 import { PortfolioPreview } from "@/components/PortfolioPreview";
 import { Reveal } from "@/components/Reveal";
 
@@ -25,7 +25,7 @@ export default function Home() {
         eyebrow="Property Redevelopment"
         title="We turn overlooked buildings into places people want to be."
         description="Satis Group is a property development company based in Manchester, specialising in the meticulous renovation of neglected buildings, transforming them into stylish contemporary homes and adaptable commercial spaces."
-        backdrop={<ParallaxSkyline />}
+        backdrop={<HeroVideoBackdrop />}
         actions={
           <>
             <Link
