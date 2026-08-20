@@ -730,11 +730,15 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
   // Legacy/completed developments from satisgroup.co.uk. Details are limited
   // to what the current site lists (name, use, unit count); expand when
   // fuller information and photography are supplied.
+  //
+  // Tabula is the exception: its areas, amenity and demise schedule come from
+  // the 3DReid developed design zonal plans (Rev 2, 26 November 2024), so the
+  // figures are design-stage and quoted as approximate.
   {
     slug: "tabula",
     name: "Tabula",
     eyebrow: "Barnett House · 53 Fountain Street · Manchester",
-    tagline: "A contemporary office development at Barnett House",
+    tagline: "Workspace, a members' club and wellness amenity",
     type: "Commercial",
     status: "Coming Soon",
     heroImage: "/images/tabula/hero.jpg",
@@ -743,6 +747,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       heading: "A workspace built around modern business",
       body: [
         "Tabula is the repositioning of Barnett House at 53 Fountain Street in central Manchester, transforming a previous Regus office into flexible, high-quality workspace.",
+        "Ten levels run from a basement wellness floor up to a single-tenant demise on each of the top five storeys, with a ground-floor members' club, lounge and food and beverage unit, and landscaped terraces on the first floor.",
         "The scheme reflects our approach to commercial redevelopment: retain the character, upgrade the fabric, and deliver space that modern businesses actually want to occupy.",
       ],
       image: "/images/tabula/hero.jpg",
@@ -750,10 +755,114 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       imagePosition: "center 88%",
     },
     stats: [
-      { value: "Office", label: "Use" },
-      { value: "53", label: "Fountain Street" },
-      { value: "Manchester", label: "City" },
+      { value: "c. 23,500", label: "Sq ft of lettable workspace" },
+      { value: "10", label: "Levels, basement to eighth" },
+      { value: "286 sqm", label: "Basement amenity & wellness" },
     ],
+    features: {
+      heading: "The Building",
+      description:
+        "Workspace over eight upper floors, sitting above a ground-floor members' club and a basement wellness and end-of-trip floor.",
+      items: [
+        "Ground-floor members' club",
+        "Reception and open lounge",
+        "Food and beverage unit",
+        "Meeting suites from 5 to 12 people",
+        "Podcast rooms",
+        "Brew station and catering",
+        "First-floor co-working and tea-point",
+        "Landscaped external terraces",
+        "Gym and studio",
+        "Infrared sauna",
+        "Cold and ice shower room",
+        "Cycle storage and repair area",
+        "Lockers, showers and drying room",
+        "Lift access to every floor",
+      ],
+    },
+    spec: {
+      heading: "Amenity across the building",
+      description:
+        "The basement carries the wellness and end-of-trip provision, the ground and first floors the shared and social space, and each office floor is fitted out to work on its own.",
+      groups: [
+        {
+          title: "Wellness & End-of-Trip",
+          items: [
+            "Gym and studio with weights and stretching zones",
+            "Infrared sauna",
+            "Cold and ice shower room",
+            "40 cycle spaces and a cycle repair area",
+            "Male and female changing rooms",
+            "Showers, WCs and an accessible shower",
+            "Lockers and a drying room",
+          ],
+        },
+        {
+          title: "Members' Club & Social",
+          items: [
+            "Members' zone across the ground floor",
+            "Reception and lobby",
+            "Open lounge",
+            "Food and beverage unit",
+            "Meeting suites for 5, 6 and 12 people",
+            "Podcast rooms",
+            "Brew station and catering",
+          ],
+        },
+        {
+          title: "Every Office Floor",
+          items: [
+            "Kitchenette",
+            "Meeting rooms",
+            "Collaboration space",
+            "Zoom and focus rooms",
+            "One-to-one booths",
+            "Integrated storage",
+          ],
+        },
+      ],
+    },
+    floors: {
+      heading: "The Demises",
+      unitNoun: "Demise",
+      description:
+        "Approximate lettable areas, from two small demises on the first floor to a single 300 sqm tenancy on each of the top five.",
+      schedule: [
+        {
+          name: "First Floor",
+          units: [
+            { apt: "1", beds: "50 sqm", size: "18 workstations across both demises" },
+            { apt: "2", beds: "64 sqm" },
+          ],
+        },
+        {
+          name: "Second Floor",
+          units: [
+            { apt: "1", beds: "82 sqm", size: "48 workstations across the floor" },
+            { apt: "2", beds: "79 sqm" },
+            { apt: "3", beds: "50 sqm" },
+            { apt: "4", beds: "64 sqm" },
+          ],
+        },
+        {
+          name: "Third Floor",
+          units: [
+            { apt: "1", beds: "175 sqm", size: "42 workstations across the floor" },
+            { apt: "2", beds: "123 sqm" },
+          ],
+        },
+        {
+          name: "Fourth to Eighth",
+          units: [
+            {
+              apt: "Single",
+              beds: "300 sqm per floor",
+              size: "37 workstations · one tenant per floor",
+            },
+          ],
+        },
+      ],
+    },
     micrositeUrl: "/portfolio/tabula",
     micrositeLabel: "Tabula",
   },
