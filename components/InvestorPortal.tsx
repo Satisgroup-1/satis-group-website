@@ -15,30 +15,70 @@ type Section =
   | "financials"
   | "documents";
 
-// Prospective accounts see the pipeline, the data room and the research;
-// everything tied to a position in a vehicle (cap tables, financials,
-// monthly project reports) belongs to investors who have actually invested.
-const NAV: Record<InvestorTier, { id: Section; label: string; icon: string }[]> =
-  {
-    prospective: [
-      { id: "overview", label: "Overview", icon: "⌂" },
-      { id: "opportunities", label: "Upcoming investments", icon: "◈" },
-      { id: "documents", label: "Data room", icon: "□" },
-      { id: "developments", label: "Track record", icon: "◇" },
-      { id: "market", label: "Market intelligence", icon: "↗" },
-      { id: "insights", label: "Insights", icon: "≡" },
-    ],
-    invested: [
-      { id: "overview", label: "Overview", icon: "⌂" },
-      { id: "portfolio", label: "My portfolio", icon: "◆" },
-      { id: "developments", label: "Developments", icon: "◇" },
-      { id: "reports", label: "Monthly reports", icon: "○" },
-      { id: "market", label: "Market intelligence", icon: "↗" },
-      { id: "insights", label: "Insights", icon: "≡" },
-      { id: "financials", label: "Financials", icon: "£" },
-      { id: "documents", label: "Documents", icon: "□" },
-    ],
-  };
+// ---------------------------------------------------------------------------
+// Navigation
+//
+// The sidebar is grouped rather than flat so the platform reads as separate
+// concerns: an account's own money, the reporting published to it, and the
+// research anyone signed in can read. Prospective accounts see the pipeline,
+// the data room and the research; everything tied to a position in a vehicle
+// (cap tables, financials, monthly project reports) belongs to investors who
+// have actually invested, and those accounts additionally get a portfolio
+// dropdown that jumps straight to a single investment.
+
+type NavItem = { id: Section; label: string; icon: string };
+type NavGroup = { heading: string; items: NavItem[] };
+
+const NAV_GROUPS: Record<InvestorTier, NavGroup[]> = {
+  prospective: [
+    {
+      heading: "Investing with us",
+      items: [
+        { id: "overview", label: "Overview", icon: "\u2302" },
+        { id: "opportunities", label: "Upcoming investments", icon: "\u25c8" },
+        { id: "documents", label: "Data room", icon: "\u25a1" },
+      ],
+    },
+    {
+      heading: "Research",
+      items: [
+        { id: "developments", label: "Track record", icon: "\u25c7" },
+        { id: "market", label: "Market intelligence", icon: "\u2197" },
+        { id: "insights", label: "Insights", icon: "\u2261" },
+      ],
+    },
+  ],
+  invested: [
+    {
+      heading: "Your investments",
+      items: [
+        { id: "overview", label: "Overview", icon: "\u2302" },
+        { id: "portfolio", label: "My portfolio", icon: "\u25c6" },
+        { id: "financials", label: "Financials", icon: "\u00a3" },
+      ],
+    },
+    {
+      heading: "Reporting",
+      items: [
+        { id: "reports", label: "Monthly reports", icon: "\u25cb" },
+        { id: "documents", label: "Documents", icon: "\u25a1" },
+      ],
+    },
+    {
+      heading: "Research",
+      items: [
+        { id: "developments", label: "All developments", icon: "\u25c7" },
+        { id: "market", label: "Market intelligence", icon: "\u2197" },
+        { id: "insights", label: "Insights", icon: "\u2261" },
+      ],
+    },
+  ],
+};
+
+/** Every section a tier is allowed to open, in sidebar order. */
+function navItems(tier: InvestorTier): NavItem[] {
+  return NAV_GROUPS[tier].flatMap((group) => group.items);
+}
 
 const ENQUIRY_EMAIL = "info@satisgroup.co.uk";
 
@@ -359,14 +399,259 @@ function PerformanceBars({ history, headline }: { history: PortalData["valueHist
   );
 }
 
-function Sidebar({ accountName, tier, active, setActive, logout }: { accountName: string; tier: InvestorTier; active: Section; setActive: (s: Section) => void; logout: () => Promise<void> }) {
+// ---------------------------------------------------------------------------
+// Sidebar
+//
+// One vertical, grouped menu on desktop; the same menu collapsed behind the
+// current section's name on mobile, so a long nav no longer becomes a
+// horizontally scrolling strip.
+
+type NavCounts = Partial<Record<Section, number>>;
+
+const NAV_ROW =
+  "flex w-full items-center gap-3 px-4 py-3 text-left text-xs tracking-[.08em] transition";
+
+function NavCount({ count }: { count?: number }) {
+  if (!count) return null;
   return (
-    <aside className="border-r border-[#d8d7d0] bg-[#121212] text-white lg:sticky lg:top-20 lg:h-[calc(100vh-5rem)]">
-      <div className="border-b border-white/10 px-6 py-6"><p className="text-[10px] tracking-[.28em] uppercase text-[#c4a262]">{tier === "invested" ? "Investor account" : "Prospective investor"}</p><p className="mt-2 text-sm">{accountName}</p></div>
-      <nav className="flex overflow-x-auto p-3 lg:block lg:space-y-1 lg:p-4" aria-label="Investor platform">
-        {NAV[tier].map((item) => <button key={item.id} onClick={() => setActive(item.id)} className={`flex min-w-max items-center gap-3 px-4 py-3 text-left text-xs tracking-[.08em] transition lg:w-full ${active === item.id ? "bg-white/10 text-white" : "text-white/55 hover:bg-white/5 hover:text-white"}`}><span className="w-5 text-center text-[#c4a262]">{item.icon}</span>{item.label}</button>)}
-      </nav>
-      <form action={logout} className="hidden absolute bottom-0 left-0 right-0 border-t border-white/10 p-5 lg:block"><button type="submit" className="text-xs tracking-[.14em] uppercase text-white/45 hover:text-white">← Sign out</button></form>
+    <span className="bg-white/10 px-2 py-0.5 text-[10px] tabular-nums text-white/60">
+      {count}
+    </span>
+  );
+}
+
+function NavRow({
+  item,
+  count,
+  active,
+  onClick,
+}: {
+  item: NavItem;
+  count?: number;
+  active: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-current={active ? "page" : undefined}
+      className={`${NAV_ROW} ${
+        active
+          ? "bg-white/10 text-white"
+          : "text-white/55 hover:bg-white/5 hover:text-white"
+      }`}
+    >
+      <span aria-hidden="true" className="w-5 text-center text-[#c4a262]">
+        {item.icon}
+      </span>
+      <span className="flex-1">{item.label}</span>
+      <NavCount count={count} />
+    </button>
+  );
+}
+
+/**
+ * My Portfolio, with a dropdown of the account's individual investments so a
+ * position is one click away instead of a section plus a card hunt. The
+ * parent row opens the section; the chevron only expands the list.
+ */
+function PortfolioNav({
+  item,
+  active,
+  portfolio,
+  selectedId,
+  onPick,
+}: {
+  item: NavItem;
+  active: boolean;
+  portfolio: PortalData["portfolio"];
+  selectedId: string;
+  onPick: (developmentId?: string) => void;
+}) {
+  // Open by default: an invested account's positions are the whole point of
+  // the platform, so the list is visible without a first click.
+  const [open, setOpen] = useState(true);
+  return (
+    <div>
+      <div
+        className={`flex items-center ${
+          active ? "bg-white/10 text-white" : "text-white/55 hover:bg-white/5"
+        }`}
+      >
+        <button
+          type="button"
+          onClick={() => {
+            setOpen(true);
+            onPick();
+          }}
+          aria-current={active ? "page" : undefined}
+          className={`${NAV_ROW} transition hover:text-white ${
+            active ? "text-white" : ""
+          }`}
+        >
+          <span aria-hidden="true" className="w-5 text-center text-[#c4a262]">
+            {item.icon}
+          </span>
+          <span className="flex-1">{item.label}</span>
+          <NavCount count={portfolio.length} />
+        </button>
+        <button
+          type="button"
+          onClick={() => setOpen(!open)}
+          aria-expanded={open}
+          aria-controls="investor-nav-portfolio"
+          aria-label={open ? "Hide your investments" : "Show your investments"}
+          className="px-3 py-3 text-[10px] text-white/40 transition hover:text-white"
+        >
+          <span aria-hidden="true">{open ? "\u25b4" : "\u25be"}</span>
+        </button>
+      </div>
+      {open && (
+        <ul
+          id="investor-nav-portfolio"
+          className="ml-6 mt-px border-l border-white/10 pl-1"
+        >
+          {portfolio.length === 0 && (
+            <li className="px-3 py-2.5 text-[11px] leading-5 text-white/35">
+              No positions yet.
+            </li>
+          )}
+          {portfolio.map((p) => {
+            const current = active && p.developmentId === selectedId;
+            return (
+              <li key={p.developmentId}>
+                <button
+                  type="button"
+                  onClick={() => onPick(p.developmentId)}
+                  aria-current={current ? "true" : undefined}
+                  className={`flex w-full items-center justify-between gap-3 px-3 py-2.5 text-left text-[11px] transition ${
+                    current
+                      ? "bg-white/10 text-white"
+                      : "text-white/45 hover:bg-white/5 hover:text-white"
+                  }`}
+                >
+                  <span className="truncate">{p.name}</span>
+                  <span className="shrink-0 tabular-nums text-[10px] text-[#c4a262]">
+                    {p.position.sharePercent}
+                  </span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function Sidebar({
+  accountName,
+  tier,
+  active,
+  setActive,
+  logout,
+  portfolio,
+  selectedInvestmentId,
+  goPortfolio,
+  counts,
+}: {
+  accountName: string;
+  tier: InvestorTier;
+  active: Section;
+  setActive: (s: Section) => void;
+  logout: () => Promise<void>;
+  portfolio: PortalData["portfolio"];
+  selectedInvestmentId: string;
+  goPortfolio: (developmentId?: string) => void;
+  counts: NavCounts;
+}) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const activeLabel =
+    navItems(tier).find((item) => item.id === active)?.label ?? "Overview";
+  const pick = (section: Section) => {
+    setActive(section);
+    setMenuOpen(false);
+  };
+  const pickInvestment = (developmentId?: string) => {
+    goPortfolio(developmentId);
+    setMenuOpen(false);
+  };
+  const signOut = (
+    <button
+      type="submit"
+      className="text-xs tracking-[.14em] uppercase text-white/45 transition hover:text-white"
+    >
+      {"\u2190 Sign out"}
+    </button>
+  );
+  return (
+    <aside className="border-r border-[#d8d7d0] bg-[#121212] text-white lg:sticky lg:top-20 lg:flex lg:h-[calc(100vh-5rem)] lg:flex-col">
+      <div className="flex items-center justify-between gap-4 border-b border-white/10 px-6 py-5">
+        <div className="min-w-0">
+          <p className="text-[10px] tracking-[.28em] uppercase text-[#c4a262]">
+            {tier === "invested" ? "Investor account" : "Prospective investor"}
+          </p>
+          <p className="mt-2 truncate text-sm">{accountName}</p>
+        </div>
+        <button
+          type="button"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-expanded={menuOpen}
+          aria-controls="investor-nav"
+          className="flex shrink-0 items-center gap-2 border border-white/15 px-3 py-2 text-[10px] uppercase tracking-[.14em] text-white/70 transition hover:border-white/40 hover:text-white lg:hidden"
+        >
+          {activeLabel}
+          <span aria-hidden="true">{menuOpen ? "\u25b4" : "\u25be"}</span>
+        </button>
+      </div>
+      <div
+        id="investor-nav"
+        className={`${
+          menuOpen ? "block" : "hidden"
+        } border-b border-white/10 lg:block lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:border-b-0`}
+      >
+        <nav className="p-3 lg:p-4" aria-label="Investor platform">
+          {NAV_GROUPS[tier].map((group) => (
+            <div key={group.heading} className="mb-5 last:mb-0">
+              <p className="px-4 pb-2 text-[9px] tracking-[.22em] uppercase text-white/30">
+                {group.heading}
+              </p>
+              <div className="space-y-px">
+                {group.items.map((item) =>
+                  item.id === "portfolio" ? (
+                    <PortfolioNav
+                      key={item.id}
+                      item={item}
+                      active={active === "portfolio"}
+                      portfolio={portfolio}
+                      selectedId={selectedInvestmentId}
+                      onPick={pickInvestment}
+                    />
+                  ) : (
+                    <NavRow
+                      key={item.id}
+                      item={item}
+                      count={counts[item.id]}
+                      active={active === item.id}
+                      onClick={() => pick(item.id)}
+                    />
+                  )
+                )}
+              </div>
+            </div>
+          ))}
+        </nav>
+        <form action={logout} className="border-t border-white/10 p-5 lg:hidden">
+          {signOut}
+        </form>
+      </div>
+      <form
+        action={logout}
+        className="hidden border-t border-white/10 p-5 lg:block"
+      >
+        {signOut}
+      </form>
     </aside>
   );
 }
@@ -449,7 +734,11 @@ function ProspectOverview({ data, go }: { data: PortalData; go: (s: Section) => 
   </>;
 }
 
-function Overview({ data, go }: { data: PortalData; go: (s: Section) => void }) {
+/**
+ * Invested accounts: portfolio headline, value progression, latest reporting
+ * and a card per position that opens that investment in My Portfolio.
+ */
+function Overview({ data, go, goPortfolio }: { data: PortalData; go: (s: Section) => void; goPortfolio: (developmentId?: string) => void }) {
   return <>
     <div className="mb-8 flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><PageTitle eyebrow="Portfolio overview" title={data.greeting} copy="Here’s what’s happening across your Satis Group portfolio." /><div className="mb-9 text-right text-xs text-[#7c8285]"><span className="mb-1 block uppercase tracking-[.16em]">Last updated</span>{data.lastUpdated}</div></div>
     <div className="grid gap-px overflow-hidden border border-[#d8d7d0] bg-[#d8d7d0] sm:grid-cols-2 xl:grid-cols-4">
@@ -459,7 +748,31 @@ function Overview({ data, go }: { data: PortalData; go: (s: Section) => void }) 
       <ValueChart history={data.valueHistory} />
       <section className="bg-[#121212] p-7 text-white"><p className="text-[10px] tracking-[.18em] uppercase text-[#c4a262]">Latest reports</p><div className="mt-6 space-y-6">{data.reports.slice(0,3).map((r,i)=><div key={r.title} className={i<2?"border-b border-white/10 pb-6":""}><p className="text-[10px] uppercase tracking-wider text-white/40">{r.period} · {r.site}</p><p className="mt-2 text-sm">{r.title}</p></div>)}{data.reports.length === 0 && <p className="text-sm text-white/55">Your first monthly report will appear here.</p>}</div><button onClick={()=>go("reports")} className="mt-8 text-[10px] tracking-[.16em] uppercase text-[#c4a262]">View monthly reports →</button></section>
     </div>
-    <div className="mt-6 grid gap-6 lg:grid-cols-3">{data.developments.slice(0,3).map(d=><article key={d.name} className="border border-[#d8d7d0] bg-white p-6"><div className="flex justify-between"><span className="text-[10px] uppercase tracking-[.14em] text-[#6b7969]">{d.status}</span><span className="text-xs text-[#8a8e90]">{d.progress}%</span></div><h3 className="mt-5 text-lg font-medium text-[#121212]">{d.name}</h3><p className="mt-1 text-xs text-[#83888b]">{d.place} · {d.phase}</p><div className="mt-6 h-1 bg-[#e6e3dc]"><div className="h-full bg-[#b18c4d]" style={{width:`${d.progress}%`}} /></div></article>)}</div>
+    {data.portfolio.length > 0 ? (
+      <section className="mt-8">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <p className="text-[10px] tracking-[.2em] uppercase text-[#96723d]">Your investments</p>
+            <h2 className="mt-2 text-xl font-medium text-[#121212]">{data.portfolio.length} position{data.portfolio.length === 1 ? "" : "s"} across our vehicles.</h2>
+          </div>
+          <button onClick={()=>goPortfolio()} className="text-[10px] tracking-[.16em] uppercase text-[#8a6c3f] transition hover:text-[#121212]">Open my portfolio →</button>
+        </div>
+        <div className="mt-5 grid gap-6 lg:grid-cols-3">
+          {data.portfolio.slice(0,3).map((p)=>(
+            <button key={p.developmentId} onClick={()=>goPortfolio(p.developmentId)} className="border border-[#d8d7d0] bg-white p-6 text-left transition hover:-translate-y-0.5 hover:border-[#b18c4d] hover:shadow-lg hover:shadow-[#121212]/5">
+              <div className="flex justify-between"><span className="text-[10px] uppercase tracking-[.14em] text-[#6b7969]">{p.status}</span><span className="text-xs text-[#8a8e90]">{p.position.sharePercent} held</span></div>
+              <h3 className="mt-5 text-lg font-medium text-[#121212]">{p.name}</h3>
+              <p className="mt-1 text-xs text-[#83888b]">{p.spvName} · {p.phase}</p>
+              <div className="mt-6 h-1 bg-[#e6e3dc]"><div className="h-full bg-[#b18c4d]" style={{width:`${p.progress}%`}} /></div>
+              <div className="mt-5 flex items-end justify-between border-t border-[#ebe9e3] pt-4"><span className="text-lg font-medium text-[#121212]">{p.position.currentValue}</span><span className="text-[10px] uppercase tracking-wider text-[#8a6c3f]">View investment →</span></div>
+            </button>
+          ))}
+        </div>
+        {data.portfolio.length > 3 && <button onClick={()=>goPortfolio()} className="mt-5 text-[10px] tracking-[.16em] uppercase text-[#8a6c3f] transition hover:text-[#121212]">View all {data.portfolio.length} investments →</button>}
+      </section>
+    ) : (
+      <div className="mt-6 grid gap-6 lg:grid-cols-3">{data.developments.slice(0,3).map(d=><article key={d.name} className="border border-[#d8d7d0] bg-white p-6"><div className="flex justify-between"><span className="text-[10px] uppercase tracking-[.14em] text-[#6b7969]">{d.status}</span><span className="text-xs text-[#8a8e90]">{d.progress}%</span></div><h3 className="mt-5 text-lg font-medium text-[#121212]">{d.name}</h3><p className="mt-1 text-xs text-[#83888b]">{d.place} · {d.phase}</p><div className="mt-6 h-1 bg-[#e6e3dc]"><div className="h-full bg-[#b18c4d]" style={{width:`${d.progress}%`}} /></div></article>)}</div>
+    )}
   </>;
 }
 
@@ -726,8 +1039,7 @@ function FileRows({
   );
 }
 
-function MyPortfolio({ portfolio, reports }: { portfolio: PortalData["portfolio"]; reports: PortalData["reports"] }) {
-  const [selectedId, setSelectedId] = useState(portfolio[0]?.developmentId ?? "");
+function MyPortfolio({ portfolio, reports, selectedId, onSelect }: { portfolio: PortalData["portfolio"]; reports: PortalData["reports"]; selectedId: string; onSelect: (developmentId: string) => void }) {
   const [tab, setTab] = useState<PortfolioTab>("files");
   const inv = portfolio.find((p) => p.developmentId === selectedId) ?? portfolio[0];
   if (!inv) {
@@ -737,9 +1049,9 @@ function MyPortfolio({ portfolio, reports }: { portfolio: PortalData["portfolio"
   const byCategory = (category: "legal" | "meetings" | "accounts") =>
     inv.files.filter((f) => f.category === category);
   return <><PageTitle eyebrow="My portfolio" title="Your investments." copy="Every vehicle you hold a position in, with its legal papers, monthly reports, shareholder meeting recordings and accounts." />
-    <div className="grid gap-px overflow-hidden border border-[#d8d7d0] bg-[#d8d7d0] sm:grid-cols-2 xl:grid-cols-3" role="group" aria-label="Your investments">
+    <div className={`grid gap-px overflow-hidden border border-[#d8d7d0] bg-[#d8d7d0] sm:grid-cols-2 ${portfolio.length > 2 ? "xl:grid-cols-3" : ""}`} role="group" aria-label="Your investments">
       {portfolio.map((p)=>(
-        <button key={p.developmentId} onClick={()=>{setSelectedId(p.developmentId);}} aria-pressed={p.developmentId===inv.developmentId} className={`p-6 text-left transition ${p.developmentId===inv.developmentId ? "bg-[#121212] text-white" : "bg-white hover:bg-[#faf8f3]"}`}>
+        <button key={p.developmentId} onClick={()=>{onSelect(p.developmentId);}} aria-pressed={p.developmentId===inv.developmentId} className={`p-6 text-left transition ${p.developmentId===inv.developmentId ? "bg-[#121212] text-white" : "bg-white hover:bg-[#faf8f3]"}`}>
           <div className="flex justify-between"><span className={`text-[10px] uppercase tracking-[.14em] ${p.developmentId===inv.developmentId ? "text-[#c4a262]" : "text-[#6b7969]"}`}>{p.status}</span><span className={`text-xs ${p.developmentId===inv.developmentId ? "text-white/50" : "text-[#8a8e90]"}`}>{p.position.sharePercent} held</span></div>
           <h3 className="mt-4 text-lg font-medium">{p.name}</h3>
           <p className={`mt-1 text-xs ${p.developmentId===inv.developmentId ? "text-white/50" : "text-[#83888b]"}`}>{p.spvName}</p>
@@ -813,8 +1125,65 @@ function Documents({ documents, tier }: { documents: PortalData["documents"]; ti
 
 export function InvestorPortal({ data, logout }: { data: PortalData; logout: () => Promise<void> }) {
   const [active, setActive] = useState<Section>("overview");
-  const allowed = NAV[data.tier].some((item) => item.id === active);
+  const [selectedInvestmentId, setSelectedInvestmentId] = useState(
+    data.portfolio[0]?.developmentId ?? ""
+  );
+  const allowed = navItems(data.tier).some((item) => item.id === active);
   const section = allowed ? active : "overview";
   const invested = data.tier === "invested";
-  return <div className="min-h-[calc(100vh-5rem)] bg-[#f4f2ed] text-[#2a2a2a]"><div className="grid lg:grid-cols-[240px_1fr]"><Sidebar accountName={data.accountName} tier={data.tier} active={section} setActive={setActive} logout={logout} /><main className="min-w-0 px-5 py-9 sm:px-8 lg:px-10 lg:py-12 xl:px-14">{section==="overview"&&(invested ? <Overview data={data} go={setActive}/> : <ProspectOverview data={data} go={setActive}/>)} {section==="portfolio"&&<MyPortfolio portfolio={data.portfolio} reports={data.reports}/>} {section==="developments"&&<Developments developments={data.developments} tier={data.tier} go={setActive}/>} {section==="opportunities"&&<Opportunities opportunities={data.opportunities}/>} {section==="market"&&<Market market={data.market}/>} {section==="insights"&&<Insights insights={data.insights}/>} {section==="reports"&&<Reports reports={data.reports}/>} {section==="financials"&&<Financials data={data}/>} {section==="documents"&&<Documents documents={data.documents} tier={data.tier}/>}</main></div></div>;
+  // The portfolio dropdown both opens the section and picks the investment,
+  // so a position is reachable in one click from anywhere in the platform.
+  const goPortfolio = (developmentId?: string) => {
+    if (developmentId) setSelectedInvestmentId(developmentId);
+    setActive("portfolio");
+  };
+  const counts: NavCounts = {
+    opportunities: data.opportunities.length,
+    reports: data.reports.length,
+    documents: data.documents.length,
+    developments: data.developments.length,
+    insights: data.insights.length,
+  };
+  return (
+    <div className="min-h-[calc(100vh-5rem)] bg-[#f4f2ed] text-[#2a2a2a]">
+      <div className="grid lg:grid-cols-[260px_1fr]">
+        <Sidebar
+          accountName={data.accountName}
+          tier={data.tier}
+          active={section}
+          setActive={setActive}
+          logout={logout}
+          portfolio={data.portfolio}
+          selectedInvestmentId={selectedInvestmentId}
+          goPortfolio={goPortfolio}
+          counts={counts}
+        />
+        <main className="min-w-0 px-5 py-9 sm:px-8 lg:px-10 lg:py-12 xl:px-14">
+          {section === "overview" &&
+            (invested ? (
+              <Overview data={data} go={setActive} goPortfolio={goPortfolio} />
+            ) : (
+              <ProspectOverview data={data} go={setActive} />
+            ))}
+          {section === "portfolio" && (
+            <MyPortfolio
+              portfolio={data.portfolio}
+              reports={data.reports}
+              selectedId={selectedInvestmentId}
+              onSelect={setSelectedInvestmentId}
+            />
+          )}
+          {section === "developments" && (
+            <Developments developments={data.developments} tier={data.tier} go={setActive} />
+          )}
+          {section === "opportunities" && <Opportunities opportunities={data.opportunities} />}
+          {section === "market" && <Market market={data.market} />}
+          {section === "insights" && <Insights insights={data.insights} />}
+          {section === "reports" && <Reports reports={data.reports} />}
+          {section === "financials" && <Financials data={data} />}
+          {section === "documents" && <Documents documents={data.documents} tier={data.tier} />}
+        </main>
+      </div>
+    </div>
+  );
 }
