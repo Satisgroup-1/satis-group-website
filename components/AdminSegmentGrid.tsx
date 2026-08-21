@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
+import { DrawnIcon } from "@/components/DrawnIcon";
 
 export type AdminSegment = {
   href: string;
@@ -15,9 +16,7 @@ export type AdminSegment = {
  * hover — the same architectural-drawing idiom as the public site's
  * "How we work" grid, so the admin area reads as part of the brand.
  *
- * Icons are stored as bare path strings so each one can be animated
- * individually with `pathLength`; grouping them would leave the drawing
- * effect inert, since `pathLength` only applies to shape elements.
+ * Icons are stored as bare path strings — see DrawnIcon for why.
  */
 const ICON_PATHS: string[][] = [
   // Newsletter: a broadsheet — masthead rule, columns and a plate
@@ -108,33 +107,13 @@ export function AdminSegmentGrid({ segments }: { segments: AdminSegment[] }) {
             />
 
             <div className="flex items-start justify-between">
-              <svg
-                viewBox="0 0 48 48"
-                aria-hidden="true"
+              <DrawnIcon
+                paths={ICON_PATHS[index] ?? []}
                 className="h-12 w-12 text-accent transition-colors duration-300 group-hover:text-accent-strong"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                {ICON_PATHS[index]?.map((d, pathIndex) => (
-                  <motion.path
-                    key={d}
-                    d={d}
-                    initial={
-                      reduceMotion ? { pathLength: 1 } : { pathLength: 0 }
-                    }
-                    whileInView={{ pathLength: 1 }}
-                    viewport={{ once: true, margin: "-60px" }}
-                    transition={{
-                      duration: 0.7,
-                      delay: 0.25 + index * 0.09 + pathIndex * 0.07,
-                      ease: "easeInOut",
-                    }}
-                  />
-                ))}
-              </svg>
+                delay={0.25 + index * 0.09}
+                duration={0.7}
+                stagger={0.07}
+              />
               <span className="flex items-center gap-3 text-xs tracking-[0.35em] uppercase text-accent-text">
                 <span
                   aria-hidden="true"
