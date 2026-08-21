@@ -460,13 +460,14 @@ export const GUIDE_CHAPTERS: GuideChapter[] = [
         q: "Somebody says they signed up but they are not in the list.",
         a: [
           "Check the Everyone view and search for their address — if they signed up years ago and later unsubscribed, they are filed under Unsubscribed rather than missing.",
-          "If they are genuinely absent, test the form yourself: open the News page, sign up with your own address, and see whether a line appears. If your own test does not appear either, take the wording of any red message you see and follow the next answer.",
+          "If they are genuinely absent, test the form yourself: open the News page, sign up with your own address, and see whether a line appears. If your own test does not appear either, check the enquiry inbox (noreply@satisgroup.co.uk) for a “Newsletter signup” email — that is where addresses land when the list itself cannot be written, and it means the answer below applies.",
         ],
       },
       {
-        q: "It says the signup list cannot be saved on read-only storage.",
+        q: "Signups are arriving by email instead of appearing in the list.",
         a: [
-          "The live hosting keeps the website's files read-only unless a repository token is set — the same arrangement the platform studio relies on. Signups will not be recorded until that setting exists, so this one is worth fixing promptly: follow “Making changes stick on live hosting”, or ask the development team to check SATIS_GITHUB_TOKEN in Vercel.",
+          "The live hosting keeps the website's files read-only unless a repository token is set — the same arrangement the platform studio relies on. While that setting is missing the list cannot be added to, so each signup is emailed to the enquiry inbox instead and nobody is lost: add those addresses here by hand using “Add someone yourself”.",
+          "It is still worth fixing promptly, so signups record themselves again: follow “Making changes stick on live hosting”, or ask the development team to check SATIS_GITHUB_TOKEN in Vercel. The signup list page shows a red note whenever that is the reason.",
         ],
       },
       {

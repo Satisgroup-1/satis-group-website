@@ -6,6 +6,7 @@ import {
   type SubscriberRow,
 } from "@/components/AdminSubscribers";
 import { isAuthenticated } from "@/lib/admin-auth";
+import { isGitHubPersistenceEnabled } from "@/lib/github-storage";
 import {
   formatSubscribedAt,
   getSubscribers,
@@ -69,6 +70,15 @@ export default async function AdminSubscribersPage() {
               </Link>
               .
             </p>
+            {!isGitHubPersistenceEnabled() && process.env.VERCEL ? (
+              <p className="mt-4 max-w-2xl text-xs leading-relaxed text-clay">
+                This hosting has read-only storage and no repository token, so
+                signups cannot be added to this list — they are emailed to the
+                enquiry inbox instead, for adding here by hand. Set
+                SATIS_GITHUB_TOKEN in the hosting environment to record them
+                automatically again — see the operations guide.
+              </p>
+            ) : null}
             <div className="mt-12">
               <AdminSubscribers rows={rows} />
             </div>

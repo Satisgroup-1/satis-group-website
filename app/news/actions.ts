@@ -3,16 +3,28 @@
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { addSubscriber } from "@/lib/newsletter-subscribers";
+import { ENQUIRY_RECIPIENT, isEmailConfigured, sendEmail } from "@/lib/email";
 
 // Public newsletter signup. Addresses are appended to the signup list in
 // content/newsletter/subscribers.json and reviewed under
 // /admin/newsletter/subscribers.
+//
+// Saving that list needs a writable store: on serverless hosting that means
+// SATIS_GITHUB_TOKEN, because the deployed filesystem is read-only. When it
+// is missing or the token has expired the append throws, and the signup used
+// to be dropped on the floor behind a "something went wrong" message. The
+// address is now emailed to the enquiry inbox instead, so a configuration
+// gap costs the team a manual paste rather than the subscriber.
 
 export type SubscribeState = {
   error?: string;
   /** Set once the address is on the list, whether new or already there. */
   success?: string;
 };
+
+// Deliberately the same message for a new and an existing address, so the
+// form can't be used to test whether someone is already on the list.
+const SUCCESS_MESSAGE = "Thanks, you're on the list.";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_EMAIL_LENGTH = 254;
@@ -49,7 +61,7 @@ export async function subscribeToNewsletter(
 
   // Hidden field no person fills in; bots that fill every input land here.
   if (String(formData.get("company") ?? "").trim()) {
-    return { success: "Thanks, you're on the list." };
+    return { success: SUCCESS_MESSAGE };
   }
 
   const email = String(formData.get("email") ?? "").trim();
@@ -66,7 +78,10 @@ export async function subscribeToNewsletter(
       source: "News page signup form",
     });
   } catch (err) {
-    console.error("newsletter signup failed", err);
+    console.error("newsletter signup could not be saved to the list", err);
+    if (await emailSignupToTeam({ email, name: name.slice(0, MAX_NAME_LENGTH) })) {
+      return { success: SUCCESS_MESSAGE };
+    }
     return {
       error:
         "Something went wrong saving your details. Please try again, or email us directly.",
@@ -74,7 +89,52 @@ export async function subscribeToNewsletter(
   }
 
   revalidatePath("/admin/newsletter/subscribers");
-  // Deliberately the same message for a new and an existing address, so the
-  // form can't be used to test whether someone is on the list.
-  return { success: "Thanks, you're on the list." };
+  return { success: SUCCESS_MESSAGE };
+}
+
+/**
+ * Last resort when the signup list itself cannot be written: hand the
+ * address to the inbox the enquiry forms already use, for someone to add
+ * under /admin/newsletter/subscribers. Returns whether it got through.
+ *
+ * With no mail service configured either — the normal state in development —
+ * the signup goes to the server log and counts as delivered, matching how
+ * lib/enquiry.ts treats an unconfigured development environment.
+ */
+async function emailSignupToTeam(signup: {
+  email: string;
+  name?: string;
+}): Promise<boolean> {
+  const text = [
+    `Email: ${signup.email}`,
+    ...(signup.name ? [`Name:  ${signup.name}`] : []),
+    "",
+    "The signup list could not be written, so this address is not on it yet.",
+    "Add it under /admin/newsletter/subscribers once saving works again.",
+    "",
+    "\u2014 Sent from the newsletter signup form at /news",
+  ].join("\n");
+
+  if (!isEmailConfigured()) {
+    if (process.env.NODE_ENV !== "production") {
+      console.info(`newsletter signup (not sent, no API key)\n${text}`);
+      return true;
+    }
+    console.error(
+      "newsletter signup could not be emailed either: SATIS_RESEND_API_KEY is unset in production"
+    );
+    return false;
+  }
+
+  try {
+    await sendEmail({
+      to: ENQUIRY_RECIPIENT,
+      subject: `Newsletter signup: ${signup.email}`,
+      text,
+    });
+    return true;
+  } catch (err) {
+    console.error("newsletter signup could not be emailed either", err);
+    return false;
+  }
 }
