@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { PageHero } from "@/components/PageHero";
+import { NewsHero } from "@/components/NewsHero";
 import { NewsletterForm } from "@/components/NewsletterForm";
 import { Reveal } from "@/components/Reveal";
 import { formatNewsletterDate, getNewsletters } from "@/lib/newsletters";
@@ -88,13 +88,28 @@ export default function NewsPage() {
 
   return (
     <>
-      <PageHero
+      <NewsHero
         eyebrow="News"
         title="Stay ahead of what we redevelop next."
         description="Occasional updates on new acquisitions, redevelopments underway, and finished projects. No spam, unsubscribe any time."
-        compact
+        actions={
+          <>
+            <Link
+              href="#signup"
+              className="border border-foreground bg-foreground px-6 py-3 text-xs tracking-[0.2em] uppercase text-background transition-colors duration-300 hover:border-accent hover:bg-accent"
+            >
+              Sign up
+            </Link>
+            <Link
+              href="#awards"
+              className="group inline-flex items-center gap-2 text-xs tracking-[0.2em] uppercase transition-colors hover:text-accent"
+            >
+              Awards &amp; recognition
+            </Link>
+          </>
+        }
       />
-      <section className="border-b border-border">
+      <section id="signup" className="scroll-mt-28 border-b border-border">
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-6 py-12 lg:grid-cols-2 lg:gap-16 lg:px-10 lg:py-14">
           <Reveal>
             <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
