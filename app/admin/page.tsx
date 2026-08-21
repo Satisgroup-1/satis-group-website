@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import {
+  AdminSegmentGrid,
+  type AdminSegment,
+} from "@/components/AdminSegmentGrid";
 import { AdminLogin } from "@/components/AdminLogin";
+import { Eyebrow } from "@/components/Eyebrow";
 import {
   isAuthenticated,
   isUsingDemoCredentials,
@@ -16,7 +20,7 @@ export const metadata: Metadata = {
 // Auth state lives in a cookie, so this page must render per-request.
 export const dynamic = "force-dynamic";
 
-const SEGMENTS = [
+const SEGMENTS: AdminSegment[] = [
   {
     href: "/admin/newsletter",
     title: "Newsletter",
@@ -55,9 +59,7 @@ export default async function AdminPage() {
   return (
     <section>
       <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-        <span className="text-xs tracking-[0.35em] uppercase text-accent-text">
-          Admin
-        </span>
+        <Eyebrow label="Admin" />
         <h1 className="mt-4 max-w-lg text-3xl font-medium tracking-tight sm:text-4xl">
           {authed ? "Satis Group control room." : "Sign in to continue."}
         </h1>
@@ -80,35 +82,7 @@ export default async function AdminPage() {
                   "Running on the built-in demo signing secret — set SATIS_ADMIN_SECRET in the hosting environment to make sessions unforgeable."}
               </p>
             )}
-            <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2">
-              {SEGMENTS.map((segment, index) => (
-                <Link
-                  key={segment.href}
-                  href={segment.href}
-                  className="group flex flex-col border border-border p-8 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent"
-                >
-                  <span className="flex items-center gap-3 text-xs tracking-[0.35em] uppercase text-accent-text">
-                    <span>{String(index + 1).padStart(2, "0")}</span>
-                    <span className="h-px w-8 bg-accent/60" aria-hidden="true" />
-                  </span>
-                  <h2 className="mt-4 text-xl font-medium tracking-tight">
-                    {segment.title}
-                  </h2>
-                  <p className="mt-3 text-sm leading-relaxed text-muted">
-                    {segment.body}
-                  </p>
-                  <span className="mt-6 inline-flex items-center gap-2 text-xs tracking-[0.2em] uppercase">
-                    Open
-                    <span
-                      aria-hidden="true"
-                      className="text-accent transition-transform duration-300 group-hover:translate-x-1.5"
-                    >
-                      →
-                    </span>
-                  </span>
-                </Link>
-              ))}
-            </div>
+            <AdminSegmentGrid segments={SEGMENTS} />
             <form action={logout} className="mt-12">
               <button
                 type="submit"
