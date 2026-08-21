@@ -829,7 +829,7 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     eyebrow: "St Petersgate · Stockport",
     tagline: "Grade A workspace and fifty-eight apartments",
     type: "Mixed Use",
-    status: "Workspace To Let",
+    status: "Mixed Use",
     heroImage: "/images/qube/hero.jpg",
     intro: {
       heading: "Our largest scheme to date",

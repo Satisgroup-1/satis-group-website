@@ -80,7 +80,7 @@ export const PORTFOLIO: Property[] = [
     name: "QUBE",
     location: "Stockport",
     type: "Mixed Use",
-    status: "Workspace To Let",
+    status: "Mixed Use",
     image: "/images/qube/hero.jpg",
     logo: { src: "/images/logos/qube-v2.jpg", bg: "#f4efe7" },
     blurb:
