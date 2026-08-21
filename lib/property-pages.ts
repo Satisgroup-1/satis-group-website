@@ -834,8 +834,8 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     intro: {
       heading: "Our largest scheme to date",
       body: [
-        "QUBE (formerly Petersgate House) is a mixed-use redevelopment of fifty-eight apartments and two commercial units in Stockport town centre.",
-        "Qube at Petersgate, the workspace at its heart, is a comprehensive refurbishment of a landmark Stockport building: Grade A office space over five floors, with fully fitted first-floor suites alongside four open Cat A floors. Light-filled interiors, exposed soffits and a premium specification create a workplace that supports focus, collaboration and wellbeing in equal measure.",
+        "QUBE (formerly Petersgate House) is a mixed-use redevelopment of fifty-eight apartments and five floors of Grade A workspace in Stockport town centre.",
+        "Qube at Petersgate, the workspace at its heart, is a comprehensive refurbishment of a landmark Stockport building: fully fitted first-floor suites alongside four open Cat A floors, let individually or in combination. Light-filled interiors, exposed soffits and a premium specification create a workplace that supports focus, collaboration and wellbeing in equal measure.",
         "Coming forward as Stockport's regeneration gathers pace, it will bring a significant number of new homes to a town The Sunday Times has named the best place to live in the North West, and place teams at the centre of one of the North's fastest-growing destinations.",
       ],
       image: "/images/qube/workspace-atrium.jpg",
