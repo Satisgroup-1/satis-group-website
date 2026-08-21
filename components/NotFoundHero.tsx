@@ -52,7 +52,7 @@ export function NotFoundHero() {
       >
         <div className="flex h-full min-h-[92svh] items-start px-6 pt-14 sm:px-10 md:min-h-[720px] md:items-center md:pt-0 lg:px-20">
           <div className="max-w-[34rem]">
-            <span className="text-xs tracking-[0.35em] uppercase text-[#D9A85E]">
+            <span className="text-xs tracking-[0.35em] uppercase text-[#C9A05C]">
               404 · Page not found
             </span>
 
@@ -68,16 +68,21 @@ export function NotFoundHero() {
               occupied.
             </p>
 
-            <div className="mt-8 flex flex-wrap items-center gap-3 md:mt-10">
+            {/* The site's button pair — square, uppercase, letter-spaced, gold on
+                hover — inverted for a hero that is black in either theme.
+                `bg-foreground`/`border-border` would follow the theme and go
+                invisible here, so the two neutrals are pinned to white and the
+                hover lands on the on-dark cut of the accent. */}
+            <div className="mt-8 flex flex-wrap items-center gap-4 md:mt-10">
               <Link
                 href="/"
-                className="rounded-full bg-white px-6 py-3 text-sm font-medium text-black transition hover:bg-white/90"
+                className="border border-white bg-white px-6 py-3 text-xs tracking-[0.2em] uppercase text-black transition-colors duration-300 hover:border-[#C9A05C] hover:bg-[#C9A05C] hover:text-ink"
               >
                 Back to home
               </Link>
               <Link
                 href="/portfolio"
-                className="rounded-full border border-white/20 px-6 py-3 text-sm text-white/80 transition hover:border-white/40 hover:text-white"
+                className="border border-white/30 px-6 py-3 text-xs tracking-[0.2em] uppercase text-white transition-colors duration-300 hover:border-[#C9A05C] hover:text-[#C9A05C]"
               >
                 View the portfolio
               </Link>
