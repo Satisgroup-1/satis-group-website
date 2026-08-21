@@ -56,10 +56,13 @@ export function NotFoundHero() {
               404 · Page not found
             </span>
 
-            <h1 className="mt-4 text-[2.5rem] font-light leading-[1.05] tracking-[-0.03em] text-white sm:text-6xl lg:text-[4.25rem]">
-              This page is due
-              <br />
-              a redevelopment
+            {/* PageHero's h1, with white pinned for the black frame. The demo's
+                own scale was lighter and larger — a display face this site does
+                not use anywhere. The line break goes with it: at font-medium the
+                copy breaks on its own, and a hard break set for the old metrics
+                lands in the wrong place at these. */}
+            <h1 className="mt-4 text-4xl font-medium tracking-tight text-balance text-white sm:text-5xl lg:text-6xl">
+              This page is due a redevelopment.
             </h1>
 
             <p className="mt-6 max-w-md text-[0.95rem] leading-relaxed text-white/60 md:mt-7">
