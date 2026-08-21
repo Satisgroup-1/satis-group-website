@@ -101,11 +101,26 @@ export default async function PropertyDetailPage({
   const galleryIndex = property.gallery ? nextIndex() : "";
   // Sales and lettings are handled externally, so the enquire section only
   // appears for schemes with an appointed agent or live listings to point at.
-  const hasEnquiries = Boolean(property.agent || property.listings);
+  // A relative microsite path points back at this page, so only a real external
+  // site is worth an enquire section of its own.
+  const hasExternalMicrosite = !property.micrositeUrl.startsWith("/");
+  const hasEnquiries = Boolean(
+    property.agents || property.listings || hasExternalMicrosite,
+  );
+  // Schemes let or sold jointly list several contacts under one heading, taken
+  // from the first agent and pluralised.
+  const isToLet = property.type === "Commercial" || property.type === "Mixed Use";
+  const agents = property.agents ?? [];
+  const agentHeading = agents.length
+    ? `${agents[0].label ?? (isToLet ? "Lettings Agent" : "Sales Agent")}${
+        agents.length > 1 ? "s" : ""
+      }`
+    : "";
   const enquireIndex = hasEnquiries ? nextIndex() : "";
   // Schemes still to come have nothing to sell or let yet, so the investor
   // route is the useful call to action in place of an enquiry.
-  const showInvestmentCta = !hasEnquiries && property.status === "Coming Soon";
+  const showInvestmentCta =
+    !property.agents && !property.listings && property.status === "Coming Soon";
 
   return (
     <>
@@ -505,11 +520,15 @@ export default async function PropertyDetailPage({
               Interested in {property.name}?
             </h2>
             <p className="mt-4 max-w-md text-base leading-relaxed text-muted">
-              {property.agent
-                ? (property.type === "Commercial" || property.type === "Mixed Use")
-                  ? "To arrange a viewing please contact our appointed agent."
+              {agents.length
+                ? isToLet
+                  ? `To arrange a viewing please contact our appointed ${
+                      agents.length > 1 ? "agents" : "agent"
+                    }.`
                   : "Sales and viewings are handled by our appointed agent, who will be glad to help."
-                : "Enquiries and viewings are handled by our appointed letting agents via the live listings below."}
+                : property.listings
+                  ? "Enquiries and viewings are handled by our appointed letting agents via the live listings below."
+                  : "Full details, availability and enquiries live on the scheme's own site."}
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               {/* A relative path means the scheme has no microsite yet, so it
@@ -547,30 +566,31 @@ export default async function PropertyDetailPage({
                 </p>
               </div>
             )}
-            {property.agent && (
+            {agents.length > 0 && (
               <div>
                 <span className="text-xs tracking-[0.2em] uppercase text-accent-text">
-                  {property.agent.label ??
-                    ((property.type === "Commercial" || property.type === "Mixed Use")
-                      ? "Lettings Agent"
-                      : "Sales Agent")}
+                  {agentHeading}
                 </span>
-                <p className="mt-2 text-sm leading-relaxed">
-                  {property.agent.name}
-                  <br />
-                  <span className="text-muted">{property.agent.detail}</span>
-                  {property.agent.phone && (
-                    <>
+                <div className="mt-2 flex flex-col gap-4">
+                  {agents.map((agent) => (
+                    <p key={agent.name} className="text-sm leading-relaxed">
+                      {agent.name}
                       <br />
-                      <a
-                        href={`tel:${property.agent.phone.replace(/\s/g, "")}`}
-                        className="underline decoration-border underline-offset-4 transition-colors hover:text-accent hover:decoration-accent"
-                      >
-                        {property.agent.phone}
-                      </a>
-                    </>
-                  )}
-                </p>
+                      <span className="text-muted">{agent.detail}</span>
+                      {agent.phone && (
+                        <>
+                          <br />
+                          <a
+                            href={`tel:${agent.phone.replace(/\s/g, "")}`}
+                            className="underline decoration-border underline-offset-4 transition-colors hover:text-accent hover:decoration-accent"
+                          >
+                            {agent.phone}
+                          </a>
+                        </>
+                      )}
+                    </p>
+                  ))}
+                </div>
               </div>
             )}
             {property.listings && (

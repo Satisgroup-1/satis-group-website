@@ -80,11 +80,11 @@ export const PORTFOLIO: Property[] = [
     name: "QUBE",
     location: "Stockport",
     type: "Mixed Use",
-    status: "Coming Soon",
+    status: "Workspace To Let",
     image: "/images/qube/hero.jpg",
     logo: { src: "/images/logos/qube-v2.jpg", bg: "#f4efe7" },
     blurb:
-      "Our largest scheme to date: fifty-eight apartments and two commercial units in Stockport town centre.",
+      "Our largest scheme to date: Grade A workspace over five floors alongside fifty-eight apartments in Stockport town centre.",
   },
   {
     slug: "tabula",

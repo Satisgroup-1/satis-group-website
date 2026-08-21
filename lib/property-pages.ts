@@ -23,6 +23,15 @@ export type FloorPlan = {
   image: string;
 };
 
+export type Agent = {
+  name: string;
+  /** Firm and email, shown beneath the name. */
+  detail: string;
+  phone?: string;
+  /** Overrides the use-derived "Sales Agent" / "Lettings Agent" heading. */
+  label?: string;
+};
+
 export type PropertyPageData = {
   slug: string;
   name: string;
@@ -79,13 +88,12 @@ export type PropertyPageData = {
   gallery?: Array<{ src: string; alt: string }>;
   /** Full postal address of the site, shown in the enquire section. */
   address?: string;
-  agent?: {
-    name: string;
-    detail: string;
-    phone?: string;
-    /** Overrides the use-derived "Sales Agent" / "Lettings Agent" heading. */
-    label?: string;
-  };
+  /**
+   * Appointed agents, in the order the scheme wants them listed. Schemes let or
+   * sold jointly carry more than one contact, so the heading pluralises from
+   * the first entry's label.
+   */
+  agents?: Agent[];
   listings?: Array<{ label: string; detail: string; href: string }>;
   /**
    * The scheme's own microsite. Schemes without one yet point at their own
@@ -229,10 +237,12 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       ],
     },
     address: "The Courthouse, Hibel Road, Macclesfield, Cheshire",
-    agent: {
-      name: "Bridgfords",
-      detail: "Appointed sales agent · Macclesfield",
-    },
+    agents: [
+      {
+        name: "Bridgfords",
+        detail: "Appointed sales agent · Macclesfield",
+      },
+    ],
     listings: [
       {
         label: "One & Two Bedroom Apartments",
@@ -248,8 +258,8 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       { src: "/images/courthouse/macc-forest.jpg", alt: "Walks in Macclesfield Forest" },
       { src: "/images/courthouse/macc-treacle.jpg", alt: "Treacle Market in the town centre" },
     ],
-    micrositeUrl: "https://thecourthousesatis.lovable.app",
-    micrositeLabel: "thecourthousesatis.lovable.app",
+    micrositeUrl: "https://thecourthousemacclesfield.co.uk",
+    micrositeLabel: "thecourthousemacclesfield.co.uk",
   },
   {
     slug: "hazelgate",
@@ -406,8 +416,8 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       { src: "/images/hazelgate/stockport-exchange.jpg", alt: "Stockport Exchange" },
       { src: "/images/hazelgate/stockport-foodie-friday.jpg", alt: "Foodie Friday, Stockport" },
     ],
-    micrositeUrl: "https://hazelgate.lovable.app",
-    micrositeLabel: "hazelgate.lovable.app",
+    micrositeUrl: "https://hazelgate.co.uk",
+    micrositeLabel: "hazelgate.co.uk",
   },
   {
     slug: "barrington-house",
@@ -533,11 +543,13 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
         alt: "Altrincham town centre",
       },
     ],
-    agent: {
-      name: "Gallacom",
-      detail: "Appointed letting agent · Altrincham",
-      label: "Letting Agent",
-    },
+    agents: [
+      {
+        name: "Gallacom",
+        detail: "Appointed letting agent · Altrincham",
+        label: "Letting Agent",
+      },
+    ],
     listings: [
       {
         label: "En-suite Rooms",
@@ -550,8 +562,8 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
         href: "https://www.rightmove.co.uk/properties/89035545#/?channel=RES_LET",
       },
     ],
-    micrositeUrl: "https://barrington-house.lovable.app",
-    micrositeLabel: "barrington-house.lovable.app",
+    micrositeUrl: "https://barringtonhouse.co.uk",
+    micrositeLabel: "barringtonhouse.co.uk",
   },
   {
     slug: "22-st-john",
@@ -718,11 +730,13 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
       { src: "/images/22stjohn/dump/photo-22.jpg", alt: "Brass plaque: another development by Satis Group" },
     ],
     address: "22 St John Street, Manchester, M3 4EB",
-    agent: {
-      name: "Scott Shufflebottom",
-      detail: "Sixteen Real Estate · scott@sixteenrealestate.com",
-      phone: "07715 683 369",
-    },
+    agents: [
+      {
+        name: "Scott Shufflebottom",
+        detail: "Sixteen Real Estate · scott@sixteenrealestate.com",
+        phone: "07715 683 369",
+      },
+    ],
     micrositeUrl: "https://www.22stjohn.co.uk",
     micrositeLabel: "22stjohn.co.uk",
   },
@@ -813,26 +827,141 @@ export const PROPERTY_PAGES: PropertyPageData[] = [
     slug: "qube",
     name: "QUBE",
     eyebrow: "St Petersgate · Stockport",
-    tagline: "Fifty-eight apartments and two commercial units",
-    type: "Residential",
-    status: "Coming Soon",
+    tagline: "Grade A workspace and fifty-eight apartments",
+    type: "Mixed Use",
+    status: "Workspace To Let",
     heroImage: "/images/qube/hero.jpg",
     intro: {
       heading: "Our largest scheme to date",
       body: [
         "QUBE (formerly Petersgate House) is a mixed-use redevelopment of fifty-eight apartments and two commercial units in Stockport town centre.",
-        "Coming forward as Stockport's regeneration gathers pace, it will bring a significant number of new homes to a town The Sunday Times has named the best place to live in the North West.",
+        "Qube at Petersgate, the workspace at its heart, is a comprehensive refurbishment of a landmark Stockport building: Grade A office space over five floors, with fully fitted first-floor suites alongside four open Cat A floors. Light-filled interiors, exposed soffits and a premium specification create a workplace that supports focus, collaboration and wellbeing in equal measure.",
+        "Coming forward as Stockport's regeneration gathers pace, it will bring a significant number of new homes to a town The Sunday Times has named the best place to live in the North West, and place teams at the centre of one of the North's fastest-growing destinations.",
       ],
-      image: "/images/qube/hero.jpg",
-      imageAlt: "QUBE on St Petersgate, Stockport",
+      image: "/images/qube/workspace-atrium.jpg",
+      imageAlt: "Reception and atrium at Qube at Petersgate",
     },
     stats: [
       { value: "58", label: "Apartments" },
-      { value: "2", label: "Commercial units" },
-      { value: "Stockport", label: "Location" },
+      { value: "5", label: "Floors of workspace" },
+      { value: "4,155 sqft", label: "Cat A floorplate" },
     ],
-    micrositeUrl: "/portfolio/qube",
-    micrositeLabel: "QUBE",
+    features: {
+      heading: "A consistent base build on every floor",
+      description:
+        "Every floor is delivered to a consistent, high-quality base build, so occupiers can fit out with confidence whichever suite or floorplate they take.",
+      items: [
+        "24/7 access",
+        "Concierge",
+        "Fitted kitchen",
+        "Air-conditioning",
+        "Fibre broadband",
+        "Showers",
+        "Cycle storage",
+        "On-site parking",
+        "Sustainable design",
+        "EPC rating A (anticipated)",
+      ],
+    },
+    floors: {
+      heading: "The Workspace",
+      unitNoun: "Suite",
+      description:
+        "Fitted first-floor suites from Spring 2027, sharing a coworking suite, communal kitchen, meeting rooms and focus pods, with four Cat A floors above available individually or in combination.",
+      schedule: [
+        {
+          name: "First Floor",
+          units: [
+            { apt: "1.0", beds: "1:6 desk ratio", size: "86 sqm / 926 sqft" },
+            { apt: "1.1", beds: "1:6 desk ratio", size: "45 sqm / 484 sqft" },
+            { apt: "1.2", beds: "1:5 desk ratio", size: "56 sqm / 603 sqft" },
+          ],
+        },
+        {
+          name: "Cat A Floors",
+          units: [
+            { apt: "2.0", beds: "Open floorplate", size: "386 sqm / 4,155 sqft" },
+            { apt: "3.0", beds: "Open floorplate", size: "386 sqm / 4,155 sqft" },
+            { apt: "4.0", beds: "Open floorplate", size: "386 sqm / 4,155 sqft" },
+            { apt: "5.0", beds: "Open floorplate", size: "386 sqm / 4,155 sqft" },
+          ],
+        },
+      ],
+    },
+    floorPlans: [
+      { name: "First Floor: Cat B workspace", image: "/images/qube/floor-first.jpg" },
+      {
+        name: "Cat A workspace: second to fifth floors",
+        image: "/images/qube/floor-cat-a.jpg",
+      },
+    ],
+    locationSection: {
+      heading: "A central hub, exceptionally connected",
+      body: [
+        "Qube at Petersgate sits in the heart of Stockport, a five-minute walk from the newly redeveloped Stockport Transport Interchange and its direct rail services to Manchester, the North West and London.",
+        "Merseyway, the Market Hall and the town's renewed independent quarter are all within a seven-minute walk, with Manchester city centre and Manchester Airport each around 7.2 miles away. St Petersgate, Stockport SK1 1HE.",
+      ],
+      distances: [
+        { value: "8 min", label: "Manchester Piccadilly by rail" },
+        { value: "20 min", label: "Manchester Airport by rail" },
+        { value: "25 min", label: "Crewe by rail" },
+        { value: "55 min", label: "Liverpool Lime Street by rail" },
+        { value: "80 min", label: "Birmingham New Street by rail" },
+        { value: "115 min", label: "London Euston by rail" },
+      ],
+    },
+    gallery: [
+      {
+        src: "/images/qube/workspace-atrium.jpg",
+        alt: "Reception and atrium beneath a glazed roof with hanging planting",
+      },
+      {
+        src: "/images/qube/workspace-open-plan.jpg",
+        alt: "Open-plan workspace with exposed soffits and planted storage runs",
+      },
+      {
+        src: "/images/qube/workspace-coworking.jpg",
+        alt: "Coworking space with parquet flooring, booth seating and a central planter",
+      },
+      {
+        src: "/images/qube/workspace-kitchen.jpg",
+        alt: "Communal kitchen and breakout area with banquette seating",
+      },
+      {
+        src: "/images/qube/workspace-meeting-room.jpg",
+        alt: "Meeting room with a boardroom table, screen and linear pendant",
+      },
+      {
+        src: "/images/qube/workspace-boardroom.jpg",
+        alt: "Boardroom seating either side of a planted timber divider",
+      },
+      {
+        src: "/images/qube/building-day.jpg",
+        alt: "The existing building on the corner of St Petersgate",
+      },
+    ],
+    address: "St Petersgate, Stockport SK1 1HE",
+    agents: [
+      {
+        name: "Fionnuala McCallion",
+        detail:
+          "Canning O'Neill · Senior Surveyor · fionnuala@canningoneill.com",
+        phone: "0776 520 5652",
+        label: "Letting Agent",
+      },
+      {
+        name: "James Dickinson",
+        detail: "Canning O'Neill · james@canningoneill.com",
+        phone: "07876 654062",
+      },
+      {
+        name: "Michael Blackshaw",
+        detail: "MBRE · 0161 850 1111",
+        phone: "07792 201467",
+      },
+    ],
+    micrositeUrl: "https://qubeatpetersgate.co.uk",
+    micrositeLabel: "qubeatpetersgate.co.uk",
   },
   {
     slug: "springfield-house",
